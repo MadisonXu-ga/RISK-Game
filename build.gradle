@@ -86,3 +86,20 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
+
+task resolveDependencies {
+   doLast {
+       project.rootProject.allprojects.each { subProject ->
+           subProject.buildscript.configurations.each { configuration->
+              if(configuration.canBeResolved) {
+                 configuration.resolve()
+              }
+           }
+           subProject.configurations.each { configuration ->
+              if(configuration.canBeResolved) {
+                 configuration.resolve()
+              }
+           }
+       }
+   }
+}

@@ -1,8 +1,8 @@
 ECE 651: Team5-RISC Game
 ======================================
 
-![pipeline](https://gitlab.oit.duke.edu/mz213/team5-risc-game/badges/master/pipeline.svg)
-![coverage](https://gitlab.oit.duke.edu/mz213/team5-risc-game/badges/master/coverage.svg?job=test)
+![pipeline](https://gitlab.oit.duke.edu/mz213/team5-risc-game/badges/main/pipeline.svg)
+![coverage](https://gitlab.oit.duke.edu/mz213/team5-risc-game/badges/main/coverage.svg?job=test)
 
 
 ## Coverage

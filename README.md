@@ -1,3 +1,14 @@
+ECE 651: Team5-RISC Game
+======================================
+
+![pipeline](https://gitlab.oit.duke.edu/mz213/team5-risc-game/badges/master/pipeline.svg)
+![coverage](https://gitlab.oit.duke.edu/mz213/team5-risc-game/badges/master/coverage.svg?job=test)
+
+
+## Coverage
+[Detailed coverage](https://mz213.pages.oit.duke.edu/team5-risc-game/dashboard.html)
+
+
 So far, you have used gradle for "single project" setups, where you have one program
 that you run. For RISC, you probably want a "multi project" setup, where you can have
 multiple programs (e.g., a server and a client) and they can share some common code.

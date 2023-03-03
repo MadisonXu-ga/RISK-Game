@@ -6,6 +6,8 @@ As "messing with the details of gradle setup" is not a primary learning objectiv
 this course, we have provided the enclosed gradle setup to get you started.  If you look
 inside the gradle-skeleton directory, you will see three directories
 
+
+
  - client : the code for the client
  - server : the code for the server
  - shared : for code that is shared between the client and the server

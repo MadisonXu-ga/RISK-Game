@@ -3,3 +3,26 @@
 
 # Ignore Gradle build output directory
 build
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+build/
+target/
+bin/
+
+# Visual Studio Code
+.vscode/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.out
+*.iml
+*.ipr
+*.iws
+

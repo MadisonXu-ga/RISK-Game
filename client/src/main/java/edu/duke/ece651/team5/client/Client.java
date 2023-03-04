@@ -98,13 +98,13 @@ public class Client {
   //   }
   // }
 
-  public void displayMap(){
+  public String displayMap(){
     StringBuilder view = new StringBuilder();
     //for each player in mapView
       view.append(printPlayerTerry());
       view.append("\n");
     // }
-
+    return view.toString();
   }
 
   private String printPlayerTerry(){

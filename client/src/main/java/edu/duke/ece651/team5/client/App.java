@@ -10,8 +10,11 @@ public class App {
   public String getMessage() {
     return "Hello from the client for "+ MyName.getName();
   }
-  public static void main(String[] args) {
-    App a = new App();
-    System.out.println(a.getMessage());
-  }
+
+
+public static void main(String[] args) {
+  Client client = new Client();
+  client.communicate();
+  // System.out.println(a.getMessage());
+}
 }

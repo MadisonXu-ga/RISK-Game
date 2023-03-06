@@ -17,7 +17,7 @@ public class ServerTest {
         Server server = new Server(6666);
 
         // connect
-        Socket socket = new Socket("vcm-30481.vm.duke.edu", 6666);
+        Socket socket = new Socket("localhost", 6666);
         server.start();
         // send
         server.sendMapToOneClient(socket);

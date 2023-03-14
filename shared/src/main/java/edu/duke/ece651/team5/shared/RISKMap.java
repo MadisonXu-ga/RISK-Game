@@ -1,8 +1,9 @@
 package edu.duke.ece651.team5.shared;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class RISKMap {
+public class RISKMap implements Serializable {
     private final ArrayList<Territory> territories;
     private final HashMap<Territory, HashSet<Territory>> connection;
 

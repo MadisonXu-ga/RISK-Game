@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class RISKMap implements Serializable {
+    private static final long serialVersionUID = 3107749286550437606L;
     private final ArrayList<Territory> territories;
     private final HashMap<Territory, HashSet<Territory>> connection;
 

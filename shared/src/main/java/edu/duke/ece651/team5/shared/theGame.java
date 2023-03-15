@@ -16,6 +16,7 @@ public class theGame {
         this.inputReader = new BufferedReader(new InputStreamReader(System.in));
         ArrayList<Player> thePlayers = initPlayers();
         this.theMap = new RISKMap(thePlayers);
+        theMap.assignTerritories();
 
     }
 
@@ -87,9 +88,7 @@ public class theGame {
 
         return thePlayers;
     }
+
+
+
 }
-
-    public void assignTerritories(){
-
-        // Iterator<Territory> it
-    }

@@ -6,12 +6,18 @@ import java.util.*;
 public class RISKMap implements Serializable {
     private static final long serialVersionUID = 3107749286550437606L;
     private final ArrayList<Territory> territories;
+    private final ArrayList<Player> players;
     private final HashMap<Territory, HashSet<Territory>> connection;
 
-    public RISKMap() {
+    public RISKMap(){
+        this(null);
+    }
+    
+    public RISKMap(ArrayList<Player> players) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
         initMap();
+        this.players = players;
     }
 
     private void initMap() {

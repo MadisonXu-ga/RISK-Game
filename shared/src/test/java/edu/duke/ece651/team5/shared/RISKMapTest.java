@@ -10,19 +10,18 @@ class RISKMapTest {
     void testGetTerritoryByName() {
         RISKMap map = new RISKMap();
         Territory actual = map.getTerritoryByName("Oz");
-        Territory expected = new Territory("Oz");
-        assertEquals(expected, actual);
+        assertEquals("Oz", actual.getName());
         assertThrows(IllegalArgumentException.class, () -> map.getTerritoryByName("non-exist"));
 
     }
 
     @Test
-    void testIsConnected() {
+    void testIsAdjacent() {
         RISKMap map = new RISKMap();
         Territory narnia = map.getTerritoryByName("Narnia");
         Territory elantris = map.getTerritoryByName("Elantris");
         Territory hogwarts = map.getTerritoryByName("Hogwarts");
-        assertTrue(map.isConnected(narnia, elantris));
-        assertFalse(map.isConnected(narnia, hogwarts));
+        assertTrue(map.isAdjacent(narnia, elantris));
+        assertFalse(map.isAdjacent(narnia, hogwarts));
     }
 }

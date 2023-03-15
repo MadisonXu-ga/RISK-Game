@@ -20,20 +20,26 @@ public class RISKMap implements Serializable {
         initConnection();
     }
 
-    //todo: this is just for convenience, might refactor it later
+    // todo: this is just for convenience, might refactor it later
+    // I might wanna read this from json
     private ArrayList<Territory> getTerritoryList() {
         return new ArrayList<>(Arrays.asList(
-                new Territory("Narnia"),
-                new Territory("Elantris"),
-                new Territory("Midkemia"),
-                new Territory("Scadrial"),
-                new Territory("Roshar"),
-                new Territory("Oz"),
-                new Territory("Gondor"),
-                new Territory("Mordor"),
-                new Territory("Hogwarts")
-            )
-        );
+        initTerritory("Narnia", UnitType.SOLDIER, 10),
+        initTerritory("Elantris", UnitType.SOLDIER, 6),
+        initTerritory("Midkemia", UnitType.SOLDIER, 12),
+        initTerritory("Scadrial", UnitType.SOLDIER, 5),
+        initTerritory("Roshar", UnitType.SOLDIER,3),
+        initTerritory("Oz", UnitType.SOLDIER, 8),
+        initTerritory("Gondor", UnitType.SOLDIER, 13),
+        initTerritory("Mordor", UnitType.SOLDIER, 14),
+        initTerritory("Hogwarts", UnitType.SOLDIER, 3)
+        ));
+    }
+
+    private Territory initTerritory(String name, Unit unit, int num) {
+        HashMap<Unit, Integer> units = new HashMap<>();
+        units.put(unit, num);
+        return new Territory(name, units);
     }
 
     public Territory getTerritoryByName(String name) {
@@ -51,6 +57,9 @@ public class RISKMap implements Serializable {
         addConnection("Elantris", Arrays.asList("Narnia", "Midkemia", "Scadrial", "Roshar"));
         addConnection("Midkemia", Arrays.asList("Elantris", "Narnia", "Scadrial", "Oz"));
         addConnection("Scadrial", Arrays.asList("Elantris", "Narnia", "Midkemia", "Roshar", "Oz", "Mordor", "Hogwarts"));
+        addConnection("Oz", Arrays.asList("Midkemia", "Scadrial", "Mordor", "Gondor"));
+        addConnection("Roshar", Arrays.asList("Elantris", "Scadrial", "Hogwarts"));
+        addConnection("Gondor", Arrays.asList("Oz", "Mordor"));
     }
 
     private void addConnection(String name, List<String> names) {
@@ -65,7 +74,7 @@ public class RISKMap implements Serializable {
         connection.put(t, adjTerritories);
     }
 
-    public boolean isConnected(Territory t1, Territory t2) {
+    public boolean isAdjacent(Territory t1, Territory t2) {
         return connection.get(t1).contains(t2);
     }
 }

@@ -84,6 +84,6 @@ public class theGame {
             thePlayers.add(X);
         }
 
-
+        return thePlayers;
     }
 }

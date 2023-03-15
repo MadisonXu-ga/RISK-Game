@@ -10,7 +10,7 @@ class TerritoryTest {
 
     @Test
     void testGetName() {
-        Territory hogwarts = new Territory("Hogwarts");
+        Territory hogwarts = new Territory("Hogwarts", null);
         String actual = hogwarts.getName();
         String expected = "Hogwarts";
         assertEquals(expected, actual);

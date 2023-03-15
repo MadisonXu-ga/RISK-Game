@@ -8,12 +8,6 @@ public class Territory {
     // todo: enum -> int?
     private final HashMap<Unit, Integer> units;
 
-    // todo: delete this constructor later
-    public Territory(String name) {
-        this.name = name;
-        this.units = new HashMap<>();
-    }
-
     public Territory(String name, HashMap<Unit, Integer> units) {
         this.name = name;
         this.units = units;

@@ -21,19 +21,18 @@ public class RISKMap implements Serializable {
     }
 
     // todo: this is just for convenience, might refactor it later
-    // name soldier:num?
-    // new soldier kinda weird...
+    // I might wanna read this from json
     private ArrayList<Territory> getTerritoryList() {
         return new ArrayList<>(Arrays.asList(
-        initTerritory("Narnia", new Soldier(), 10),
-        initTerritory("Elantris", new Soldier(), 6),
-        initTerritory("Midkemia", new Soldier(), 12),
-        initTerritory("Scadrial", new Soldier(), 5),
-        initTerritory("Roshar", new Soldier(),3),
-        initTerritory("Oz", new Soldier(), 8),
-        initTerritory("Gondor", new Soldier(), 13),
-        initTerritory("Mordor", new Soldier(), 14),
-        initTerritory("Hogwarts", new Soldier(), 3)
+        initTerritory("Narnia", UnitType.SOLDIER, 10),
+        initTerritory("Elantris", UnitType.SOLDIER, 6),
+        initTerritory("Midkemia", UnitType.SOLDIER, 12),
+        initTerritory("Scadrial", UnitType.SOLDIER, 5),
+        initTerritory("Roshar", UnitType.SOLDIER,3),
+        initTerritory("Oz", UnitType.SOLDIER, 8),
+        initTerritory("Gondor", UnitType.SOLDIER, 13),
+        initTerritory("Mordor", UnitType.SOLDIER, 14),
+        initTerritory("Hogwarts", UnitType.SOLDIER, 3)
         ));
     }
 

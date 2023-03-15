@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Territory {
     private final String name;
-    // todo: string -> int?
+    // todo: enum -> int?
     private final HashMap<Unit, Integer> units;
 
     // todo: delete this constructor later

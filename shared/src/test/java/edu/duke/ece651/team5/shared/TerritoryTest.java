@@ -18,11 +18,10 @@ class TerritoryTest {
 
     @Test
     void testGetUnitNum() {
-        Soldier soldier = new Soldier();
         HashMap<Unit, Integer> units = new HashMap<>();
-        units.put(soldier, 10);
+        units.put(UnitType.SOLDIER, 10);
         Territory hogwarts = new Territory("Hogwarts", units);
-        int actual = hogwarts.getUnitNum(soldier);
+        int actual = hogwarts.getUnitNum(UnitType.SOLDIER);
         assertEquals(10, actual);
     }
 }

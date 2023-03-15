@@ -15,16 +15,17 @@ public class theGame {
     }
 
 
-    public RISKMap howManyPlayers() throws IOException{
+    public int howManyPlayers() throws IOException{
 
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
+        Integer numberOfPlayers = null;
         String problem = null;
         do {
             problem = null;
             try {
                 System.out.println("How many players would you like to have in this game?");
-                Integer numberOfPlayers = Integer.parseInt(input.readLine());
+                numberOfPlayers = Integer.parseInt(input.readLine());
 
                 if(numberOfPlayers <= 0){
                     throw new IllegalArgumentException("The number of players can't  be negative or zero");
@@ -43,12 +44,11 @@ public class theGame {
             if (problem != null) {
                 String mesg = "That placement is invalid: " + problem;
                 System.out.println(mesg);
+            }
 
         } while (problem != null);
-        
-        
 
-
-
+        return numberOfPlayers;
     }
+
 }

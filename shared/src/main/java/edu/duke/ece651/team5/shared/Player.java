@@ -10,6 +10,10 @@ public class Player {
     this.color = color;
   }
 
-  
+  public void addTerritory(Territory aTerritory){
+
+    territories.add(aTerritory);
+
+  }
 
 }

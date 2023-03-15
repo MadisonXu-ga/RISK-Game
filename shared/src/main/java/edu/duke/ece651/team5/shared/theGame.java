@@ -11,10 +11,11 @@ public class theGame {
     private RISKMap theMap;
     private final BufferedReader inputReader;
 
-    public theGame(){
+    public theGame() throws IOException{
 
         this.inputReader = new BufferedReader(new InputStreamReader(System.in));
-        this.theMap = new RISKMap();
+        ArrayList<Player> thePlayers = initPlayers();
+        this.theMap = new RISKMap(thePlayers);
 
     }
 
@@ -87,3 +88,8 @@ public class theGame {
         return thePlayers;
     }
 }
+
+    public void assignTerritories(){
+
+        // Iterator<Territory> it
+    }

@@ -5,8 +5,8 @@ import java.util.*;
 
 public class RISKMap implements Serializable {
     private static final long serialVersionUID = 3107749286550437606L;
-    private final ArrayList<Territory> territories;
-    private final ArrayList<Player> players;
+    private ArrayList<Territory> territories;
+    private ArrayList<Player> players;
     private final HashMap<Territory, HashSet<Territory>> connection;
 
     public RISKMap(){
@@ -82,5 +82,18 @@ public class RISKMap implements Serializable {
 
     public boolean isAdjacent(Territory t1, Territory t2) {
         return connection.get(t1).contains(t2);
+    }
+
+    public void assignTerritories(){
+
+        Iterator<Territory> it = territories.iterator();
+
+        Integer ctr = 0;
+        while(it.hasNext()){
+
+            players.get(ctr % players.size()).addTerritory(it.next());
+            ctr++;
+
+        }
     }
 }

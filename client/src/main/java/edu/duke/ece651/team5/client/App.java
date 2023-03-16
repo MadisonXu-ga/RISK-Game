@@ -14,6 +14,5 @@ public class App {
 
 public static void main(String[] args) {
   App a = new App();
-  System.out.println(a.getMessage());
 }
 }

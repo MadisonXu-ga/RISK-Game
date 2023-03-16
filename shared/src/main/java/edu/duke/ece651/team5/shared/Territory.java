@@ -3,8 +3,9 @@ package edu.duke.ece651.team5.shared;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.io.Serializable;
 
-public class Territory {
+public class Territory implements Serializable {
     private final String name;
     // todo: enum -> int?
     private final HashMap<Unit, Integer> units;

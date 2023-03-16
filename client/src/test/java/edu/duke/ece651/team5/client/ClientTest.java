@@ -46,7 +46,7 @@ public class ClientTest {
   @Test
   void testCommunicate() throws IOException{
     initServer();
-    Client client = new Client("123456", 8080);
+    Client client = new Client("localhost", 12345);
     String res = client.initClient();
     assertEquals("Initiate client successfully", res);
     client.closeClientSocket();

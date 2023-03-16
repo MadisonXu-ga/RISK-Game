@@ -84,6 +84,12 @@ public class RISKMap implements Serializable {
         return connection.get(t1).contains(t2);
     }
 
+    /*
+    for each territory we need to do the folowing:
+    - iterate through all the players sequentially
+        - assign territories to the player
+    - each assigned territory needs to have a new "owner" 
+    */
     public void assignTerritories(){
 
         Iterator<Territory> it = territories.iterator();
@@ -91,7 +97,12 @@ public class RISKMap implements Serializable {
         Integer ctr = 0;
         while(it.hasNext()){
 
-            players.get(ctr % players.size()).addTerritory(it.next());
+            Territory currentTerritory = it.next();
+            Player currentPlayer = players.get(ctr % players.size());
+            
+
+            currentPlayer.addTerritory(currentTerritory);
+            currentTerritory.addOwner(currentPlayer);
             ctr++;
 
         }

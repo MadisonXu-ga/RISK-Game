@@ -34,7 +34,7 @@ public class theGame {
                 numberOfPlayers = Integer.parseInt(inputReader.readLine());
 
                 if(numberOfPlayers <= 0){
-                    throw new IllegalArgumentException("The number of players can't  be negative or zero");
+                    throw new IllegalArgumentException("The number of players can't be negative or zero");
                 }
     
             }

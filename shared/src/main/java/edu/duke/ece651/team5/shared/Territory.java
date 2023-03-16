@@ -24,6 +24,10 @@ public class Territory {
         return units.get(unit);
     }
 
+    public void addOwner(Player owner){
+        playerOwner = owner;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

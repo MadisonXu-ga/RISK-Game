@@ -46,12 +46,47 @@ public class ClientTest {
   @Test
   void testCommunicate() throws IOException{
     initServer();
-    Client client = new Client("green");
+    Client client = new Client();
     String res = client.initClient();
     assertEquals("Initiate client successfully", res);
     client.closeClientSocket();
     closeServer();
   }
+
+  @Test
+  void testInitClientErr() throws IOException{
+    Client client = new Client();
+    String res = client.initClient();
+    assertEquals("Cannot init Client", res);
+  }
+
+  @Test
+  void testColor(){
+    Client client = new Client();
+    assertEquals("green", client.getColor());
+  }
+
+//   @Test
+//   void testMain() throws IOException{
+//     initServer();
+//     Client client = new Client();
+//     client.communicate();
+//     closeServer();
+//   }
+
+  @Test
+  void testMain() throws IOException{
+    initServer();
+    Client.main(null);
+    closeServer();
+  }
+
+  @Test
+  void testMainError() throws IOException{
+    Client.main(null);
+
+  }
+
 
 
 

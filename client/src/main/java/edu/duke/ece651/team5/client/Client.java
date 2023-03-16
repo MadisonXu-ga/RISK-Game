@@ -1,6 +1,7 @@
 package edu.duke.ece651.team5.client;
 import java.io.*;
 import java.net.*;
+import java.security.cert.LDAPCertStoreParameters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,21 +19,26 @@ public class Client {
   // private HashMap<String, ArrayList<Territories>> MapView;
 
   /* Default Constructor */
-  public Client(String color){
+  public Client(){
     this.port = 12345;
     this.host = "localhost";
-    this.color = color;
+    //temp
+    this.color = "green";
   }
 
   /* Constructor with host and port number */
   public Client(String host, int port){
     this.host = host;
     this.port = port;
+    //temp
+    this.color = "green";
   }
 
-  public Socket getSocket(){
-    return clientSocket;
+
+  public String getColor(){
+    return color;
   }
+
 
   /**
    * create a client socket connection with 
@@ -108,6 +114,11 @@ public class Client {
     }finally{
       closeClientSocket();
     }
+  }
+
+  public static void main(String[] args) {
+    Client client = new Client();
+    client.communicate();
   }
 
   // public void getViewMap{

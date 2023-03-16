@@ -5,6 +5,7 @@ import edu.duke.ece651.team5.shared.*;
 
 //todo: currently implement using pseudo code, and missing testCase, will add them later when map finished related features
 public class MapTextView {
+
   public String displayMap(){
     StringBuilder view = new StringBuilder();
     //for each player in map
@@ -35,7 +36,7 @@ public class MapTextView {
     //for territory neighbor: currTerri
       //neighbor.getName()
       terriInfo.append("Elantris");
-    terriInfo.append(")\n");
+    terriInfo.append(")");
 
     return terriInfo.toString();
   }

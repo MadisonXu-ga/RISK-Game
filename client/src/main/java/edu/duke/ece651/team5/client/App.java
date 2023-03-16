@@ -13,8 +13,7 @@ public class App {
 
 
 public static void main(String[] args) {
-  Client client = new Client();
-  client.communicate();
-  // System.out.println(a.getMessage());
+  App a = new App();
+  System.out.println(a.getMessage());
 }
 }

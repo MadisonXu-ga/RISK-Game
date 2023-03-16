@@ -35,7 +35,8 @@ public class ClientTest {
 
   private void handleClient(Socket socket) throws IOException {
       ObjectOutputStream outputObj = new ObjectOutputStream(socket.getOutputStream());
-      outputObj.writeObject("test");
+      RISKMap map = new RISKMap();
+      outputObj.writeObject(map);
 
   }
 
@@ -44,7 +45,7 @@ public class ClientTest {
   }
 
   @Test
-  void testCommunicate() throws IOException{
+  void testInitClient() throws IOException{
     initServer();
     Client client = new Client("localhost", 12345);
     String res = client.initClient();
@@ -66,13 +67,19 @@ public class ClientTest {
     assertEquals("green", client.getColor());
   }
 
-//   @Test
-//   void testMain() throws IOException{
-//     initServer();
-//     Client client = new Client();
-//     client.communicate();
-//     closeServer();
-//   }
+  @Test
+  void testCommunicate() throws IOException, ClassNotFoundException{
+    initServer();
+    Client client = new Client();
+    // client.communicate();
+    client.initClient();
+    boolean res = client.recvFromServer();
+    assertEquals(true, res);
+    String expected = "Green Player: \n" + 
+   "-------------10 units: in Narnia (next to: Elantris)\n";
+    assertEquals(expected, client.displayMapView());
+    closeServer();
+  }
 
   @Test
   void testMain() throws IOException{

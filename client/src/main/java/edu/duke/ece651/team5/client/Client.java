@@ -11,11 +11,13 @@ public class Client {
   private Socket clientSocket;
   private ObjectOutputStream objOutStream;
   private ObjectInputStream objInStream;
-  //private RISKMap map;
+  private RISKMap map;
+  private MapTextView mapView;
 
   private int port;
   private String host;
   private String color;
+  
   // private HashMap<String, ArrayList<Territories>> MapView;
 
   /* Default Constructor */
@@ -70,9 +72,15 @@ public class Client {
    * @throws IOException
    * @throws ClassNotFoundException
    */
-  public void recvFromServer() throws IOException, ClassNotFoundException{
-    //Map = (RISKMap)objInStream.readObject();
-    objInStream.readObject();
+  public boolean recvFromServer() throws IOException, ClassNotFoundException{
+    map = (RISKMap)objInStream.readObject();
+    mapView = new MapTextView(map);
+    // objInStream.readObject();
+    if(map != null){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 
@@ -101,6 +109,10 @@ public class Client {
     
   }
 
+  public String displayMapView(){
+    return mapView.displayMap();
+  }
+
   /**
    * Doing the whole communication work with server
    */
@@ -121,11 +133,7 @@ public class Client {
     client.communicate();
   }
 
-  // public void getViewMap{
-  //   for(Map map: RISKmap.getTerritories()){
-  //     MapView.push("player", ArrayList<Territory>);
-  //   }
-  // }
+
 
 
 

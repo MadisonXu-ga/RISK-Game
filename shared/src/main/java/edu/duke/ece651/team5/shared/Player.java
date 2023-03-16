@@ -8,8 +8,19 @@ public class Player {
 
   public Player(String color){
     this.color = color;
+    this.territories = new ArrayList<>();
   }
 
-  
+  public void addTerritory(Territory aTerritory){
+
+    territories.add(aTerritory);
+
+  }
+
+  public ArrayList<Territory> displayTerritories(){
+
+    return territories;
+
+  }
 
 }

@@ -5,13 +5,19 @@ import java.util.*;
 
 public class RISKMap implements Serializable {
     private static final long serialVersionUID = 3107749286550437606L;
-    private final ArrayList<Territory> territories;
+    private ArrayList<Territory> territories;
+    private ArrayList<Player> players;
     private final HashMap<Territory, HashSet<Territory>> connection;
 
-    public RISKMap() {
+    public RISKMap(){
+        this(null);
+    }
+    
+    public RISKMap(ArrayList<Player> players) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
         initMap();
+        this.players = players;
     }
 
     private void initMap() {
@@ -76,5 +82,43 @@ public class RISKMap implements Serializable {
 
     public boolean isAdjacent(Territory t1, Territory t2) {
         return connection.get(t1).contains(t2);
+    }
+
+    /*
+    for each territory we need to do the folowing:
+    - iterate through all the players sequentially
+        - assign territories to the player
+    - each assigned territory needs to have a new "owner" 
+    !right now it is assigned by going through the list of territories
+    TODO see if we want to get players to choose them
+    */
+    public void assignTerritories(){
+
+        Iterator<Territory> it = territories.iterator();
+
+
+        Integer ctr = 0;
+        while(it.hasNext()){
+
+            Territory currentTerritory = it.next();
+            Player currentPlayer = players.get(ctr % players.size());
+            
+
+            chooseTerritory(currentTerritory, currentPlayer);
+            ctr++;
+
+        }
+    }
+
+    public boolean chooseTerritory(Territory aTerritory, Player possibleOwner){
+
+        if(aTerritory.hasOwner()){
+            return false;
+        }
+
+        aTerritory.addOwner(possibleOwner);
+        possibleOwner.addTerritory(aTerritory);
+        return true;
+
     }
 }

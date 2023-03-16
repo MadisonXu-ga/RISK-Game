@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.shared;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -7,10 +8,12 @@ public class Territory {
     private final String name;
     // todo: enum -> int?
     private final HashMap<Unit, Integer> units;
+    private Player playerOwner;
 
     public Territory(String name, HashMap<Unit, Integer> units) {
         this.name = name;
         this.units = units;
+        this.playerOwner = null;
     }
 
     public String getName() {
@@ -20,6 +23,18 @@ public class Territory {
     public int getUnitNum(Unit unit) {
         return units.get(unit);
     }
+
+    public void addOwner(Player owner){
+        playerOwner = owner;
+    }
+
+    public boolean hasOwner(){
+        if (playerOwner == null){
+            return false;
+        }
+        return true;
+    }
+
 
     @Override
     public boolean equals(Object o) {

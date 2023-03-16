@@ -4,6 +4,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import edu.duke.ece651.team5.shared.*;
 
 public class Client {
   private Socket clientSocket;
@@ -13,12 +14,14 @@ public class Client {
 
   private int port;
   private String host;
+  private String color;
   // private HashMap<String, ArrayList<Territories>> MapView;
 
   /* Default Constructor */
-  public Client(){
+  public Client(String color){
     this.port = 12345;
     this.host = "localhost";
+    this.color = color;
   }
 
   /* Constructor with host and port number */
@@ -27,15 +30,28 @@ public class Client {
     this.port = port;
   }
 
+  public Socket getSocket(){
+    return clientSocket;
+  }
+
   /**
    * create a client socket connection with 
    * @throws IOException
   */
-  public void initClient() throws IOException{
-    clientSocket = new Socket(host, port);
-    objOutStream = new ObjectOutputStream(clientSocket.getOutputStream());
-    objInStream = new ObjectInputStream(clientSocket.getInputStream());
-    System.out.println("Connect to Server");
+  public String initClient() throws IOException{
+    String res = "";
+    try{
+      clientSocket = new Socket(host, port);
+      this.objOutStream = new ObjectOutputStream(clientSocket.getOutputStream());
+      this.objInStream = new ObjectInputStream(clientSocket.getInputStream());
+      res = "Initiate client successfully";
+      System.out.println("Initiate client successfully");
+    }catch(IOException e){
+      clientSocket = null;
+      res = "Cannot init Client";
+    }
+    return res;
+    
   }
 
   // write to server
@@ -67,8 +83,16 @@ public class Client {
    * Clost client socket
    * @throws IOException
    */
-  public void closeClientSocket() throws IOException{
-    clientSocket.close();
+  public void closeClientSocket(){
+    if(clientSocket != null){
+      try{
+        clientSocket.close();
+      }catch(IOException e){
+        // clientSocket = null;
+        // System.out.println("Failed to close client socket");
+      }
+    }
+    
   }
 
   /**
@@ -80,15 +104,9 @@ public class Client {
       recvFromServer();
       closeResource();
     }catch(Exception e){
-      e.printStackTrace();
+      // e.printStackTrace();
     }finally{
-      try{
-        closeClientSocket();
-      }catch(IOException e){
-        clientSocket = null;
-        System.out.println("Error to close Client Socket");
-      }
-      
+      closeClientSocket();
     }
   }
 
@@ -98,32 +116,7 @@ public class Client {
   //   }
   // }
 
-  public String displayMap(){
-    StringBuilder view = new StringBuilder();
-    //for each player in mapView
-      view.append(printPlayerTerry());
-      view.append("\n");
-    // }
-    return view.toString();
-  }
 
-  private String printPlayerTerry(){
-    StringBuilder playerInfo = new StringBuilder();
-    playerInfo.append(printPlayer());
-    playerInfo.append("-".repeat(13));
-    // for(Mapview view: mapView){
-    playerInfo.append(printTerryInfo());
-
-    return playerInfo.toString();
-  }
-
-  private String printPlayer(){
-    return "";
-  }
-
-  private String printTerryInfo(){
-    return "";
-  }
 
 
 

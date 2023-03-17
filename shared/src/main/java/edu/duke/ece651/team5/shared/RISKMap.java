@@ -84,6 +84,10 @@ public class RISKMap implements Serializable {
         return connection.get(t1).contains(t2);
     }
 
+    public HashSet<Territory> getAdjacentTerritories(Territory t) {
+        return connection.get(t);
+    }
+
     /*
     for each territory we need to do the folowing:
     - iterate through all the players sequentially

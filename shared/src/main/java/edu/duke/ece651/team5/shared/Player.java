@@ -18,10 +18,15 @@ public class Player implements Serializable{
 
   }
 
-  public ArrayList<Territory> displayTerritories(){
+  public ArrayList<Territory> getTerritories(){
 
     return territories;
 
+  }
+
+  public String getName(){
+
+    return color;
   }
 
 }

@@ -24,4 +24,9 @@ public class Player implements Serializable{
 
   }
 
+  public String getName(){
+
+    return color;
+  }
+
 }

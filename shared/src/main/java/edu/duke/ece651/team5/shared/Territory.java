@@ -48,6 +48,10 @@ public class Territory implements Serializable {
         return true;
     }
 
+    public Player whoOwnsit(){
+        return playerOwner;
+    }
+
 
     @Override
     public boolean equals(Object o) {

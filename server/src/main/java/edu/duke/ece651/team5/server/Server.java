@@ -29,7 +29,7 @@ public class Server {
         this.serverSocket = new ServerSocket(this.port);
 
         this.playerNum = 0;
-        this.playerColors = new ArrayList<>(Arrays.asList("Green", "Blue", "Red"));
+        this.playerColors = new ArrayList<>(Arrays.asList("Green", "Blue", "Red", "Yellow"));
 
         this.clientSockets = new ArrayList<>();
 
@@ -45,25 +45,46 @@ public class Server {
     /*
      * The method need to call when we want to start a game.
      */
-    public void startRISCGame(int playerNum) throws IOException, InterruptedException {
-        acceptClients(playerNum);
+    public void startRISCGame() throws IOException, InterruptedException, NumberFormatException, ClassNotFoundException {
+        acceptClients();
         initGame();
         playGame();
         stop();
+    }
+
+    /*
+     * Deal with the first connection.
+     * Ask first player to give the total number of players of this game.
+     */
+    private void dealWithFirstClient() throws IOException, NumberFormatException, ClassNotFoundException {
+        Socket firstClientSocket = this.serverSocket.accept();
+        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(firstClientSocket.getOutputStream()));
+        oos.writeObject("You are the first player. Please choose the player num in this game!");
+        ObjectInputStream ois = new ObjectInputStream(firstClientSocket.getInputStream());
+        // do i need to valid player num?
+        this.playerNum = Integer.parseInt((String)ois.readObject());
+
+        clientSockets.add(firstClientSocket);
     }
 
     /**
      * Start to accept clients.
      * Q: Should I throw the exception out or just handle it inside the server
      * class?
+     * @throws ClassNotFoundException
+     * @throws NumberFormatException
      */
-    public void acceptClients(int playerNum) throws IOException {
-        // accept connections
+    public void acceptClients() throws IOException, NumberFormatException, ClassNotFoundException {
+        // deal with the first one
+        dealWithFirstClient();
+
+        // accept remaining connections
+        int acceptNum = 1;
         while (true) {
             Socket clientSocket = this.serverSocket.accept();
-            this.playerNum += 1;
+            acceptNum += 1;
             clientSockets.add(clientSocket);
-            if (this.playerNum == playerNum) {
+            if (acceptNum == this.playerNum) {
                 break;
             }
         }
@@ -73,12 +94,10 @@ public class Server {
      * Initialize the game, preparations for starting the game
      */
     public void initGame() throws IOException, InterruptedException {
+        // create a Game
         // for each player:
         // inform player who she is (send) (hardcode?)
         // need to send map to player? (send)
-        // assign territory groups to player (send) (hardcode?)
-        // need to send units number to player? (send)
-        // receive a signal when this player finished placing (recv)
 
         for (int i = 0; i < playerNum; ++i) {
             ConnectionHandler c = new ConnectionHandler(clientSockets.get(i), playerColors.get(i));
@@ -101,9 +120,11 @@ public class Server {
         // until end, later need to change
         while (true) {
             // for each player:
-            // display players' units and territories info (send)
-            // point who you are and provide actions (chooseAction) (send)
+            // display players' units and territories info (send) x
+            // point who you are and provide actions (chooseAction) (send) x
+
             // record player's action list (receive)
+
             // may need to check valid
             // apply all the actions
             // check win or lose

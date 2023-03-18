@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -24,7 +25,7 @@ public class ServerTest {
 
         // connect
         Socket socket = new Socket("localhost", 6666);
-        server.acceptClients(1);
+        server.acceptClients();
         // send
         server.sendMapToOneClient(socket);
         // receive
@@ -48,12 +49,18 @@ public class ServerTest {
 
     @Test
     void testMultipleClients() throws SocketException, IOException, InterruptedException, ClassNotFoundException {
-        Server server = new Server(7777);
-        Socket socket1 = new Socket("localhost", 7777);
-        Socket socket2 = new Socket("localhost", 7777);
-        Socket socket3 = new Socket("localhost", 7777);
+        Server server = new Server(9999);
+        Socket socket1 = new Socket("localhost", 9999);
+        Socket socket2 = new Socket("localhost", 9999);
+        Socket socket3 = new Socket("localhost", 9999);
 
-        server.acceptClients(3);
+        server.acceptClients();
+        ObjectInputStream ois = new ObjectInputStream(socket1.getInputStream());
+        assertEquals("You are the first player. Please choose the player num in this game!", (String) ois.readObject());
+
+        ObjectOutputStream oos = new ObjectOutputStream(socket1.getOutputStream());
+        oos.writeObject("3");
+
         server.initGame();
 
         BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));

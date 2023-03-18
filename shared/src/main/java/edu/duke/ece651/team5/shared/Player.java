@@ -18,7 +18,7 @@ public class Player implements Serializable{
 
   }
 
-  public ArrayList<Territory> displayTerritories(){
+  public ArrayList<Territory> getTerritories(){
 
     return territories;
 

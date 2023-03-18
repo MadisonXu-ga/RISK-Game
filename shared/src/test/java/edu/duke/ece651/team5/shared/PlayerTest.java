@@ -22,8 +22,8 @@ public class PlayerTest {
         assertEquals(redPlayer.getName(), "red");
         
         //check that the territory is added to the player
-        assertTrue(redPlayer.displayTerritories().contains(oneTerritory));
-        
+        assertTrue(redPlayer.getTerritories().contains(oneTerritory));
+
     }
 
 }

@@ -13,11 +13,29 @@ public class RISKMap implements Serializable {
         this(null);
     }
     
+    //public RISKMap(int numPlayers) {
     public RISKMap(ArrayList<Player> players) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
         initMap();
+        //todo Init Player here 
+        /*
+         * create 4 default playrs
+         * then init Players and assign territories according to the actual player num input
+         */
         this.players = players;
+    }
+
+    public void initPlayers(ArrayList<Player> players){
+        this.players = players;
+    }
+
+    public ArrayList<Player> getPlayers(){
+        return players;
+    }
+
+    public ArrayList<Territory> getTerritories(){
+        return territories;
     }
 
     private void initMap() {
@@ -55,6 +73,15 @@ public class RISKMap implements Serializable {
             }
         }
         throw new IllegalArgumentException("Does not exist territory " + name);
+    }
+
+    public Player getPlayerByName(String name) {
+        for (Player p : players) {
+            if (p.getName().equals(name)) {
+                return p;
+            }
+        }
+        throw new IllegalArgumentException("Does not exist Player " + name);
     }
 
     // todo: add more

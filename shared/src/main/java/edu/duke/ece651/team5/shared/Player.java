@@ -6,6 +6,7 @@ import java.io.Serializable;
 public class Player implements Serializable{
   private String color;
   private ArrayList<Territory> territories;
+  private final int availableUnit = 50;
 
   public Player(String color){
     this.color = color;
@@ -16,6 +17,10 @@ public class Player implements Serializable{
 
     territories.add(aTerritory);
 
+  }
+
+  public int getAvailableUnit(){
+    return availableUnit;
   }
 
   public ArrayList<Territory> getTerritories(){

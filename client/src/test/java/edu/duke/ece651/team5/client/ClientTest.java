@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class ClientTest {
   ServerSocket serverSocket;
 
-  private void initServer() throws IOException {
+  private void initServer(int type) throws IOException {
     serverSocket = new ServerSocket(12345);
     new Thread(() -> {
         while (true) {
@@ -21,7 +21,7 @@ public class ClientTest {
                 Socket socket = serverSocket.accept();
                 new Thread(() -> {
                     try {
-                        handleClient(socket);
+                      handleClient(socket, type);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -33,11 +33,23 @@ public class ClientTest {
     }).start();
   }
 
-  private void handleClient(Socket socket) throws IOException {
+  private void handleClient(Socket socket, int type) throws IOException {
       ObjectOutputStream outputObj = new ObjectOutputStream(socket.getOutputStream());
       RISKMap map = new RISKMap();
-      outputObj.writeObject(map);
+      boolean yes = true;
+      boolean no = false;
+      String name = "Green";
+      if(type == 0){
+        outputObj.writeObject(map);
+      }else if(type == 1){
+        outputObj.writeObject(yes);
+      }else if(type == 2){
+        outputObj.writeObject(no);
+      }else if(type == 3){
+        outputObj.writeObject(name);
+      }
 
+      
   }
 
   private void closeServer() throws IOException {
@@ -46,8 +58,8 @@ public class ClientTest {
 
   @Test
   void testInitClient() throws IOException{
-    initServer();
-    Client client = new Client("localhost", 12345);
+    initServer(0);
+    Client client = new Client();
     String res = client.initClient();
     assertEquals("Initiate client successfully", res);
     client.closeClientSocket();
@@ -62,34 +74,51 @@ public class ClientTest {
   }
 
   @Test
-  void testColor(){
+  void testRecvMap() throws IOException, ClassNotFoundException{
+    initServer(0);
     Client client = new Client();
-    assertEquals("green", client.getColor());
-  }
-
-  @Test
-  void testCommunicate() throws IOException, ClassNotFoundException{
-    initServer();
-    Client client = new Client();
-    // client.communicate();
     client.initClient();
-    boolean res = client.recvFromServer();
-    assertEquals(true, res);
-    String expected = "Green Player: \n" + 
-   "-------------10 units: in Narnia (next to: Elantris)\n";
-    assertEquals(expected, client.displayMapView());
+    // boolean res = client.recvMapFromServer();
+    RISKMap expected = new RISKMap();
+    RISKMap res = client.recvMap();
+    assertEquals(expected.getTerritories(), res.getTerritories());
+    client.closeClientSocket();
     closeServer();
   }
 
   @Test
+  void testRecvFirstPlayerSignal() throws IOException, ClassNotFoundException{
+    initServer(1);
+    Client client = new Client();
+    client.initClient();
+    boolean res = client.recvFirstPlayerSignal();
+    assertEquals(true, res);
+    client.closeClientSocket();
+    closeServer();
+  }
+
+  @Test
+  void testRecvPlayerName() throws IOException, ClassNotFoundException{
+    initServer(3);
+    Client client = new Client();
+    client.initClient();
+    String name = client.recvString();
+    assertEquals("Green", name);
+    client.closeClientSocket();
+    closeServer();
+  }
+
+
+
+  @Test
   void testMain() throws IOException{
-    initServer();
+    initServer(0);
     Client.main(null);
     closeServer();
   }
 
   @Test
-  void testMainError() throws IOException{
+  void testMainError(){
     Client.main(null);
 
   }
@@ -123,14 +152,4 @@ public class ClientTest {
 
   // }
 
-  // private RISKMap generateMap(){
-  //   ArrayList<Territory> test = new ArrayList<>();
-  //   test.add(new Territory("Hogwarts"));
-  //   test.add(new Territory("test1"));
-  //   test.add(new Territory("test2"));
-  //   test.add(new Territory("test3"));
-  //   RISKMap myMap = new RISKMap(test);
-
-  //   return myMap;
-  // }
 }

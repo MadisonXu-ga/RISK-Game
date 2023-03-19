@@ -2,8 +2,8 @@ package edu.duke.ece651.team5.shared;
 
 public class MoveOrder extends BasicOrder {
 
-    public MoveOrder(Territory source, Territory destination, int number, Unit type) {
-        super(source, destination, number, type);
+    public MoveOrder(Territory source, Territory destination, int number, Unit type, RISKMap RISKMAP) {
+        super(source, destination, number, type, RISKMAP);
     }
 
     @Override

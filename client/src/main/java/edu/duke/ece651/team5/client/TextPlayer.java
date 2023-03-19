@@ -72,11 +72,6 @@ public class TextPlayer {
         //get Territory info
         String srcTerri = getSrcTerri(inputs, currMap).getName();
         String desTerri = getDesTerri(inputs, currMap).getName();
-        // if(numUnit < 0){
-        //   out.println("Not a valid number input, please try again");
-        //   continue;
-        // }
-        //create new order
         if(type.toUpperCase().charAt(0) == 'M'){
           //create new move order
           MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER);
@@ -121,6 +116,47 @@ public class TextPlayer {
     }
     return new Action(attackOrders, moveOrders);
   }
+
+
+  /**
+   * check if in current round, if any player wins the game
+   * @param result the result received from server
+   * @return if any player win, return the name of player
+   *         else, return null
+   */
+  public String checkWinner(HashMap<String, Boolean> result){
+    String winner = "";
+    for(String player: result.keySet()){
+      if(result.get(player)){
+        winner = player;
+        out.println("Player" + winner + " wins!\nGame End NOW\n");
+        break;
+      }
+    }
+    return winner;
+  }
+
+  /**
+   * Check if player lose the game
+   * @param result the result received from server
+   * @return if not lose, return blank
+   *        if lose, send string message to tell server if want to continue to watch the game or quit
+   */
+  public String checkIfILose(HashMap<String, Boolean> result){
+    String response = "";
+    if(!result.get(this.playerName)){
+      String instruction = "Sorry Player " + this.playerName + ", you lose for this Game.\n" 
+                + "Now you have two options:\n"
+                + "1. Continue to watch the game\n"
+                + "2. Quit the game\n"
+                + "Please enter 1 or 2\n";
+      int answer = parseNumFromUsr(instruction, 1, 2);
+      response = (answer == 1) ? "Display" : "Close";
+    }
+    return response;
+  }
+
+
 
   public void printCommitResult(boolean commitApprove){
     if(commitApprove){

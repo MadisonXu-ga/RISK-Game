@@ -19,7 +19,6 @@ public class Client {
   private String host;
 
 
-
   /* Default Constructor */
   public Client(){
     this("localhost", 12345);
@@ -121,6 +120,19 @@ public class Client {
       complete = isValidFromServer();
       textPlayer.printCommitResult(complete);
     }while(!complete);
+  }
+
+  @SuppressWarnings("unchecked")
+  public void checkResult() throws IOException,ClassNotFoundException{
+    HashMap<String, Boolean> result = (HashMap<String, Boolean>)objInStream.readObject();
+    //no winner
+    if(textPlayer.checkWinner(result).isEmpty()){
+      String response = textPlayer.checkIfILose(result);
+      if(!response.isEmpty()){
+        objOutStream.reset();
+        objOutStream.writeObject(response);
+      }
+    }
   }
 
   /**

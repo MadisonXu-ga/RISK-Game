@@ -26,7 +26,7 @@ public class Territory implements Serializable {
 
     /**
      * @param type
-     * @param isOut
+     * @param isOut (true substracts units, false adds them)
      * @param count
      */
     public void updateUnitCount(Unit type, boolean isOut, int count) {

@@ -5,16 +5,20 @@ import java.util.Random;
 
 public class AttackOrder extends BasicOrder{
 
+    private LinkedHashMap <Player, Unit> attackingUnits;
     
     public AttackOrder(Territory source, Territory destination, int number, Unit type, RISKMap RISKMAP) {
         super(source, destination, number, type, RISKMAP);
+        source.updateUnitCount(type, true, number);
+
     }
 
     @Override
     public void execute() {
 
         /*
-         * see if source has enough units to attack
+         *  VERIFICATION
+         *  see if source has enough units to attack
          * territory source owner != territority destination owner
          * units to attack >0, source and destination specified 
          * attack can only be done in adjacent territories
@@ -23,6 +27,14 @@ public class AttackOrder extends BasicOrder{
          */
         //instantiate a list of <playerName, unitsAttacking>
         
+        /*
+         * MECHANICS TO ATTACK
+         * validation occurs
+         * create a list of <playerName, units> for each unit going into a territory
+         * do a "move out, for the units that are attacking from the source territories"
+         * initialize the dice for attacker and defender 
+         * iteratate through the list of attackers and 
+         */
 
 
         Territory winner = null; 

@@ -88,6 +88,13 @@ public class RISKMap implements Serializable {
         return connection.get(t);
     }
 
+    //TODO move this to a separate class in the following way:
+    /*
+     * create an interface called assignTerritories
+     * then a subclass called pre-assgined with the methods below
+     * gamecontroller -> collects assigning, rules, validating, issue an order
+     * 
+     */
     /*
     for each territory we need to do the folowing:
     - iterate through all the players sequentially

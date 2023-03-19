@@ -1,19 +1,18 @@
 package edu.duke.ece651.team5.shared;
 
 public abstract class BasicOrder {
-    protected Territory source;
-    protected Territory destination;
+    protected String sourceName;
+    protected String destinationName;
     protected int number;
     protected Unit type;
 
-
-    public BasicOrder(Territory source, Territory destination, int number, Unit type) {
-        this.source = source;
-        this.destination = destination;
+    public BasicOrder(String sourceName, String destinationName, int number, Unit type) {
+        this.sourceName = sourceName;
+        this.destinationName = destinationName;
         this.number = number;
         this.type = type;
     }
 
-    public abstract void execute();
+    public abstract void execute(RISKMap map);
 }
 

@@ -26,6 +26,18 @@ public class RISKMap implements Serializable {
         this.players = players;
     }
 
+    public void initPlayers(ArrayList<Player> players){
+        this.players = players;
+    }
+
+    public ArrayList<Player> getPlayers(){
+        return players;
+    }
+
+    public ArrayList<Territory> getTerritories(){
+        return territories;
+    }
+
     private void initMap() {
         ArrayList<Territory> territoryList = getTerritoryList();
         territories.addAll(territoryList);

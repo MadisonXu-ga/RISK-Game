@@ -43,4 +43,28 @@ class TerritoryTest {
         assertThrows(IllegalArgumentException.class, () -> hogwarts.updateUnitCount(new Soldier(), false, 1));
 
     }
+
+    @Test
+    void testAddHasOwner(){
+
+        Territory oneTerritory = new Territory("Mordor", new HashMap<>());
+        Player greenPlayer = new Player("green");
+
+        oneTerritory.addOwner(greenPlayer);
+
+        assertTrue(oneTerritory.hasOwner());
+        assertEquals(greenPlayer, oneTerritory.whoOwnsit());
+        
+    }
+
+    @Test
+    void testEquals_and_Hashcode_Territory(){
+
+        //TODO here we need to test when a territory doesnt equate to "this "
+        Territory terr1 = new Territory("green", new HashMap<>());
+        Territory terr2 = new Territory("green", new HashMap<>() );
+
+        assertEquals(terr1, terr2);
+        assertEquals(terr1.hashCode(), terr2.hashCode());
+    }
 }

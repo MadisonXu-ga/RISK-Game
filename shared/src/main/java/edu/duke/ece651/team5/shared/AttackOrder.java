@@ -11,14 +11,16 @@ public class AttackOrder extends BasicOrder{
         super(source, destination, number, type, RISKMAP);
         source.updateUnitCount(type, true, number);
 
+        
     }
 
     @Override
     public void execute() {
 
+
         /*
          *  VERIFICATION
-         *  see if source has enough units to attack
+         * see if source has enough units to attack ()
          * territory source owner != territority destination owner
          * units to attack >0, source and destination specified 
          * attack can only be done in adjacent territories
@@ -28,13 +30,22 @@ public class AttackOrder extends BasicOrder{
         //instantiate a list of <playerName, unitsAttacking>
         
         /*
+        
          * MECHANICS TO ATTACK
          * validation occurs
-         * create a list of <playerName, units> for each unit going into a territory
+         * create LinkedHashMap<playerName, Unit> for each unit going into a territory
+         * check if the name of the player exists, if it does you add units, if it doesnt you create player
+         * //TODO create a class that records all the units attacking (Santiago)
          * do a "move out, for the units that are attacking from the source territories"
          * initialize the dice for attacker and defender 
-         * iteratate through the list of attackers and 
+         * //TODO dice process is done by server (take out, Ruolin)
+         * iteratate through the list of attackers and defenders
+         * itr1 = 0, itr2 = 1,  12    20    01
+         * once attack resolves, only one <player, unit> remains in the hashmap
+         * "move in" into the destination territory
          */
+
+
 
 
         Territory winner = null; 

@@ -47,7 +47,11 @@ public class ConnectionHandler implements Runnable {
         // assign territory groups to player (send) (hardcode?)
         // need to send units number to player? (send)
 
-        sendString("You are the " + this.color + " player!");
+        try {
+            sendObject("You are the " + this.color + " player!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // sendObject(riskMap);
         // sendObject(territoryGroup);
         // recvString();
@@ -85,5 +89,6 @@ public class ConnectionHandler implements Runnable {
     public void closeIOs() throws IOException {
         printWriter.close();
         bufferedReader.close();
+        objectOutputStream.close();
     }
 }

@@ -45,7 +45,8 @@ public class Server {
     /*
      * The method need to call when we want to start a game.
      */
-    public void startRISCGame() throws IOException, InterruptedException, NumberFormatException, ClassNotFoundException {
+    public void startRISCGame()
+            throws IOException, InterruptedException, NumberFormatException, ClassNotFoundException {
         acceptClients();
         initGame();
         playGame();
@@ -58,11 +59,20 @@ public class Server {
      */
     private void dealWithFirstClient() throws IOException, NumberFormatException, ClassNotFoundException {
         Socket firstClientSocket = this.serverSocket.accept();
+        System.out.println("Successfully accept the first client!");
+
         ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(firstClientSocket.getOutputStream()));
         oos.writeObject("You are the first player. Please choose the player num in this game!");
+        oos.flush();
+
+        System.out.println("Successfully tell it that it is the first client!");
+
         ObjectInputStream ois = new ObjectInputStream(firstClientSocket.getInputStream());
         // do i need to valid player num?
-        this.playerNum = Integer.parseInt((String)ois.readObject());
+        this.playerNum = (int) ois.readObject();
+
+        System.out.println(this.playerNum);
+        System.out.println("Successfully get the player num!");
 
         clientSockets.add(firstClientSocket);
     }
@@ -71,12 +81,15 @@ public class Server {
      * Start to accept clients.
      * Q: Should I throw the exception out or just handle it inside the server
      * class?
+     * 
      * @throws ClassNotFoundException
      * @throws NumberFormatException
      */
     public void acceptClients() throws IOException, NumberFormatException, ClassNotFoundException {
         // deal with the first one
         dealWithFirstClient();
+
+        System.out.println("Start to accept remaining clients");
 
         // accept remaining connections
         int acceptNum = 1;
@@ -128,21 +141,6 @@ public class Server {
             // may need to check valid
             // apply all the actions
             // check win or lose
-        }
-    }
-
-    /*
-     * Send the Map to a client.
-     * Need to refactor latter. Using threads or sth. else.
-     */
-    public void sendMapToOneClient(Socket clientSocket) {
-        System.out.println("sendMapToOneClient");
-        try {
-            OutputStream out = clientSocket.getOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-            objectOutputStream.writeObject(riskMap);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

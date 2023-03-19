@@ -21,7 +21,7 @@ public class Client {
 
   /* Default Constructor */
   public Client(){
-    this("localhost", 12345);
+    this("localhost", 57809);
   }
 
   /* Constructor with host and port number */

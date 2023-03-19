@@ -14,7 +14,7 @@ public class ClientTest {
   ServerSocket serverSocket;
 
   private void initServer(int type) throws IOException {
-    serverSocket = new ServerSocket(12345);
+    serverSocket = new ServerSocket(57809);
     new Thread(() -> {
         while (true) {
             try {
@@ -48,7 +48,6 @@ public class ClientTest {
       }else if(type == 3){
         outputObj.writeObject(name);
       }
-
       
   }
 

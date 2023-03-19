@@ -127,7 +127,7 @@ public class TextPlayer {
   public String checkWinner(HashMap<String, Boolean> result){
     String winner = "";
     for(String player: result.keySet()){
-      if(result.get(player)){
+      if(result.get(player) != null && result.get(player)){
         winner = player;
         out.println("Player" + winner + " wins!\nGame End NOW\n");
         break;
@@ -144,7 +144,7 @@ public class TextPlayer {
    */
   public String checkIfILose(HashMap<String, Boolean> result){
     String response = "";
-    if(!result.get(this.playerName)){
+    if(result.get(this.playerName)!= null && !result.get(this.playerName)){
       String instruction = "Sorry Player " + this.playerName + ", you lose for this Game.\n" 
                 + "Now you have two options:\n"
                 + "1. Continue to watch the game\n"

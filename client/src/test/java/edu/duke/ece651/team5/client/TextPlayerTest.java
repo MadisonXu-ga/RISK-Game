@@ -197,7 +197,69 @@ public class TextPlayerTest {
     assertEquals("Sorry your commit is not successful, please give another try.\n",  bytes.toString());
   }
 
- 
+  @Test
+  void testCheckWinner(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("10\n60\n15\n25\n", bytes);
+    p.setPlayerName("green");
+    String res = p.checkWinner(createWinResult());
+    assertEquals("green", res);
+
+    String res2 = p.checkWinner(createNothingResult());
+    assertEquals("", res2);
+  }
+
+  @Test
+  void testCheckIfILose(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("xe\n3\n0\n2\n", bytes);
+    p.setPlayerName("green");
+    String res = p.checkIfILose(createLostResult());
+    assertEquals("Close", res);
+  }
+
+  @Test
+  void testCheckIfILose2(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("xe\n3\n0\n1\n", bytes);
+    p.setPlayerName("green");
+    String res = p.checkIfILose(createLostResult());
+    assertEquals("Display", res);
+  }
+
+  @Test
+  void testCheckIfILoseErr(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("xe\n3\n0\n1\n", bytes);
+    p.setPlayerName("green");
+    String res = p.checkIfILose(createNothingResult());
+    assertEquals("", res);
+  }
+
+
+
+
+  private HashMap<String, Boolean> createWinResult(){
+    HashMap<String, Boolean> res = new HashMap<>();
+    res.put("green", true);
+    res.put("red", null);
+    return res;
+  }
+
+  private HashMap<String, Boolean> createLostResult(){
+    HashMap<String, Boolean> res = new HashMap<>();
+    res.put("green", false);
+    res.put("red", null);
+    return res;
+  }
+
+  private HashMap<String, Boolean> createNothingResult(){
+    HashMap<String, Boolean> res = new HashMap<>();
+    res.put("green", null);
+    res.put("red", null);
+    return res;
+  }
+
   private RISKMap createRISKMap(){
     RISKMap map = new RISKMap();
     ArrayList<Player> players = new ArrayList<>();

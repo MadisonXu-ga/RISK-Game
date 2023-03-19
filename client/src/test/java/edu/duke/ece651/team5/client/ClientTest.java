@@ -66,7 +66,8 @@ public class ClientTest {
   }
 
   @Test
-  void testInitClientErr() throws IOException{
+  void testInitClientErr() throws IOException, InterruptedException{
+    Thread.sleep(1000);
     Client client = new Client();
     String res = client.initClient();
     assertEquals("Cannot init Client", res);

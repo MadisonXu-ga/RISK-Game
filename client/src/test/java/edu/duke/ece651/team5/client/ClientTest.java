@@ -45,7 +45,8 @@ public class ClientTest {
   }
 
   @Test
-  void testInitClient() throws IOException{
+  void testInitClient() throws IOException, InterruptedException{
+    Thread.sleep(1000);
     initServer();
     Client client = new Client("localhost", 12345);
     String res = client.initClient();

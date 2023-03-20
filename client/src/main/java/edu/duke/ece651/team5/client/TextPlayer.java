@@ -23,13 +23,22 @@ public class TextPlayer {
     
   }
 
-  public void setPlayerName(String playerName){
-    this.playerName = playerName;
-  }
-
   public String getPlayerName(){
     return playerName;
   }
+
+  public int selectNumPlayer(){
+    out.println("Seems like you are the first player in the game!");
+    String instruction = "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n";
+    int numPlayer = parseNumFromUsr(instruction, 2, 4);
+    return numPlayer;
+  }
+
+  public void setPlayerName(String playerName){
+    out.println("This is your player name for this game: " + playerName);
+    this.playerName = playerName;
+  }
+
 
   public HashMap<Territory, Integer> unitPlacement(RISKMap currMap){
     Player player = currMap.getPlayerByName(getPlayerName());
@@ -52,10 +61,34 @@ public class TextPlayer {
 
   public void printPlacementResult(boolean unitApprove){
     if(unitApprove){
-      out.println("You successfully make your placement!");
+      out.println("Great! All your placement choices get approved!");
     }else{
       out.println("Sorry your unit placement is not successful, please give another try.");
     }
+  }
+
+  public Action playOneTurn(RISKMap currMap){
+    displayMap(currMap);
+    String instruction = "What would you like to do?\n" + "(M)ove\n" + "(A)ttack\n" + "(D)one\n";
+    boolean commit = false;
+     //todo change type
+    ArrayList<Integer> attackOrders = new ArrayList<>();
+    ArrayList<MoveOrder> moveOrders = new ArrayList<>();
+    while(!commit){
+      try{
+        String type = readUserInput(instruction);
+        typeCheck(type);
+        if(type.equalsIgnoreCase("D") || type.equalsIgnoreCase("done")){
+          commit = true;
+        }else{
+          //create new Order
+          tryCreateNewOrder(type, attackOrders, moveOrders, currMap); 
+        }
+      }catch (Exception e){
+        out.println("Input is invalid. Please try again");
+      }
+    }
+    return new Action(attackOrders, moveOrders);
   }
 
 
@@ -83,6 +116,7 @@ public class TextPlayer {
         }else{
           //create new attack order
           //add order to attackOrders
+          attackOrders.add(0);
           //throw Illegal Exception if not success
           return;
         }
@@ -91,32 +125,6 @@ public class TextPlayer {
       }
     }
   }
-
-  public Action playOneTurn(RISKMap currMap){
-    displayMap(currMap);
-    //display 3 choices and ask user to choose
-    String instruction = "What would you like to do?\n" + "(M)ove\n" + "(A)ttack\n" + "(D)one\n";
-    boolean commit = false;
-     //todo change type
-    ArrayList<Integer> attackOrders = new ArrayList<>();
-    ArrayList<MoveOrder> moveOrders = new ArrayList<>();
-    while(!commit){
-      try{
-        String type = readUserInput(instruction);
-        typeCheck(type);
-        if(type.equalsIgnoreCase("D") || type.equalsIgnoreCase("done")){
-          commit = true;
-        }else{
-          //create new Order
-          tryCreateNewOrder(type, attackOrders, moveOrders, currMap); 
-        }
-      }catch (Exception e){
-        out.println("Input is invalid. Please try again");
-      }
-    }
-    return new Action(attackOrders, moveOrders);
-  }
-
 
   /**
    * check if in current round, if any player wins the game
@@ -129,7 +137,7 @@ public class TextPlayer {
     for(String player: result.keySet()){
       if(result.get(player) != null && result.get(player)){
         winner = player;
-        out.println("Player" + winner + " wins!\nGame End NOW\n");
+        out.println("Player " + winner + " wins!\nGame End NOW");
         break;
       }
     }
@@ -172,12 +180,7 @@ public class TextPlayer {
   }
 
 
-  public int selectNumPlayer(){
-    out.println("You are the first player in the game!\n");
-    String instruction = "Please enter how many players you want to play with(from 2 to 4 inclusive)\n";
-    int numPlayer = parseNumFromUsr(instruction, 2, 4);
-    return numPlayer;
-  }
+
 
 
   private int parseNumFromUsr(String instruction, int lowerBound, int upperBound){

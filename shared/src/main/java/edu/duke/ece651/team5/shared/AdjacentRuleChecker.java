@@ -7,7 +7,7 @@ public class AdjacentRuleChecker extends OrderRuleChecker {
 
 
     @Override
-    protected String checkMyRule(BasicOrder order, RISKMap map) {
+    protected String checkMyRule(BasicOrder order, Player player, RISKMap map) {
         String sourceName = order.getSourceName();
         String destinationName = order.getDestinationName();
         Territory source = map.getTerritoryByName(sourceName);

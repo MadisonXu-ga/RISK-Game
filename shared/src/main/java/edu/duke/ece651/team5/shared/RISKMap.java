@@ -1,9 +1,11 @@
 package edu.duke.ece651.team5.shared;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 public class RISKMap implements Serializable {
+
     private static final long serialVersionUID = 3107749286550437606L;
     private final ArrayList<Territory> territories;
     private ArrayList<Player> players;

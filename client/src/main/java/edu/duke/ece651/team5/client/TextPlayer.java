@@ -20,7 +20,6 @@ public class TextPlayer {
   public TextPlayer(BufferedReader br, PrintStream out){
     this.inputReader = br;
     this.out = out;
-    
   }
 
   public String getPlayerName(){

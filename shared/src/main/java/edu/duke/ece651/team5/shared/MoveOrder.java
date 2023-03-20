@@ -1,6 +1,8 @@
 package edu.duke.ece651.team5.shared;
 
-public class MoveOrder extends BasicOrder {
+import java.io.Serializable;
+
+public class MoveOrder extends BasicOrder implements Serializable {
 
     public MoveOrder(String sourceName, String destinationName, int number, Unit type) {
         super(sourceName, destinationName, number, type);

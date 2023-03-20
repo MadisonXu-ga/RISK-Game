@@ -112,16 +112,23 @@ public class Server {
      */
     public void initGame() throws IOException, InterruptedException {
         System.out.println("Start to initialize the game...");
+        ArrayList<InitializationHandler> handlers = new ArrayList<>();
         for (int i = 0; i < playerNum; ++i) {
-            // TODO:
-            ConnectionHandler c = new InitializationHandler(clientOuts.get(i), clientIns.get(i),
+            InitializationHandler h = new InitializationHandler(clientOuts.get(i), clientIns.get(i),
                     gameController.getPlayerName(i), gameController.getRiskMap());
-            this.threadPool.execute(c);
+            handlers.add(h);
+            this.threadPool.execute(h);
         }
 
         // wait for all the tasks to complete
+        // wait for 1 second to check
         while (threadPool.getActiveCount() > 0 || !threadPool.getQueue().isEmpty()) {
-            Thread.sleep(1000); // wait for 1 second to check
+            Thread.sleep(1000);
+        }
+
+        // resolve unit placement
+        for(InitializationHandler h: handlers){
+            gameController.resolveUnitPlacement(h.getUnitPlacement());
         }
 
         System.out.println("Game initialization finished!");

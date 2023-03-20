@@ -232,6 +232,7 @@ public class ClientTest {
 
   @Test
   void testCheckResult() throws IOException, ClassNotFoundException{
+    Thread.sleep(100);
     initServer(1);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     Client client = createNewClient("1", bytes);

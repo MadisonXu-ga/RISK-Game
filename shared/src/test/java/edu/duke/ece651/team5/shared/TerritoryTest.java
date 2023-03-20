@@ -50,10 +50,10 @@ class TerritoryTest {
         Territory oneTerritory = new Territory("Mordor", new HashMap<>());
         Player greenPlayer = new Player("green");
 
-        oneTerritory.addOwner(greenPlayer);
+        oneTerritory.setOwner(greenPlayer);
 
         assertTrue(oneTerritory.hasOwner());
-        assertEquals(greenPlayer, oneTerritory.whoOwnsit());
+        assertEquals(greenPlayer, oneTerritory.getOwner());
         
     }
 

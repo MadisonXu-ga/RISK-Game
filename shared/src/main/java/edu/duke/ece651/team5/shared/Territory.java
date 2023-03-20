@@ -37,18 +37,15 @@ public class Territory implements Serializable {
         }
     }
 
-    public void addOwner(Player owner){
+    public void setOwner(Player owner){
         playerOwner = owner;
     }
 
     public boolean hasOwner(){
-        if (playerOwner == null){
-            return false;
-        }
-        return true;
+        return playerOwner != null;
     }
 
-    public Player whoOwnsit(){
+    public Player getOwner(){
         return playerOwner;
     }
 

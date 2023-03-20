@@ -14,5 +14,21 @@ public abstract class BasicOrder {
     }
 
     public abstract void execute(RISKMap map);
+
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public String getDestinationName() {
+        return destinationName;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public Unit getType() {
+        return type;
+    }
 }
 

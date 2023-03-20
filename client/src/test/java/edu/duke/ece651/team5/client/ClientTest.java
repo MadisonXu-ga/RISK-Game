@@ -282,7 +282,7 @@ public class ClientTest {
     RISKMap map = new RISKMap();
     ArrayList<Player> players = new ArrayList<>();
     Player p = new Player("Green");
-    // p.addTerritory(map.getTerritoryByName("Elantris"));
+    p.addTerritory(map.getTerritoryByName("Elantris"));
     p.addTerritory(map.getTerritoryByName("Narnia"));
     p.addTerritory(map.getTerritoryByName("Oz"));
     Player p2 = new Player("Red");

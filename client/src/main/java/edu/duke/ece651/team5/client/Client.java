@@ -81,7 +81,7 @@ public class Client {
     out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     boolean complete = false;
     do{
-      HashMap<Territory, Integer> placeInfo = textPlayer.unitPlacement(recvMap());
+      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(recvMap());
       out.println("\nWe got all your choices, sending your choices...\n");
       objOutStream.reset();
       objOutStream.writeObject(placeInfo);
@@ -186,12 +186,6 @@ public class Client {
     // Client client = new Client();
     // client.play();
   }
-
-
-
-
-
-
 
 
 }

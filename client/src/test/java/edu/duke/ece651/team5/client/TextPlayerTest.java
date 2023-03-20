@@ -72,7 +72,6 @@ public class TextPlayerTest {
     attackOrder.add(4);
     moveOrder.add(new MoveOrder("Elantris", "Narnia", 3, UnitType.SOLDIER));
     return new Action(attackOrder, moveOrder);
-
   }
 
 
@@ -128,11 +127,11 @@ public class TextPlayerTest {
     p.setPlayerName("Green");
     Player player = map.getPlayerByName("Green");
     assertEquals(p.getPlayerName(), player.getName());
-    HashMap<Territory, Integer> placementInfo = p.unitPlacement(map);
-    HashMap<Territory, Integer> expected = new HashMap<>();
-    expected.put(map.getTerritoryByName("Elantris"), 10);
-    expected.put(map.getTerritoryByName("Narnia"), 40);
-    expected.put(map.getTerritoryByName("Oz"), 0);
+    HashMap<String, Integer> placementInfo = p.unitPlacement(map);
+    HashMap<String, Integer> expected = new HashMap<>();
+    expected.put("Elantris", 10);
+    expected.put("Narnia", 40);
+    expected.put("Oz", 0);
     assertEquals(expected, placementInfo);
 
   }
@@ -145,11 +144,11 @@ public class TextPlayerTest {
     p.setPlayerName("Green");
     Player player = map.getPlayerByName("Green");
     assertEquals(p.getPlayerName(), player.getName());
-    HashMap<Territory, Integer> placementInfo = p.unitPlacement(map);
-    HashMap<Territory, Integer> expected = new HashMap<>();
-    expected.put(map.getTerritoryByName("Elantris"), 10);
-    expected.put(map.getTerritoryByName("Narnia"), 15);
-    expected.put(map.getTerritoryByName("Oz"), 25);
+    HashMap<String, Integer> placementInfo = p.unitPlacement(map);
+    HashMap<String, Integer> expected = new HashMap<>();
+    expected.put("Elantris", 10);
+    expected.put("Narnia", 15);
+    expected.put("Oz", 25);
 
     assertEquals(expected, placementInfo);
 
@@ -243,9 +242,6 @@ public class TextPlayerTest {
     String res = p.checkIfILose(createNothingResult());
     assertEquals("", res);
   }
-
-
-
 
   private HashMap<String, Boolean> createWinResult(){
     HashMap<String, Boolean> res = new HashMap<>();

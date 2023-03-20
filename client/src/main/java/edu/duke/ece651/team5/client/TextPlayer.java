@@ -40,20 +40,20 @@ public class TextPlayer {
   }
 
 
-  public HashMap<Territory, Integer> unitPlacement(RISKMap currMap){
+  public HashMap<String, Integer> unitPlacement(RISKMap currMap){
     Player player = currMap.getPlayerByName(getPlayerName());
     int availableUnit = player.getAvailableUnit();
     int numTerries = player.getTerritories().size();
     int count = 0;
-    HashMap<Territory, Integer> placementInfo = new HashMap<>();
+    HashMap<String, Integer> placementInfo = new HashMap<>();
     for(Territory t: player.getTerritories()){
       if(availableUnit <= 0 || count == numTerries-1){
-        placementInfo.put(t, availableUnit);
+        placementInfo.put(t.getName(), availableUnit);
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
       int placeUnit = parseNumFromUsr(instruction, 0, availableUnit);
-      placementInfo.put(t, placeUnit);
+      placementInfo.put(t.getName(), placeUnit);
       availableUnit -= placeUnit;
     }
     return placementInfo;

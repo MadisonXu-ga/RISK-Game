@@ -24,9 +24,9 @@ public class ClientTest {
                 new Thread(() -> {
                     try {
                       handleClient(socket, type);
-                      if(type >= 5){
-                        recvMessage(socket);
-                      }
+                      // if(type >= 5){
+                      //   recvMessage(socket);
+                      // }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -98,7 +98,8 @@ public class ClientTest {
   }
 
   @Test
-  void testInitClient() throws IOException, ClassNotFoundException{
+  void testInitClient() throws IOException, ClassNotFoundException, InterruptedException{
+    Thread.sleep(100);
     initServer(0);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     Client client = createNewClient("1", bytes);
@@ -168,7 +169,8 @@ public class ClientTest {
   }
 
   @Test
-  void testHandlePlacement() throws IOException, ClassNotFoundException{
+  void testHandlePlacement() throws IOException, ClassNotFoundException, InterruptedException{
+    Thread.sleep(100);
     initServer(2);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     Client client = createNewClient("10\n40\n15\n10\n40\n15\n", bytes);
@@ -210,6 +212,20 @@ public class ClientTest {
   //   client.playOneTurn();
   //   String expected = "";
   //   assertEquals(expected, bytes.toString());
+  //   client.closeClientSocket();
+  //   closeServer();
+  // }
+
+  // @Test
+  // void testDisplay()throws IOException, ClassNotFoundException{
+  //   initServer(0);
+  //   ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+  //   Client client = createNewClient("M", bytes);
+  //   client.initClient();
+  //   client.setPlayer();
+  //   RISKMap map = client.recvMap();
+  //   MapTextView view = new MapTextView(map);
+  //   assertEquals("test", view.displayMap());
   //   client.closeClientSocket();
   //   closeServer();
   // }

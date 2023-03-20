@@ -10,7 +10,7 @@ class MoveOrderTest {
         RISKMap map = new RISKMap();
         Territory narnia = map.getTerritoryByName("Narnia");
         Territory midkemia = map.getTerritoryByName("Midkemia");
-        MoveOrder move = new MoveOrder(narnia, midkemia, 2, UnitType.SOLDIER);
+        MoveOrder move = new MoveOrder(narnia, midkemia, 2, UnitType.SOLDIER, map);
         move.execute();
         int narniaUnitNum = narnia.getUnitNum(UnitType.SOLDIER);
         int midkemiaUnitNum = midkemia.getUnitNum(UnitType.SOLDIER);

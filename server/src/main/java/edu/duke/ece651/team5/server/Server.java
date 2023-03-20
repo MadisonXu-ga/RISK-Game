@@ -16,30 +16,29 @@ public class Server {
     private int port;
     private ServerSocket serverSocket;
     private ThreadPoolExecutor threadPool;
-    private int playerNum; // maybe should get from game class?
+    // should send one to change the map
+    private int playerNum;
     private ArrayList<Socket> clientSockets;
+    private ArrayList<ObjectInputStream> clientIns;
+    private ArrayList<ObjectOutputStream> clientOuts;
 
-    // maybe to change later
-    private ArrayList<String> playerColors;
-
-    RISKMap riskMap;
+    private GameController gameController;
 
     public Server(int port) throws IOException, SocketException {
         this.port = port;
         this.serverSocket = new ServerSocket(this.port);
 
         this.playerNum = 0;
-        this.playerColors = new ArrayList<>(Arrays.asList("Green", "Blue", "Red", "Yellow"));
-
         this.clientSockets = new ArrayList<>();
+        this.clientOuts = new ArrayList<>();
+        this.clientIns = new ArrayList<>();
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
         this.threadPool = new ThreadPoolExecutor(2, 4, 100, TimeUnit.SECONDS, workQueue);
         serverSocket.setSoTimeout(1000);
 
-        // Game info initialization. maybe need to move to another function
-        // Territoried need to hardcode or something?
-        riskMap = new RISKMap();
+        // Game info initialization.
+        gameController = new GameController();
     }
 
     /*
@@ -59,20 +58,20 @@ public class Server {
      */
     private void dealWithFirstClient() throws IOException, NumberFormatException, ClassNotFoundException {
         Socket firstClientSocket = this.serverSocket.accept();
-        System.out.println("Successfully accept the first client!");
+        System.out.println("Successfully accept the first player!");
 
-        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(firstClientSocket.getOutputStream()));
-        oos.writeObject("You are the first player. Please choose the player num in this game!");
+        ObjectOutputStream oos = new ObjectOutputStream(firstClientSocket.getOutputStream());
+        clientOuts.add(oos);
+        oos.writeObject("First");
         oos.flush();
 
-        System.out.println("Successfully tell it that it is the first client!");
-
         ObjectInputStream ois = new ObjectInputStream(firstClientSocket.getInputStream());
-        // do i need to valid player num?
+        // TODO: check playerNum?
         this.playerNum = (int) ois.readObject();
+        clientIns.add(ois);
 
-        System.out.println(this.playerNum);
-        System.out.println("Successfully get the player num!");
+        System.out.println(
+                "Successfully get the player num! This game is going to be played by " + this.playerNum + " players.");
 
         clientSockets.add(firstClientSocket);
     }
@@ -89,7 +88,7 @@ public class Server {
         // deal with the first one
         dealWithFirstClient();
 
-        System.out.println("Start to accept remaining clients");
+        System.out.println("Start to accept remaining clients...");
 
         // accept remaining connections
         int acceptNum = 1;
@@ -97,6 +96,9 @@ public class Server {
             Socket clientSocket = this.serverSocket.accept();
             acceptNum += 1;
             clientSockets.add(clientSocket);
+            clientOuts.add(new ObjectOutputStream(clientSocket.getOutputStream()));
+            clientIns.add(new ObjectInputStream(clientSocket.getInputStream()));
+            System.out.println("Successfully accept player " + acceptNum);
             if (acceptNum == this.playerNum) {
                 break;
             }
@@ -105,24 +107,24 @@ public class Server {
 
     /*
      * Initialize the game, preparations for starting the game
+     * Tell player who she is
+     * Send map to players
      */
     public void initGame() throws IOException, InterruptedException {
-        // create a Game
-        // for each player:
-        // inform player who she is (send) (hardcode?)
-        // need to send map to player? (send)
-
+        System.out.println("Start to initialize the game...");
         for (int i = 0; i < playerNum; ++i) {
-            ConnectionHandler c = new ConnectionHandler(clientSockets.get(i), playerColors.get(i));
+            // TODO:
+            ConnectionHandler c = new InitializationHandler(clientOuts.get(i), clientIns.get(i),
+                    gameController.getPlayerName(i), gameController.getRiskMap());
             this.threadPool.execute(c);
         }
 
         // wait for all the tasks to complete
         while (threadPool.getActiveCount() > 0 || !threadPool.getQueue().isEmpty()) {
-            Thread.sleep(1000); // wait for 1 second
+            Thread.sleep(1000); // wait for 1 second to check
         }
 
-        System.out.println("Initial part finished!");
+        System.out.println("Game initialization finished!");
     }
 
     /*
@@ -131,6 +133,7 @@ public class Server {
     public void playGame() {
         // tell every player that placing stage is over, let's start the game! (send)
         // until end, later need to change
+        System.out.println("Let's start to play the game!");
         while (true) {
             // for each player:
             // display players' units and territories info (send) x
@@ -141,6 +144,8 @@ public class Server {
             // may need to check valid
             // apply all the actions
             // check win or lose
+            for (int i = 0; i < playerNum; ++i) {
+            }
         }
     }
 
@@ -149,6 +154,8 @@ public class Server {
      */
     public void stop() {
         try {
+            // close IOs
+            // close sockets
             for (Socket cSocket : clientSockets) {
                 cSocket.close();
             }

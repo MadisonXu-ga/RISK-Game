@@ -28,20 +28,17 @@ public class ServerTest {
         Thread clientThread = new Thread(() -> {
             try {
                 ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
+                ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
                 String msg = (String) ois.readObject();
-                // ois.reset();
-                // System.out.println(s.isClosed());
-                // ois.close();
-                // System.out.println(s.isClosed());
-                // Cannot close???????????????????????????
                 System.out.println(msg);
-                if (msg.equals("You are the first player. Please choose the player num in this game!")) {
-                    ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+                if (msg.equals("First")) {
                     oos.writeObject(3);
-                    ObjectInputStream ois2 = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
-                    String msg2 = (String) ois2.readObject();
+                    String msg2 = (String) ois.readObject();
                     System.out.println(msg2);
                 }
+
+                RISKMap r = (RISKMap) ois.readObject();
+                assertNotNull(r);
 
             } catch (UnknownHostException e) {
                 e.printStackTrace();

@@ -12,7 +12,9 @@ public class Client {
   private ObjectOutputStream objOutStream;
   private ObjectInputStream objInStream;
   private TextPlayer textPlayer;
-  private RISKMap map;
+
+  private final BufferedReader inputReader;
+  private final PrintStream out;
 
 
   private int port;
@@ -20,49 +22,112 @@ public class Client {
 
 
 
-  /* Default Constructor */
-  public Client(){
-    this("localhost", 12345);
+  public Client(BufferedReader br, PrintStream out){
+    this("localhost", 57809, br, out);
   }
 
   /* Constructor with host and port number */
-  public Client(String host, int port){
+  public Client(String host, int port, BufferedReader br, PrintStream out){
     this.host = host;
     this.port = port;
+    this.inputReader = br;
+    this.out = out;
   }
 
-  public boolean recvMapFromServer() throws IOException, ClassNotFoundException{
-   this.map = (RISKMap)objInStream.readObject();
-    // objInStream.readObject();
-    if(map != null){
-      return true;
-    }else{
-      return false;
-    }
-  }
+  // public boolean recvMapFromServer() throws IOException, ClassNotFoundException{
+  //  this.map = (RISKMap)objInStream.readObject();
+  //   objInStream.readObject();
+  //   if(map != null){
+  //     return true;
+  //   }else{
+  //     return false;
+  //   }
+  // }
 
 
   /**
    * create a client socket connection with 
    * @throws IOException
   */
-  public String initClient() throws IOException{
-    String res = "";
+  public void initClient() throws IOException{
     try{
       clientSocket = new Socket(host, port);
       this.objOutStream = new ObjectOutputStream(clientSocket.getOutputStream());
       this.objInStream = new ObjectInputStream(clientSocket.getInputStream());
-      this.textPlayer = new TextPlayer(new BufferedReader(new InputStreamReader(System.in)), System.out);
-      res = "Initiate client successfully";
+      this.textPlayer = new TextPlayer(inputReader, out);
+      out.println("\nInitiate client successfully");
     }catch(IOException e){
       clientSocket = null;
-      res = "Cannot init Client";
-    }
-    return res;
-    
+      out.println("Cannot init Client");
+    }  
   }
 
-  /**
+
+  public void handlePlayerName() throws IOException, ClassNotFoundException{
+    out.println("\nWaiting to receive your player name...\n");
+    String msg = (String) objInStream.readObject();
+    if(msg.equals("First")){
+      int numPlayer = textPlayer.selectNumPlayer();
+      out.println("\nSending your choice..\n");
+      objOutStream.reset();
+      objOutStream.writeObject(numPlayer);
+      msg = (String)objInStream.readObject();
+    }
+    out.println("\nWe got your player name!\n");
+    textPlayer.setPlayerName(msg);
+  }
+
+  public void handlePlacement() throws IOException, ClassNotFoundException{
+    out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
+    boolean complete = false;
+    do{
+      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(recvMap());
+      out.println("\nWe got all your choices, sending your choices...\n");
+      objOutStream.reset();
+      objOutStream.writeObject(placeInfo);
+      complete = isValidFromServer();
+      textPlayer.printPlacementResult(complete);
+    }while(!complete);
+  }
+
+  public void playOneTurn() throws IOException, ClassNotFoundException{
+    out.println("\nNow it's time to play the game!\n");
+    boolean complete = false;
+    do{
+      Action actions = textPlayer.playOneTurn(recvMap());
+      out.println("\nWe got all your orders, sending your orders...\n");
+      objOutStream.writeObject(actions);
+      complete = isValidFromServer();
+      textPlayer.printCommitResult(complete);
+    }while(!complete);
+  }
+
+
+  public RISKMap recvMap() throws IOException, ClassNotFoundException{
+    out.println("\nReceiving RISK map...");
+    RISKMap map = (RISKMap)objInStream.readObject();
+    out.println("\nReceived Map\n");
+    return map;
+  }
+
+
+  @SuppressWarnings("unchecked")
+  public String checkResult() throws IOException,ClassNotFoundException{
+    out.println("\nSeems like everyone finishes thier turn.\nNow let's check the result of this round...\n");
+    HashMap<String, Boolean> result = (HashMap<String, Boolean>)objInStream.readObject();
+    String winner = textPlayer.checkWinner(result);
+    if(winner.isEmpty()){
+      String response = textPlayer.checkIfILose(result);
+      if(response.equals("Close")) { winner = response; }
+      if(!response.isEmpty()){
+        objOutStream.reset();
+        objOutStream.writeObject(response);
+      }
+    }
+    return winner;
+  }
+
+    /**
    * close objectInputStream and objectOutputStream
    * @throws IOException
    */
@@ -84,69 +149,19 @@ public class Client {
         // System.out.println("Failed to close client socket");
       }
     }
-    
   }
 
-
-  public RISKMap recvMap() throws IOException, ClassNotFoundException{
-    RISKMap map = (RISKMap)objInStream.readObject();
-    return map;
-  }
-
-  public boolean recvFirstPlayerSignal() throws IOException, ClassNotFoundException{
-    return isValidFromServer();
-  }
-
-  public void setPlayerName() throws IOException, ClassNotFoundException{
-    textPlayer.setPlayerName(recvString());
-  }
-
-  public void sendInteger(int data) throws IOException{
-    objOutStream.writeObject(data);
-  }
-
-  public void doPlacement() throws IOException, ClassNotFoundException{
-    boolean complete = false;
-    do{
-      objOutStream.writeObject(textPlayer.unitPlacement(recvMap()));
-      complete = isValidFromServer();
-      textPlayer.printPlacementResult(complete);
-    }while(!complete);
-  }
-
-  public void playOneTurn() throws IOException,ClassNotFoundException{
-    boolean complete = false;
-    do{
-      objOutStream.writeObject(textPlayer.playOneTurn(recvMap()));
-      complete = isValidFromServer();
-      textPlayer.printCommitResult(complete);
-    }while(!complete);
-  }
-
-  /**
-   * Doing the whole communication work with server
-   */
   public void play(){
     try{
       initClient();
-      recvMapFromServer();
-       //todo change to continue to receive until lose
-       //check if first player to choose total number of player in the game
-      //  if(recvFirstPlayerSignal()){
-      //   //if so choose number of player
-      //   sendInteger(textPlayer.selectNumPlayer());
-      //  }
-      //  //receive player name and set it as player name
-      //  setPlayerName();
-      //  //do unit placment
-      //  doPlacement();
-      //  //while(not win){
-      //   playOneTurn();
-          //receive map
-          // textPlayer.displayMap();
-          // //do one turn
-          // textPlayer.playOneTurn();
-       //}
+       handlePlayerName();
+       handlePlacement();
+       String winner = "";
+       while(winner.isEmpty()){
+        playOneTurn();
+        winner = checkResult();
+       }
+       out.println("\nSee you next time!\n");
       closeResource();
     }catch(Exception e){
       // e.printStackTrace();
@@ -160,23 +175,17 @@ public class Client {
     return isValid;
   }
 
-  public String recvString() throws IOException, ClassNotFoundException{
-    String recvStr= (String)objInStream.readObject();
-    return recvStr;
+  public void setPlayer(){
+    textPlayer.setPlayerName("Green");
   }
 
 
 
   public static void main(String[] args) {
-    Client client = new Client();
-    client.play();
+
+    // Client client = new Client();
+    // client.play();
   }
-
-
-
-
-
-
 
 
 }

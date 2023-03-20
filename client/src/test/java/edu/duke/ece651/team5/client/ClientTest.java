@@ -231,7 +231,7 @@ public class ClientTest {
   // }
 
   @Test
-  void testCheckResult() throws IOException, ClassNotFoundException{
+  void testCheckResult() throws IOException, ClassNotFoundException, InterruptedException{
     Thread.sleep(100);
     initServer(1);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();

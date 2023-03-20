@@ -24,9 +24,6 @@ public class ClientTest {
                 new Thread(() -> {
                     try {
                       handleClient(socket, type);
-                      // if(type >= 5){
-                      //   recvMessage(socket);
-                      // }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -119,7 +116,8 @@ public class ClientTest {
   }
 
   @Test
-  void testRecvMap() throws IOException, ClassNotFoundException{
+  void testRecvMap() throws IOException, ClassNotFoundException, InterruptedException{
+    Thread.sleep(100);
     initServer(0);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     Client client = createNewClient("1", bytes);
@@ -134,7 +132,8 @@ public class ClientTest {
 
 
   @Test
-  void testHandlePlayerNameFirst() throws IOException, ClassNotFoundException{
+  void testHandlePlayerNameFirst() throws IOException, ClassNotFoundException, InterruptedException{
+    Thread.sleep(100);
     initServer(4);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     Client client = createNewClient("4", bytes);
@@ -153,7 +152,8 @@ public class ClientTest {
   }
 
   @Test
-  void testHandlePlayerName() throws IOException, ClassNotFoundException{
+  void testHandlePlayerName() throws IOException, ClassNotFoundException, InterruptedException{
+    Thread.sleep(100);
     initServer(3);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     Client client = createNewClient("3", bytes);
@@ -255,7 +255,8 @@ public class ClientTest {
   }
 
   @Test
-  void testCheckResult2() throws IOException, ClassNotFoundException{
+  void testCheckResult2() throws IOException, ClassNotFoundException, InterruptedException{
+    Thread.sleep(100);
     initServer(6);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     Client client = createNewClient("1", bytes);
@@ -277,7 +278,8 @@ public class ClientTest {
 
 
   @Test
-  void testMain() throws IOException, ClassNotFoundException{
+  void testMain() throws IOException, ClassNotFoundException, InterruptedException{
+    Thread.sleep(100);
     initServer(0);
     Client.main(null);
     closeServer();

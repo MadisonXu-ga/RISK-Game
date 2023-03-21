@@ -15,7 +15,8 @@ public class MoveOrder extends BasicOrder implements Serializable {
 
         MoveOrder m = (MoveOrder) o;
 
-        return sourceName.equals(m.sourceName) && destinationName.equals(m.destinationName) && number == m.number;
+    public MoveOrder(Territory source, Territory destination, int number, Unit type) {
+        super(source, destination, number, type);
     }
 
     @Override

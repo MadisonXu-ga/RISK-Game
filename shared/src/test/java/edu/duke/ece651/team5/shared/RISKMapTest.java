@@ -41,6 +41,7 @@ class RISKMapTest {
         assertEquals(expected, actual);
     }
 
+
     @Test
     void testGetPlayerByName(){
 

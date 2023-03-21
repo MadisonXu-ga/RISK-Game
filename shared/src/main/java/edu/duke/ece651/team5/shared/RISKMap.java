@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.*;
 
 public class RISKMap implements Serializable {
+
     private static final long serialVersionUID = 3107749286550437606L;
-    private ArrayList<Territory> territories;
+    private final ArrayList<Territory> territories;
     private ArrayList<Player> players;
     private final HashMap<Territory, HashSet<Territory>> connection;
 
@@ -115,6 +116,31 @@ public class RISKMap implements Serializable {
         return connection.get(t);
     }
 
+    public boolean hasPathWithSameOwner(Territory source, Territory destination) {
+        Player owner = source.getOwner();
+        Set<Territory> visited = new HashSet<>();
+        Queue<Territory> queue = new LinkedList<>();
+        visited.add(source);
+        queue.add(source);
+
+        while (!queue.isEmpty()) {
+            Territory curr = queue.remove();
+            if (curr.getOwner().equals(owner)) {
+                if (curr == destination) {
+                    return true;
+                }
+                for (Territory neighbor : connection.get(curr)) {
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        queue.add(neighbor);
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     /*
     for each territory we need to do the folowing:
     - iterate through all the players sequentially
@@ -147,7 +173,7 @@ public class RISKMap implements Serializable {
             return false;
         }
 
-        aTerritory.addOwner(possibleOwner);
+        aTerritory.setOwner(possibleOwner);
         possibleOwner.addTerritory(aTerritory);
         return true;
 

@@ -17,7 +17,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringReader;
 
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.Test;
 
 public class TextPlayerTest {
@@ -46,7 +46,7 @@ public class TextPlayerTest {
   void testPlayOneTurn() {
     RISKMap map = createRISKMap();
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    TextPlayer p = createTextPlayer("M\n3-Elantris-Narnia\nD\n", bytes);
+    TextPlayer p = createTextPlayer("M\n3-Elantris-Narnia\nA\n3-Elantris-Narnia\nD\n", bytes);
     p.setPlayerName("Green");
     Action res = p.playOneTurn(map);
     Action expected = createAction();
@@ -72,15 +72,22 @@ public class TextPlayerTest {
     attackOrder.add(4);
     moveOrder.add(new MoveOrder("Elantris", "Narnia", 3, UnitType.SOLDIER));
     return new Action(attackOrder, moveOrder);
-
   }
 
 
   @Test
   void testSelectNumPlayer() {
-    RISKMap map = createRISKMap();
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     TextPlayer p = createTextPlayer("3", bytes);
+    int choice = p.selectNumPlayer();
+    assertEquals(3, choice);
+  }
+
+
+  @Test
+  void testSelectNumPlayerErr2() {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("\n3", bytes);
     int choice = p.selectNumPlayer();
     assertEquals(3, choice);
   }
@@ -91,12 +98,12 @@ public class TextPlayerTest {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     TextPlayer p = createTextPlayer("1\n5\n4\n", bytes);
     int choice = p.selectNumPlayer();
-    String expected = "You are the first player in the game!\n\n" 
-                          + "Please enter how many players you want to play with(from 2 to 4 inclusive)\n\n"
+    String expected = "Seems like you are the first player in the game!\n" 
+                          + "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n\n"
                           + "Number input out of range. Please try again.\n" 
-                          + "Please enter how many players you want to play with(from 2 to 4 inclusive)\n\n" 
+                          + "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n\n" 
                           + "Number input out of range. Please try again.\n" 
-                          + "Please enter how many players you want to play with(from 2 to 4 inclusive)\n\n";
+                          + "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n\n";
     assertEquals(expected, bytes.toString());
     assertEquals(4, choice);
   }
@@ -120,11 +127,11 @@ public class TextPlayerTest {
     p.setPlayerName("Green");
     Player player = map.getPlayerByName("Green");
     assertEquals(p.getPlayerName(), player.getName());
-    HashMap<Territory, Integer> placementInfo = p.unitPlacement(map);
-    HashMap<Territory, Integer> expected = new HashMap<>();
-    expected.put(map.getTerritoryByName("Elantris"), 10);
-    expected.put(map.getTerritoryByName("Narnia"), 40);
-    expected.put(map.getTerritoryByName("Oz"), 0);
+    HashMap<String, Integer> placementInfo = p.unitPlacement(map);
+    HashMap<String, Integer> expected = new HashMap<>();
+    expected.put("Elantris", 10);
+    expected.put("Narnia", 40);
+    expected.put("Oz", 0);
     assertEquals(expected, placementInfo);
 
   }
@@ -137,11 +144,11 @@ public class TextPlayerTest {
     p.setPlayerName("Green");
     Player player = map.getPlayerByName("Green");
     assertEquals(p.getPlayerName(), player.getName());
-    HashMap<Territory, Integer> placementInfo = p.unitPlacement(map);
-    HashMap<Territory, Integer> expected = new HashMap<>();
-    expected.put(map.getTerritoryByName("Elantris"), 10);
-    expected.put(map.getTerritoryByName("Narnia"), 15);
-    expected.put(map.getTerritoryByName("Oz"), 25);
+    HashMap<String, Integer> placementInfo = p.unitPlacement(map);
+    HashMap<String, Integer> expected = new HashMap<>();
+    expected.put("Elantris", 10);
+    expected.put("Narnia", 15);
+    expected.put("Oz", 25);
 
     assertEquals(expected, placementInfo);
 
@@ -156,7 +163,7 @@ public class TextPlayerTest {
    
     p.setPlayerName("Green");
     p.printPlacementResult(test);
-    assertEquals("You successfully make your placement!\n",  bytes.toString());
+    assertEquals("This is your player name for this game: Green\nGreat! All your placement choices get approved!\n",  bytes.toString());
 
   }
 
@@ -169,7 +176,7 @@ public class TextPlayerTest {
     TextPlayer p = createTextPlayer("10\n60\n15\n25\n", bytes);
     p.setPlayerName("Green");
     p.printPlacementResult(!test);
-    assertEquals("Sorry your unit placement is not successful, please give another try.\n",  bytes.toString());
+    assertEquals("This is your player name for this game: Green\nSorry your unit placement is not successful, please give another try.\n",  bytes.toString());
   }
 
   @Test
@@ -181,7 +188,7 @@ public class TextPlayerTest {
    
     p.setPlayerName("Green");
     p.printCommitResult(test);
-    assertEquals("You successfully commit all your orders!\n",  bytes.toString());
+    assertEquals("This is your player name for this game: Green\nYou successfully commit all your orders!\n",  bytes.toString());
 
   }
 
@@ -194,10 +201,69 @@ public class TextPlayerTest {
     TextPlayer p = createTextPlayer("10\n60\n15\n25\n", bytes);
     p.setPlayerName("Green");
     p.printCommitResult(!test);
-    assertEquals("Sorry your commit is not successful, please give another try.\n",  bytes.toString());
+    assertEquals("This is your player name for this game: Green\nSorry your commit is not successful, please give another try.\n",  bytes.toString());
   }
 
- 
+  @Test
+  void testCheckWinner(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("10\n60\n15\n25\n", bytes);
+    p.setPlayerName("green");
+    String res = p.checkWinner(createWinResult());
+    assertEquals("green", res);
+
+    String res2 = p.checkWinner(createNothingResult());
+    assertEquals("", res2);
+  }
+
+  @Test
+  void testCheckIfILose(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("xe\n3\n0\n2\n", bytes);
+    p.setPlayerName("green");
+    String res = p.checkIfILose(createLostResult());
+    assertEquals("Close", res);
+  }
+
+  @Test
+  void testCheckIfILose2(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("xe\n3\n0\n1\n", bytes);
+    p.setPlayerName("green");
+    String res = p.checkIfILose(createLostResult());
+    assertEquals("Display", res);
+  }
+
+  @Test
+  void testCheckIfILoseErr(){
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    TextPlayer p = createTextPlayer("xe\n3\n0\n1\n", bytes);
+    p.setPlayerName("green");
+    String res = p.checkIfILose(createNothingResult());
+    assertEquals("", res);
+  }
+
+  private HashMap<String, Boolean> createWinResult(){
+    HashMap<String, Boolean> res = new HashMap<>();
+    res.put("green", true);
+    res.put("red", null);
+    return res;
+  }
+
+  private HashMap<String, Boolean> createLostResult(){
+    HashMap<String, Boolean> res = new HashMap<>();
+    res.put("green", false);
+    res.put("red", null);
+    return res;
+  }
+
+  private HashMap<String, Boolean> createNothingResult(){
+    HashMap<String, Boolean> res = new HashMap<>();
+    res.put("green", null);
+    res.put("red", null);
+    return res;
+  }
+
   private RISKMap createRISKMap(){
     RISKMap map = new RISKMap();
     ArrayList<Player> players = new ArrayList<>();

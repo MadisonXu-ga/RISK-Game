@@ -25,16 +25,16 @@ public class Territory implements Serializable {
     }
 
     public void updateUnitCount(Unit type, boolean isOut, int count) {
-        if (units.containsKey(type)) {
+        //if (units.containsKey(type)) {
             int currentCount = units.get(type);
             if (isOut) {
                 units.put(type, currentCount - count);
             } else {
                 units.put(type, currentCount + count);
             }
-        } else {
-            throw new IllegalArgumentException("this unit type does not exist");
-        }
+        //} else {
+            //throw new IllegalArgumentException("this unit type does not exist");
+        //}
     }
 
     public void setOwner(Player owner){

@@ -4,7 +4,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import edu.duke.ece651.team5.shared.AdjacentRuleChecker;
 import edu.duke.ece651.team5.shared.MoveOrder;
+import edu.duke.ece651.team5.shared.MoveOwnershipRuleChecker;
+import edu.duke.ece651.team5.shared.OrderRuleChecker;
 
 public class PlayHandler extends ConnectionHandler {
     private GameController gameController;
@@ -25,12 +28,28 @@ public class PlayHandler extends ConnectionHandler {
             Action action = (Action) recvObject();
             isValid = checkActions(action);
         } while (!isValid);
+        sendObject(isValid);
     }
 
-    private void checkActions(Action action){
+    private boolean checkActions(Action action) {
         ArrayList<MoveOrder> mos = action.getMoveOrders();
         ArrayList<AttackOrder> aos = action.getAttackOrders();
 
-        
+        OrderRuleChecker moveActionChecker = new MoveOwnershipRuleChecker(new AdjacentRuleChecker(null));
+        // TODO: attackActionChecker
+
+        // TODO: check unit number later
+        for (MoveOrder mo : mos) {
+            String message = moveActionChecker.checkOrder(mo, null, null);
+            if (message != null) {
+                return false;
+            }
+        }
+
+        for (AttackOrder ao : aos) {
+            // TODO: check attack valid
+        }
+
+        return true;
     }
 }

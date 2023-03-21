@@ -149,8 +149,10 @@ public class Server {
             // may need to check valid
             // apply all the actions
             // check win or lose
+            ArrayList<PlayHandler> phs= new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
                 PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i));
+                phs.add(ph);
             }
         }
     }

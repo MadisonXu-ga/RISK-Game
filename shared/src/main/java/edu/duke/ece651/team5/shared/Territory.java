@@ -24,6 +24,11 @@ public class Territory implements Serializable {
         return units.get(unit);
     }
 
+    /**
+     * @param type
+     * @param isOut (true substracts units, false adds them)
+     * @param count
+     */
     public void updateUnitCount(Unit type, boolean isOut, int count) {
         //if (units.containsKey(type)) {
             int currentCount = units.get(type);
@@ -48,6 +53,7 @@ public class Territory implements Serializable {
     public Player getOwner(){
         return playerOwner;
     }
+
 
 
     @Override

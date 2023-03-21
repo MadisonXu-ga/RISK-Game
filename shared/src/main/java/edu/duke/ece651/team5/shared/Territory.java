@@ -24,17 +24,22 @@ public class Territory implements Serializable {
         return units.get(unit);
     }
 
+    /**
+     * @param type
+     * @param isOut (true substracts units, false adds them)
+     * @param count
+     */
     public void updateUnitCount(Unit type, boolean isOut, int count) {
-        if (units.containsKey(type)) {
+        //if (units.containsKey(type)) {
             int currentCount = units.get(type);
             if (isOut) {
                 units.put(type, currentCount - count);
             } else {
                 units.put(type, currentCount + count);
             }
-        } else {
-            throw new IllegalArgumentException("this unit type does not exist");
-        }
+        //} else {
+            //throw new IllegalArgumentException("this unit type does not exist");
+        //}
     }
 
     public void setOwner(Player owner){
@@ -48,6 +53,7 @@ public class Territory implements Serializable {
     public Player getOwner(){
         return playerOwner;
     }
+
 
 
     @Override

@@ -19,4 +19,16 @@ class MoveOrderTest {
         assertEquals(6, narniaUnitNum);
         assertEquals(16, midkemiaUnitNum);
     }
+
+
+    @Test
+    void testEqualOrder(){
+        MoveOrder move1 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
+        MoveOrder move2 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
+        MoveOrder move3 = new MoveOrder("Narnia", "Midkemia", 3, UnitType.SOLDIER);
+        assertEquals(move1, move2);
+        boolean check = move1 == move3;
+        assertEquals(false, check);
+
+    }
 }

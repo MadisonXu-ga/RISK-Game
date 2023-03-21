@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import edu.duke.ece651.team5.shared.*;
 
+//todo change AttackOrder type to AttackOrder(now Integer)
 public class TextPlayer {
   private String playerName;
 
@@ -93,7 +94,7 @@ public class TextPlayer {
     + type + ", the source territory, and the destination territory.\n"
     + "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n"; 
     boolean check = false;
-    while(!check){
+    do{
       try{
         String input = readUserInput(instruction);
         ArrayList<String> inputs = parseUserInput(input);
@@ -119,7 +120,7 @@ public class TextPlayer {
       }catch(Exception e){
         out.println("Not a valid input, please try again");
       }
-    }
+    }while(!check);
   }
 
   /**
@@ -236,45 +237,5 @@ public class TextPlayer {
   private Territory getDesTerri(ArrayList<String> inputs, RISKMap currMap){
     return currMap.getTerritoryByName(inputs.get(2));
   }
-
-
-
-  // public boolean selectPlayer() throws IOException, ClassNotFoundException{
-  //   // ArrayList<Player> playersList = new ArrayList<>();
-  //   //todo
-  //   //Iterate playersList to get available players choices
-  //   // for(Player p: map.getAllPlayers){
-  //   //   playersList.add(p);
-  //   // }
-  //   // String instruction = "Here are the all available choices of players for you to choose: \n"
-  //   //                        + "Enter the player you want to choose: \n";
-  //   // boolean status = false;
-  //   // while(!status){
-  //   //   String name = readUserInput(instruction);
-  //   //   boolean verify = false;
-  //   //   for(Player player: playersList){
-  //   //     if(name.equalsIgnoreCase(player.getName())){
-  //   //       //send this name to server to get verification
-  //   //       objOutStream.writeObject(name);
-  //   //       verify = true;
-  //   //       break;
-  //   //     }
-  //   //   }
-  //   //   if(!verify){
-  //   //     out.println("Not a valid input, please try again");
-  //   //     continue;
-  //   //   }
-  //     //get verification back from server
-  //     //! where to handle if not received a string from server
-  //     this.playerName = (String) objInStream.readObject();
-  //     if(!playerName.isBlank()){
-  //       out.println("You successfully become Player " + playerName + " in this game!");
-  //     }else{
-  //       out.println("Connecting...");
-  //     }
-  //   // }
-  //   return true;
-  // }
-
  
 }

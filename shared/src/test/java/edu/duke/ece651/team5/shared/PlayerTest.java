@@ -26,4 +26,21 @@ public class PlayerTest {
 
     }
 
+    @Test
+    void getAvailableUnit(){
+        Player redPlayer = new Player("red");
+        assertEquals(50, redPlayer.getAvailableUnit());
+    }
+
+    @Test
+    void testEqualPlayers(){
+        Player redPlayer1 = new Player("red");
+        Player redPlayer2 = new Player("red");
+        assertEquals(redPlayer1, redPlayer2);
+        Player greenPlayer = new Player("green");
+        boolean check = greenPlayer == redPlayer1;
+        assertEquals(false, check);
+
+    }
+
 }

@@ -29,8 +29,11 @@ class MoveOrderTest {
         MoveOrder move1 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
         MoveOrder move2 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
         MoveOrder move3 = new MoveOrder("Narnia", "Midkemia", 3, UnitType.SOLDIER);
+        assertTrue(move1.equals(move1));
         assertTrue(move1.equals(move2));
         assertFalse(move1.equals(move3));
+        assertFalse(move1.equals(1));
+        assertFalse(move1.equals(null));
 
     }
 }

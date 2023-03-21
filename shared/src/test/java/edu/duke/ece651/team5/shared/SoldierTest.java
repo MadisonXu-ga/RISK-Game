@@ -14,6 +14,7 @@ public class SoldierTest {
     Soldier s3 = new Soldier();
 
     assertTrue(s1.equals(s2));
+    assertTrue(s1.equals(s1));
     assertFalse(s1.equals(1));
     assertEquals(s1.hashCode(), s3.hashCode());
 

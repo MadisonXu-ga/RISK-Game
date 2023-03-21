@@ -34,12 +34,12 @@ public class PlayerTest {
 
     @Test
     void testEqualPlayers(){
-        Player redPlayer1 = new Player("red");
-        Player redPlayer2 = new Player("red");
-        assertEquals(redPlayer1, redPlayer2);
-        Player greenPlayer = new Player("green");
-        boolean check = greenPlayer == redPlayer1;
-        assertEquals(false, check);
+        Player p1 = new Player("red");
+        Player p2 = new Player("red");
+        Player p3 = new Player("green");
+        assertTrue(p1.equals(p2));
+        assertFalse(p1.equals(p3));
+        assertEquals(p1.hashCode(), p2.hashCode());
 
     }
 

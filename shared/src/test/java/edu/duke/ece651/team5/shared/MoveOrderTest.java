@@ -2,6 +2,9 @@ package edu.duke.ece651.team5.shared;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MoveOrderTest {
 
@@ -26,9 +29,8 @@ class MoveOrderTest {
         MoveOrder move1 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
         MoveOrder move2 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
         MoveOrder move3 = new MoveOrder("Narnia", "Midkemia", 3, UnitType.SOLDIER);
-        assertEquals(move1, move2);
-        boolean check = move1 == move3;
-        assertEquals(false, check);
+        assertTrue(move1.equals(move2));
+        assertFalse(move1.equals(move3));
 
     }
 }

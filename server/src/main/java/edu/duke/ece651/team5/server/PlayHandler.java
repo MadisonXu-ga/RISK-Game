@@ -7,7 +7,6 @@ public class PlayHandler extends ConnectionHandler{
 
     public PlayHandler(ObjectOutputStream oos, ObjectInputStream ois) {
         super(oos, ois);
-        //TODO Auto-generated constructor stub
     }
 
     @Override

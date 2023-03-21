@@ -143,8 +143,6 @@ public class Server {
         System.out.println("Let's start to play the game!");
         while (true) {
             // for each player:
-            // display players' units and territories info (send) x
-            // point who you are and provide actions (chooseAction) (send) x
 
             // record player's action list (receive)
 
@@ -152,6 +150,7 @@ public class Server {
             // apply all the actions
             // check win or lose
             for (int i = 0; i < playerNum; ++i) {
+                PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i));
             }
         }
     }

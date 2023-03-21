@@ -127,7 +127,7 @@ public class Server {
         }
 
         // resolve unit placement
-        for(InitializationHandler h: handlers){
+        for (InitializationHandler h : handlers) {
             gameController.resolveUnitPlacement(h.getUnitPlacement());
         }
 
@@ -137,7 +137,7 @@ public class Server {
     /*
      * Start to play the game
      */
-    public void playGame() {
+    public void playGame() throws InterruptedException {
         // tell every player that placing stage is over, let's start the game! (send)
         // until end, later need to change
         System.out.println("Let's start to play the game!");
@@ -149,11 +149,21 @@ public class Server {
             // may need to check valid
             // apply all the actions
             // check win or lose
-            ArrayList<PlayHandler> phs= new ArrayList<>();
+            ArrayList<PlayHandler> phs = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
-                PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i));
+                PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController);
                 phs.add(ph);
             }
+
+            // wait for all the tasks to complete
+            // wait for 1 second to check
+            while (threadPool.getActiveCount() > 0 || !threadPool.getQueue().isEmpty()) {
+                Thread.sleep(1000);
+            }
+
+            // get each player's actions and resolve actions.
+            
+            for()
         }
     }
 

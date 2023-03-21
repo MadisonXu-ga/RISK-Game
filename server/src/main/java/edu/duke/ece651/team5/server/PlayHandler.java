@@ -11,6 +11,7 @@ import edu.duke.ece651.team5.shared.OrderRuleChecker;
 
 public class PlayHandler extends ConnectionHandler {
     private GameController gameController;
+    private Action action;
     private ArrayList<MoveOrder> moveOrders;
     private ArrayList<AttackOrder> attackOrders;
 
@@ -25,7 +26,7 @@ public class PlayHandler extends ConnectionHandler {
         boolean isValid = false;
         do {
             sendObject(gameController.getRiskMap());
-            Action action = (Action) recvObject();
+            this.action = (Action) recvObject();
             isValid = checkActions(action);
         } while (!isValid);
         sendObject(isValid);
@@ -51,5 +52,13 @@ public class PlayHandler extends ConnectionHandler {
         }
 
         return true;
+    }
+
+    public ArrayList<MoveOrder> getPlayerMoveOrders(){
+
+    }
+
+    public ArrayList<AttackOrder> getPlayerAttackOrders(){
+        // 
     }
 }

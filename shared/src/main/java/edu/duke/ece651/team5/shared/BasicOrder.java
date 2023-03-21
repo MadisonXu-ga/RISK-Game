@@ -5,15 +5,12 @@ public abstract class BasicOrder {
     protected String destinationName;
     protected int number;
     protected Unit type;
-    protected RISKMap RISKMap;
 
-
-    public BasicOrder(Territory source, Territory destination, int number, Unit type) {
-        this.source = source;
-        this.destination = destination;
+    public BasicOrder(String sourceName, String destinationName, int number, Unit type) {
+        this.sourceName = sourceName;
+        this.destinationName = destinationName;
         this.number = number;
         this.type = type;
-        this.RISKMap = RISKMap;
     }
 
     public abstract void execute(RISKMap map);

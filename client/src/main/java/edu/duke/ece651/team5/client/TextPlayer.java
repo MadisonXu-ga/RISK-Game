@@ -66,24 +66,32 @@ public class TextPlayer {
    * @return a HashMap with key of Territory Name and value of number of desired unit
    */
   public HashMap<String, Integer> unitPlacement(RISKMap currMap){
+    out.println("Begin placement");
     Player player = currMap.getPlayerByName(getPlayerName());
+    out.println("Get player: " + player.getName());
     int availableUnit = player.getAvailableUnit();
     int numTerries = player.getTerritories().size();
+    out.println("unit: " + availableUnit + " numTerries: " + numTerries);
     int count = 0;
     HashMap<String, Integer> placementInfo = new HashMap<>();
     //iterate each territory this player is owned
+    out.println("Begin looping territories");
     for(Territory t: player.getTerritories()){
       //if player do not have enough unit or is select last territory, will assign automatically
       if(availableUnit == 0 || count == numTerries-1){
+        out.println("Available unit = 0 or last terri");
         placementInfo.put(t.getName(), availableUnit);
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
       int placeUnit = parseNumFromUsr(instruction, 0, availableUnit);
+      out.println("place info: " + placeUnit + " " + t.getName());
       placementInfo.put(t.getName(), placeUnit);
       //update available unit number
       availableUnit -= placeUnit;
+      count++;
     }
+    out.println("finish placement");
     return placementInfo;
   }
 
@@ -149,17 +157,33 @@ public class TextPlayer {
         String desTerri  = currMap.getTerritoryByName(inputs.get(2)).getName();
         if(type.toUpperCase().charAt(0) == 'M'){
           //create new move order
-          MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER);
+          MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER, playerName);
           //do rule check
-          //add order to moveOrders
-          moveOrders.add(order);
-          return;
+          MoveOwnershipRuleChecker ruleCheck = new MoveOwnershipRuleChecker(new UnitNumberRuleChecker(new MovePathWithSameOwnerRuleChecker(null)));
+          String msg = ruleCheck.checkOrder(order, currMap.getPlayerByName(playerName), currMap);
+          if(msg!=null){
+            out.println(msg);
+          }else{
+           //add order to moveOrders
+            check = true;
+            moveOrders.add(order);
+            return;
+          }
           //throw Illegal Exception if not success
         }else{
           //create new attack order
+          AttackOrder order = new AttackOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER, playerName);
           //add order to attackOrders
-          // attackOrders.add(0);
-          //throw Illegal Exception if not success
+          AttackOwnershipRuleChecker ruleChecker = new AttackOwnershipRuleChecker(new AdjacentRuleChecker(null));
+          String msg =ruleChecker.checkOrder(order, currMap.getPlayerByName(playerName), currMap);
+          if(msg!=null){
+            out.println(msg);
+          }else{
+           //add order to moveOrders
+            check = true;
+            attackOrders.add(order);
+            return;
+          }
           return;
         }
       }catch(Exception e){
@@ -250,6 +274,8 @@ public class TextPlayer {
         status = true;
       } catch(Exception e) {
         out.println("Not a valid number input. Please try again");
+        // res = parseNumFromUsr(instruction, lowerBound, upperBound);
+        // continue;
       }
     }
     return res;
@@ -260,8 +286,9 @@ public class TextPlayer {
    * @param prompt the helper instruction message
    * @return a string contained user input
    * @throws IOException will throw exception is msg is null
+   * @throws InterruptedException
    */
-  private String readUserInput(String prompt) throws IOException {
+  private String readUserInput(String prompt) throws IOException{
     out.println(prompt);
     String msg = inputReader.readLine();
     if (msg == null)

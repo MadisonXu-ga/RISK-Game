@@ -91,9 +91,9 @@ public class Client {
   public void handlePlacement() throws IOException, ClassNotFoundException{
     out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     boolean complete = false;
+    //gather placeInfo from textPlayer
+    HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(recvMap());
     do{
-      //gather placeInfo from textPlayer
-      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(recvMap());
       out.println("\nWe got all your choices, sending your choices...\n");
       //write info to server
       playerConnection.writeData(placeInfo);
@@ -168,6 +168,7 @@ public class Client {
    */
   public void play(){
     try{
+      createPlayer();
       handlePlayerName();
       handlePlacement();
       String winner = "";

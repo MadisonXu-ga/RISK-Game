@@ -32,6 +32,10 @@ public class Player implements Serializable{
     return name;
   }
 
+  public void loseTerritory(Territory t){
+    territories.remove(t);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

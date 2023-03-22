@@ -18,6 +18,7 @@ public class InitializationHandler extends ConnectionHandler {
         super(oos, ois);
         this.name = name;
         this.riskMap = riskMap;
+        this.unitValidRuleChecker = new UnitValidRuleChecker();
     }
 
     @Override
@@ -33,7 +34,7 @@ public class InitializationHandler extends ConnectionHandler {
                 isValid = unitValidRuleChecker.checkUnitValid(riskMap, uPs);
                 sendObject(isValid);
             } while (!isValid);
-            sendObject(isValid);
+            //sendObject(isValid);
             this.unitPlacements = uPs;
 
         } catch (IOException e) {

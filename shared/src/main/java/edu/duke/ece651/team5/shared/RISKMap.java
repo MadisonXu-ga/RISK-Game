@@ -8,7 +8,7 @@ public class RISKMap implements Serializable {
     private static final long serialVersionUID = 3107749286550437606L;
     private final ArrayList<Territory> territories;
     private ArrayList<Player> players;
-    private final HashMap<Territory, HashSet<Territory>> connection;
+    public final HashMap<Territory, HashSet<Territory>> connection;
 
     public RISKMap(){
         this(null);
@@ -58,15 +58,15 @@ public class RISKMap implements Serializable {
      */
     private ArrayList<Territory> getTerritoryList() {
         return new ArrayList<>(Arrays.asList(
-        initTerritory("Narnia", UnitType.SOLDIER, 10),
-        initTerritory("Elantris", UnitType.SOLDIER, 6),
-        initTerritory("Midkemia", UnitType.SOLDIER, 12),
-        initTerritory("Scadrial", UnitType.SOLDIER, 5),
-        initTerritory("Roshar", UnitType.SOLDIER,3),
-        initTerritory("Oz", UnitType.SOLDIER, 8),
-        initTerritory("Gondor", UnitType.SOLDIER, 13),
-        initTerritory("Mordor", UnitType.SOLDIER, 14),
-        initTerritory("Hogwarts", UnitType.SOLDIER, 3)
+        initTerritory("Narnia", UnitType.SOLDIER, 0),
+        initTerritory("Elantris", UnitType.SOLDIER, 0),
+        initTerritory("Midkemia", UnitType.SOLDIER, 0),
+        initTerritory("Scadrial", UnitType.SOLDIER, 0),
+        initTerritory("Roshar", UnitType.SOLDIER,0),
+        initTerritory("Oz", UnitType.SOLDIER, 0),
+        initTerritory("Gondor", UnitType.SOLDIER, 0),
+        initTerritory("Mordor", UnitType.SOLDIER, 0),
+        initTerritory("Hogwarts", UnitType.SOLDIER, 0)
         ));
     }
 
@@ -124,6 +124,8 @@ public class RISKMap implements Serializable {
         addConnection("Oz", Arrays.asList("Midkemia", "Scadrial", "Mordor", "Gondor"));
         addConnection("Roshar", Arrays.asList("Elantris", "Scadrial", "Hogwarts"));
         addConnection("Gondor", Arrays.asList("Oz", "Mordor"));
+        addConnection("Mordor", Arrays.asList("Gondor", "Oz","Scadrial","Hogwarts" ));
+        addConnection("Hogwarts", Arrays.asList("Mordor", "Scadrial", "Roshar" ));
     }
 
     /**
@@ -159,7 +161,12 @@ public class RISKMap implements Serializable {
      * @return the set of adjacent territories
      */
     public HashSet<Territory> getAdjacentTerritories(Territory t) {
-        return connection.get(t);
+        if (connection.containsKey(t)) {
+            return connection.get(t);
+        } else {
+            System.out.println(t.toString() + " " + t.hashCode());
+            return null;
+        }
     }
 
     /**

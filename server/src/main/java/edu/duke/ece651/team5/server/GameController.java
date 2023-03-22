@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-import edu.duke.ece651.team5.shared.Player;
-import edu.duke.ece651.team5.shared.RISKMap;
-import edu.duke.ece651.team5.shared.Territory;
-import edu.duke.ece651.team5.shared.UnitType;
+import edu.duke.ece651.team5.shared.*;;
 
 public class GameController {
     private RISKMap riskMap;
@@ -48,9 +46,101 @@ public class GameController {
     public void resolveUnitPlacement(HashMap<String, Integer> unitPlacements) {
         for (Map.Entry<String, Integer> entry : unitPlacements.entrySet()) {
             String name = entry.getKey();
+            System.out.println("num: name");
             int unitNum = entry.getValue();
             Territory terr = riskMap.getTerritoryByName(name);
+            System.out.println("inital unitNum: " + terr.getUnitNum(UnitType.SOLDIER));
             terr.updateUnitCount(UnitType.SOLDIER, false, unitNum);
+            System.out.println("Get updated: " + terr.getUnitNum(UnitType.SOLDIER));
         }
+    }
+
+    public void executeAttackOrder(ArrayList<AttackOrder> attackOrders){
+        for(AttackOrder order: attackOrders){
+            order.execute(riskMap);
+
+        }
+    }
+
+    private void groupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
+            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
+        
+        for (AttackOrder attackOrder : attackOrders) {
+            String destinationTerr = attackOrder.getDestinationName();
+            ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
+            // if exists
+            if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {
+                terrAtkOrders = attackOrdersGroupByTerritory.get(destinationTerr);
+            }
+            terrAtkOrders.add(attackOrder);
+            attackOrdersGroupByTerritory.put(destinationTerr, terrAtkOrders);
+        }
+    }
+
+    public HashMap<String, ArrayList<AttackOrder>> mergeSamePlayers(HashMap<String, ArrayList<AttackOrder>> attackOrderByTerris){
+        //des terri, arraylist
+        HashMap<String, ArrayList<AttackOrder>> mergeSamePlayerOrders = new HashMap<>();
+        for(String destiTerri: attackOrderByTerris.keySet()){
+            //key player value attakorer
+            HashMap<String, AttackOrder> mergeOrder = new HashMap<>();
+            for(AttackOrder order: attackOrderByTerris.get(destiTerri)){
+                if(!mergeOrder.containsKey(order.getPlayerName())){
+                    mergeOrder.put(order.getPlayerName(), order);
+                }else{
+                    mergeOrder.get(order.getPlayerName()).updateUnitNumber(order.getNumber());
+                }
+            }
+            ArrayList<AttackOrder> orders = new ArrayList<>();
+            orders.addAll(mergeOrder.values());
+            mergeSamePlayerOrders.put(destiTerri, orders);
+        }
+        return mergeSamePlayerOrders;
+    }
+
+
+
+    //todo merge attack order belong to same player
+    public void resolveAttackOrder(HashMap<String, ArrayList<AttackOrder>> attackOrderByTerris){
+        HashMap<String, ArrayList<AttackOrder>> mergeSamePlayerOrders = mergeSamePlayers(attackOrderByTerris);
+        for(String terriName: attackOrderByTerris.keySet()){
+            beginFight(riskMap.getTerritoryByName(terriName), attackOrderByTerris.get(terriName));
+        }
+    }
+
+    protected void beginFight(Territory fightingTerri, ArrayList<AttackOrder> fightOrders){
+        if(fightOrders.isEmpty()){
+            return;
+        }
+        fightOrders.add(new AttackOrder(fightingTerri.getName(), fightingTerri.getName(), fightingTerri.getUnitNum(UnitType.SOLDIER), UnitType.SOLDIER, fightingTerri.getOwner().getName()));
+        while(fightOrders.size() != 1){
+            for(int i=0; i<fightOrders.size(); i++){
+                AttackOrder loserForThisRound = (rollDice()) ? fightOrders.get(i): ((i == fightOrders.size()-1) ? fightOrders.get(0) :  fightOrders.get(i + 1));
+                System.out.println("loser: " + loserForThisRound.getSourceName());
+                loserForThisRound.loseOneUnit();
+                System.out.println("unit after lose: " + loserForThisRound.getNumber());
+                if(loserForThisRound.getNumber() == 0){
+                    fightOrders.remove(loserForThisRound);
+                }
+            }
+        }
+        System.out.println("winner: " + fightOrders.get(0));
+        resolveWinnerForThisRound(fightOrders.get(0), fightingTerri);
+    }
+
+    protected void resolveWinnerForThisRound(AttackOrder winOrder, Territory fightingTerri){
+        fightingTerri.getOwner().loseTerritory(fightingTerri);
+        Player winner = riskMap.getTerritoryByName(winOrder.getSourceName()).getOwner();
+        fightingTerri.setOwner(winner);
+        System.out.println("new owner: " + fightingTerri.getOwner());
+        fightingTerri.updateUnitCount(UnitType.SOLDIER, false, winOrder.getNumber());
+        System.out.println("new unit: " + fightingTerri.getUnitNum(UnitType.SOLDIER));
+        winner.addTerritory(fightingTerri);
+    }
+
+    protected boolean rollDice(){
+        Random rand = new Random();
+        int x = rand.nextInt(20);
+        int y = rand.nextInt(20);
+        return x > y;
     }
 }

@@ -47,7 +47,7 @@ public class Server {
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
         this.threadPool = new ThreadPoolExecutor(2, 4, 100, TimeUnit.SECONDS, workQueue);
-        serverSocket.setSoTimeout(1000);
+        serverSocket.setSoTimeout(1200000);
 
         // Game info initialization.
         gameController = new GameController();
@@ -88,7 +88,7 @@ public class Server {
                 "Successfully get the player num! This game is going to be played by " + this.playerNum + " players.");
 
         clientSockets.add(firstClientSocket);
-
+        this.gameController.assignTerritories(playerNum);
         // initialize
         for (int i = 0; i < this.playerNum; ++i) {
             playerConnectionStatus.put(i, true);
@@ -166,6 +166,7 @@ public class Server {
                 PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController,
                         this.playerConnectionStatus.get(i));
                 phs.add(ph);
+                this.threadPool.execute(ph);
             }
 
             // wait for all the tasks to complete
@@ -220,7 +221,7 @@ public class Server {
                 for (int i = 0; i < playerNum; ++i) {
                     String name = this.gameController.getPlayerName(i);
                     //
-                    if (this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
+                    if (this.playerConnectionStatus.get(i)!= null && playerStatus.get(name)!= null && this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
                         String lostInfo = (String) clientIns.get(i).readObject();
                         // if lost player want to disconnect
                         if (lostInfo.equals("Disconnect")) {
@@ -243,7 +244,7 @@ public class Server {
      */
     private String checkWin(HashMap<String, Boolean> playerStatus) {
         for (String name : playerStatus.keySet()) {
-            if (playerStatus.get(name) == true) {
+            if (playerStatus.get(name)!= null && playerStatus.get(name) == true) {
                 return name;
             }
         }

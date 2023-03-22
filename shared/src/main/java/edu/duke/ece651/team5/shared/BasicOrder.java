@@ -1,16 +1,28 @@
 package edu.duke.ece651.team5.shared;
 
-public abstract class BasicOrder {
+import java.io.Serializable;
+
+public abstract class BasicOrder implements Serializable{
     protected String sourceName;
     protected String destinationName;
     protected int number;
     protected Unit type;
+    protected String playerName;
 
-    public BasicOrder(String sourceName, String destinationName, int number, Unit type) {
+    public BasicOrder(String sourceName, String destinationName, int number, Unit type, String playerName) {
         this.sourceName = sourceName;
         this.destinationName = destinationName;
         this.number = number;
         this.type = type;
+        this.playerName = playerName;
+    }
+
+    public void loseOneUnit(){
+        number--;
+    }
+
+    public void updateUnitNumber(int update){
+        number += update;
     }
 
     /**
@@ -49,6 +61,11 @@ public abstract class BasicOrder {
      */
     public Unit getType() {
         return type;
+    }
+
+
+    public String getPlayerName(){
+        return playerName;
     }
 }
 

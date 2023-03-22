@@ -92,8 +92,9 @@ public class Client {
     out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     boolean complete = false;
     //gather placeInfo from textPlayer
-    HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(recvMap());
+    RISKMap map = recvMap();
     do{
+      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(map);
       out.println("\nWe got all your choices, sending your choices...\n");
       //write info to server
       playerConnection.writeData(placeInfo);
@@ -120,9 +121,10 @@ public class Client {
     }
     out.println("\nNow it's time to play the game!\n");
     boolean complete = false;
+    RISKMap map = recvMap();
     do{
       //gather actions(orders) from textPlayer
-      Action actions = textPlayer.playOneTurn(recvMap());
+      Action actions = textPlayer.playOneTurn(map);
       out.println("\nWe got all your orders, sending your orders...\n");
       //send info to server
       playerConnection.writeData(actions);
@@ -160,6 +162,7 @@ public class Client {
         playerConnection.writeData(res);
       }
     }
+    out.println("No winner for this round, let's start a new one!");
     return msg;
   }
 
@@ -207,7 +210,5 @@ public class Client {
     boolean isValid = (Boolean) playerConnection.readData();
     return isValid;
   }
-
-
 
 }

@@ -9,13 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-
-import edu.duke.ece651.team5.shared.AttackOrder;
-import edu.duke.ece651.team5.shared.MoveOrder;
-import edu.duke.ece651.team5.shared.Player;
-import edu.duke.ece651.team5.shared.RISKMap;
-import edu.duke.ece651.team5.shared.Territory;
+import edu.duke.ece651.team5.shared.*;
 
 import java.io.*;
 
@@ -164,7 +158,7 @@ public class Server {
             ArrayList<PlayHandler> phs = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
                 PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController,
-                        this.playerConnectionStatus.get(i));
+                        this.playerConnectionStatus.get(i), this.gameController.getPlayerName(i));
                 phs.add(ph);
                 this.threadPool.execute(ph);
             }
@@ -197,6 +191,8 @@ public class Server {
                 ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
                 GroupAttackOrdersByDesTerritory(attackOrders, attackOrdersGroupByTerritory);
                 // TODO: call resolve attack method
+                this.gameController.executeAttackOrder(attackOrders);
+                this.gameController.resolveAttackOrder(attackOrdersGroupByTerritory);
             }
 
             // check win or lose or null
@@ -233,6 +229,8 @@ public class Server {
                     }
                 }
             }
+            System.out.println(new MapTextView(this.gameController.getRiskMap()));
+            this.gameController.addOneUnitToTerrirories();
         }
 
         System.out.println("Game is over!");
@@ -270,8 +268,8 @@ public class Server {
     private void GroupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
         for (AttackOrder attackOrder : attackOrders) {
-            // String destinationTerr = attackOrder.getDestinationName();
-            String destinationTerr = "Hardcode";
+            String destinationTerr = attackOrder.getDestinationName();
+            // String destinationTerr = "Hardcode";
             ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
             // if exists
             if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {

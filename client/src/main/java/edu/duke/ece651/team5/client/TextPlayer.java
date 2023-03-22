@@ -144,7 +144,7 @@ public class TextPlayer {
     + type + ", the source territory, and the destination territory.\n"
     + "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n"; 
     boolean check = false;
-    do{
+    // do{
       try{
         String input = readUserInput(instruction);
         ArrayList<String> inputs = parseUserInput(input);
@@ -163,9 +163,10 @@ public class TextPlayer {
           String msg = ruleCheck.checkOrder(order, currMap.getPlayerByName(playerName), currMap);
           if(msg!=null){
             out.println(msg);
+            return;
           }else{
            //add order to moveOrders
-            check = true;
+            // check = true;
             moveOrders.add(order);
             return;
           }
@@ -178,18 +179,19 @@ public class TextPlayer {
           String msg =ruleChecker.checkOrder(order, currMap.getPlayerByName(playerName), currMap);
           if(msg!=null){
             out.println(msg);
+            return;
           }else{
            //add order to moveOrders
-            check = true;
+            // check = true;
             attackOrders.add(order);
             return;
           }
-          return;
+          // return;
         }
       }catch(Exception e){
         out.println("Not a valid input, please try again");
       }
-    }while(!check);
+    // }while(!check);
   }
 
   /**

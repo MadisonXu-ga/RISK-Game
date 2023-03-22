@@ -47,8 +47,9 @@ public class PlayHandler extends ConnectionHandler {
             do {
                 this.action = (Action) recvObject();
                 isValid = checkActions(action);
+                sendObject(isValid);
             } while (!isValid);
-            sendObject(isValid);
+            
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -62,21 +62,6 @@ public class GameController {
         }
     }
 
-    private void groupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
-            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
-        
-        for (AttackOrder attackOrder : attackOrders) {
-            String destinationTerr = attackOrder.getDestinationName();
-            ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
-            // if exists
-            if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {
-                terrAtkOrders = attackOrdersGroupByTerritory.get(destinationTerr);
-            }
-            terrAtkOrders.add(attackOrder);
-            attackOrdersGroupByTerritory.put(destinationTerr, terrAtkOrders);
-        }
-    }
-
     public HashMap<String, ArrayList<AttackOrder>> mergeSamePlayers(HashMap<String, ArrayList<AttackOrder>> attackOrderByTerris){
         //des terri, arraylist
         HashMap<String, ArrayList<AttackOrder>> mergeSamePlayerOrders = new HashMap<>();
@@ -97,12 +82,21 @@ public class GameController {
         return mergeSamePlayerOrders;
     }
 
+    /*
+     * Add one new unit to every territoried at the end of one turn.
+     */
+    public void addOneUnitToTerrirories() {
+        for (Territory terr : riskMap.getTerritories()) {
+            terr.updateUnitCount(UnitType.SOLDIER, false, 1);
+        }
+    }
+
 
 
     //todo merge attack order belong to same player
     public void resolveAttackOrder(HashMap<String, ArrayList<AttackOrder>> attackOrderByTerris){
         HashMap<String, ArrayList<AttackOrder>> mergeSamePlayerOrders = mergeSamePlayers(attackOrderByTerris);
-        for(String terriName: attackOrderByTerris.keySet()){
+        for(String terriName: mergeSamePlayerOrders.keySet()){
             beginFight(riskMap.getTerritoryByName(terriName), attackOrderByTerris.get(terriName));
         }
     }
@@ -111,19 +105,34 @@ public class GameController {
         if(fightOrders.isEmpty()){
             return;
         }
-        fightOrders.add(new AttackOrder(fightingTerri.getName(), fightingTerri.getName(), fightingTerri.getUnitNum(UnitType.SOLDIER), UnitType.SOLDIER, fightingTerri.getOwner().getName()));
+        AttackOrder defenseOrder = new AttackOrder(fightingTerri.getName(), fightingTerri.getName(), fightingTerri.getUnitNum(UnitType.SOLDIER), UnitType.SOLDIER, fightingTerri.getOwner().getName());
+        defenseOrder.execute(riskMap);
+        fightOrders.add(defenseOrder);
+        ArrayList<Boolean> check = new ArrayList<>();
+        for(int i=0; i<fightOrders.size();++i){
+            check.add(true);
+        }
         while(fightOrders.size() != 1){
             for(int i=0; i<fightOrders.size(); i++){
+                if(!check.get(i)){
+                    continue;
+                }
+                if(fightOrders.get(i).getNumber() == 0){
+                    // fightOrders.remove(i);
+                    check.set(i, false);
+                    continue;
+                }
                 AttackOrder loserForThisRound = (rollDice()) ? fightOrders.get(i): ((i == fightOrders.size()-1) ? fightOrders.get(0) :  fightOrders.get(i + 1));
                 System.out.println("loser: " + loserForThisRound.getSourceName());
                 loserForThisRound.loseOneUnit();
                 System.out.println("unit after lose: " + loserForThisRound.getNumber());
                 if(loserForThisRound.getNumber() == 0){
-                    fightOrders.remove(loserForThisRound);
+                    // fightOrders.remove(loserForThisRound);
+                    check.set(fightOrders.indexOf(loserForThisRound), false);
                 }
             }
         }
-        System.out.println("winner: " + fightOrders.get(0));
+        System.out.println("winner: " + fightOrders.get(0).getPlayerName());
         resolveWinnerForThisRound(fightOrders.get(0), fightingTerri);
     }
 
@@ -131,7 +140,7 @@ public class GameController {
         fightingTerri.getOwner().loseTerritory(fightingTerri);
         Player winner = riskMap.getTerritoryByName(winOrder.getSourceName()).getOwner();
         fightingTerri.setOwner(winner);
-        System.out.println("new owner: " + fightingTerri.getOwner());
+        System.out.println("new owner: " + fightingTerri.getOwner().getName());
         fightingTerri.updateUnitCount(UnitType.SOLDIER, false, winOrder.getNumber());
         System.out.println("new unit: " + fightingTerri.getUnitNum(UnitType.SOLDIER));
         winner.addTerritory(fightingTerri);

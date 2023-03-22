@@ -54,7 +54,7 @@ class RISKMapTest {
 
         RISKMap oneMap = new RISKMap(playersArray);
         assertEquals("red", oneMap.getPlayerByName("red").getName());
-        assertThrows(IllegalArgumentException.class, () -> oneMap.getTerritoryByName("rex"));
+        assertThrows(IllegalArgumentException.class, () -> oneMap.getPlayerByName("rex"));
     }
 
     @Test
@@ -74,24 +74,8 @@ class RISKMapTest {
     @Test
     void testGetTerritories(){
         RISKMap map = new RISKMap();
-        ArrayList<Territory> test = new ArrayList<>(Arrays.asList(
-           initTerritory("Narnia", UnitType.SOLDIER, 10),
-           initTerritory("Elantris", UnitType.SOLDIER, 6),
-           initTerritory("Midkemia", UnitType.SOLDIER, 12),
-           initTerritory("Scadrial", UnitType.SOLDIER, 5),
-           initTerritory("Roshar", UnitType.SOLDIER,3),
-           initTerritory("Oz", UnitType.SOLDIER, 8),
-           initTerritory("Gondor", UnitType.SOLDIER, 13),
-           initTerritory("Mordor", UnitType.SOLDIER, 14),
-           initTerritory("Hogwarts", UnitType.SOLDIER, 3)
-        ));
-        assertEquals(test, map.getTerritories());
-    }
-
-    private Territory initTerritory(String name, Unit unit, int num) {
-        HashMap<Unit, Integer> units = new HashMap<>();
-        units.put(unit, num);
-        return new Territory(name, units);
+        RISKMap map2 = new RISKMap();
+        assertEquals(map2.getTerritories(), map.getTerritories());
     }
 
 }

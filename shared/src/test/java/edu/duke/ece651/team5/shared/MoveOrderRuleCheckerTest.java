@@ -14,6 +14,8 @@ public class MoveOrderRuleCheckerTest {
         RISKMap map = new RISKMap();
         Territory elantris = map.getTerritoryByName("Elantris");
         Territory narnia = map.getTerritoryByName("Narnia");
+        elantris.updateUnitCount(UnitType.SOLDIER, false, 6);
+        narnia.updateUnitCount(UnitType.SOLDIER, false, 10);
         Player blue = new Player("blue");
         elantris.setOwner(blue);
         narnia.setOwner(blue);
@@ -30,6 +32,8 @@ public class MoveOrderRuleCheckerTest {
         RISKMap map = new RISKMap();
         Territory elantris = map.getTerritoryByName("Elantris");
         Territory narnia = map.getTerritoryByName("Narnia");
+        elantris.updateUnitCount(UnitType.SOLDIER, false, 6);
+        narnia.updateUnitCount(UnitType.SOLDIER, false, 10);
         Player blue = new Player("blue");
         elantris.setOwner(blue);
         narnia.setOwner(blue);

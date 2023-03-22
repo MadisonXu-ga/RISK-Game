@@ -1,29 +1,22 @@
 package edu.duke.ece651.team5.shared;
 
-import java.io.Serializable;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class RISKMap implements Serializable {
-
     private static final long serialVersionUID = 3107749286550437606L;
-    private final ArrayList<Territory> territories;
+    private ArrayList<Territory> territories;
     private ArrayList<Player> players;
-    private final HashMap<Territory, HashSet<Territory>> connection;
+    private HashMap<Territory, HashSet<Territory>> connection;
 
     public RISKMap(){
-        this(null);
-    }
-    
-    //public RISKMap(int numPlayers) {
-    public RISKMap(ArrayList<Player> players) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
-        initMap();
-        //todo Init Player here 
-        /*
-         * create 4 default playrs
-         * then init Players and assign territories according to the actual player num input
-         */
+        initMapFromConfigFile();
+    }
+
+    public RISKMap(ArrayList<Player> players) {
         this.players = players;
     }
 
@@ -39,48 +32,40 @@ public class RISKMap implements Serializable {
         return territories;
     }
 
-    /**
-     * Helper function to init a map
-     */
-    private void initMap() {
-        ArrayList<Territory> territoryList = getTerritoryList();
-        territories.addAll(territoryList);
-        initConnection();
+
+    public static void main(String[] args) {
+        RISKMap map = new RISKMap();
+        System.out.println(map.territories);
+        //System.out.println(map.connection);
     }
+    private void initMapFromConfigFile() {
+        InputStream inputStream =
+                getClass().getClassLoader().getResourceAsStream("map_config.txt");
+        //String fileName = "shared/src/test/resources/map_config.txt";
+        ArrayList<Territory> territoryList = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            String line;
+            line = reader.readLine();
+            String[] names = line.split(", ");
+            for (String name: names) {
+                Territory t = new Territory(name);
+                territoryList.add(t);
+            }
+            territories.addAll(territoryList);
 
-    // todo: this is just for convenience, might refactor it later
-    // I might wanna read this from json
-
-    /**
-     * Helper function to init a list of territories
-     * to be added to the map
-     * @return a list of territories with necessary info
-     */
-    private ArrayList<Territory> getTerritoryList() {
-        return new ArrayList<>(Arrays.asList(
-        initTerritory("Narnia", UnitType.SOLDIER, 10),
-        initTerritory("Elantris", UnitType.SOLDIER, 6),
-        initTerritory("Midkemia", UnitType.SOLDIER, 12),
-        initTerritory("Scadrial", UnitType.SOLDIER, 5),
-        initTerritory("Roshar", UnitType.SOLDIER,3),
-        initTerritory("Oz", UnitType.SOLDIER, 8),
-        initTerritory("Gondor", UnitType.SOLDIER, 13),
-        initTerritory("Mordor", UnitType.SOLDIER, 14),
-        initTerritory("Hogwarts", UnitType.SOLDIER, 3)
-        ));
-    }
-
-    /**
-     * Init a single territory
-     * @param name name of the territory
-     * @param unit unit type to be placed
-     * @param num number of unit
-     * @return territory created
-     */
-    private Territory initTerritory(String name, Unit unit, int num) {
-        HashMap<Unit, Integer> units = new HashMap<>();
-        units.put(unit, num);
-        return new Territory(name, units);
+            while ((line = reader.readLine()) != null) {
+                // parse line
+                String[] split = line.split(": ");
+                String territoryName = split[0];
+                String connectionNames = split[1];
+                String[] connectionNameArray = connectionNames.split(", ");
+                addConnection(territoryName, Arrays.asList(connectionNameArray));
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -109,21 +94,6 @@ public class RISKMap implements Serializable {
             }
         }
         throw new IllegalArgumentException("Does not exist Player " + name);
-    }
-
-    // todo: add more
-
-    /**
-     * Helper function to init all the connections
-     */
-    private void initConnection() {
-        addConnection("Narnia", Arrays.asList("Elantris", "Midkemia"));
-        addConnection("Elantris", Arrays.asList("Narnia", "Midkemia", "Scadrial", "Roshar"));
-        addConnection("Midkemia", Arrays.asList("Elantris", "Narnia", "Scadrial", "Oz"));
-        addConnection("Scadrial", Arrays.asList("Elantris", "Narnia", "Midkemia", "Roshar", "Oz", "Mordor", "Hogwarts"));
-        addConnection("Oz", Arrays.asList("Midkemia", "Scadrial", "Mordor", "Gondor"));
-        addConnection("Roshar", Arrays.asList("Elantris", "Scadrial", "Hogwarts"));
-        addConnection("Gondor", Arrays.asList("Oz", "Mordor"));
     }
 
     /**
@@ -200,13 +170,13 @@ public class RISKMap implements Serializable {
      * create an interface called assignTerritories
      * then a subclass called pre-assgined with the methods below
      * gamecontroller -> collects assigning, rules, validating, issue an order
-     * 
+     *
      */
     /*
     for each territory we need to do the folowing:
     - iterate through all the players sequentially
         - assign territories to the player
-    - each assigned territory needs to have a new "owner" 
+    - each assigned territory needs to have a new "owner"
     !right now it is assigned by going through the list of territories
     TODO see if we want to get players to choose them
     */
@@ -220,7 +190,7 @@ public class RISKMap implements Serializable {
 
             Territory currentTerritory = it.next();
             Player currentPlayer = players.get(ctr % players.size());
-            
+
 
             chooseTerritory(currentTerritory, currentPlayer);
             ctr++;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.AdjacentRuleChecker;
@@ -14,24 +15,33 @@ import edu.duke.ece651.team5.shared.OrderRuleChecker;
 public class PlayHandler extends ConnectionHandler {
     private GameController gameController;
     private Action action;
+    private Boolean playerConnectionStatus;
 
-    public PlayHandler(ObjectOutputStream oos, ObjectInputStream ois, GameController gameController) {
+    public PlayHandler(ObjectOutputStream oos, ObjectInputStream ois, GameController gameController,
+            Boolean playerConnectionStatus) {
         super(oos, ois);
         this.gameController = gameController;
+        this.playerConnectionStatus = playerConnectionStatus;
     }
 
     @Override
     public void run() {
         // TODO: sss
         try {
+            if (playerConnectionStatus != false) {
+                sendObject(gameController.getRiskMap());
+            }
+            if(playerConnectionStatus!=true){
+                return;
+            }
+            // only normal connections send actions
             boolean isValid = false;
             do {
-                sendObject(gameController.getRiskMap());
                 this.action = (Action) recvObject();
                 isValid = checkActions(action);
             } while (!isValid);
             sendObject(isValid);
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

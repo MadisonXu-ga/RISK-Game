@@ -31,6 +31,11 @@ public class Server {
 
     private GameController gameController;
 
+    // TODO: maybe change to game controller later
+    // true -> normal accept; null -> lost but watch the game;
+    // false -> lost and disconnect.
+    HashMap<Integer, Boolean> playerConnectionStatus;
+
     public Server(int port) throws IOException, SocketException {
         this.port = port;
         this.serverSocket = new ServerSocket(this.port);
@@ -46,6 +51,8 @@ public class Server {
 
         // Game info initialization.
         gameController = new GameController();
+
+        this.playerConnectionStatus = new HashMap<>();
     }
 
     /*
@@ -81,6 +88,11 @@ public class Server {
                 "Successfully get the player num! This game is going to be played by " + this.playerNum + " players.");
 
         clientSockets.add(firstClientSocket);
+
+        // initialize
+        for (int i = 0; i < this.playerNum; ++i) {
+            playerConnectionStatus.put(i, true);
+        }
     }
 
     /**
@@ -151,7 +163,8 @@ public class Server {
         while (true) {
             ArrayList<PlayHandler> phs = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
-                PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController);
+                PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController,
+                        this.playerConnectionStatus.get(i));
                 phs.add(ph);
             }
 
@@ -164,6 +177,9 @@ public class Server {
             // get each player's actions and resolve actions.
             // move first
             for (int i = 0; i < playerNum; ++i) {
+                if (this.playerConnectionStatus.get(i) != true) {
+                    continue;
+                }
                 ArrayList<MoveOrder> moveOrders = phs.get(i).getPlayerMoveOrders();
                 for (MoveOrder mo : moveOrders) {
                     mo.execute(this.gameController.getRiskMap());
@@ -174,32 +190,77 @@ public class Server {
             // Territory
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
             for (int i = 0; i < playerNum; ++i) {
+                if (this.playerConnectionStatus.get(i) != true) {
+                    continue;
+                }
                 ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
                 GroupAttackOrdersByDesTerritory(attackOrders, attackOrdersGroupByTerritory);
                 // TODO: call resolve attack method
             }
 
-            // class
-            // execute
-            // HashMap<String, ArrayList<AttackOrder>> + map
-            //
-
             // check win or lose or null
             // TODO: abstract to funtion
-            checkPlayerStatus(this.gameController.getRiskMap());
+            HashMap<String, Boolean> playerStatus = getPlayerStatus(this.gameController.getRiskMap());
+            for (int i = 0; i < playerNum; ++i) {
+                if (this.playerConnectionStatus.get(i) == false) {
+                    continue;
+                }
+                clientOuts.get(i).writeObject(playerStatus);
+            }
+
+            // check win
+            String winPlayerName = checkWin(playerStatus);
+            if (winPlayerName != null) {
+                System.out.println("Player " + winPlayerName + " won this game!");
+                // close all the resources.
+                // may have already done in the startRISCGame part.
+                break;
+            } else {
+                // receive msgs from all lost players *in this one turn*
+                for (int i = 0; i < playerNum; ++i) {
+                    String name = this.gameController.getPlayerName(i);
+                    //
+                    if (this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
+                        String lostInfo = (String) clientIns.get(i).readObject();
+                        // if lost player want to disconnect
+                        if (lostInfo.equals("Disconnect")) {
+                            this.playerConnectionStatus.put(i, false);
+                            this.clientSockets.get(i).close();
+                        } else if (lostInfo.equals("Display")) {
+                            this.playerConnectionStatus.put(i, null);
+                        }
+                    }
+                }
+            }
         }
+
+        System.out.println("Game is over!");
+    }
+
+    /*
+     * check win
+     * win return name, otherwise return null
+     */
+    private String checkWin(HashMap<String, Boolean> playerStatus) {
+        for (String name : playerStatus.keySet()) {
+            if (playerStatus.get(name) == true) {
+                return name;
+            }
+        }
+        return null;
     }
 
     //
-    private HashMap<String, Boolean> checkPlayerStatus(RISKMap riskMap) {
+    private HashMap<String, Boolean> getPlayerStatus(RISKMap riskMap) {
         HashMap<String, Boolean> playerStatus = new HashMap<>();
         ArrayList<Player> players = riskMap.getPlayers();
         for (Player player : players) {
             if (player.getTerritories().size() == 0) {
                 playerStatus.put(player.getName(), false);
-            }
-            else if(player.getTerritories().size()==riskMap.getTerritories().size()){
-                
+            } else if (player.getTerritories().size() == riskMap.getTerritories().size()) {
+                playerStatus.put(player.getName(), true);
+            } else {
+                playerStatus.put(player.getName(), null);
             }
         }
         return playerStatus;

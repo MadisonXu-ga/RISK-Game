@@ -104,7 +104,6 @@ public class Client {
     }while(!complete);
   }
 
-  //todo if player lose, need to send a empty aciton to server?
   /**
    * if current player is lose, only display map to user
    * else, handle user choice for each playing turn, send user choices(orders) to server
@@ -134,7 +133,6 @@ public class Client {
     }while(!complete);
   }
 
-  //todo if user lose, send any message to server?
   /**
    * receive each turn's result from server, if there's winner display the message and end the game
    * if current player lose, ask user choice to continue watch the game or exit
@@ -209,12 +207,6 @@ public class Client {
     return isValid;
   }
 
-
-  public static void main(String[] args) {
-    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    Client client = new Client(input, System.out);
-    client.play();
-  }
 
 
 }

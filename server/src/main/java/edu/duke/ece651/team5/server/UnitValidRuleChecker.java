@@ -1,9 +1,13 @@
 package edu.duke.ece651.team5.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.duke.ece651.team5.shared.BasicOrder;
+import edu.duke.ece651.team5.shared.Player;
 import edu.duke.ece651.team5.shared.RISKMap;
+import edu.duke.ece651.team5.shared.UnitType;
 
 public class UnitValidRuleChecker {
 
@@ -22,5 +26,15 @@ public class UnitValidRuleChecker {
             return false;
         }
         return true;
+    }
+
+    public boolean checkOrderUnitValid(RISKMap map, ArrayList<BasicOrder> orders){
+        int availableUnit = 0;
+        int tryToUseUnit = 0;
+        for(BasicOrder order: orders){
+            availableUnit += map.getTerritoryByName(order.getSourceName()).getUnitNum(UnitType.SOLDIER);
+            tryToUseUnit += order.getNumber();
+        }
+        return tryToUseUnit <= availableUnit;
     }
 }

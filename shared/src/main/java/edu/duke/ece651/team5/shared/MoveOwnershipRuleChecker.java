@@ -5,6 +5,13 @@ public class MoveOwnershipRuleChecker extends OrderRuleChecker{
         super(next);
     }
 
+    /**
+     *  Check if the order meets the rule that src and dest must belong to the same player
+     * @param order move order
+     * @param player the owner of both territories
+     * @param map the map
+     * @return error message if it does not meet, null if it does
+     */
     @Override
     protected String checkMyRule(BasicOrder order, Player player, RISKMap map) {
         String destinationName = order.getDestinationName();

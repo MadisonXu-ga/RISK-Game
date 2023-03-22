@@ -76,6 +76,12 @@ public class Territory implements Serializable {
         return owner;
     }
 
+    /**
+     * to tell if two territories equals (on name)
+     * @param o another object
+     * @return true if the names of two territories equals
+     *         false if names do not equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,7 +91,11 @@ public class Territory implements Serializable {
     
         return Objects.equals(name, territory.name);
     }
-    
+
+    /**
+     * hashcode for territory compute with name
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;

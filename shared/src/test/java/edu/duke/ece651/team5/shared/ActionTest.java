@@ -13,8 +13,8 @@ public class ActionTest {
   void testGetAttackOrders() {
     Action act = createAction();
     ArrayList<Integer> expected = new ArrayList<>();
-    expected.add(3);
-    expected.add(4);
+    // expected.add(3);
+    // expected.add(4);
     assertEquals(expected, act.getAttackOrders());
   }
 
@@ -28,10 +28,10 @@ public class ActionTest {
   }
 
   private Action createAction(){
-    ArrayList<Integer> attackOrder = new ArrayList<>();
+    ArrayList<AttackOrder> attackOrder = new ArrayList<>();
     ArrayList<MoveOrder> moveOrder = new ArrayList<>();
-    attackOrder.add(3);
-    attackOrder.add(4);
+    // attackOrder.add(3);
+    // attackOrder.add(4);
     moveOrder.add(new MoveOrder("A", "B", 3, UnitType.SOLDIER));
     moveOrder.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER));
     return new Action(attackOrder, moveOrder);

@@ -15,6 +15,7 @@ public abstract class ConnectionHandler implements Runnable {
     }
 
     public void sendObject(Object ob) throws IOException {
+        this.objectOutputStream.reset();
         this.objectOutputStream.writeObject(ob);
         this.objectOutputStream.flush();
     }

@@ -269,7 +269,8 @@ public class Server {
     private void GroupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
         for (AttackOrder attackOrder : attackOrders) {
-            String destinationTerr = attackOrder.getDestinationName();
+            // String destinationTerr = attackOrder.getDestinationName();
+            String destinationTerr = "Hardcode";
             ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
             // if exists
             if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {

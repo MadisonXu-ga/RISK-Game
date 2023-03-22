@@ -7,167 +7,169 @@ import java.util.HashMap;
 
 import edu.duke.ece651.team5.shared.*;
 
+/**
+ * Client is responsible to handle socket connection with server and to interact with user to play the Game
+ */
+
 public class Client {
-  // private Socket clientSocket;
-  // private ObjectOutputStream objOutStream;
-  // private ObjectInputStream objInStream;
+  //player to play the game
   protected TextPlayer textPlayer;
+  //connection to handle socket and object streams
   protected PlayerConnection playerConnection;
 
+  //input and output
   private final BufferedReader inputReader;
   private final PrintStream out;
-
 
   private int port;
   private String host;
 
+  protected boolean isLose;
 
+  /**
+   * Default constructor to set host and port as predefined
+   * @param br the input reader 
+   * @param out the output printStream
+   */
   public Client(BufferedReader br, PrintStream out){
     this("localhost", 57809, br, out);
   }
 
-  /* Constructor with host and port number */
+  /**
+   * Constructor with specified host and port number
+   * @param host the host want to connect with 
+   * @param port the number of port
+   * @param br the input reader 
+   * @param out the output printStream
+   */
   public Client(String host, int port, BufferedReader br, PrintStream out){
     this.host = host;
     this.port = port;
     this.inputReader = br;
     this.out = out;
+    this.isLose = false;
   }
 
+  /**
+   * create playerConnection and textPlayer
+   * @throws UnknownHostException if unknown host failure
+   * @throws IOException if any IO failure
+   */
   public void createPlayer() throws UnknownHostException, IOException{
     this.playerConnection = new PlayerConnection(new Socket(host, port));
     this.textPlayer = new TextPlayer(inputReader, out);
   }
 
-
-  // public boolean recvMapFromServer() throws IOException, ClassNotFoundException{
-  //  this.map = (RISKMap)objInStream.readObject();
-  //   objInStream.readObject();
-  //   if(map != null){
-  //     return true;
-  //   }else{
-  //     return false;
-  //   }
-  // }
-
-
   /**
-   * create a client socket connection with 
-   * @throws IOException
-  */
-  // public void initClient() throws IOException{
-  //   try{
-  //     // clientSocket = new Socket(host, port);
-  //     // this.objOutStream = new ObjectOutputStream(clientSocket.getOutputStream());
-  //     // this.objInStream = new ObjectInputStream(clientSocket.getInputStream());
-      
-  //     out.println("\nInitiate client successfully");
-  //   }catch(IOException e){
-  //     clientSocket = null;
-  //     out.println("Cannot init Client");
-  //   }  
-  // }
-
-
+   * receive player name from server and assign it to current player
+   * @throws IOException if any IO failure
+   * @throws ClassNotFoundException if unknown host failure
+   */
   public void handlePlayerName() throws IOException, ClassNotFoundException{
     out.println("\nWaiting to receive your player name...\n");
-    // String msg = (String) objInStream.readObject();
     String msg = (String) playerConnection.readData();
+    //if identified as first player, ask user choice for the number of player for this game
     if(msg.equals("First")){
       int numPlayer = textPlayer.selectNumPlayer();
       out.println("\nSending your choice..\n");
-      // objOutStream.reset();
-      // objOutStream.writeObject(numPlayer);
       playerConnection.writeData(numPlayer);
-      // msg = (String)objInStream.readObject();
+      //get player name for first user
       msg = (String) playerConnection.readData();
     }
+    //set player name
     out.println("\nWe got your player name!\n");
     textPlayer.setPlayerName(msg);
   }
 
+  /**
+   * handle user choice for their unit placement, send the choices to server
+   * and continue to ask user choice if not approved by server
+   * Once got approval, display successful message to user
+   * @throws IOException if any IO failure
+   * @throws ClassNotFoundException if unknown host failure
+   */
   public void handlePlacement() throws IOException, ClassNotFoundException{
     out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     boolean complete = false;
     do{
+      //gather placeInfo from textPlayer
       HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(recvMap());
       out.println("\nWe got all your choices, sending your choices...\n");
-      // objOutStream.reset();
-      // objOutStream.writeObject(placeInfo);
+      //write info to server
       playerConnection.writeData(placeInfo);
+      //receive approval or not from server
       complete = isValidFromServer();
+      //display result accordingly
       textPlayer.printPlacementResult(complete);
     }while(!complete);
   }
 
+  //todo if player lose, need to send a empty aciton to server?
+  /**
+   * if current player is lose, only display map to user
+   * else, handle user choice for each playing turn, send user choices(orders) to server
+   * and continue to ask user choice if not approved by server
+   * Once got approval, display successful message to user
+   * @throws IOException if any IO failure
+   * @throws ClassNotFoundException if unknown host failure
+   */
   public void playOneTurn() throws IOException, ClassNotFoundException{
+    if(isLose){
+      out.println("\n------Spectator Mode------\n");
+      textPlayer.displayMap(recvMap());
+      return;
+    }
     out.println("\nNow it's time to play the game!\n");
     boolean complete = false;
     do{
+      //gather actions(orders) from textPlayer
       Action actions = textPlayer.playOneTurn(recvMap());
       out.println("\nWe got all your orders, sending your orders...\n");
-      // objOutStream.writeObject(actions);
+      //send info to server
       playerConnection.writeData(actions);
+      //receive approval or not from server
       complete = isValidFromServer();
+       //display result accordingly
       textPlayer.printCommitResult(complete);
     }while(!complete);
   }
 
-
-  public RISKMap recvMap() throws IOException, ClassNotFoundException{
-    out.println("\nReceiving RISK map...");
-    // RISKMap map = (RISKMap)objInStream.readObject();
-    RISKMap map = (RISKMap)playerConnection.readData();
-    out.println("\nReceived Map\n");
-    return map;
-  }
-
-
+  //todo if user lose, send any message to server?
+  /**
+   * receive each turn's result from server, if there's winner display the message and end the game
+   * if current player lose, ask user choice to continue watch the game or exit
+   * and send the message to server
+   * @return if there's an winner for current turn
+   * @throws IOException if any IO failure
+   * @throws ClassNotFoundException if unknown host failure
+   */
   @SuppressWarnings("unchecked")
   public String checkResult() throws IOException,ClassNotFoundException{
     out.println("\nSeems like everyone finishes their turn.\nNow let's check the result of this round...\n");
-    // HashMap<String, Boolean> result = (HashMap<String, Boolean>)objInStream.readObject();
+    //receive current turn's result
     HashMap<String, Boolean> result = (HashMap<String, Boolean>)playerConnection.readData();
-    String winner = textPlayer.checkWinner(result);
-    if(winner.isEmpty()){
-      String response = textPlayer.checkIfILose(result);
-      if(response.equals("Close")) { winner = response; }
-      if(!response.isEmpty()){
-        // objOutStream.reset();
-        // objOutStream.writeObject(response);
-        playerConnection.writeData(response);
+    //check if there's a winner
+    String msg = textPlayer.checkWinner(result);
+    //if no winner
+    if(msg.isEmpty() && !isLose){
+      //check if current player lose
+      String res = textPlayer.checkIfILose(result);
+      //if lose and user choose to exit, return message to close the game
+      if(res.equals("Disconnect")) { msg = res; }
+      //send response to server
+      if(!res.isEmpty()){
+        isLose = true;
+        playerConnection.writeData(res);
       }
     }
-    return winner;
+    return msg;
   }
 
-    /**
-   * close objectInputStream and objectOutputStream
-   * @throws IOException
-   */
-  // public void closeResource() throws IOException{
-  //   objInStream.close();
-  //   objOutStream.close();
-  // }
-
   /**
-   * Clost client socket
-   * @throws IOException
+   * handle playing game control
    */
-  // public void closeClientSocket(){
-  //   if(clientSocket != null){
-  //     try{
-  //       clientSocket.close();
-  //     }catch(IOException e){
-  //       // clientSocket = null;
-  //       // System.out.println("Failed to close client socket");
-  //     }
-  //   }
-  // }
-
   public void play(){
     try{
-      // initClient();
       handlePlayerName();
       handlePlacement();
       String winner = "";
@@ -176,24 +178,42 @@ public class Client {
        winner = checkResult();
       }
       out.println("\nSee you next time!\n");
-      // closeResource();
       playerConnection.close();
     }catch(Exception e){
-      // e.printStackTrace();
+      out.println("Something went wrong... " + e.getMessage());
     }
   }
 
+
+  /**
+   * handle map receiving from server
+   * @return the map
+   * @throws IOException if any IO failure
+   * @throws ClassNotFoundException if unknown host failure
+   */
+  protected RISKMap recvMap() throws IOException, ClassNotFoundException{
+    out.println("\nReceiving RISK map...");
+    RISKMap map = (RISKMap)playerConnection.readData();
+    out.println("\nReceived Map\n");
+    return map;
+  }
+
+  /**
+   * helper method to receive boolean from server
+   * @return the booelan
+   * @throws IOException if any IO failure
+   * @throws ClassNotFoundException if unknown host failure
+   */
   private boolean isValidFromServer() throws IOException, ClassNotFoundException{
-    // boolean isValid = (Boolean)objInStream.readObject();
     boolean isValid = (Boolean) playerConnection.readData();
     return isValid;
   }
 
 
   public static void main(String[] args) {
-
-    // Client client = new Client();
-    // client.play();
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    Client client = new Client(input, System.out);
+    client.play();
   }
 
 

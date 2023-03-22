@@ -51,7 +51,7 @@ public class PlayHandler extends ConnectionHandler {
 
     private boolean checkActions(Action action) {
         ArrayList<MoveOrder> mos = action.getMoveOrders();
-        ArrayList<Integer> aos = action.getAttackOrders();
+        ArrayList<AttackOrder> aos = action.getAttackOrders();
 
         OrderRuleChecker moveActionChecker = new MoveOwnershipRuleChecker(new AdjacentRuleChecker(null));
         // TODO: attackActionChecker
@@ -64,7 +64,7 @@ public class PlayHandler extends ConnectionHandler {
             }
         }
 
-        for (Integer ao : aos) {
+        for (AttackOrder ao : aos) {
             // TODO: check attack valid
         }
 
@@ -75,7 +75,7 @@ public class PlayHandler extends ConnectionHandler {
         return action.getMoveOrders();
     }
 
-    public ArrayList<Integer> getPlayerAttackOrders() {
+    public ArrayList<AttackOrder> getPlayerAttackOrders() {
         return action.getAttackOrders();
     }
 }

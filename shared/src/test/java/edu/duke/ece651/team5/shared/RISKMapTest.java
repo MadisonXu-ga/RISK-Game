@@ -45,7 +45,6 @@ class RISKMapTest {
 
     @Test
     void testGetPlayerByName(){
-
         Player redPlayer = new Player("red");
         Player bluePlayer = new Player("blue");
 
@@ -55,9 +54,7 @@ class RISKMapTest {
 
         RISKMap oneMap = new RISKMap(playersArray);
         assertEquals("red", oneMap.getPlayerByName("red").getName());
-        assertThrows(IllegalArgumentException.class, () -> oneMap.getTerritoryByName("orange"));
-
-
+        assertThrows(IllegalArgumentException.class, () -> oneMap.getTerritoryByName("rex"));
     }
 
     @Test

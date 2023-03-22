@@ -30,6 +30,11 @@ public class ClientTest {
     return client;
   }
 
+  @Test
+  void testCreatePlayer(){
+    
+  }
+
 
 
   @Test

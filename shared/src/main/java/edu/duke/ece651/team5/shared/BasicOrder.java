@@ -13,6 +13,10 @@ public abstract class BasicOrder {
         this.type = type;
     }
 
+    /**
+     * The actual updates if an order is executed
+     * @param map the map
+     */
     public abstract void execute(RISKMap map);
 
     public String getSourceName() {

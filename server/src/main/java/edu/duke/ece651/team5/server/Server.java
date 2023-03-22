@@ -144,7 +144,7 @@ public class Server {
     /*
      * Start to play the game
      */
-    public void playGame() throws InterruptedException {
+    public void playGame() throws InterruptedException, IOException {
         // tell every player that placing stage is over, let's start the game! (send)
         // until end, later need to change
         System.out.println("Let's start to play the game!");
@@ -172,9 +172,9 @@ public class Server {
 
             // attack later
             // Territory
-            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
+            HashMap<String, ArrayList<Integer>> attackOrdersGroupByTerritory = new HashMap<>();
             for (int i = 0; i < playerNum; ++i) {
-                ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
+                ArrayList<Integer> attackOrders = phs.get(i).getPlayerAttackOrders();
                 GroupAttackOrdersByDesTerritory(attackOrders, attackOrdersGroupByTerritory);
                 // TODO: call resolve attack method
             }
@@ -186,7 +186,11 @@ public class Server {
 
             // check win or lose or null
             // TODO: abstract to funtion
-            checkPlayerStatus(this.gameController.getRiskMap());
+            HashMap<String, Boolean> playerStatus = checkPlayerStatus(this.gameController.getRiskMap());
+            // send this to all the clients
+            for(ObjectOutputStream oos: clientOuts){
+                oos.writeObject(playerStatus);
+            }
         }
     }
 
@@ -199,17 +203,21 @@ public class Server {
                 playerStatus.put(player.getName(), false);
             }
             else if(player.getTerritories().size()==riskMap.getTerritories().size()){
-                
+                playerStatus.put(player.getName(), true);
+            }
+            else{
+                playerStatus.put(player.getName(), null);
             }
         }
         return playerStatus;
     }
 
-    private void GroupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
-            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
-        for (AttackOrder attackOrder : attackOrders) {
-            String destinationTerr = attackOrder.getDestinationName();
-            ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
+    private void GroupAttackOrdersByDesTerritory(ArrayList<Integer> attackOrders,
+            HashMap<String, ArrayList<Integer>> attackOrdersGroupByTerritory) {
+        for (Integer attackOrder : attackOrders) {
+            // String destinationTerr = attackOrder.getDestinationName();
+            String destinationTerr = "Hardcode";
+            ArrayList<Integer> terrAtkOrders = new ArrayList<>();
             // if exists
             if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {
                 terrAtkOrders = attackOrdersGroupByTerritory.get(destinationTerr);

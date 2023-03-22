@@ -5,119 +5,287 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.duke.ece651.team5.shared.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ClientTest {
-  ServerSocket serverSocket;
-
-  private void initServer(int type) throws IOException {
-    serverSocket = new ServerSocket(12345);
-    new Thread(() -> {
-      while (true) {
-        try {
-          Socket socket = serverSocket.accept();
-          new Thread(() -> {
-            try {
-              handleClient(socket, type);
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-          }).start();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+  public static Client createPlayer(PlayerConnection test,BufferedReader input,PrintStream output) throws UnknownHostException, IOException{
+    Client client = new Client(input, output){
+      @Override
+      public void createPlayer(){
+          try{
+            this.playerConnection = test;
+            this.textPlayer = new TextPlayer(input, output);
+          }
+          catch(Exception e) {
+          }
       }
-    }).start();
+    }; 
+    client.createPlayer();
+    return client;
   }
 
-  private void handleClient(Socket socket, int type) throws IOException {
-    ObjectOutputStream outputObj = new ObjectOutputStream(socket.getOutputStream());
-    RISKMap map = new RISKMap();
-    boolean yes = true;
-    boolean no = false;
-    String name = "Green";
-    if (type == 0) {
-      outputObj.writeObject(map);
-    } else if (type == 1) {
-      outputObj.writeObject(yes);
-    } else if (type == 2) {
-      outputObj.writeObject(no);
-    } else if (type == 3) {
-      outputObj.writeObject(name);
-    }
 
+
+  @Test
+  void testRecvMap() throws IOException, ClassNotFoundException{
+    RISKMap map = mock(RISKMap.class);
+    PlayerConnection test = mock(PlayerConnection.class);
+    when(test.readData()).thenReturn(map);
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedReader input = new BufferedReader(new StringReader("1"));
+    PrintStream output = new PrintStream(bytes, true);
+    Client client = createPlayer(test, input, output);
+    
+    assertEquals(map, client.recvMap());
   }
 
-  private void closeServer() throws IOException {
-    serverSocket.close();
+
+  @Test
+  void testHandlePlayerNameFirst() throws IOException, ClassNotFoundException{
+    // Thread.sleep(100);
+    // initServer(4);
+    PlayerConnection test = mock(PlayerConnection.class);
+    when(test.readData()).thenReturn("First", "Red");
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedReader input = new BufferedReader(new StringReader("4"));
+    PrintStream output = new PrintStream(bytes, true);
+    Client client = createPlayer(test, input, output);
+
+    // ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    // Client client = createNewClient("4", bytes);
+    // client.initClient();
+    client.handlePlayerName();
+    String expected = "\nWaiting to receive your player name...\n" + 
+                      "\nSeems like you are the first player in the game!\n" + 
+                      "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n\n" +
+                      "\nSending your choice..\n\n" + 
+                      "\nWe got your player name!\n" + 
+                      "\nThis is your player name for this game: Red\n";
+    assertEquals(expected, bytes.toString());
+    // client.closeClientSocket();
+    // closeServer();
   }
 
   @Disabled
   @Test
-  void testInitClient() throws IOException, InterruptedException {
-    Thread.sleep(1000);
-    initServer(0);
-    Client client = new Client("localhost", 12345);
-    String res = client.initClient();
-    assertEquals("Initiate client successfully", res);
-    client.closeClientSocket();
-    closeServer();
+  void testHandlePlayerName() throws IOException, ClassNotFoundException, InterruptedException{
+    // Thread.sleep(100);
+    // initServer(3);
+    // ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    // Client client = createNewClient("3", bytes);
+    // client.initClient();
+    PlayerConnection test = mock(PlayerConnection.class);
+    when(test.readData()).thenReturn("Green");
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedReader input = new BufferedReader(new StringReader("4"));
+    PrintStream output = new PrintStream(bytes, true);
+
+    Client client = createPlayer(test, input, output);
+    client.handlePlayerName();
+    String expected = "\nWaiting to receive your player name...\n\n" + 
+                      "\nWe got your player name!\n" + 
+                      "\nThis is your player name for this game: Green\n";
+    assertEquals(expected, bytes.toString());
+    // client.closeClientSocket();
+    // closeServer();
   }
 
   @Disabled
   @Test
-  void testInitClientErr() throws IOException, InterruptedException {
-    Thread.sleep(1000);
-    Client client = new Client();
-    String res = client.initClient();
-    assertEquals("Cannot init Client", res);
+  void testHandlePlacement() throws IOException, ClassNotFoundException, InterruptedException{
+    // Thread.sleep(100);
+    // initServer(2);
+    // ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    // Client client = createNewClient("10\n40\n15\n10\n40\n15\n", bytes);
+    // client.initClient();
+    RISKMap map = createRISKMap();
+    PlayerConnection test = mock(PlayerConnection.class);
+    when(test.readData()).thenReturn(map, false, map, true);
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedReader input = new BufferedReader(new StringReader("10\n40\n15\n10\n40\n15\n"));
+    PrintStream output = new PrintStream(bytes, true);
+
+    Client client = createPlayer(test, input, output);
+    client.textPlayer.setPlayerName("Green");
+    client.handlePlacement();
+    String expected = 
+    "This is your player name for this game: Green\n" + 
+    "\nNow you need to decide where to put your territories...\n" + 
+    "Think Carefully!\n\n" + 
+    "\nReceiving RISK map...\n" + 
+    "\nReceived Map\n" + 
+    "\nHow many unit you want to place in your Elantris\n" + 
+    "How many unit you want to place in your Narnia\n" + 
+    "\nWe got all your choices, sending your choices...\n" + 
+    "\nSorry your unit placement is not successful, please give another try.\n" + 
+    "\nReceiving RISK map...\n" + 
+    "\nReceived Map\n" + 
+    "\nHow many unit you want to place in your Elantris\n" + 
+    "How many unit you want to place in your Narnia\n" + 
+    "How many unit you want to place in your Oz\n" + 
+    "Number input out of range. Please try again.\n" + 
+    "How many unit you want to place in your Oz\n" + 
+    "\nWe got all your choices, sending your choices...\n" + 
+    "\nGreat! All your placement choices get approved!\n";
+    assertEquals(expected, bytes.toString());
   }
 
   @Test
-  void testRecvMap() throws IOException, ClassNotFoundException {
-    initServer(0);
-    Client client = new Client();
-    client.initClient();
-    // boolean res = client.recvMapFromServer();
-    RISKMap expected = new RISKMap();
-    RISKMap res = client.recvMap();
-    assertEquals(expected.getTerritories(), res.getTerritories());
-    client.closeClientSocket();
-    closeServer();
+  void testPlayOneTurn() throws IOException, ClassNotFoundException{
+    RISKMap map = createRISKMap();
+    PlayerConnection test = mock(PlayerConnection.class);
+    when(test.readData()).thenReturn(map, false, map, true);
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedReader input = new BufferedReader(new StringReader("M\n3-Elantris-Narnia\nD\nM\n3-Elantris-Narnia\nD\n"));
+    PrintStream output = new PrintStream(bytes, true);
+
+    Client client = createPlayer(test, input, output);
+    client.textPlayer.setPlayerName("Green");
+    client.playOneTurn();
+    String expected =
+    "This is your player name for this game: Green\n\n" +
+    "Now it's time to play the game!\n\n" + 
+
+
+    "\nReceiving RISK map...\n" + 
+      
+    "\nReceived Map\n" + 
+      
+    "\nGreen player:\n" + 
+    "-------------\n" + 
+    "6 units: in Elantris (next to: Narnia, Scadrial, Midkemia, Roshar)\n" + 
+    "10 units: in Narnia (next to: Elantris, Midkemia)\n" + 
+    "8 units: in Oz (next to: Mordor, Scadrial, Midkemia, Gondor)\n" + 
+      
+    "\nRed player:\n" + 
+    "-------------\n" + 
+    "12 units: in Midkemia (next to: Elantris, Narnia, Scadrial, Oz)\n" + 
+    "3 units: in Roshar (next to: Elantris, Hogwarts, Scadrial)\n" + 
+    "13 units: in Gondor (next to: Mordor, Oz)\n\n" + 
+      
+      
+    "\nWhat would you like to do?\n" + 
+    "(M)ove\n" + 
+    "(A)ttack\n" + 
+    "(D)one\n\n" + 
+      
+    "Please enter your unit number of units to M, the source territory, and the destination territory.\n" + 
+    "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n\n" + 
+      
+    "What would you like to do?\n" + 
+    "(M)ove\n" + 
+    "(A)ttack\n" + 
+    "(D)one\n\n" + 
+    
+      
+    "\nWe got all your orders, sending your orders...\n" + 
+      
+    "\nSorry your commit is not successful, please give another try.\n" + 
+      
+    "\nReceiving RISK map...\n" + 
+      
+    "\nReceived Map\n" + 
+      
+    "\nGreen player:\n" + 
+    "-------------\n" + 
+    "6 units: in Elantris (next to: Narnia, Scadrial, Midkemia, Roshar)\n" + 
+    "10 units: in Narnia (next to: Elantris, Midkemia)\n" + 
+    "8 units: in Oz (next to: Mordor, Scadrial, Midkemia, Gondor)\n" + 
+      
+    "\nRed player:\n" + 
+    "-------------\n" + 
+    "12 units: in Midkemia (next to: Elantris, Narnia, Scadrial, Oz)\n" + 
+    "3 units: in Roshar (next to: Elantris, Hogwarts, Scadrial)\n" + 
+    "13 units: in Gondor (next to: Mordor, Oz)\n\n" + 
+      
+      
+    "\nWhat would you like to do?\n" + 
+    "(M)ove\n" + 
+    "(A)ttack\n" + 
+    "(D)one\n\n" + 
+      
+    "Please enter your unit number of units to M, the source territory, and the destination territory.\n" + 
+    "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n" + 
+      
+    "\nWhat would you like to do?\n" + 
+    "(M)ove\n" + 
+    "(A)ttack\n" + 
+    "(D)one\n\n" + 
+      
+
+    "\nWe got all your orders, sending your orders...\n" + 
+      
+    "\nYou successfully commit all your orders!\n";
+    
+    assertEquals(expected, bytes.toString());
   }
 
   @Test
-  void testRecvFirstPlayerSignal() throws IOException, ClassNotFoundException {
-    initServer(1);
-    Client client = new Client();
-    client.initClient();
-    boolean res = client.recvFirstPlayerSignal();
-    assertEquals(true, res);
-    client.closeClientSocket();
-    closeServer();
+  void testCheckResult() throws IOException, ClassNotFoundException, InterruptedException{
+    HashMap<String, Boolean> res = new HashMap<>();
+    res.put("Green", false);
+    res.put("Red", false);
+    PlayerConnection test = mock(PlayerConnection.class);
+    when(test.readData()).thenReturn(res);
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedReader input = new BufferedReader(new StringReader("1"));
+    PrintStream output = new PrintStream(bytes, true);
+
+    Client client = createPlayer(test, input, output);
+    client.textPlayer.setPlayerName("Green");
+    client.checkResult();
+    String expected = 
+    "This is your player name for this game: Green\n" +
+    "\nSeems like everyone finishes their turn.\n" +
+    "Now let's check the result of this round...\n" +
+    "\nSorry Player Green, you lose for this Game.\n" + 
+    "Now you have two options:\n" + 
+    "1. Continue to watch the game\n" + 
+    "2. Quit the game\n" + 
+    "Please enter 1 or 2\n\n";
+    assertEquals(expected, bytes.toString());
+
   }
 
   @Test
-  void testRecvPlayerName() throws IOException, ClassNotFoundException {
-    initServer(3);
-    Client client = new Client();
-    client.initClient();
-    String name = client.recvString();
-    assertEquals("Green", name);
-    client.closeClientSocket();
-    closeServer();
+  void testCheckResult2() throws IOException, ClassNotFoundException, InterruptedException{
+    HashMap<String, Boolean> res = new HashMap<>();
+    res.put("Green", true);
+    res.put("Red", null);
+
+		PlayerConnection test = mock(PlayerConnection.class);
+    when(test.readData()).thenReturn(res);
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedReader input = new BufferedReader(new StringReader("1"));
+    PrintStream output = new PrintStream(bytes, true);
+
+    Client client = createPlayer(test, input, output);
+    client.textPlayer.setPlayerName("Green");
+    client.checkResult();
+    String expected = 
+    "This is your player name for this game: Green\n" +
+    "\nSeems like everyone finishes their turn.\n" +
+    "Now let's check the result of this round...\n" +
+    "\nPlayer Green wins!\n" +
+    "Game End NOW\n";
+    assertEquals(expected, bytes.toString());
   }
 
 
   @Test
-  void testMain() throws IOException {
-    initServer(0);
-    Client.main(null);
-    closeServer();
+  void testMain() throws IOException, ClassNotFoundException, InterruptedException{
+		Client.main(null);
   }
 
   @Test
@@ -125,6 +293,27 @@ public class ClientTest {
     Client.main(null);
 
   }
+
+
+  private RISKMap createRISKMap(){
+    RISKMap map = new RISKMap();
+    ArrayList<Player> players = new ArrayList<>();
+    Player p = new Player("Green");
+    p.addTerritory(map.getTerritoryByName("Elantris"));
+    p.addTerritory(map.getTerritoryByName("Narnia"));
+    p.addTerritory(map.getTerritoryByName("Oz"));
+    Player p2 = new Player("Red");
+    p2.addTerritory(map.getTerritoryByName("Midkemia"));
+    p2.addTerritory(map.getTerritoryByName("Roshar"));
+    p2.addTerritory(map.getTerritoryByName("Gondor"));
+    players.add(p);
+    players.add(p2);
+    map.initPlayers(players);
+    return map;
+  }
+
+
+
 
   // @Test
   // void testCommunicate() {

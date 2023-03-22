@@ -156,7 +156,7 @@ public class Server {
     /*
      * Start to play the game
      */
-    public void playGame() throws InterruptedException {
+    public void playGame() throws InterruptedException, IOException, ClassNotFoundException {
         // tell every player that placing stage is over, let's start the game! (send)
         // until end, later need to change
         System.out.println("Let's start to play the game!");

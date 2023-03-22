@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.client;
+package edu.duke.ece651.team5.shared;
 
 
 import java.io.Serializable;
@@ -9,15 +9,15 @@ import edu.duke.ece651.team5.shared.*;
 
 //todo change Integer to AttackOrder object and moveOrder object
 public class Action implements Serializable {
-  ArrayList<Integer> attackOrders;
+  ArrayList<AttackOrder> attackOrders;
   ArrayList<MoveOrder> moveOrders;
 
-  public Action(ArrayList<Integer> attackOrders, ArrayList<MoveOrder> moveOrders){
+  public Action(ArrayList<AttackOrder> attackOrders, ArrayList<MoveOrder> moveOrders){
     this.attackOrders = attackOrders;
     this.moveOrders = moveOrders;
   }
 
-  public ArrayList<Integer> getAttackOrders(){
+  public ArrayList<AttackOrder> getAttackOrders(){
     return attackOrders;
   }
 

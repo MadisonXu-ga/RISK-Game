@@ -71,7 +71,7 @@ public class TextPlayer {
     String instruction = "What would you like to do?\n" + "(M)ove\n" + "(A)ttack\n" + "(D)one\n";
     boolean commit = false;
      //todo change type
-    ArrayList<Integer> attackOrders = new ArrayList<>();
+    ArrayList<AttackOrder> attackOrders = new ArrayList<>();
     ArrayList<MoveOrder> moveOrders = new ArrayList<>();
     while(!commit){
       try{
@@ -91,7 +91,7 @@ public class TextPlayer {
   }
 
 
-  private void tryCreateNewOrder(String type, ArrayList<Integer> attackOrders, ArrayList<MoveOrder> moveOrders, RISKMap currMap){
+  private void tryCreateNewOrder(String type, ArrayList<AttackOrder> attackOrders, ArrayList<MoveOrder> moveOrders, RISKMap currMap){
     String instruction = "Please enter your unit number of units to " 
     + type + ", the source territory, and the destination territory.\n"
     + "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n"; 
@@ -115,7 +115,7 @@ public class TextPlayer {
         }else{
           //create new attack order
           //add order to attackOrders
-          attackOrders.add(0);
+          // attackOrders.add(0);
           //throw Illegal Exception if not success
           return;
         }

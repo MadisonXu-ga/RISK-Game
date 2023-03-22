@@ -3,12 +3,19 @@ package edu.duke.ece651.team5.server;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
+
+import edu.duke.ece651.team5.shared.AttackOrder;
+import edu.duke.ece651.team5.shared.MoveOrder;
+import edu.duke.ece651.team5.shared.Player;
 import edu.duke.ece651.team5.shared.RISKMap;
+import edu.duke.ece651.team5.shared.Territory;
 
 import java.io.*;
 
@@ -142,13 +149,6 @@ public class Server {
         // until end, later need to change
         System.out.println("Let's start to play the game!");
         while (true) {
-            // for each player:
-
-            // record player's action list (receive)
-
-            // may need to check valid
-            // apply all the actions
-            // check win or lose
             ArrayList<PlayHandler> phs = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
                 PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController);
@@ -162,8 +162,60 @@ public class Server {
             }
 
             // get each player's actions and resolve actions.
-            
-            for()
+            // move first
+            for (int i = 0; i < playerNum; ++i) {
+                ArrayList<MoveOrder> moveOrders = phs.get(i).getPlayerMoveOrders();
+                for (MoveOrder mo : moveOrders) {
+                    mo.execute(this.gameController.getRiskMap());
+                }
+            }
+
+            // attack later
+            // Territory
+            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
+            for (int i = 0; i < playerNum; ++i) {
+                ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
+                GroupAttackOrdersByDesTerritory(attackOrders, attackOrdersGroupByTerritory);
+                // TODO: call resolve attack method
+            }
+
+            // class
+            // execute
+            // HashMap<String, ArrayList<AttackOrder>> + map
+            //
+
+            // check win or lose or null
+            // TODO: abstract to funtion
+            checkPlayerStatus(this.gameController.getRiskMap());
+        }
+    }
+
+    //
+    private HashMap<String, Boolean> checkPlayerStatus(RISKMap riskMap) {
+        HashMap<String, Boolean> playerStatus = new HashMap<>();
+        ArrayList<Player> players = riskMap.getPlayers();
+        for (Player player : players) {
+            if (player.getTerritories().size() == 0) {
+                playerStatus.put(player.getName(), false);
+            }
+            else if(player.getTerritories().size()==riskMap.getTerritories().size()){
+                
+            }
+        }
+        return playerStatus;
+    }
+
+    private void GroupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
+            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
+        for (AttackOrder attackOrder : attackOrders) {
+            String destinationTerr = attackOrder.getDestinationName();
+            ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
+            // if exists
+            if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {
+                terrAtkOrders = attackOrdersGroupByTerritory.get(destinationTerr);
+            }
+            terrAtkOrders.add(attackOrder);
+            attackOrdersGroupByTerritory.put(destinationTerr, terrAtkOrders);
         }
     }
 

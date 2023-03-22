@@ -1,9 +1,11 @@
 package edu.duke.ece651.team5.server;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.AdjacentRuleChecker;
 import edu.duke.ece651.team5.shared.MoveOrder;
 import edu.duke.ece651.team5.shared.MoveOwnershipRuleChecker;
@@ -12,8 +14,6 @@ import edu.duke.ece651.team5.shared.OrderRuleChecker;
 public class PlayHandler extends ConnectionHandler {
     private GameController gameController;
     private Action action;
-    private ArrayList<MoveOrder> moveOrders;
-    private ArrayList<AttackOrder> attackOrders;
 
     public PlayHandler(ObjectOutputStream oos, ObjectInputStream ois, GameController gameController) {
         super(oos, ois);
@@ -23,13 +23,20 @@ public class PlayHandler extends ConnectionHandler {
     @Override
     public void run() {
         // TODO: sss
-        boolean isValid = false;
-        do {
-            sendObject(gameController.getRiskMap());
-            this.action = (Action) recvObject();
-            isValid = checkActions(action);
-        } while (!isValid);
-        sendObject(isValid);
+        try {
+            boolean isValid = false;
+            do {
+                sendObject(gameController.getRiskMap());
+                this.action = (Action) recvObject();
+                isValid = checkActions(action);
+            } while (!isValid);
+            sendObject(isValid);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean checkActions(Action action) {
@@ -54,11 +61,11 @@ public class PlayHandler extends ConnectionHandler {
         return true;
     }
 
-    public ArrayList<MoveOrder> getPlayerMoveOrders(){
-
+    public ArrayList<MoveOrder> getPlayerMoveOrders() {
+        return action.getMoveOrders();
     }
 
-    public ArrayList<AttackOrder> getPlayerAttackOrders(){
-        // 
+    public ArrayList<AttackOrder> getPlayerAttackOrders() {
+        return action.getAttackOrders();
     }
 }

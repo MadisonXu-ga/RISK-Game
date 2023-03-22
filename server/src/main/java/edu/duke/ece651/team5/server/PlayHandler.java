@@ -27,7 +27,6 @@ public class PlayHandler extends ConnectionHandler {
 
     @Override
     public void run() {
-        // TODO: sss
         try {
             if (playerConnectionStatus != false) {
                 sendObject(gameController.getRiskMap());

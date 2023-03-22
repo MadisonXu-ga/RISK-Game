@@ -23,7 +23,6 @@ class MoveOrderTest {
         assertEquals(16, midkemiaUnitNum);
     }
 
-
     @Test
     void testEqualOrder(){
         MoveOrder move1 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);

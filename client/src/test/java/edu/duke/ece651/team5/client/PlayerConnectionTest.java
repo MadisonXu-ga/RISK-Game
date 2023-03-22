@@ -6,10 +6,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class PlayerConnectionTest {
+
+  @Test
+  void testReadAndWrite() throws IOException, ClassNotFoundException {
+      Socket mockSocket = mock(Socket.class);
+      String data = "data";
+      ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+      ObjectOutputStream objOut = new ObjectOutputStream(bytesOut);
+      objOut.writeObject(data);
+      objOut.flush();
+      when(mockSocket.getOutputStream()).thenReturn(bytesOut);
+  
+      ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
+      when(mockSocket.getInputStream()).thenReturn(bytesIn);
+  
+      PlayerConnection playerConnection = new PlayerConnection(mockSocket);
+      playerConnection.writeData(data);
+      assertEquals(data, playerConnection.readData());
+      playerConnection.close();
+  }
+
   @Test
   void testCloseException() throws IOException {
     PlayerConnection playerConnection = mock(PlayerConnection.class);

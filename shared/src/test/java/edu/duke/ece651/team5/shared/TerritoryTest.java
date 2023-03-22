@@ -62,9 +62,14 @@ class TerritoryTest {
 
         //TODO here we need to test when a territory doesnt equate to "this "
         Territory terr1 = new Territory("green", new HashMap<>());
-        Territory terr2 = new Territory("green", new HashMap<>() );
-
-        assertEquals(terr1, terr2);
+        Territory terr2 = new Territory("green", new HashMap<>());
+        Territory terr3 = new Territory(null, new HashMap<>());
+        
+        assertTrue(terr1.equals(terr2));
+        assertFalse(terr1.equals(terr3));
+        assertFalse(terr1.equals(1));
+        assertFalse(terr1.equals(null));
         assertEquals(terr1.hashCode(), terr2.hashCode());
+        assertEquals(0, terr3.hashCode());
     }
 }

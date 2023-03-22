@@ -2,7 +2,9 @@ package edu.duke.ece651.team5.client;
 
 import edu.duke.ece651.team5.shared.*;
 
-
+/**
+ * 
+ */
 public class MapTextView {
   private RISKMap map;
 

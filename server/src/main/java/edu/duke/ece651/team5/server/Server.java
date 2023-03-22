@@ -188,7 +188,7 @@ public class Server {
 
             // attack later
             // Territory
-            HashMap<String, ArrayList<Integer>> attackOrdersGroupByTerritory = new HashMap<>();
+            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
             for (int i = 0; i < playerNum; ++i) {
                 if (this.playerConnectionStatus.get(i) != true) {
                     continue;
@@ -266,12 +266,12 @@ public class Server {
         return playerStatus;
     }
 
-    private void GroupAttackOrdersByDesTerritory(ArrayList<Integer> attackOrders,
-            HashMap<String, ArrayList<Integer>> attackOrdersGroupByTerritory) {
-        for (Integer attackOrder : attackOrders) {
+    private void GroupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
+            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
+        for (AttackOrder attackOrder : attackOrders) {
             // String destinationTerr = attackOrder.getDestinationName();
             String destinationTerr = "Hardcode";
-            ArrayList<Integer> terrAtkOrders = new ArrayList<>();
+            ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
             // if exists
             if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {
                 terrAtkOrders = attackOrdersGroupByTerritory.get(destinationTerr);

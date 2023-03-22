@@ -66,10 +66,10 @@ public class TextPlayerTest {
 
 
   private Action createAction(){
-    ArrayList<Integer> attackOrder = new ArrayList<>();
+    ArrayList<AttackOrder> attackOrder = new ArrayList<>();
     ArrayList<MoveOrder> moveOrder = new ArrayList<>();
-    attackOrder.add(3);
-    attackOrder.add(4);
+    // attackOrder.add(3);
+    // attackOrder.add(4);
     moveOrder.add(new MoveOrder("Elantris", "Narnia", 3, UnitType.SOLDIER));
     return new Action(attackOrder, moveOrder);
   }

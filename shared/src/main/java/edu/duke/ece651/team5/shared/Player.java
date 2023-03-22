@@ -7,17 +7,16 @@ import java.util.Objects;
 public class Player implements Serializable{
   private String name;
   private ArrayList<Territory> territories;
-  private final int availableUnit = 50;
+  private int availableUnit;
 
   public Player(String color){
     this.name = color;
     this.territories = new ArrayList<>();
+    this.availableUnit = 50;
   }
 
   public void addTerritory(Territory aTerritory){
-
     territories.add(aTerritory);
-
   }
 
   public int getAvailableUnit(){
@@ -25,9 +24,7 @@ public class Player implements Serializable{
   }
 
   public ArrayList<Territory> getTerritories(){
-
     return territories;
-
   }
 
   public String getName(){

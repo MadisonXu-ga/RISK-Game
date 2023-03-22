@@ -39,6 +39,9 @@ public class RISKMap implements Serializable {
         return territories;
     }
 
+    /**
+     * Helper function to init a map
+     */
     private void initMap() {
         ArrayList<Territory> territoryList = getTerritoryList();
         territories.addAll(territoryList);
@@ -47,6 +50,12 @@ public class RISKMap implements Serializable {
 
     // todo: this is just for convenience, might refactor it later
     // I might wanna read this from json
+
+    /**
+     * Helper function to init a list of territories
+     * to be added to the map
+     * @return a list of territories with necessary info
+     */
     private ArrayList<Territory> getTerritoryList() {
         return new ArrayList<>(Arrays.asList(
         initTerritory("Narnia", UnitType.SOLDIER, 10),
@@ -61,12 +70,24 @@ public class RISKMap implements Serializable {
         ));
     }
 
+    /**
+     * Init a single territory
+     * @param name name of the territory
+     * @param unit unit type to be placed
+     * @param num number of unit
+     * @return territory created
+     */
     private Territory initTerritory(String name, Unit unit, int num) {
         HashMap<Unit, Integer> units = new HashMap<>();
         units.put(unit, num);
         return new Territory(name, units);
     }
 
+    /**
+     * Get a certain territory by its name
+     * @param name the name of the territory
+     * @return the territory with this name
+     */
     public Territory getTerritoryByName(String name) {
         for (Territory t : territories) {
             if (t.getName().equals(name)) {
@@ -76,6 +97,11 @@ public class RISKMap implements Serializable {
         throw new IllegalArgumentException("Does not exist territory " + name);
     }
 
+    /**
+     * Get a certain player by its color
+     * @param name color
+     * @return the palyer with this color
+     */
     public Player getPlayerByName(String name) {
         for (Player p : players) {
             if (p.getName().equals(name)) {
@@ -86,6 +112,10 @@ public class RISKMap implements Serializable {
     }
 
     // todo: add more
+
+    /**
+     * Helper function to init all the connections
+     */
     private void initConnection() {
         addConnection("Narnia", Arrays.asList("Elantris", "Midkemia"));
         addConnection("Elantris", Arrays.asList("Narnia", "Midkemia", "Scadrial", "Roshar"));
@@ -96,6 +126,11 @@ public class RISKMap implements Serializable {
         addConnection("Gondor", Arrays.asList("Oz", "Mordor"));
     }
 
+    /**
+     * Helper function to initialize the connections between territories
+     * @param name territory name
+     * @param names all the neighbours' name of this territory
+     */
     private void addConnection(String name, List<String> names) {
         Territory t = getTerritoryByName(name);
 
@@ -108,14 +143,33 @@ public class RISKMap implements Serializable {
         connection.put(t, adjTerritories);
     }
 
+    /**
+     * To tell if two territories are adjacent
+     * @param t1 one territory
+     * @param t2 the other
+     * @return true of they are adjacent, otherwise false
+     */
     public boolean isAdjacent(Territory t1, Territory t2) {
         return connection.get(t1).contains(t2);
     }
 
+    /**
+     * Get all adjacent territories for a certain territory
+     * @param t any territory
+     * @return the set of adjacent territories
+     */
     public HashSet<Territory> getAdjacentTerritories(Territory t) {
         return connection.get(t);
     }
 
+    /**
+     * Using BFS to tell if there is a path from source to dest
+     * where all the passing territories all belong to
+     * the owner of source and dest
+     * @param source start of the path
+     * @param destination end of the path
+     * @return true if exist such a path, otherwise false
+     */
     public boolean hasPathWithSameOwner(Territory source, Territory destination) {
         Player owner = source.getOwner();
         Set<Territory> visited = new HashSet<>();

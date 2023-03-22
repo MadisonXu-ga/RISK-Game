@@ -5,6 +5,15 @@ public class UnitNumberRuleChecker extends OrderRuleChecker{
         super(next);
     }
 
+    /**
+     * Check if the order meets the rule that the number of unit
+     * that is going to be updated from the source territory
+     * cannot be larger than it currently has
+     * @param order the order that should be checked
+     * @param player the player that issues this order
+     * @param map the map
+     * @return error message if it does not meet, null if it does
+     */
     @Override
     protected String checkMyRule(BasicOrder order, Player player, RISKMap map) {
         int number = order.getNumber();

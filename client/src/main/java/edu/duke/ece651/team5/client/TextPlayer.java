@@ -2,30 +2,47 @@ package edu.duke.ece651.team5.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.shared.*;
 
+//todo change AttackOrder type to AttackOrder(now Integer)
+/*
+ * TextPlayer is responsible for the interaction between user and client side
+ * It will do format check on user input and generate corrresponding message to client 
+ * that ready to be sent to server
+ */
 public class TextPlayer {
   private String playerName;
 
   private final BufferedReader inputReader;
   private final PrintStream out;
 
+  /**
+   * constructor to call with
+   * @param br bufferReader to read input
+   * @param out PrintStream for output
+   */
   public TextPlayer(BufferedReader br, PrintStream out){
     this.inputReader = br;
     this.out = out;
   }
 
+  /**
+   * Get Player Name
+   * @return playerName
+   */
   public String getPlayerName(){
     return playerName;
   }
 
+  /**
+   * If player is the first one enter the game, she/he is responsible to select the number of player in this game
+   * and will do a format and bound check for user input
+   * @return a int for the user selection 
+   */
   public int selectNumPlayer(){
     out.println("Seems like you are the first player in the game!");
     String instruction = "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n";
@@ -33,31 +50,47 @@ public class TextPlayer {
     return numPlayer;
   }
 
+  /**
+   * Set the player name 
+   * @param playerName
+   */
   public void setPlayerName(String playerName){
     out.println("This is your player name for this game: " + playerName);
     this.playerName = playerName;
   }
 
-
+  /**
+   * Let user select how many unit wants to place in each territory
+   * and will do a format check and bound check for user each input
+   * @param currMap the map for the game 
+   * @return a HashMap with key of Territory Name and value of number of desired unit
+   */
   public HashMap<String, Integer> unitPlacement(RISKMap currMap){
     Player player = currMap.getPlayerByName(getPlayerName());
     int availableUnit = player.getAvailableUnit();
     int numTerries = player.getTerritories().size();
     int count = 0;
     HashMap<String, Integer> placementInfo = new HashMap<>();
+    //iterate each territory this player is owned
     for(Territory t: player.getTerritories()){
-      if(availableUnit <= 0 || count == numTerries-1){
+      //if player do not have enough unit or is select last territory, will assign automatically
+      if(availableUnit == 0 || count == numTerries-1){
         placementInfo.put(t.getName(), availableUnit);
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
       int placeUnit = parseNumFromUsr(instruction, 0, availableUnit);
       placementInfo.put(t.getName(), placeUnit);
+      //update available unit number
       availableUnit -= placeUnit;
     }
     return placementInfo;
   }
 
+  /**
+   * Responsible to print the placement result to player
+   * @param unitApprove approvement from server
+   */
   public void printPlacementResult(boolean unitApprove){
     if(unitApprove){
       out.println("Great! All your placement choices get approved!");
@@ -66,6 +99,12 @@ public class TextPlayer {
     }
   }
 
+  /**
+   * Display the current map and ask player to select order type and do format check for user's input
+   * and collect orders and ready to be sent to server
+   * @param currMap the map for current Game
+   * @return a Action objects contains all the orders user want to place for current turn
+   */
   public Action playOneTurn(RISKMap currMap){
     displayMap(currMap);
     String instruction = "What would you like to do?\n" + "(M)ove\n" + "(A)ttack\n" + "(D)one\n";
@@ -75,6 +114,7 @@ public class TextPlayer {
     ArrayList<MoveOrder> moveOrders = new ArrayList<>();
     while(!commit){
       try{
+        //read user input and do type check
         String type = readUserInput(instruction);
         typeCheck(type);
         if(type.equalsIgnoreCase("D") || type.equalsIgnoreCase("done")){
@@ -96,14 +136,17 @@ public class TextPlayer {
     + type + ", the source territory, and the destination territory.\n"
     + "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n"; 
     boolean check = false;
-    while(!check){
+    do{
       try{
         String input = readUserInput(instruction);
         ArrayList<String> inputs = parseUserInput(input);
-        int numUnit = getNumUnit(inputs);
+        // int numUnit = getNumUnit(inputs);
+        int numUnit = Integer.parseInt(inputs.get(0));
         //get Territory info
-        String srcTerri = getSrcTerri(inputs, currMap).getName();
-        String desTerri = getDesTerri(inputs, currMap).getName();
+        // String srcTerri = getSrcTerri(inputs, currMap).getName();
+        String srcTerri = currMap.getTerritoryByName(inputs.get(1)).getName();
+        // String desTerri = getDesTerri(inputs, currMap).getName();
+        String desTerri  = currMap.getTerritoryByName(inputs.get(2)).getName();
         if(type.toUpperCase().charAt(0) == 'M'){
           //create new move order
           MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER);
@@ -122,7 +165,7 @@ public class TextPlayer {
       }catch(Exception e){
         out.println("Not a valid input, please try again");
       }
-    }
+    }while(!check);
   }
 
   /**
@@ -158,13 +201,16 @@ public class TextPlayer {
                 + "2. Quit the game\n"
                 + "Please enter 1 or 2\n";
       int answer = parseNumFromUsr(instruction, 1, 2);
-      response = (answer == 1) ? "Display" : "Close";
+      response = (answer == 1) ? "Display" : "Disconnect";
     }
     return response;
   }
 
 
-
+  /**
+   * Responsible to print the commit result to player
+   * @param commitApprove approvement sent from server
+   */
   public void printCommitResult(boolean commitApprove){
     if(commitApprove){
       out.println("You successfully commit all your orders!");
@@ -173,15 +219,23 @@ public class TextPlayer {
     }
   }
 
-  public void displayMap(RISKMap currMap){
+  /**
+   * display map info to player
+   * @param currMap the current map client received from server
+   */
+  void displayMap(RISKMap currMap){
     MapTextView view = new MapTextView(currMap);
     out.println(view.displayMap());
   }
 
-
-
-
-
+  /**
+   * helper method to parse number from user input, it will also check formate and bound
+   * if user input is not correct, it will ask user to conitnue type input untill pass
+   * @param instruction a string with instruction for user
+   * @param lowerBound a lower bound to do bound check
+   * @param upperBound a upper bound to do bound check
+   * @return return a valid int number inside the range
+   */
   private int parseNumFromUsr(String instruction, int lowerBound, int upperBound){
     boolean status = false;
     int res = 0;
@@ -201,15 +255,25 @@ public class TextPlayer {
     return res;
   }
 
+  /**
+   * helper method to read input from terminal
+   * @param prompt the helper instruction message
+   * @return a string contained user input
+   * @throws IOException will throw exception is msg is null
+   */
   private String readUserInput(String prompt) throws IOException {
     out.println(prompt);
-    String type = inputReader.readLine();
-    if (type == null)
+    String msg = inputReader.readLine();
+    if (msg == null)
       throw new IOException("Invalid Format: input cannot be null");
-    return type;
+    return msg;
   }
 
-
+  /**
+   * helper method to check if user has correct type input
+   * @param type the input to be checked
+   * @throws IllegalArgumentException will throw if user input is not within the correct choices
+   */
   private void typeCheck(String type){
     if(!(type.equalsIgnoreCase("D") || type.equalsIgnoreCase("done")
     ||type.equalsIgnoreCase("M") || type.equalsIgnoreCase("move")
@@ -218,6 +282,11 @@ public class TextPlayer {
     }
   }
 
+  /**
+   * helper method to parse user input of move order input (source, destination, unit number)
+   * @param input the input to be parsed
+   * @return a string arraylist contains each info
+   */
   public ArrayList<String> parseUserInput(String input){
     ArrayList<String> res = new ArrayList<>();
     int firstParse = input.indexOf("-");
@@ -228,56 +297,18 @@ public class TextPlayer {
     return res;
   }
 
-  private int getNumUnit(ArrayList<String> inputs){
-    return Integer.parseInt(inputs.get(0));
-  }
-
-  private Territory getSrcTerri(ArrayList<String> inputs, RISKMap currMap){
-    return currMap.getTerritoryByName(inputs.get(1));
-  }
-
-  private Territory getDesTerri(ArrayList<String> inputs, RISKMap currMap){
-    return currMap.getTerritoryByName(inputs.get(2));
-  }
-
-
-
-  // public boolean selectPlayer() throws IOException, ClassNotFoundException{
-  //   // ArrayList<Player> playersList = new ArrayList<>();
-  //   //todo
-  //   //Iterate playersList to get available players choices
-  //   // for(Player p: map.getAllPlayers){
-  //   //   playersList.add(p);
-  //   // }
-  //   // String instruction = "Here are the all available choices of players for you to choose: \n"
-  //   //                        + "Enter the player you want to choose: \n";
-  //   // boolean status = false;
-  //   // while(!status){
-  //   //   String name = readUserInput(instruction);
-  //   //   boolean verify = false;
-  //   //   for(Player player: playersList){
-  //   //     if(name.equalsIgnoreCase(player.getName())){
-  //   //       //send this name to server to get verification
-  //   //       objOutStream.writeObject(name);
-  //   //       verify = true;
-  //   //       break;
-  //   //     }
-  //   //   }
-  //   //   if(!verify){
-  //   //     out.println("Not a valid input, please try again");
-  //   //     continue;
-  //   //   }
-  //     //get verification back from server
-  //     //! where to handle if not received a string from server
-  //     this.playerName = (String) objInStream.readObject();
-  //     if(!playerName.isBlank()){
-  //       out.println("You successfully become Player " + playerName + " in this game!");
-  //     }else{
-  //       out.println("Connecting...");
-  //     }
-  //   // }
-  //   return true;
+  // private int getNumUnit(ArrayList<String> inputs){
+  //   return Integer.parseInt(inputs.get(0));
   // }
 
+
+  // private Territory getSrcTerri(ArrayList<String> inputs, RISKMap currMap){
+  //   return currMap.getTerritoryByName(inputs.get(1));
+  // }
+
+
+  // private Territory getDesTerri(ArrayList<String> inputs, RISKMap currMap){
+  //   return currMap.getTerritoryByName(inputs.get(2));
+  // }
  
 }

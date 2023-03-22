@@ -46,7 +46,7 @@ public class TextPlayerTest {
   void testPlayOneTurn() {
     RISKMap map = createRISKMap();
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    TextPlayer p = createTextPlayer("M\n3-Elantris-Narnia\nA\n3-Elantris-Narnia\nD\n", bytes);
+    TextPlayer p = createTextPlayer("M\n3-Elantris-Narnia\nA\n3-E-Narnia\n3-Elantris-Narnia\nD\n", bytes);
     p.setPlayerName("Green");
     Action res = p.playOneTurn(map);
     Action expected = createAction();
@@ -222,7 +222,7 @@ public class TextPlayerTest {
     TextPlayer p = createTextPlayer("xe\n3\n0\n2\n", bytes);
     p.setPlayerName("green");
     String res = p.checkIfILose(createLostResult());
-    assertEquals("Close", res);
+    assertEquals("Disconnect", res);
   }
 
   @Test

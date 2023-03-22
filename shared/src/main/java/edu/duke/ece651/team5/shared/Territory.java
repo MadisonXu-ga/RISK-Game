@@ -8,26 +8,36 @@ public class Territory implements Serializable {
     private final String name;
     // todo: enum -> int?
     private final HashMap<Unit, Integer> units;
-    private Player playerOwner;
+    private Player owner;
 
     public Territory(String name, HashMap<Unit, Integer> units) {
         this.name = name;
         this.units = units;
-        this.playerOwner = null;
+        this.owner = null;
     }
 
+    /**
+     * Get the territory name
+     * @return the name of the territory
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get the number of a certain unit type
+     * @param unit unit type
+     * @return the number of this type of unit placed in this territory
+     */
     public int getUnitNum(Unit unit) {
         return units.get(unit);
     }
 
     /**
-     * @param type
-     * @param isOut (true substracts units, false adds them)
-     * @param count
+     * Update the unit count
+     * @param type the type of unit
+     * @param isOut update direction, true for subtract and false for add
+     * @param count the number of count that is going to be updated
      */
     public void updateUnitCount(Unit type, boolean isOut, int count) {
         //if (units.containsKey(type)) {
@@ -42,20 +52,36 @@ public class Territory implements Serializable {
         //}
     }
 
+    /**
+     * Set the owner of territory
+     * @param owner the player that should own this territory
+     */
     public void setOwner(Player owner){
-        playerOwner = owner;
+        this.owner = owner;
     }
 
+    /**
+     * To tell if the territory has an owner
+     * @return true if it does, otherwise false
+     */
     public boolean hasOwner(){
-        return playerOwner != null;
+        return owner != null;
     }
 
+    /**
+     * Get the owner of this territory
+     * @return the owner
+     */
     public Player getOwner(){
-        return playerOwner;
+        return owner;
     }
 
-
-
+    /**
+     * to tell if two territories equals (on name)
+     * @param o another object
+     * @return true if the names of two territories equals
+     *         false if names do not equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,7 +91,11 @@ public class Territory implements Serializable {
     
         return Objects.equals(name, territory.name);
     }
-    
+
+    /**
+     * hashcode for territory compute with name
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;

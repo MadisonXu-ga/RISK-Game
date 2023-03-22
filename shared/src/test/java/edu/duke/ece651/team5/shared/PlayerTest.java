@@ -26,4 +26,23 @@ public class PlayerTest {
 
     }
 
+    @Test
+    void getAvailableUnit(){
+        Player redPlayer = new Player("red");
+        assertEquals(50, redPlayer.getAvailableUnit());
+    }
+
+    @Test
+    void testEqualPlayers(){
+        Player p1 = new Player("red");
+        Player p2 = new Player("red");
+        Player p3 = new Player(null);
+        assertTrue(p1.equals(p2));
+        assertFalse(p1.equals(p3));
+        assertFalse(p1.equals(null));
+        assertEquals(p1.hashCode(), p2.hashCode());
+        assertEquals(0, p3.hashCode());
+
+    }
+
 }

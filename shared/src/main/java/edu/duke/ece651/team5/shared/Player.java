@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Player implements Serializable{
-  private String color;
+  private String name;
   private ArrayList<Territory> territories;
   private int availableUnit;
 
   public Player(String color){
-    this.color = color;
+    this.name = color;
     this.territories = new ArrayList<>();
     this.availableUnit = 50;
   }
@@ -28,7 +28,8 @@ public class Player implements Serializable{
   }
 
   public String getName(){
-    return color;
+
+    return name;
   }
 
   @Override
@@ -38,11 +39,11 @@ public class Player implements Serializable{
 
     Player player = (Player) o;
 
-    return Objects.equals(color, player.color);
+    return Objects.equals(name, player.name);
   }
 
   @Override
   public int hashCode() {
-    return color != null ? color.hashCode() : 0;
+    return name != null ? name.hashCode() : 0;
   }
 }

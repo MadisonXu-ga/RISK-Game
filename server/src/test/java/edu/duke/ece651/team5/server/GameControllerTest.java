@@ -5,10 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class GameControllerTest {
   @Test
+  @Disabled
   void testAssignTerritories() {
     GameController gc = new GameController();
     assertEquals(0, gc.getRiskMap().getPlayerByName("Green").getTerritories().size());

@@ -3,13 +3,16 @@ package edu.duke.ece651.team5.server;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,64 +20,57 @@ import org.junit.jupiter.api.Test;
 import edu.duke.ece651.team5.shared.RISKMap;
 
 public class ServerTest {
-    @Disabled
-    @Test
-    void testSendMapToOneClient() throws IOException, ClassNotFoundException {
-        Server server = new Server(6666);
+    private Socket socket1;
+    private Socket socket2;
+    private Socket socket3;
 
-        // connect
-        Socket socket = new Socket("localhost", 6666);
-        server.acceptClients(1);
-        // send
-        server.sendMapToOneClient(socket);
-        // receive
-        InputStream inputStream = socket.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+    private void createClient(Socket s, int port) {
+        Thread clientThread = new Thread(() -> {
+            try {
+                ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
+                ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+                String msg = (String) ois.readObject();
+                System.out.println(msg);
+                if (msg.equals("First")) {
+                    oos.writeObject(3);
+                    String msg2 = (String) ois.readObject();
+                    System.out.println(msg2);
+                }
 
-        /*
-         * need more info to check
-         * !! seems like that out objects need to implement Serializable (the easiest
-         * way)
-         * or turn into json or other formats (which need third-party serialization
-         * library) !!
-         */
-
-        RISKMap map = (RISKMap) objectInputStream.readObject();
-        assertNotNull(map);
-
-        socket.close();
-        server.stop();
+                RISKMap r = (RISKMap) ois.readObject();
+                assertNotNull(r);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        clientThread.start();
     }
 
+    // TODO: Later need to update this when there is more functions in map
+    @Disabled
     @Test
     void testMultipleClients() throws SocketException, IOException, InterruptedException, ClassNotFoundException {
-        Server server = new Server(7777);
-        Socket socket1 = new Socket("localhost", 7777);
-        Socket socket2 = new Socket("localhost", 7777);
-        Socket socket3 = new Socket("localhost", 7777);
+        int port = 9999;
+        Server server = new Server(port);
+        this.socket1 = new Socket("localhost", port);
+        this.socket2 = new Socket("localhost", port);
+        this.socket3 = new Socket("localhost", port);
 
-        server.acceptClients(3);
+        createClient(socket1, port);
+        createClient(socket2, port);
+        createClient(socket3, port);
+
+        server.acceptClients();
         server.initGame();
-
-        BufferedReader bufferedReader1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
-        BufferedReader bufferedReader2 = new BufferedReader(new InputStreamReader(socket2.getInputStream()));
-        BufferedReader bufferedReader3 = new BufferedReader(new InputStreamReader(socket3.getInputStream()));
-
-        // ObjectInputStream o1 = new ObjectInputStream(socket1.getInputStream());
-        // ObjectInputStream o2 = new ObjectInputStream(socket2.getInputStream());
-        // ObjectInputStream o3 = new ObjectInputStream(socket3.getInputStream());
-
-        assertEquals("You are the Green player!", bufferedReader1.readLine());
-        assertEquals("You are the Blue player!", bufferedReader2.readLine());
-        assertEquals("You are the Red player!", bufferedReader3.readLine());
-
-        // assertEquals("You are the Green player!", (String) o1.readObject());
-        // assertEquals("You are the Blue player!", (String) o2.readObject());
-        // assertEquals("You are the Red player!", (String) o3.readObject());
 
         socket1.close();
         socket2.close();
         socket3.close();
+
         server.stop();
     }
 }

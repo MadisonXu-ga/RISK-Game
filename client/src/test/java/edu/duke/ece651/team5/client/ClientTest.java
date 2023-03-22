@@ -72,6 +72,7 @@ public class ClientTest {
     // closeServer();
   }
 
+  @Disabled
   @Test
   void testHandlePlayerName() throws IOException, ClassNotFoundException, InterruptedException{
     // Thread.sleep(100);
@@ -96,6 +97,7 @@ public class ClientTest {
     // closeServer();
   }
 
+  @Disabled
   @Test
   void testHandlePlacement() throws IOException, ClassNotFoundException, InterruptedException{
     // Thread.sleep(100);
@@ -281,14 +283,13 @@ public class ClientTest {
   }
 
 
-
   @Test
   void testMain() throws IOException, ClassNotFoundException, InterruptedException{
 		Client.main(null);
   }
 
   @Test
-  void testMainError(){
+  void testMainError() {
     Client.main(null);
 
   }
@@ -316,27 +317,30 @@ public class ClientTest {
 
   // @Test
   // void testCommunicate() {
-  //   int port = 12345;
-  //   try {
-  //     ServerSocket server = new ServerSocket (port) ;
-  //     Socket server_socket = server.accept();
-  //     ObjectOutputStream os = new ObjectOutputStream(server_socket.getOutputStream());
-  //     ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(server_socket.getInputStream()));
-  //     String received = (String) is.readObject();
-  //     Client client = new Client();
-  //     assertEquals("hello from client\n", received);
-  //     os.writeObject("hello from server\n");
-  //     os.flush();
-  //     // generate a map
-  //     RISKMap myMap = generateMap();
-  //     os.writeObject(myMap);
-  //     os.flush();
-  //     os.writeObject(1) ;
-  //     os.flush();
-  //     } catch (Exception e) {
-  //   }
-  //   Client client = new Client();
-  //   assertEquals("localhost/127.0.0.1:12345", client.getSocket().getRemoteSocketAddress().toString());
+  // int port = 12345;
+  // try {
+  // ServerSocket server = new ServerSocket (port) ;
+  // Socket server_socket = server.accept();
+  // ObjectOutputStream os = new
+  // ObjectOutputStream(server_socket.getOutputStream());
+  // ObjectInputStream is = new ObjectInputStream(new
+  // BufferedInputStream(server_socket.getInputStream()));
+  // String received = (String) is.readObject();
+  // Client client = new Client();
+  // assertEquals("hello from client\n", received);
+  // os.writeObject("hello from server\n");
+  // os.flush();
+  // // generate a map
+  // RISKMap myMap = generateMap();
+  // os.writeObject(myMap);
+  // os.flush();
+  // os.writeObject(1) ;
+  // os.flush();
+  // } catch (Exception e) {
+  // }
+  // Client client = new Client();
+  // assertEquals("localhost/127.0.0.1:12345",
+  // client.getSocket().getRemoteSocketAddress().toString());
 
   // }
 

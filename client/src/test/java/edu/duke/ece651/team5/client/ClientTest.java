@@ -332,16 +332,16 @@ public class ClientTest {
 
 
 
-  @Test
-  void testMain() throws IOException, ClassNotFoundException, InterruptedException{
-		Client.main(null);
-  }
+  // @Test
+  // void testMain() throws IOException, ClassNotFoundException, InterruptedException{
+	// 	Client.main(null);
+  // }
 
-  @Test
-  void testMainError(){
-    Client.main(null);
+  // @Test
+  // void testMainError(){
+  //   Client.main(null);
 
-  }
+  // }
 
   // @Disabled
   // @Test

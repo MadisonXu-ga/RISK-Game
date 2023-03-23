@@ -2,7 +2,6 @@ package edu.duke.ece651.team5.server;
 
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -14,22 +13,30 @@ import edu.duke.ece651.team5.shared.*;
 import java.io.*;
 
 public class Server {
+    // the port of server
     private int port;
+    // total number of player in this one game
+    private int playerNum;
     private ServerSocket serverSocket;
     private ThreadPoolExecutor threadPool;
-    // should send one to change the map
-    private int playerNum;
+    // the sockets and io resources of all the clients
     private ArrayList<Socket> clientSockets;
     private ArrayList<ObjectInputStream> clientIns;
     private ArrayList<ObjectOutputStream> clientOuts;
 
     private GameController gameController;
 
-    // TODO: maybe change to game controller later
     // true -> normal accept; null -> lost but watch the game;
     // false -> lost and disconnect.
     HashMap<Integer, Boolean> playerConnectionStatus;
 
+    /**
+     * Default constructor of server
+     * 
+     * @param port the port that the server will run on
+     * @throws IOException     if any IO failure
+     * @throws SocketException if socket create failure
+     */
     public Server(int port) throws IOException, SocketException {
         this.port = port;
         this.serverSocket = new ServerSocket(this.port);
@@ -49,8 +56,12 @@ public class Server {
         this.playerConnectionStatus = new HashMap<>();
     }
 
-    /*
+    /**
      * The method need to call when we want to start a game.
+     * 
+     * @throws IOException            if any IO failure
+     * @throws InterruptedException   if interrupt occurred in thread.sleep()
+     * @throws ClassNotFoundException if readObject cast failed
      */
     public void startRISCGame()
             throws IOException, InterruptedException, NumberFormatException, ClassNotFoundException {
@@ -60,11 +71,14 @@ public class Server {
         stop();
     }
 
-    /*
+    /**
      * Deal with the first connection.
      * Ask first player to give the total number of players of this game.
+     * 
+     * @throws IOException            if any IO failure
+     * @throws ClassNotFoundException if readObject cast failed
      */
-    private void dealWithFirstClient() throws IOException, NumberFormatException, ClassNotFoundException {
+    private void dealWithFirstClient() throws IOException, ClassNotFoundException {
         Socket firstClientSocket = this.serverSocket.accept();
         System.out.println("Successfully accept the first player!");
 
@@ -74,7 +88,6 @@ public class Server {
         oos.flush();
 
         ObjectInputStream ois = new ObjectInputStream(firstClientSocket.getInputStream());
-        // TODO: check playerNum?
         this.playerNum = (int) ois.readObject();
         clientIns.add(ois);
 
@@ -83,27 +96,21 @@ public class Server {
 
         clientSockets.add(firstClientSocket);
         this.gameController.assignTerritories(playerNum);
-        // initialize
-        for (int i = 0; i < this.playerNum; ++i) {
-            playerConnectionStatus.put(i, true);
-        }
     }
 
     /**
      * Start to accept clients.
-     * Q: Should I throw the exception out or just handle it inside the server
-     * class?
      * 
-     * @throws ClassNotFoundException
-     * @throws NumberFormatException
+     * @throws IOException            if any IO failure
+     * @throws ClassNotFoundException if readObject cast failed
      */
-    public void acceptClients() throws IOException, NumberFormatException, ClassNotFoundException {
-        // deal with the first one
+    public void acceptClients() throws IOException, ClassNotFoundException {
+        // accept one connection first, get playerNum from it
         dealWithFirstClient();
 
         System.out.println("Start to accept remaining clients...");
 
-        // accept remaining connections
+        // accept remaining connections, save their sockets and IO streams
         int acceptNum = 1;
         while (true) {
             Socket clientSocket = this.serverSocket.accept();
@@ -118,13 +125,23 @@ public class Server {
         }
     }
 
-    /*
+    /**
      * Initialize the game, preparations for starting the game
      * Tell player who she is
      * Send map to players
+     * 
+     * @throws IOException          if any IO failure
+     * @throws InterruptedException if interrupt occurred in thread.sleep()
      */
     public void initGame() throws IOException, InterruptedException {
         System.out.println("Start to initialize the game...");
+        // Initialize player connections. At the start, all the players are connected
+        // normally.
+        for (int i = 0; i < this.playerNum; ++i) {
+            playerConnectionStatus.put(i, true);
+        }
+
+        // Handle players' initialization process.
         ArrayList<InitializationHandler> handlers = new ArrayList<>();
         for (int i = 0; i < playerNum; ++i) {
             InitializationHandler h = new InitializationHandler(clientOuts.get(i), clientIns.get(i),
@@ -133,11 +150,7 @@ public class Server {
             this.threadPool.execute(h);
         }
 
-        // wait for all the tasks to complete
-        // wait for 1 second to check
-        while (threadPool.getActiveCount() > 0 || !threadPool.getQueue().isEmpty()) {
-            Thread.sleep(1000);
-        }
+        waitForAllThreadsFinished();
 
         // resolve unit placement
         for (InitializationHandler h : handlers) {
@@ -147,15 +160,22 @@ public class Server {
         System.out.println("Game initialization finished!");
     }
 
-    /*
+    /**
      * Start to play the game
+     * Receive all
+     * 
+     * @throws InterruptedException   if interrupt occurred in thread.sleep()
+     * @throws IOException            if any IO failure
+     * @throws ClassNotFoundException if readObject cast failed
      */
     public void playGame() throws InterruptedException, IOException, ClassNotFoundException {
-        // tell every player that placing stage is over, let's start the game! (send)
-        // until end, later need to change
         System.out.println("Let's start to play the game!");
         while (true) {
             System.out.println("===============================");
+            System.out.println("Ready to start new turn!");
+            System.out.println("===============================");
+
+            // receive actions from players
             ArrayList<PlayHandler> phs = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
                 PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController,
@@ -164,96 +184,131 @@ public class Server {
                 this.threadPool.execute(ph);
             }
 
-            // wait for all the tasks to complete
-            // wait for 1 second to check
-            while (threadPool.getActiveCount() > 0 || !threadPool.getQueue().isEmpty()) {
-                Thread.sleep(1000);
-            }
+            waitForAllThreadsFinished();
 
             System.out.println("Player finished choosing actions.");
 
             // get each player's actions and resolve actions.
             // move first
             System.out.println("Start to resolve move actions.");
-            for (int i = 0; i < playerNum; ++i) {
-                if (playerConnectionStatus.get(i) == null || this.playerConnectionStatus.get(i) == false) {
-                    continue;
-                }
-                ArrayList<MoveOrder> moveOrders = phs.get(i).getPlayerMoveOrders();
-                for (MoveOrder mo : moveOrders) {
-                    mo.execute(this.gameController.getRiskMap());
-                }
-            }
+            this.gameController.resolveAllMoveOrders(playerNum, playerConnectionStatus, phs);
 
             // attack later
-            // Territory
             System.out.println("Start to resolve attack actions.");
-            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
-            ArrayList<AttackOrder> allAttack = new ArrayList<>();
-            for (int i = 0; i < playerNum; ++i) {
-                if (playerConnectionStatus.get(i) == null || this.playerConnectionStatus.get(i) == false) {
-                    continue;
-                }
-                allAttack.addAll(phs.get(i).getPlayerAttackOrders());
-                // ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
+            HashMap<Integer, ArrayList<AttackOrder>> attackResults = this.gameController
+                    .resolveAllAttackOrder(playerNum, playerConnectionStatus, phs);
 
-            }
-            GroupAttackOrdersByDesTerritory(allAttack, attackOrdersGroupByTerritory);
-            // TODO: call resolve attack method
-            System.out.println("================begin execute Attack Order =========");
-            this.gameController.executeAttackOrder(allAttack);
-            this.gameController.resolveAttackOrder(attackOrdersGroupByTerritory);
+            // send attack results to valid players according to their id
+            // (only contains their attack orders)
+            sendAttackResultsToValidPlayers(attackResults);
 
             // check win or lose or null
-            // TODO: abstract to funtion
             System.out.print("Start to check players' game status (win/lose/playing) ...");
+
+            // send this turn results to connected players
             HashMap<String, Boolean> playerStatus = getPlayerStatus(this.gameController.getRiskMap());
-            for (int i = 0; i < playerNum; ++i) {
-                if (playerConnectionStatus.get(i) != null && this.playerConnectionStatus.get(i) == false) {
-                    continue;
-                }
-                clientOuts.get(i).writeObject(playerStatus);
-            }
+            sendTurnResultsToConnectedPlayers(playerStatus);
             System.out.println("Successfully sent results to players who are still connecting.");
 
             // check win
             String winPlayerName = checkWin(playerStatus);
             if (winPlayerName != null) {
                 System.out.println("Player " + winPlayerName + " won this game!");
-                // close all the resources.
-                // may have already done in the startRISCGame part.
                 break;
             } else {
                 // receive msgs from all lost players *in this one turn*
-                for (int i = 0; i < playerNum; ++i) {
-                    String name = this.gameController.getPlayerName(i);
-                    //
-                    if (this.playerConnectionStatus.get(i) != null && playerStatus.get(name) != null
-                            && this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
-                        String lostInfo = (String) clientIns.get(i).readObject();
-                        // if lost player want to disconnect
-                        if (lostInfo.equals("Disconnect")) {
-                            this.playerConnectionStatus.put(i, false);
-                            this.clientSockets.get(i).close();
-                        } else if (lostInfo.equals("Display")) {
-                            this.playerConnectionStatus.put(i, null);
-                        }
-                    }
-                }
+                receiveChoicesFromLostPlayers(playerStatus);
             }
             System.out.println(new MapTextView(this.gameController.getRiskMap()).displayMap());
             this.gameController.addOneUnitToTerrirories();
 
             System.out.println("This turn is finished.");
-            System.out.println("Ready to start new turn!");
         }
 
         System.out.println("Game is over!");
     }
 
-    /*
+    /**
+     * receive msgs from all lost players *in this one turn*
+     * 
+     * @param playerStatus
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
+    private void receiveChoicesFromLostPlayers(HashMap<String, Boolean> playerStatus)
+            throws ClassNotFoundException, IOException {
+        for (int i = 0; i < playerNum; ++i) {
+            String name = this.gameController.getPlayerName(i);
+            //
+            if (this.playerConnectionStatus.get(i) != null && playerStatus.get(name) != null
+                    && this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
+                String lostInfo = (String) clientIns.get(i).readObject();
+                // if lost player want to disconnect
+                if (lostInfo.equals("Disconnect")) {
+                    this.playerConnectionStatus.put(i, false);
+                    this.clientSockets.get(i).close();
+                } else if (lostInfo.equals("Display")) {
+                    this.playerConnectionStatus.put(i, null);
+                }
+            }
+        }
+    }
+
+    /**
+     * send attack results to valid players
+     * 
+     * @param attackResults
+     * @throws IOException
+     */
+    private void sendAttackResultsToValidPlayers(HashMap<Integer, ArrayList<AttackOrder>> attackResults)
+            throws IOException {
+        for (int i = 0; i < playerNum; ++i) {
+            if (playerConnectionStatus.get(i) != null && playerConnectionStatus.get(i) == false) {
+                continue;
+            }
+            if (attackResults.containsKey(i)) {
+                clientOuts.get(i).writeObject(attackResults.get(i));
+            } else {
+                ArrayList<AttackOrder> emptyAttackOrder = new ArrayList<>();
+                clientOuts.get(i).writeObject(emptyAttackOrder);
+            }
+        }
+    }
+
+    /**
+     * Send this turn's results to all connected players
+     * 
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    private void sendTurnResultsToConnectedPlayers(HashMap<String, Boolean> playerStatus) throws IOException {
+        for (int i = 0; i < playerNum; ++i) {
+            if (playerConnectionStatus.get(i) != null && this.playerConnectionStatus.get(i) == false) {
+                continue;
+            }
+            clientOuts.get(i).writeObject(playerStatus);
+        }
+    }
+
+    /**
+     * wait for all the tasks to complete
+     * wait for 1 second to check
+     * 
+     * @throws InterruptedException if interrupt occurred in thread.sleep()
+     */
+    private void waitForAllThreadsFinished() throws InterruptedException {
+        while (threadPool.getActiveCount() > 0 || !threadPool.getQueue().isEmpty()) {
+            Thread.sleep(1000);
+        }
+    }
+
+    /**
      * check win
      * win return name, otherwise return null
+     * 
+     * @param playerStatus pass playerStatus to check whether there is any player
+     *                     win
+     * @return return null if nobody win, winner's name if there is a winner
      */
     private String checkWin(HashMap<String, Boolean> playerStatus) {
         for (String name : playerStatus.keySet()) {
@@ -264,7 +319,12 @@ public class Server {
         return null;
     }
 
-    //
+    /**
+     * get player's win/lose/playing status from map
+     * 
+     * @param riskMap
+     * @return
+     */
     private HashMap<String, Boolean> getPlayerStatus(RISKMap riskMap) {
         HashMap<String, Boolean> playerStatus = new HashMap<>();
         ArrayList<Player> players = riskMap.getPlayers();
@@ -280,22 +340,7 @@ public class Server {
         return playerStatus;
     }
 
-    private void GroupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
-            HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
-        for (AttackOrder attackOrder : attackOrders) {
-            String destinationTerr = attackOrder.getDestinationName();
-            // String destinationTerr = "Hardcode";
-            ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
-            // if exists
-            if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {
-                terrAtkOrders = attackOrdersGroupByTerritory.get(destinationTerr);
-            }
-            terrAtkOrders.add(attackOrder);
-            attackOrdersGroupByTerritory.put(destinationTerr, terrAtkOrders);
-        }
-    }
-
-    /*
+    /**
      * Stop to close all the sockets and other resources.
      */
     public void stop() {

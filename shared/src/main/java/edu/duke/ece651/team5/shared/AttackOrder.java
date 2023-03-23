@@ -10,7 +10,6 @@ public class AttackOrder extends BasicOrder implements Serializable{
     public AttackOrder(String source, String destination, int number, Unit type, String playerName) {
         super(source, destination, number, type, playerName);
         // source.updateUnitCount(type, true, number);
-
     }
 
     /**

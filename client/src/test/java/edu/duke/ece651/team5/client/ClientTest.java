@@ -148,15 +148,15 @@ public class ClientTest {
     "\nReceived Map\n" + 
     "\nGreen player:\n" + 
     "-------------\n" + 
-    "6 units: in Elantris (next to: Narnia, Scadrial, Midkemia, Roshar)\n" + 
-    "10 units: in Narnia (next to: Elantris, Midkemia)\n" + 
-    "8 units: in Oz (next to: Mordor, Scadrial, Midkemia, Gondor)\n" + 
+    "0 units: in Elantris (next to: Narnia, Scadrial, Midkemia, Roshar)\n" +
+    "0 units: in Narnia (next to: Elantris, Midkemia)\n" +
+    "0 units: in Oz (next to: Mordor, Scadrial, Midkemia, Gondor)\n" +
       
     "\nRed player:\n" + 
     "-------------\n" + 
-    "12 units: in Midkemia (next to: Elantris, Narnia, Scadrial, Oz)\n" + 
-    "3 units: in Roshar (next to: Elantris, Hogwarts, Scadrial)\n" + 
-    "13 units: in Gondor (next to: Mordor, Oz)\n\n\n";
+    "0 units: in Midkemia (next to: Elantris, Narnia, Scadrial, Oz)\n" +
+    "0 units: in Roshar (next to: Elantris, Hogwarts, Scadrial)\n" +
+    "0 units: in Gondor (next to: Mordor, Oz)\n\n\n";
     assertEquals(expected, bytes.toString());
   }
 
@@ -184,15 +184,15 @@ public class ClientTest {
       
     "\nGreen player:\n" + 
     "-------------\n" + 
-    "6 units: in Elantris (next to: Narnia, Scadrial, Midkemia, Roshar)\n" + 
-    "10 units: in Narnia (next to: Elantris, Midkemia)\n" + 
-    "8 units: in Oz (next to: Mordor, Scadrial, Midkemia, Gondor)\n" + 
+    "0 units: in Elantris (next to: Narnia, Scadrial, Midkemia, Roshar)\n" +
+    "0 units: in Narnia (next to: Elantris, Midkemia)\n" +
+    "0 units: in Oz (next to: Mordor, Scadrial, Midkemia, Gondor)\n" +
       
     "\nRed player:\n" + 
     "-------------\n" + 
-    "12 units: in Midkemia (next to: Elantris, Narnia, Scadrial, Oz)\n" + 
-    "3 units: in Roshar (next to: Elantris, Hogwarts, Scadrial)\n" + 
-    "13 units: in Gondor (next to: Mordor, Oz)\n\n" + 
+    "0 units: in Midkemia (next to: Elantris, Narnia, Scadrial, Oz)\n" +
+    "0 units: in Roshar (next to: Elantris, Hogwarts, Scadrial)\n" +
+    "0 units: in Gondor (next to: Mordor, Oz)\n\n" +
       
       
     "\nWhat would you like to do?\n" + 
@@ -219,15 +219,15 @@ public class ClientTest {
       
     "\nGreen player:\n" + 
     "-------------\n" + 
-    "6 units: in Elantris (next to: Narnia, Scadrial, Midkemia, Roshar)\n" + 
-    "10 units: in Narnia (next to: Elantris, Midkemia)\n" + 
-    "8 units: in Oz (next to: Mordor, Scadrial, Midkemia, Gondor)\n" + 
+    "0 units: in Elantris (next to: Narnia, Scadrial, Midkemia, Roshar)\n" +
+    "0 units: in Narnia (next to: Elantris, Midkemia)\n" +
+    "0 units: in Oz (next to: Mordor, Scadrial, Midkemia, Gondor)\n" +
       
     "\nRed player:\n" + 
     "-------------\n" + 
-    "12 units: in Midkemia (next to: Elantris, Narnia, Scadrial, Oz)\n" + 
-    "3 units: in Roshar (next to: Elantris, Hogwarts, Scadrial)\n" + 
-    "13 units: in Gondor (next to: Mordor, Oz)\n\n" + 
+    "0 units: in Midkemia (next to: Elantris, Narnia, Scadrial, Oz)\n" +
+    "0 units: in Roshar (next to: Elantris, Hogwarts, Scadrial)\n" +
+    "0 units: in Gondor (next to: Mordor, Oz)\n\n" +
       
       
     "\nWhat would you like to do?\n" + 

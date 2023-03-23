@@ -10,6 +10,10 @@ class UnitNumberRuleCheckerTest {
     void checkMyRule() {
         UnitNumberRuleChecker unitNumberRuleChecker = new UnitNumberRuleChecker(null);
         RISKMap map = new RISKMap();
+        Territory elantris = map.getTerritoryByName("Elantris");
+        Territory scadrial = map.getTerritoryByName("Scadrial");
+        elantris.updateUnitCount(UnitType.SOLDIER, false, 6);
+        scadrial.updateUnitCount(UnitType.SOLDIER, false, 5);
         MoveOrder move1 = new MoveOrder("Elantris", "Scadrial", 2, UnitType.SOLDIER);
         assertNull(unitNumberRuleChecker.checkMyRule(move1, null, map));
 

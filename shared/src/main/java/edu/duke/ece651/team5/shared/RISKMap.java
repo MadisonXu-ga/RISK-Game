@@ -1,29 +1,22 @@
 package edu.duke.ece651.team5.shared;
 
-import java.io.Serializable;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class RISKMap implements Serializable {
-
     private static final long serialVersionUID = 3107749286550437606L;
-    private final ArrayList<Territory> territories;
+    private ArrayList<Territory> territories;
     private ArrayList<Player> players;
     public final HashMap<Territory, HashSet<Territory>> connection;
 
     public RISKMap(){
-        this(null);
-    }
-    
-    //public RISKMap(int numPlayers) {
-    public RISKMap(ArrayList<Player> players) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
-        initMap();
-        //todo Init Player here 
-        /*
-         * create 4 default playrs
-         * then init Players and assign territories according to the actual player num input
-         */
+        initMapFromConfigFile();
+    }
+
+    public RISKMap(ArrayList<Player> players) {
         this.players = players;
     }
 
@@ -39,14 +32,27 @@ public class RISKMap implements Serializable {
         return territories;
     }
 
-    /**
-     * Helper function to init a map
-     */
-    private void initMap() {
-        ArrayList<Territory> territoryList = getTerritoryList();
-        territories.addAll(territoryList);
-        initConnection();
+
+    public static void main(String[] args) {
+        RISKMap map = new RISKMap();
+        System.out.println(map.territories);
+        //System.out.println(map.connection);
     }
+    private void initMapFromConfigFile() {
+        InputStream inputStream =
+                getClass().getClassLoader().getResourceAsStream("map_config.txt");
+        //String fileName = "shared/src/test/resources/map_config.txt";
+        ArrayList<Territory> territoryList = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            String line;
+            line = reader.readLine();
+            String[] names = line.split(", ");
+            for (String name: names) {
+                Territory t = new Territory(name);
+                territoryList.add(t);
+            }
+            territories.addAll(territoryList);
 
     // todo: this is just for convenience, might refactor it later
     // I might wanna read this from json
@@ -220,13 +226,13 @@ public class RISKMap implements Serializable {
      * create an interface called assignTerritories
      * then a subclass called pre-assgined with the methods below
      * gamecontroller -> collects assigning, rules, validating, issue an order
-     * 
+     *
      */
     /*
     for each territory we need to do the folowing:
     - iterate through all the players sequentially
         - assign territories to the player
-    - each assigned territory needs to have a new "owner" 
+    - each assigned territory needs to have a new "owner"
     !right now it is assigned by going through the list of territories
     TODO see if we want to get players to choose them
     */
@@ -240,7 +246,7 @@ public class RISKMap implements Serializable {
 
             Territory currentTerritory = it.next();
             Player currentPlayer = players.get(ctr % players.size());
-            
+
 
             chooseTerritory(currentTerritory, currentPlayer);
             ctr++;

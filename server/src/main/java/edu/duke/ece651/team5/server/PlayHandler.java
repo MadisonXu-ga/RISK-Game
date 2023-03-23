@@ -46,10 +46,16 @@ public class PlayHandler extends ConnectionHandler {
             // only normal connections send actions
             System.out.println("Start to receive actions from player " + playerName);
             boolean isValid = false;
+            String message = null;
             do {
                 this.action = (Action) recvObject();
-                isValid = checkActions(action);
+                message = checkActions(action);
+                if (message == null) {
+                    isValid = true;
+                    message = "Correct";
+                }
                 sendObject(isValid);
+                sendObject(message);
             } while (!isValid);
 
             System.out.println("Successfully received actions from player " + playerName);
@@ -64,7 +70,7 @@ public class PlayHandler extends ConnectionHandler {
     /*
      * Check whether player's actions are valid.
      */
-    private boolean checkActions(Action action) {
+    private String checkActions(Action action) {
         ArrayList<MoveOrder> mos = action.getMoveOrders();
         ArrayList<AttackOrder> aos = action.getAttackOrders();
 
@@ -77,27 +83,27 @@ public class PlayHandler extends ConnectionHandler {
         UnitValidRuleChecker actionUnitChecker = new UnitValidRuleChecker();
 
         // check move actions valid
-        boolean valid = checkMoveValid(mos, moveActionChecker, actionUnitChecker);
-        if (!valid) {
-            return valid;
+        String message = checkMoveValid(mos, moveActionChecker, actionUnitChecker);
+        if (message != null) {
+            return message;
         }
 
         // check attack actions valid
-        valid = checkAttackValid(aos, attackActionChecker, actionUnitChecker);
+        message = checkAttackValid(aos, attackActionChecker, actionUnitChecker);
 
-        return valid;
+        return message;
     }
 
     /*
      * Check whether move orders are valid.
      */
-    private boolean checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
+    private String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
             UnitValidRuleChecker moveActionUnitChecker) {
         for (MoveOrder mo : mos) {
             String message = moveActionChecker.checkOrder(mo,
                     this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
             if (message != null) {
-                return false;
+                return message;
             }
         }
         return moveActionUnitChecker.checkMoveOrderUnitValid(this.gameController.getRiskMap(), mos);
@@ -106,13 +112,13 @@ public class PlayHandler extends ConnectionHandler {
     /*
      * Check whether attack orders are valid.
      */
-    private boolean checkAttackValid(ArrayList<AttackOrder> aos, OrderRuleChecker attackActionChecker,
+    private String checkAttackValid(ArrayList<AttackOrder> aos, OrderRuleChecker attackActionChecker,
             UnitValidRuleChecker attackActionUnitChecker) {
         for (AttackOrder ao : aos) {
             String message = attackActionChecker.checkOrder(ao,
                     this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
             if (message != null) {
-                return false;
+                return message;
             }
         }
         return attackActionUnitChecker.checkAttackOrderUnitValid(this.gameController.getRiskMap(), aos);

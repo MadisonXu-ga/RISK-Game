@@ -36,10 +36,10 @@ public class PlayHandler extends ConnectionHandler {
     @Override
     public void run() {
         try {
-            if (playerConnectionStatus != false) {
+            if (playerConnectionStatus!=null &&playerConnectionStatus != false) {
                 sendObject(gameController.getRiskMap());
             }
-            if (playerConnectionStatus != true) {
+            if (playerConnectionStatus!=null &&playerConnectionStatus != true) {
                 return;
             }
             // only normal connections send actions

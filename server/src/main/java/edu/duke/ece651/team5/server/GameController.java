@@ -112,7 +112,7 @@ public class GameController {
         for(int i=0; i<fightOrders.size();++i){
             check.add(true);
         }
-        while(fightOrders.size() != 1){
+        while(checkWin(check)){
             for(int i=0; i<fightOrders.size(); i++){
                 if(!check.get(i)){
                     continue;
@@ -134,6 +134,16 @@ public class GameController {
         }
         System.out.println("winner: " + fightOrders.get(0).getPlayerName());
         resolveWinnerForThisRound(fightOrders.get(0), fightingTerri);
+    }
+
+    private boolean checkWin(ArrayList<Boolean> check){
+        int count = 0;
+        for(int i=0; i<check.size();++i){
+            if(check.get(i)){
+                count++;
+            }
+        }
+        return count == 1;
     }
 
     protected void resolveWinnerForThisRound(AttackOrder winOrder, Territory fightingTerri){

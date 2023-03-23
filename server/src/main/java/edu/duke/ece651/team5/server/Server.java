@@ -40,7 +40,7 @@ public class Server {
         this.clientIns = new ArrayList<>();
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
-        this.threadPool = new ThreadPoolExecutor(2, 4, 100, TimeUnit.SECONDS, workQueue);
+        this.threadPool = new ThreadPoolExecutor(4, 4, 100, TimeUnit.SECONDS, workQueue);
         serverSocket.setSoTimeout(1200000);
 
         // Game info initialization.
@@ -155,6 +155,7 @@ public class Server {
         // until end, later need to change
         System.out.println("Let's start to play the game!");
         while (true) {
+            System.out.println("===============================");
             ArrayList<PlayHandler> phs = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
                 PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController,
@@ -172,7 +173,7 @@ public class Server {
             // get each player's actions and resolve actions.
             // move first
             for (int i = 0; i < playerNum; ++i) {
-                if (this.playerConnectionStatus.get(i) != true) {
+                if (playerConnectionStatus!=null && this.playerConnectionStatus.get(i) != true) {
                     continue;
                 }
                 ArrayList<MoveOrder> moveOrders = phs.get(i).getPlayerMoveOrders();
@@ -185,7 +186,7 @@ public class Server {
             // Territory
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
             for (int i = 0; i < playerNum; ++i) {
-                if (this.playerConnectionStatus.get(i) != true) {
+                if (playerConnectionStatus!=null && this.playerConnectionStatus.get(i) != true) {
                     continue;
                 }
                 ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
@@ -199,7 +200,7 @@ public class Server {
             // TODO: abstract to funtion
             HashMap<String, Boolean> playerStatus = getPlayerStatus(this.gameController.getRiskMap());
             for (int i = 0; i < playerNum; ++i) {
-                if (this.playerConnectionStatus.get(i) == false) {
+                if (playerConnectionStatus!=null && this.playerConnectionStatus.get(i) == false) {
                     continue;
                 }
                 clientOuts.get(i).writeObject(playerStatus);
@@ -229,7 +230,7 @@ public class Server {
                     }
                 }
             }
-            System.out.println(new MapTextView(this.gameController.getRiskMap()));
+            System.out.println(new MapTextView(this.gameController.getRiskMap()).displayMap());
             this.gameController.addOneUnitToTerrirories();
         }
 

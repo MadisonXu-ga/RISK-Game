@@ -89,10 +89,10 @@ public class Client {
    * @throws ClassNotFoundException if unknown host failure
    */
   public void handlePlacement() throws IOException, ClassNotFoundException{
-    out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     boolean complete = false;
     //gather placeInfo from textPlayer
     RISKMap map = recvMap();
+    out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     do{
       HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(map);
       out.println("\nWe got all your choices, sending your choices...\n");
@@ -145,10 +145,14 @@ public class Client {
    */
   @SuppressWarnings("unchecked")
   public String checkResult() throws IOException,ClassNotFoundException{
-    out.println("\nSeems like everyone finishes their turn.\nNow let's check the result of this round...\n");
+    //receive current turn's result
+    //add attackResult and print the attack result
+    ArrayList<AttackOrder> attackResult = (isLose) ? null: (ArrayList<AttackOrder>) playerConnection.readData();
+    textPlayer.printAttackResult(attackResult);
     //receive current turn's result
     HashMap<String, Boolean> result = (HashMap<String, Boolean>)playerConnection.readData();
     //check if there's a winner
+    out.println("\nNow let's check the result of this round...\n");
     String msg = textPlayer.checkWinner(result);
     //if no winner
     if(msg.isEmpty() && !isLose){
@@ -160,9 +164,10 @@ public class Client {
       if(!res.isEmpty()){
         isLose = true;
         playerConnection.writeData(res);
+      }else{
+        out.println("No winner for this round, let's start a new one!");
       }
     }
-    out.println("No winner for this round, let's start a new one!");
     return msg;
   }
 

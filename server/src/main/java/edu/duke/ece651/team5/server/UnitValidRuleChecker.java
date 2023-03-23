@@ -31,7 +31,8 @@ public class UnitValidRuleChecker {
     }
 
     // TODO: refactor later
-    public boolean checkMoveOrderUnitValid(RISKMap map, ArrayList<MoveOrder> orders) {
+    public String checkMoveOrderUnitValid(RISKMap map, ArrayList<MoveOrder> orders) {
+        // String message = null;
         HashMap<String, Integer> tryToUseUnits = new HashMap<>();
 
         for (BasicOrder order : orders) {
@@ -48,13 +49,13 @@ public class UnitValidRuleChecker {
         for (String terr : tryToUseUnits.keySet()) {
             int terrUnit = map.getTerritoryByName(terr).getUnitNum(UnitType.SOLDIER);
             if (terrUnit < tryToUseUnits.get(terr)) {
-                return false;
+                return "The number of units to move exceeds source territory's available units number!";
             }
         }
-        return true;
+        return null;
     }
 
-    public boolean checkAttackOrderUnitValid(RISKMap map, ArrayList<AttackOrder> orders) {
+    public String checkAttackOrderUnitValid(RISKMap map, ArrayList<AttackOrder> orders) {
         HashMap<String, Integer> tryToUseUnits = new HashMap<>();
 
         for (BasicOrder order : orders) {
@@ -71,9 +72,9 @@ public class UnitValidRuleChecker {
         for (String terr : tryToUseUnits.keySet()) {
             int terrUnit = map.getTerritoryByName(terr).getUnitNum(UnitType.SOLDIER);
             if (terrUnit < tryToUseUnits.get(terr)) {
-                return false;
+                return "The number of units to attack exceeds source territory's available units number!";
             }
         }
-        return true;
+        return null;
     }
 }

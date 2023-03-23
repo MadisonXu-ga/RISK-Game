@@ -128,8 +128,9 @@ public class GameController {
         for(int i=0; i<fightOrders.size();++i){
             check.add(true);
         }
-        while(!checkWin(check)){
+        while(checkWin(check)){
             for(int i=0; i<fightOrders.size(); i++){
+                if(checkWin(check)) { break; }
                 if(!check.get(i)){
                     continue;
                 }

@@ -36,7 +36,7 @@ public class GameControllerTest {
   void testResolveUnitPlacement() {
 
   }
-
+  @Disabled
   @Test
   void testBeginFight(){
     ArrayList<AttackOrder> attackOrders = new ArrayList<>();

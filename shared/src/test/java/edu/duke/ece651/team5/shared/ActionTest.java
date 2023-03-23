@@ -23,7 +23,7 @@ public class ActionTest {
     Action act = createAction();
     ArrayList<MoveOrder> expected = new ArrayList<>();
     expected.add(new MoveOrder("A", "B", 3, UnitType.SOLDIER, "Green"));
-    expected.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER,"Green"));
+    expected.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER, "Green"));
     assertEquals(expected, act.getMoveOrders());
   }
 

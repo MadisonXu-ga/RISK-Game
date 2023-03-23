@@ -219,7 +219,7 @@ public class Server {
                 // receive msgs from all lost players *in this one turn*
                 receiveChoicesFromLostPlayers(playerStatus);
             }
-            System.out.println(new MapTextView(this.gameController.getRiskMap()).displayMap());
+            // System.out.println(new MapTextView(this.gameController.getRiskMap()).displayMap());
             this.gameController.addOneUnitToTerrirories();
 
             System.out.println("This turn is finished.");

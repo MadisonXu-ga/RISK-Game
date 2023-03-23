@@ -84,7 +84,7 @@ public class TextPlayer {
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
-      int placeUnit = parseNumFromUsr(instruction, 0, availableUnit, 0);
+      int placeUnit = parseNumFromUsr(instruction, 1, availableUnit, 0);
       // out.println("place info: " + placeUnit + " " + t.getName());
       placementInfo.put(t.getName(), placeUnit);
       //update available unit number

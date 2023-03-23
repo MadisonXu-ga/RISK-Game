@@ -4,8 +4,14 @@ public class MovePathWithSameOwnerRuleChecker extends OrderRuleChecker{
     public MovePathWithSameOwnerRuleChecker(OrderRuleChecker next) {
         super(next);
     }
-
-    
+    /**
+     * Override this method for each check rules
+     *
+     * @param order  the order that should be checked
+     * @param player the player that issues this order
+     * @param map    the map
+     * @return error message if it does not meet the rule, null if it does
+     */
     @Override
     protected String checkMyRule(BasicOrder order, Player player, RISKMap map) {
         String destinationName = order.getDestinationName();

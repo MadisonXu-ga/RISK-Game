@@ -6,15 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import edu.duke.ece651.team5.shared.Action;
-import edu.duke.ece651.team5.shared.AdjacentRuleChecker;
-import edu.duke.ece651.team5.shared.AttackOrder;
-import edu.duke.ece651.team5.shared.AttackOwnershipRuleChecker;
-import edu.duke.ece651.team5.shared.MoveOrder;
-import edu.duke.ece651.team5.shared.MoveOwnershipRuleChecker;
-import edu.duke.ece651.team5.shared.MovePathWithSameOwnerRuleChecker;
-import edu.duke.ece651.team5.shared.OrderRuleChecker;
-import edu.duke.ece651.team5.shared.UnitNumberRuleChecker;
+import edu.duke.ece651.team5.shared.*;
 
 public class PlayHandler extends ConnectionHandler {
     private GameController gameController;

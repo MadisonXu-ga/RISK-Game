@@ -70,7 +70,7 @@ public class TextPlayerTest {
     ArrayList<MoveOrder> moveOrder = new ArrayList<>();
     // attackOrder.add(3);
     // attackOrder.add(4);
-    moveOrder.add(new MoveOrder("Elantris", "Narnia", 3, UnitType.SOLDIER));
+    moveOrder.add(new MoveOrder("Elantris", "Narnia", 3, UnitType.SOLDIER, "Green"));
     return new Action(attackOrder, moveOrder);
   }
 

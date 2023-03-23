@@ -244,7 +244,8 @@ public class Server {
             System.out.println(new MapTextView(this.gameController.getRiskMap()).displayMap());
             this.gameController.addOneUnitToTerrirories();
 
-            System.out.println("This turn is finished. Ready to start next turn!");
+            System.out.println("This turn is finished.");
+            System.out.println("Ready to start new turn!");
         }
 
         System.out.println("Game is over!");

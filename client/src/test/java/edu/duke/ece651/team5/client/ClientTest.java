@@ -91,12 +91,11 @@ public class ClientTest {
     assertEquals(expected, bytes.toString());
   }
 
-  @Disabled
   @Test
   void testHandlePlacement() throws IOException, ClassNotFoundException, InterruptedException{
     RISKMap map = createRISKMap();
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(map, false, map, true);
+    when(test.readData()).thenReturn(map, false, true);
 
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("10\n40\n15\n10\n40\n15\n"));
@@ -107,21 +106,18 @@ public class ClientTest {
     client.handlePlacement();
     String expected = 
     "This is your player name for this game: Green\n" + 
-    "\nNow you need to decide where to put your territories...\n" + 
-    "Think Carefully!\n\n" + 
     "\nReceiving RISK map...\n" + 
-    "\nReceived Map\n" + 
+    "\nReceived Map\n\n" + 
+    "\nNow you need to decide where to put your territories...\n" + 
+    "Think Carefully!\n" + 
     "\nHow many unit you want to place in your Elantris\n" + 
+    "How many unit you want to place in your Narnia\n" + 
     "How many unit you want to place in your Narnia\n" + 
     "\nWe got all your choices, sending your choices...\n" + 
-    "\nSorry your unit placement is not successful, please give another try.\n" + 
-    "\nReceiving RISK map...\n" + 
-    "\nReceived Map\n" + 
+    "\nSorry your unit placement is not successful, please give another try." + 
     "\nHow many unit you want to place in your Elantris\n" + 
     "How many unit you want to place in your Narnia\n" + 
-    "How many unit you want to place in your Oz\n" + 
-    "Number input out of range. Please try again.\n" + 
-    "How many unit you want to place in your Oz\n" + 
+    "How many unit you want to place in your Narnia\n" + 
     "\nWe got all your choices, sending your choices...\n" + 
     "\nGreat! All your placement choices get approved!\n";
     assertEquals(expected, bytes.toString());
@@ -131,7 +127,7 @@ public class ClientTest {
   void testPlayOneTurnIfLose() throws IOException, ClassNotFoundException{
     RISKMap map = createRISKMap();
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(map, false, map, true);
+    when(test.readData()).thenReturn(map, false, true);
 
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("M\n3-Elantris-Narnia\nD\nM\n3-Elantris-Narnia\nD\n"));
@@ -164,7 +160,7 @@ public class ClientTest {
   void testPlayOneTurn() throws IOException, ClassNotFoundException{
     RISKMap map = createRISKMap();
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(map, false, map, true);
+    when(test.readData()).thenReturn(map, false, true);
 
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("M\n3-Elantris-Narnia\nD\nM\n3-Elantris-Narnia\nD\n"));
@@ -211,11 +207,8 @@ public class ClientTest {
       
     "\nWe got all your orders, sending your orders...\n" + 
       
-    "\nSorry your commit is not successful, please give another try.\n" + 
+    "\nSorry your commit is not successful, please give another try." + 
       
-    "\nReceiving RISK map...\n" + 
-      
-    "\nReceived Map\n" + 
       
     "\nGreen player:\n" + 
     "-------------\n" + 
@@ -256,9 +249,9 @@ public class ClientTest {
     HashMap<String, Boolean> res = new HashMap<>();
     res.put("Green", false);
     res.put("Red", false);
+    ArrayList<AttackOrder> attRes = createAttRes(0);
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(res);
-
+    when(test.readData()).thenReturn(attRes, res);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("1"));
     PrintStream output = new PrintStream(bytes, true);
@@ -268,7 +261,7 @@ public class ClientTest {
     client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
-    "\nSeems like everyone finishes their turn.\n" +
+    "Your attack order to attack Territory B was lose in last round.\n\n" + 
     "Now let's check the result of this round...\n" +
     "\nSorry Player Green, you lose for this Game.\n" + 
     "Now you have two options:\n" + 
@@ -284,10 +277,9 @@ public class ClientTest {
     HashMap<String, Boolean> res = new HashMap<>();
     res.put("Green", true);
     res.put("Red", null);
-
+    ArrayList<AttackOrder> attRes = createAttRes(1);
 		PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(res);
-
+    when(test.readData()).thenReturn(attRes, res);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("1"));
     PrintStream output = new PrintStream(bytes, true);
@@ -297,7 +289,7 @@ public class ClientTest {
     client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
-    "\nSeems like everyone finishes their turn.\n" +
+    "Congratulations! You successfully own the Territory B\n\n" + 
     "Now let's check the result of this round...\n" +
     "\nPlayer Green wins!\n" +
     "Game End NOW\n";
@@ -322,8 +314,7 @@ public class ClientTest {
     client.isLose = true;
     client.checkResult();
     String expected = 
-    "This is your player name for this game: Green\n" +
-    "\nSeems like everyone finishes their turn.\n" +
+    "This is your player name for this game: Green\n\n" +
     "Now let's check the result of this round...\n" +
     "\nPlayer Orange wins!\n" +
     "Game End NOW\n";
@@ -389,6 +380,16 @@ public class ClientTest {
     players.add(p2);
     map.initPlayers(players);
     return map;
+  }
+
+  private ArrayList<AttackOrder> createAttRes(int type){
+    ArrayList<AttackOrder> attRes = new ArrayList<>();
+    if(type == 0){
+      attRes.add(new AttackOrder("A", "B", 0, UnitType.SOLDIER, "Green"));
+    }else{
+      attRes.add(new AttackOrder("A", "B", 3, UnitType.SOLDIER, "Green"));
+    }
+    return attRes;
   }
 
 

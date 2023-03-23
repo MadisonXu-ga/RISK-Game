@@ -11,6 +11,10 @@ plugins {
     id 'application'
 }
 
+run{
+    standardInput = System.in
+}
+
 application {
     // Define the main class for the application.
     mainClassName = 'edu.duke.ece651.team5.client.App'

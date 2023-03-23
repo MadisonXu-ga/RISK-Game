@@ -9,13 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-
-import edu.duke.ece651.team5.shared.AttackOrder;
-import edu.duke.ece651.team5.shared.MoveOrder;
-import edu.duke.ece651.team5.shared.Player;
-import edu.duke.ece651.team5.shared.RISKMap;
-import edu.duke.ece651.team5.shared.Territory;
+import edu.duke.ece651.team5.shared.*;
 
 import java.io.*;
 
@@ -46,8 +40,8 @@ public class Server {
         this.clientIns = new ArrayList<>();
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
-        this.threadPool = new ThreadPoolExecutor(2, 4, 100, TimeUnit.SECONDS, workQueue);
-        serverSocket.setSoTimeout(1000);
+        this.threadPool = new ThreadPoolExecutor(4, 4, 100, TimeUnit.SECONDS, workQueue);
+        serverSocket.setSoTimeout(1200000);
 
         // Game info initialization.
         gameController = new GameController();
@@ -88,7 +82,7 @@ public class Server {
                 "Successfully get the player num! This game is going to be played by " + this.playerNum + " players.");
 
         clientSockets.add(firstClientSocket);
-
+        this.gameController.assignTerritories(playerNum);
         // initialize
         for (int i = 0; i < this.playerNum; ++i) {
             playerConnectionStatus.put(i, true);
@@ -161,11 +155,13 @@ public class Server {
         // until end, later need to change
         System.out.println("Let's start to play the game!");
         while (true) {
+            System.out.println("===============================");
             ArrayList<PlayHandler> phs = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
                 PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController,
-                        this.playerConnectionStatus.get(i));
+                        this.playerConnectionStatus.get(i), this.gameController.getPlayerName(i));
                 phs.add(ph);
+                this.threadPool.execute(ph);
             }
 
             // wait for all the tasks to complete
@@ -174,10 +170,13 @@ public class Server {
                 Thread.sleep(1000);
             }
 
+            System.out.println("Player finished choosing actions.");
+
             // get each player's actions and resolve actions.
             // move first
+            System.out.println("Start to resolve move actions.");
             for (int i = 0; i < playerNum; ++i) {
-                if (this.playerConnectionStatus.get(i) != true) {
+                if (playerConnectionStatus.get(i) == null || this.playerConnectionStatus.get(i) == false) {
                     continue;
                 }
                 ArrayList<MoveOrder> moveOrders = phs.get(i).getPlayerMoveOrders();
@@ -188,25 +187,34 @@ public class Server {
 
             // attack later
             // Territory
+            System.out.println("Start to resolve attack actions.");
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
+            ArrayList<AttackOrder> allAttack = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
-                if (this.playerConnectionStatus.get(i) != true) {
+                if (playerConnectionStatus.get(i) == null || this.playerConnectionStatus.get(i) == false) {
                     continue;
                 }
-                ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
-                GroupAttackOrdersByDesTerritory(attackOrders, attackOrdersGroupByTerritory);
-                // TODO: call resolve attack method
+                allAttack.addAll(phs.get(i).getPlayerAttackOrders());
+                // ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
+
             }
+            GroupAttackOrdersByDesTerritory(allAttack, attackOrdersGroupByTerritory);
+            // TODO: call resolve attack method
+            System.out.println("================begin execute Attack Order =========");
+            this.gameController.executeAttackOrder(allAttack);
+            this.gameController.resolveAttackOrder(attackOrdersGroupByTerritory);
 
             // check win or lose or null
             // TODO: abstract to funtion
+            System.out.print("Start to check players' game status (win/lose/playing) ...");
             HashMap<String, Boolean> playerStatus = getPlayerStatus(this.gameController.getRiskMap());
             for (int i = 0; i < playerNum; ++i) {
-                if (this.playerConnectionStatus.get(i) == false) {
+                if (playerConnectionStatus.get(i) != null && this.playerConnectionStatus.get(i) == false) {
                     continue;
                 }
                 clientOuts.get(i).writeObject(playerStatus);
             }
+            System.out.println("Successfully sent results to players who are still connecting.");
 
             // check win
             String winPlayerName = checkWin(playerStatus);
@@ -220,7 +228,8 @@ public class Server {
                 for (int i = 0; i < playerNum; ++i) {
                     String name = this.gameController.getPlayerName(i);
                     //
-                    if (this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
+                    if (this.playerConnectionStatus.get(i) != null && playerStatus.get(name) != null
+                            && this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
                         String lostInfo = (String) clientIns.get(i).readObject();
                         // if lost player want to disconnect
                         if (lostInfo.equals("Disconnect")) {
@@ -232,6 +241,11 @@ public class Server {
                     }
                 }
             }
+            System.out.println(new MapTextView(this.gameController.getRiskMap()).displayMap());
+            this.gameController.addOneUnitToTerrirories();
+
+            System.out.println("This turn is finished.");
+            System.out.println("Ready to start new turn!");
         }
 
         System.out.println("Game is over!");
@@ -243,7 +257,7 @@ public class Server {
      */
     private String checkWin(HashMap<String, Boolean> playerStatus) {
         for (String name : playerStatus.keySet()) {
-            if (playerStatus.get(name) == true) {
+            if (playerStatus.get(name) != null && playerStatus.get(name) == true) {
                 return name;
             }
         }
@@ -269,8 +283,8 @@ public class Server {
     private void GroupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
         for (AttackOrder attackOrder : attackOrders) {
-            // String destinationTerr = attackOrder.getDestinationName();
-            String destinationTerr = "Hardcode";
+            String destinationTerr = attackOrder.getDestinationName();
+            // String destinationTerr = "Hardcode";
             ArrayList<AttackOrder> terrAtkOrders = new ArrayList<>();
             // if exists
             if (attackOrdersGroupByTerritory.containsKey(destinationTerr)) {

@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class MoveOrder extends BasicOrder implements Serializable {
 
-    public MoveOrder(String sourceName, String destinationName, int number, Unit type) {
-        super(sourceName, destinationName, number, type);
+    public MoveOrder(String sourceName, String destinationName, int number, Unit type, String playerName) {
+        super(sourceName, destinationName, number, type, playerName);
     }
 
     @Override

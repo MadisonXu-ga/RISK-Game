@@ -46,7 +46,7 @@ public class TextPlayer {
   public int selectNumPlayer(){
     out.println("Seems like you are the first player in the game!");
     String instruction = "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n";
-    int numPlayer = parseNumFromUsr(instruction, 2, 4);
+    int numPlayer = parseNumFromUsr(instruction, 2, 4,1);
     return numPlayer;
   }
 
@@ -66,24 +66,32 @@ public class TextPlayer {
    * @return a HashMap with key of Territory Name and value of number of desired unit
    */
   public HashMap<String, Integer> unitPlacement(RISKMap currMap){
+    // out.println("Begin placement");
     Player player = currMap.getPlayerByName(getPlayerName());
+    // out.println("Get player: " + player.getName());
     int availableUnit = player.getAvailableUnit();
     int numTerries = player.getTerritories().size();
+    // out.println("unit: " + availableUnit + " numTerries: " + numTerries);
     int count = 0;
     HashMap<String, Integer> placementInfo = new HashMap<>();
     //iterate each territory this player is owned
+    // out.println("Begin looping territories");
     for(Territory t: player.getTerritories()){
       //if player do not have enough unit or is select last territory, will assign automatically
-      if(availableUnit == 0 || count == numTerries-1){
+      if(count == numTerries-1){
+        // out.println("Available unit = 0 or last terri");
         placementInfo.put(t.getName(), availableUnit);
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
-      int placeUnit = parseNumFromUsr(instruction, 0, availableUnit);
+      int placeUnit = parseNumFromUsr(instruction, 0, availableUnit, 0);
+      // out.println("place info: " + placeUnit + " " + t.getName());
       placementInfo.put(t.getName(), placeUnit);
       //update available unit number
       availableUnit -= placeUnit;
+      count++;
     }
+    // out.println("finish placement");
     return placementInfo;
   }
 
@@ -149,18 +157,36 @@ public class TextPlayer {
         String desTerri  = currMap.getTerritoryByName(inputs.get(2)).getName();
         if(type.toUpperCase().charAt(0) == 'M'){
           //create new move order
-          MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER);
+          MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER, playerName);
           //do rule check
-          //add order to moveOrders
-          moveOrders.add(order);
-          return;
+          // MoveOwnershipRuleChecker ruleCheck = new MoveOwnershipRuleChecker(new UnitNumberRuleChecker(new MovePathWithSameOwnerRuleChecker(null)));
+          // // String msg = ruleCheck.checkOrder(order, currMap.getPlayerByName(playerName), currMap);
+          // if(msg!=null){
+          //   out.println(msg);
+          //   return;
+          // }else{
+           //add order to moveOrders
+            // check = true;
+            moveOrders.add(order);
+            return;
+          // }
           //throw Illegal Exception if not success
         }else{
           //create new attack order
+          AttackOrder order = new AttackOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER, playerName);
           //add order to attackOrders
-          // attackOrders.add(0);
-          //throw Illegal Exception if not success
-          return;
+          // AttackOwnershipRuleChecker ruleChecker = new AttackOwnershipRuleChecker(new AdjacentRuleChecker(null));
+          // String msg =ruleChecker.checkOrder(order, currMap.getPlayerByName(playerName), currMap);
+          // if(msg!=null){
+          //   out.println(msg);
+          //   return;
+          // }else{
+           //add order to moveOrders
+            // check = true;
+            attackOrders.add(order);
+          //   return;
+          // }
+          // return;
         }
       }catch(Exception e){
         out.println("Not a valid input, please try again");
@@ -200,7 +226,7 @@ public class TextPlayer {
                 + "1. Continue to watch the game\n"
                 + "2. Quit the game\n"
                 + "Please enter 1 or 2\n";
-      int answer = parseNumFromUsr(instruction, 1, 2);
+      int answer = parseNumFromUsr(instruction, 1, 2, 1);
       response = (answer == 1) ? "Display" : "Disconnect";
     }
     return response;
@@ -216,6 +242,17 @@ public class TextPlayer {
       out.println("You successfully commit all your orders!");
     }else{
       out.println("Sorry your commit is not successful, please give another try.");
+    }
+  }
+
+  public void printAttackResult (ArrayList<AttackOrder> attRes){
+    if(attRes == null){ return; }
+    for (AttackOrder order: attRes){
+      if(order. getNumber() == 0) {
+        out.println("Your attack order to attack Territory " + order.getDestinationName() + " was lose in last round.");
+      }else{
+      out.println( "Congratulations! You successfully own the Territory " + order.getDestinationName());
+      }
     }
   }
 
@@ -236,7 +273,7 @@ public class TextPlayer {
    * @param upperBound a upper bound to do bound check
    * @return return a valid int number inside the range
    */
-  private int parseNumFromUsr(String instruction, int lowerBound, int upperBound){
+  private int parseNumFromUsr(String instruction, int lowerBound, int upperBound, int type){
     boolean status = false;
     int res = 0;
     while(!status){
@@ -247,9 +284,14 @@ public class TextPlayer {
           out.println("Number input out of range. Please try again.");
           continue;
         }
+        if(type == 0 && upperBound-res == 0){
+          continue;
+        }
         status = true;
       } catch(Exception e) {
         out.println("Not a valid number input. Please try again");
+        // res = parseNumFromUsr(instruction, lowerBound, upperBound);
+        // continue;
       }
     }
     return res;
@@ -260,8 +302,9 @@ public class TextPlayer {
    * @param prompt the helper instruction message
    * @return a string contained user input
    * @throws IOException will throw exception is msg is null
+   * @throws InterruptedException
    */
-  private String readUserInput(String prompt) throws IOException {
+  private String readUserInput(String prompt) throws IOException{
     out.println(prompt);
     String msg = inputReader.readLine();
     if (msg == null)

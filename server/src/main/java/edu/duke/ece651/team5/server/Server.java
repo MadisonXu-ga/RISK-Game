@@ -185,16 +185,20 @@ public class Server {
             // attack later
             // Territory
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
+            ArrayList<AttackOrder> allAttack = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
                 if (playerConnectionStatus!=null && this.playerConnectionStatus.get(i) != true) {
                     continue;
                 }
-                ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
-                GroupAttackOrdersByDesTerritory(attackOrders, attackOrdersGroupByTerritory);
-                // TODO: call resolve attack method
-                this.gameController.executeAttackOrder(attackOrders);
-                this.gameController.resolveAttackOrder(attackOrdersGroupByTerritory);
+                allAttack.addAll(phs.get(i).getPlayerAttackOrders());
+                // ArrayList<AttackOrder> attackOrders = phs.get(i).getPlayerAttackOrders();
+               
             }
+            GroupAttackOrdersByDesTerritory(allAttack, attackOrdersGroupByTerritory);
+            // TODO: call resolve attack method
+            System.out.println("================begin execute Attack Order =========");
+            this.gameController.executeAttackOrder(allAttack);
+            this.gameController.resolveAttackOrder(attackOrdersGroupByTerritory);
 
             // check win or lose or null
             // TODO: abstract to funtion

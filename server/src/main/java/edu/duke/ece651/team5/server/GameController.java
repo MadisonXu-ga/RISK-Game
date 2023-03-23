@@ -58,7 +58,11 @@ public class GameController {
     public void executeAttackOrder(ArrayList<AttackOrder> attackOrders){
         for(AttackOrder order: attackOrders){
             order.execute(riskMap);
-
+            System.out.println("initial order================");
+            System.out.println("Source: " + order.getSourceName() 
+            + "Destination: " + order.getDestinationName()
+            + "Number: " + order.getNumber()
+            + "Player: " + order.getPlayerName());
         }
     }
 
@@ -74,6 +78,13 @@ public class GameController {
                 }else{
                     mergeOrder.get(order.getPlayerName()).updateUnitNumber(order.getNumber());
                 }
+            }
+            System.out.println("merge order================");
+            for(AttackOrder order: mergeOrder.values()){
+                System.out.println("Source: " + order.getSourceName() 
+                + "Destination: " + order.getDestinationName()
+                + "Number: " + order.getNumber()
+                + "Player: " + order.getPlayerName());
             }
             ArrayList<AttackOrder> orders = new ArrayList<>();
             orders.addAll(mergeOrder.values());
@@ -92,11 +103,12 @@ public class GameController {
     }
 
 
-
     //todo merge attack order belong to same player
     public void resolveAttackOrder(HashMap<String, ArrayList<AttackOrder>> attackOrderByTerris){
+        System.out.println("============resolve attack order================");
         HashMap<String, ArrayList<AttackOrder>> mergeSamePlayerOrders = mergeSamePlayers(attackOrderByTerris);
         for(String terriName: mergeSamePlayerOrders.keySet()){
+            System.out.println(terriName + "============begin fight================");
             beginFight(riskMap.getTerritoryByName(terriName), attackOrderByTerris.get(terriName));
         }
     }
@@ -107,12 +119,13 @@ public class GameController {
         }
         AttackOrder defenseOrder = new AttackOrder(fightingTerri.getName(), fightingTerri.getName(), fightingTerri.getUnitNum(UnitType.SOLDIER), UnitType.SOLDIER, fightingTerri.getOwner().getName());
         defenseOrder.execute(riskMap);
+        System.out.println("=====check defense unit amout: " + fightingTerri.getUnitNum(UnitType.SOLDIER));
         fightOrders.add(defenseOrder);
         ArrayList<Boolean> check = new ArrayList<>();
         for(int i=0; i<fightOrders.size();++i){
             check.add(true);
         }
-        while(checkWin(check)){
+        while(!checkWin(check)){
             for(int i=0; i<fightOrders.size(); i++){
                 if(!check.get(i)){
                     continue;
@@ -143,6 +156,7 @@ public class GameController {
                 count++;
             }
         }
+        System.out.println("count of check: " + count);
         return count == 1;
     }
 

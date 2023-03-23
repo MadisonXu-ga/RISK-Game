@@ -44,13 +44,15 @@ public class PlayHandler extends ConnectionHandler {
                 return;
             }
             // only normal connections send actions
+            System.out.println("Start to receive actions from player " + playerName);
             boolean isValid = false;
             do {
                 this.action = (Action) recvObject();
                 isValid = checkActions(action);
                 sendObject(isValid);
             } while (!isValid);
-            
+
+            System.out.println("Successfully received actions from player " + playerName);
 
         } catch (IOException e) {
             e.printStackTrace();

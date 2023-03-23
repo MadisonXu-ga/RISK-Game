@@ -36,20 +36,23 @@ public class PlayHandler extends ConnectionHandler {
     @Override
     public void run() {
         try {
-            if (playerConnectionStatus!=null &&playerConnectionStatus != false) {
+            if (playerConnectionStatus == null || playerConnectionStatus == true) {
                 sendObject(gameController.getRiskMap());
+                System.out.println("Successfully sent map to player " + playerName);
             }
-            if (playerConnectionStatus!=null &&playerConnectionStatus != true) {
+            if (playerConnectionStatus == null || playerConnectionStatus == false) {
                 return;
             }
             // only normal connections send actions
+            System.out.println("Start to receive actions from player " + playerName);
             boolean isValid = false;
             do {
                 this.action = (Action) recvObject();
                 isValid = checkActions(action);
                 sendObject(isValid);
             } while (!isValid);
-            
+
+            System.out.println("Successfully received actions from player " + playerName);
 
         } catch (IOException e) {
             e.printStackTrace();

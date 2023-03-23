@@ -6,9 +6,15 @@ import java.io.Serializable;
 
 public class Territory implements Serializable {
     private final String name;
-    // todo: enum -> int?
     private final HashMap<Unit, Integer> units;
     private Player owner;
+
+    public Territory(String name) {
+        this.name = name;
+        HashMap<Unit, Integer> initUnits = new HashMap<>();
+        initUnits.put(UnitType.SOLDIER, 0);
+        this.units = initUnits;
+    }
 
     public Territory(String name, HashMap<Unit, Integer> units) {
         this.name = name;
@@ -103,8 +109,6 @@ public class Territory implements Serializable {
 
     @Override
     public String toString() {
-        return "Territory{" + "name='" + name + '\'' + "hashcode=" + name.hashCode() + '}';
+        return "Territory{" + "name='" + name + '\'' + '}';
     }
-
-    
 }

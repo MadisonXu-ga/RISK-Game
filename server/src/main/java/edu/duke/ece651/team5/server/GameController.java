@@ -135,7 +135,16 @@ public class GameController {
                     check.set(i, false);
                     continue;
                 }
-                AttackOrder loserForThisRound = (rollDice()) ? fightOrders.get(i): ((i == fightOrders.size()-1) ? fightOrders.get(0) :  fightOrders.get(i + 1));
+                int another = 0;
+                for(int j=i; j<fightOrders.size(); j++){
+                    if(!check.get(j)){j++;}
+                    else{
+                        another = j;
+                        break;
+                    }
+                }
+                AttackOrder loserForThisRound = (rollDice()) ? fightOrders.get(i): fightOrders.get(another);
+                
                 System.out.println("loser: " + loserForThisRound.getSourceName());
                 loserForThisRound.loseOneUnit();
                 System.out.println("unit after lose: " + loserForThisRound.getNumber());

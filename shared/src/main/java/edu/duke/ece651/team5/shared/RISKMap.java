@@ -58,16 +58,22 @@ public class RISKMap implements Serializable {
      */
     private ArrayList<Territory> getTerritoryList() {
         return new ArrayList<>(Arrays.asList(
-        initTerritory("Narnia", UnitType.SOLDIER, 0),
-        initTerritory("Elantris", UnitType.SOLDIER, 0),
-        initTerritory("Midkemia", UnitType.SOLDIER, 0),
-        initTerritory("Scadrial", UnitType.SOLDIER, 0),
-        initTerritory("Roshar", UnitType.SOLDIER,0),
-        initTerritory("Oz", UnitType.SOLDIER, 0),
-        initTerritory("Gondor", UnitType.SOLDIER, 0),
-        initTerritory("Mordor", UnitType.SOLDIER, 0),
-        initTerritory("Hogwarts", UnitType.SOLDIER, 0)
-        ));
+            initTerritory("A", UnitType.SOLDIER, 0),
+            initTerritory("B", UnitType.SOLDIER, 0),
+            initTerritory("C", UnitType.SOLDIER, 0)
+   
+            ));
+        // return new ArrayList<>(Arrays.asList(
+        // initTerritory("Narnia", UnitType.SOLDIER, 0),
+        // initTerritory("Elantris", UnitType.SOLDIER, 0),
+        // initTerritory("Midkemia", UnitType.SOLDIER, 0),
+        // initTerritory("Scadrial", UnitType.SOLDIER, 0),
+        // initTerritory("Roshar", UnitType.SOLDIER,0),
+        // initTerritory("Oz", UnitType.SOLDIER, 0),
+        // initTerritory("Gondor", UnitType.SOLDIER, 0),
+        // initTerritory("Mordor", UnitType.SOLDIER, 0),
+        // initTerritory("Hogwarts", UnitType.SOLDIER, 0)
+        // ));
     }
 
     /**
@@ -116,16 +122,23 @@ public class RISKMap implements Serializable {
     /**
      * Helper function to init all the connections
      */
+    // private void initConnection() {
+    //     addConnection("Narnia", Arrays.asList("Elantris", "Midkemia"));
+    //     addConnection("Elantris", Arrays.asList("Narnia", "Midkemia", "Scadrial", "Roshar"));
+    //     addConnection("Midkemia", Arrays.asList("Elantris", "Narnia", "Scadrial", "Oz"));
+    //     addConnection("Scadrial", Arrays.asList("Elantris", "Narnia", "Midkemia", "Roshar", "Oz", "Mordor", "Hogwarts"));
+    //     addConnection("Oz", Arrays.asList("Midkemia", "Scadrial", "Mordor", "Gondor"));
+    //     addConnection("Roshar", Arrays.asList("Elantris", "Scadrial", "Hogwarts"));
+    //     addConnection("Gondor", Arrays.asList("Oz", "Mordor"));
+    //     addConnection("Mordor", Arrays.asList("Gondor", "Oz","Scadrial","Hogwarts" ));
+    //     addConnection("Hogwarts", Arrays.asList("Mordor", "Scadrial", "Roshar" ));
+    // }
+
     private void initConnection() {
-        addConnection("Narnia", Arrays.asList("Elantris", "Midkemia"));
-        addConnection("Elantris", Arrays.asList("Narnia", "Midkemia", "Scadrial", "Roshar"));
-        addConnection("Midkemia", Arrays.asList("Elantris", "Narnia", "Scadrial", "Oz"));
-        addConnection("Scadrial", Arrays.asList("Elantris", "Narnia", "Midkemia", "Roshar", "Oz", "Mordor", "Hogwarts"));
-        addConnection("Oz", Arrays.asList("Midkemia", "Scadrial", "Mordor", "Gondor"));
-        addConnection("Roshar", Arrays.asList("Elantris", "Scadrial", "Hogwarts"));
-        addConnection("Gondor", Arrays.asList("Oz", "Mordor"));
-        addConnection("Mordor", Arrays.asList("Gondor", "Oz","Scadrial","Hogwarts" ));
-        addConnection("Hogwarts", Arrays.asList("Mordor", "Scadrial", "Roshar" ));
+        addConnection("A", Arrays.asList("B", "C"));
+        addConnection("B", Arrays.asList("A"));
+        addConnection("C", Arrays.asList("B"));
+  
     }
 
     /**

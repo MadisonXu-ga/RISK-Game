@@ -25,13 +25,16 @@ public class GameController {
     }
 
     public void assignTerritories(int numPlayers){
-        ArrayList<String> terriName = new ArrayList<> (Arrays.asList("Narnia", "Midkemia", "Oz", "Elantris", "Scadrial", "Roshar", "Gondor", "Mordor", "Hogwarts"));
+        // ArrayList<String> terriName = new ArrayList<> (Arrays.asList("Narnia", "Midkemia", "Oz", "Elantris", "Scadrial", "Roshar", "Gondor", "Mordor", "Hogwarts"));
+        ArrayList<String> terriName = new ArrayList<> (Arrays.asList("A", "B", "C"));
         for(int i=0; i<numPlayers; i++){
             Player p = riskMap.getPlayerByName(playerNames.get(i));
-            for(int j=0; j<(terriName.size()/numPlayers); j++){
-                p.addTerritory(riskMap.getTerritoryByName(terriName.get(j+(i*3))));
-                riskMap.getTerritoryByName(terriName.get(j+(i*3))).setOwner(p);
-            }
+            p.addTerritory(riskMap.getTerritoryByName(terriName.get(i)));
+            riskMap.getTerritoryByName(terriName.get(i)).setOwner(p);
+            // for(int j=0; j<(terriName.size()/numPlayers); j++){
+            //     p.addTerritory(riskMap.getTerritoryByName(terriName.get(j+(i*3))));
+            //     riskMap.getTerritoryByName(terriName.get(j+(i*3))).setOwner(p);
+            // }
         }
     }
 

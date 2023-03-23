@@ -14,7 +14,7 @@ class MoveOrderTest {
         Territory midkemia = map.getTerritoryByName("Midkemia");
         narnia.updateUnitCount(UnitType.SOLDIER, false, 10);
         midkemia.updateUnitCount(UnitType.SOLDIER, false, 12);
-        MoveOrder move = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
+        MoveOrder move = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green");
         move.execute(map);
 
         // MoveOrder move = new MoveOrder(narnia, midkemia, 2, UnitType.SOLDIER);
@@ -27,9 +27,9 @@ class MoveOrderTest {
 
     @Test
     void testEqualOrder(){
-        MoveOrder move1 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
-        MoveOrder move2 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER);
-        MoveOrder move3 = new MoveOrder("Narnia", "Midkemia", 3, UnitType.SOLDIER);
+        MoveOrder move1 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green");
+        MoveOrder move2 = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green");
+        MoveOrder move3 = new MoveOrder("Narnia", "Midkemia", 3, UnitType.SOLDIER, "Green");
         assertTrue(move1.equals(move1));
         assertTrue(move1.equals(move2));
         assertFalse(move1.equals(move3));

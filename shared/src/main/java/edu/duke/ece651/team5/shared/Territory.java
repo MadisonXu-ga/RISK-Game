@@ -109,8 +109,6 @@ public class Territory implements Serializable {
 
     @Override
     public String toString() {
-        return "Territory{" + "name='" + name + '\'' + "hashcode=" + name.hashCode() + '}';
+        return "Territory{" + "name='" + name + '\'' + '}';
     }
-
-    
 }

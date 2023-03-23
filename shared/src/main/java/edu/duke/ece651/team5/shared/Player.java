@@ -12,7 +12,7 @@ public class Player implements Serializable{
   public Player(String color){
     this.name = color;
     this.territories = new ArrayList<>();
-    this.availableUnit = 10;
+    this.availableUnit = 50;
   }
 
   public void addTerritory(Territory aTerritory){

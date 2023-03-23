@@ -40,8 +40,8 @@ public class GameControllerTest {
   @Test
   void testBeginFight(){
     ArrayList<AttackOrder> attackOrders = new ArrayList<>();
-    attackOrders.add(new AttackOrder("Scadrial", "Narnia", 5, UnitType.SOLDIER, "Blue"));
-    attackOrders.add(new AttackOrder("Mordor", "Narnia", 5, UnitType.SOLDIER, "Red"));
+    attackOrders.add(new AttackOrder("Scadrial", "Narnia", 3, UnitType.SOLDIER, "Blue"));
+    attackOrders.add(new AttackOrder("Mordor", "Narnia", 2, UnitType.SOLDIER, "Red"));
     // attackOrders.add(new AttackOrder("C", "1", 5, UnitType.SOLDIER));
 
     RISKMap map = mock(RISKMap.class);

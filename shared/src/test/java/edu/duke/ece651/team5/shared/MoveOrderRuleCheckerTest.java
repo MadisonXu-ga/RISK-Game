@@ -19,7 +19,7 @@ public class MoveOrderRuleCheckerTest {
         Player blue = new Player("blue");
         elantris.setOwner(blue);
         narnia.setOwner(blue);
-        MoveOrder move = new MoveOrder("Elantris", "Narnia", 5, UnitType.SOLDIER);
+        MoveOrder move = new MoveOrder("Elantris", "Narnia", 5, UnitType.SOLDIER, "Green");
         assertNull(ruleChecker.checkOrder(move, blue, map));
     }
 
@@ -37,7 +37,7 @@ public class MoveOrderRuleCheckerTest {
         Player blue = new Player("blue");
         elantris.setOwner(blue);
         narnia.setOwner(blue);
-        MoveOrder move = new MoveOrder("Elantris", "Narnia", 100, UnitType.SOLDIER);
+        MoveOrder move = new MoveOrder("Elantris", "Narnia", 100, UnitType.SOLDIER, "Green");
         assertEquals("There are only 6 units in Elantris, but you entered 100",
                 ruleChecker.checkOrder(move, blue, map));
 
@@ -52,7 +52,7 @@ public class MoveOrderRuleCheckerTest {
         Player blue = new Player("blue");
         elantris.setOwner(blue);
         narnia.setOwner(blue);
-        MoveOrder move = new MoveOrder("Elantris", "Narnia", 5, UnitType.SOLDIER);
+        MoveOrder move = new MoveOrder("Elantris", "Narnia", 5, UnitType.SOLDIER, "Green");
         assertNull(ruleChecker.checkOrder(move, blue, map));
     }
 }

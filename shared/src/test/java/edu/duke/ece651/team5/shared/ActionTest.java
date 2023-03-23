@@ -22,8 +22,8 @@ public class ActionTest {
   void testGetMoveOrders() {
     Action act = createAction();
     ArrayList<MoveOrder> expected = new ArrayList<>();
-    expected.add(new MoveOrder("A", "B", 3, UnitType.SOLDIER));
-    expected.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER));
+    expected.add(new MoveOrder("A", "B", 3, UnitType.SOLDIER, "Green"));
+    expected.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER,"Green"));
     assertEquals(expected, act.getMoveOrders());
   }
 
@@ -32,8 +32,8 @@ public class ActionTest {
     ArrayList<MoveOrder> moveOrder = new ArrayList<>();
     // attackOrder.add(3);
     // attackOrder.add(4);
-    moveOrder.add(new MoveOrder("A", "B", 3, UnitType.SOLDIER));
-    moveOrder.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER));
+    moveOrder.add(new MoveOrder("A", "B", 3, UnitType.SOLDIER, "Green"));
+    moveOrder.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER, "Green"));
     return new Action(attackOrder, moveOrder);
 
   }

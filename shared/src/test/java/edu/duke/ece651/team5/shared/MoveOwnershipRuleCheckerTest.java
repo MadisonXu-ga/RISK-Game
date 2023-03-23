@@ -14,7 +14,7 @@ class MoveOwnershipRuleCheckerTest {
         Player blue = new Player("blue");
         elantris.setOwner(blue);
         narnia.setOwner(blue);
-        MoveOrder move = new MoveOrder("Elantris", "Narnia", 5, UnitType.SOLDIER);
+        MoveOrder move = new MoveOrder("Elantris", "Narnia", 5, UnitType.SOLDIER, "Green");
 
         MoveOwnershipRuleChecker moveOwnershipRuleChecker = new MoveOwnershipRuleChecker(null);
         assertNull(moveOwnershipRuleChecker.checkMyRule(move, new Player("blue"), map));

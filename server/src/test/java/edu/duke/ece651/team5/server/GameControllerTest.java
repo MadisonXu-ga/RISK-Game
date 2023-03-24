@@ -161,6 +161,20 @@ public class GameControllerTest {
   }
 
 
+//   @Test
+//   void testGroupAttackOrdersByPlayers(){
+//         HashMap<String, ArrayList<AttackOrder>> orders = createOrders();
+//         GameController gc = new GameController();
+//         HashMap<String, ArrayList<AttackOrder>> mergeOrders =  gc.groupAttackOrdersByPlayers(orders);
+//         assertEquals(2, mergeOrders.size());
+//         assertEquals(5, mergeOrders.get("Elantris").get(0).getNumber());
+
+//   }
+
+
+
+
+
 
   private HashMap<Integer, Boolean> createPlayerConnectionStatus(){
         HashMap<Integer, Boolean> pcs = new HashMap<>();
@@ -184,9 +198,10 @@ public class GameControllerTest {
         orders.put("Elantris", attGreen);
         orders.put("Narnia", attBlue);
 
-        
         return orders;
 }
+
+
 
 
 

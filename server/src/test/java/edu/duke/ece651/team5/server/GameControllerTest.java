@@ -2,7 +2,7 @@ package edu.duke.ece651.team5.server;
 
 import edu.duke.ece651.team5.shared.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -236,7 +236,16 @@ public class GameControllerTest {
     GameController gc = new GameController();
     gc.assignTerritories(3);
     gc.beginFight(toFight, attackOrders);
-
-
+  }
+  
+  @Test
+    void testCheckWin() {
+      GameController gameController = new GameController();
+      ArrayList<Boolean> list = new ArrayList<>();
+      list.add(true);
+      list.add(true);
+      list.add(false);
+      boolean b = gameController.checkWin(list);
+      assertFalse(b);
   }
 }

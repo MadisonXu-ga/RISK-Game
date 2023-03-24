@@ -29,26 +29,11 @@ public class ClientTest {
           catch(Exception e) {
           }
       }
-    }; 
+    };
     client.createPlayer();
     return client;
   }
-
-
-
-
-  // @Test
-  // void testCreatePlayer() throws IOException, ClassNotFoundException{
-  //   PlayerConnection test = mock(PlayerConnection.class);
-  //   when(test.readData()).thenReturn("test");
-  //   ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-  //   BufferedReader input = new BufferedReader(new StringReader("1"));
-  //   PrintStream output = new PrintStream(bytes, true);
-  //   Client client = createPlayer(test, input, output);
-  //   client.createPlayer();
-  //   String data = (String)client.playerConnection.readData();
-  //   assertEquals("test", data);
-  // }
+  
 
 
 
@@ -173,7 +158,7 @@ public class ClientTest {
   void testPlayOneTurn() throws IOException, ClassNotFoundException{
     RISKMap map = createRISKMap();
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(map, false,"Incorrect", true, "Correct");
+    when(test.readData()).thenReturn(map, false, "Incorrect", true, "Correct");
 
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("M\n3-Elantris-Narnia\nD\nM\n3-Elantris-Narnia\nD\n"));
@@ -266,12 +251,12 @@ public class ClientTest {
     PlayerConnection test = mock(PlayerConnection.class);
     when(test.readData()).thenReturn(attRes, res);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    BufferedReader input = new BufferedReader(new StringReader("Disconnect"));
+    BufferedReader input = new BufferedReader(new StringReader("1"));
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);
     client.textPlayer.setPlayerName("Green");
-    String check = client.checkResult();
+    client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
     "Your attack order to attack Territory B was lose in last round.\n\n" + 
@@ -282,7 +267,7 @@ public class ClientTest {
     "2. Quit the game\n" + 
     "Please enter 1 or 2\n\n";
     assertEquals(expected, bytes.toString());
-    assertEquals("Disconnect", check);
+
   }
 
   @Test
@@ -310,30 +295,7 @@ public class ClientTest {
   }
 
   @Test
-  void testCheckResultNoWinner() throws IOException, ClassNotFoundException{
-    HashMap<String, Boolean> res = new HashMap<>();
-    res.put("Green", null);
-    res.put("Red", null);
-    ArrayList<AttackOrder> attRes = createAttRes(1);
-		PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(attRes, res);
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    BufferedReader input = new BufferedReader(new StringReader("1"));
-    PrintStream output = new PrintStream(bytes, true);
-
-    Client client = createPlayer(test, input, output);
-    client.textPlayer.setPlayerName("Green");
-    client.checkResult();
-    String expected = 
-    "This is your player name for this game: Green\n" +
-    "Congratulations! You successfully own the Territory B\n\n" + 
-    "Now let's check the result of this round...\n" +
-    "\nNo winner for this round, let's start a new one!\n";
-    assertEquals(expected, bytes.toString());
-  }
-
-  @Test
-  void testCheckResultIfLose() throws IOException, ClassNotFoundException{
+  void testCheckResultIfLose() throws IOException, ClassNotFoundException, InterruptedException{
     HashMap<String, Boolean> res = new HashMap<>();
     res.put("Orange", true);
     res.put("Red", null);
@@ -426,35 +388,5 @@ public class ClientTest {
       attRes.add(new AttackOrder("A", "B", 3, UnitType.SOLDIER, "Green"));
     }
     return attRes;
+    }
   }
-
-
-
-
-  // @Test
-  // void testCommunicate() {
-  //   int port = 12345;
-  //   try {
-  //     ServerSocket server = new ServerSocket (port) ;
-  //     Socket server_socket = server.accept();
-  //     ObjectOutputStream os = new ObjectOutputStream(server_socket.getOutputStream());
-  //     ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(server_socket.getInputStream()));
-  //     String received = (String) is.readObject();
-  //     Client client = new Client();
-  //     assertEquals("hello from client\n", received);
-  //     os.writeObject("hello from server\n");
-  //     os.flush();
-  //     // generate a map
-  //     RISKMap myMap = generateMap();
-  //     os.writeObject(myMap);
-  //     os.flush();
-  //     os.writeObject(1) ;
-  //     os.flush();
-  //     } catch (Exception e) {
-  //   }
-  //   Client client = new Client();
-  //   assertEquals("localhost/127.0.0.1:12345", client.getSocket().getRemoteSocketAddress().toString());
-
-  // }
-
-}

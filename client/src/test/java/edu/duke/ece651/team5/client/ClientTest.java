@@ -112,11 +112,13 @@ public class ClientTest {
     "Think Carefully!\n" + 
     "\nHow many unit you want to place in your Elantris\n" + 
     "How many unit you want to place in your Narnia\n" + 
+    "Number input out of range. Please try again.\n" + 
     "How many unit you want to place in your Narnia\n" + 
     "\nWe got all your choices, sending your choices...\n" + 
     "\nSorry your unit placement is not successful, please give another try." + 
     "\nHow many unit you want to place in your Elantris\n" + 
     "How many unit you want to place in your Narnia\n" + 
+    "Number input out of range. Please try again.\n" + 
     "How many unit you want to place in your Narnia\n" + 
     "\nWe got all your choices, sending your choices...\n" + 
     "\nGreat! All your placement choices get approved!\n";

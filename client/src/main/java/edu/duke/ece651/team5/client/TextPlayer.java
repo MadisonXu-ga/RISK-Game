@@ -85,7 +85,7 @@ public class TextPlayer {
       }
       String instruction = "How many unit you want to place in your " + t.getName();
       int placeUnit = parseNumFromUsr(instruction, 1, availableUnit, 0);
-      out.println("success parse");
+      System.out.println("success parse");
       placementInfo.put(t.getName(), placeUnit);
       //update available unit number
       availableUnit -= placeUnit;
@@ -280,13 +280,13 @@ public class TextPlayer {
       try{
         String inputUnit = readUserInput(instruction);
         res = Integer.parseInt(inputUnit);
-        out.println("do bound check.");
+        System.out.println("do bound check.");
         if(res < lowerBound || res > upperBound){
           out.println("Number input out of range. Please try again.");
           continue;
         }
         int check = upperBound-res;
-        out.println("availale unit: " + check);
+        System.out.println("availale unit: " + check);
         if(type == 0 && upperBound-res == 0){
           continue;
         }

@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 public class UnitValidRuleCheckerTest {
   @Mock private RISKMap mockMap;
+
+
   
   @Test
   void testCheckAttackOrderUnitValid() {

@@ -34,4 +34,11 @@ class AttackOrderTest {
         attack.updateUnitNumber(3);
         assertEquals(5, attack.getNumber());
     }
+
+    @Test
+    void testGetPlayerName() {
+        AttackOrder attack = new AttackOrder("Narnia", "Midkemia",
+                2, UnitType.SOLDIER, "Green");
+        assertEquals("Green", attack.getPlayerName());
+    }
 }

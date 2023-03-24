@@ -38,6 +38,7 @@ public class ClientTest {
 
   private void initServer() throws IOException {
     serverSocket = new ServerSocket(57809);
+
     new Thread(() -> {
         while (true) {
             try {

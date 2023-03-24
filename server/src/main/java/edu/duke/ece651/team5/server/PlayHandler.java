@@ -74,14 +74,16 @@ public class PlayHandler extends ConnectionHandler {
 
         UnitValidRuleChecker actionUnitChecker = new UnitValidRuleChecker();
 
+        HashMap<String, Integer> oldTerriUnitNum = getTerrUnitNum();
+
         // check move actions valid
-        String message = checkMoveValid(mos, moveActionChecker, actionUnitChecker);
+        String message = checkMoveValid(mos, moveActionChecker, actionUnitChecker, oldTerriUnitNum);
         if (message != null) {
             return message;
         }
 
         // check attack actions valid
-        message = checkAttackValid(aos, attackActionChecker, actionUnitChecker);
+        message = checkAttackValid(aos, attackActionChecker, actionUnitChecker, oldTerriUnitNum);
 
         return message;
     }
@@ -90,30 +92,63 @@ public class PlayHandler extends ConnectionHandler {
      * Check whether move orders are valid.
      */
     private String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
-            UnitValidRuleChecker moveActionUnitChecker) {
+            UnitValidRuleChecker moveActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
+        String message = null;
         for (MoveOrder mo : mos) {
-            String message = moveActionChecker.checkOrder(mo,
+            message = moveActionChecker.checkOrder(mo,
                     this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
             if (message != null) {
+                revertTerrUnitChanges(oldTerriUnitNum);
                 return message;
             }
+
+            mo.execute(this.gameController.getRiskMap());
         }
-        return moveActionUnitChecker.checkMoveOrderUnitValid(this.gameController.getRiskMap(), mos);
+        return message;
+    }
+
+    /**
+     * Get territories' unit number
+     * 
+     * @return territories' unit number
+     */
+    private HashMap<String, Integer> getTerrUnitNum() {
+        HashMap<String, Integer> TerriUnitNum = new HashMap<>();
+        for (Territory terr : this.gameController.getRiskMap().getTerritories()) {
+            TerriUnitNum.put(terr.getName(), terr.getUnitNum(UnitType.SOLDIER));
+        }
+        return TerriUnitNum;
+    }
+
+    /**
+     * Revert map's territories' unit number to old status
+     * 
+     * @param oldTerriUnitNum old territories' unit number
+     */
+    private void revertTerrUnitChanges(HashMap<String, Integer> oldTerriUnitNum) {
+        for (Territory terr : this.gameController.getRiskMap().getTerritories()) {
+            terr.setUnitCount(UnitType.SOLDIER, oldTerriUnitNum.get(terr.getName()));
+        }
     }
 
     /*
      * Check whether attack orders are valid.
      */
     private String checkAttackValid(ArrayList<AttackOrder> aos, OrderRuleChecker attackActionChecker,
-            UnitValidRuleChecker attackActionUnitChecker) {
+            UnitValidRuleChecker attackActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
+        String message = null;
         for (AttackOrder ao : aos) {
-            String message = attackActionChecker.checkOrder(ao,
+            message = attackActionChecker.checkOrder(ao,
                     this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
             if (message != null) {
+                revertTerrUnitChanges(oldTerriUnitNum);
                 return message;
             }
         }
-        return attackActionUnitChecker.checkAttackOrderUnitValid(this.gameController.getRiskMap(), aos);
+        message = attackActionUnitChecker.checkAttackOrderUnitValid(this.gameController.getRiskMap(), aos);
+        revertTerrUnitChanges(oldTerriUnitNum);
+
+        return message;
     }
 
     /*

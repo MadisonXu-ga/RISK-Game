@@ -206,13 +206,12 @@ public class Server {
             // get each player's actions and resolve actions.
             // move first
             out.println("Start to resolve move actions.");
-            this.gameController.resolveAllMoveOrders(playerNum, playerConnectionStatus, phs);
+            this.resolveAllMoveOrders(playerNum, playerConnectionStatus, phs);
             out.println("Gondor unit after move order: " + this.gameController.getRiskMap().getTerritoryByName("Gondor").getUnitNum(UnitType.SOLDIER));
 
             // attack later
             out.println("Start to resolve attack actions.");
-            HashMap<Integer, ArrayList<AttackOrder>> attackResults = this.gameController
-                    .resolveAllAttackOrder(playerNum, playerConnectionStatus, phs);
+            HashMap<Integer, ArrayList<AttackOrder>> attackResults = this.resolveAllAttackOrder(playerNum, playerConnectionStatus, phs);
 
             // send attack results to valid players according to their id
             // (only contains their attack orders)
@@ -243,6 +242,52 @@ public class Server {
         }
 
         out.println("Game is over!");
+    }
+
+    /**
+     * Resolve all the move orders from all the players in one turn
+     * 
+     * @param playerNum              the number of players
+     * @param playerConnectionStatus the players' connection staus
+     * @param phs                    playerHandlers of all players
+     */
+    public void resolveAllMoveOrders(int playerNum, HashMap<Integer, Boolean> playerConnectionStatus,
+            ArrayList<PlayHandler> phs) {
+        for (int i = 0; i < playerNum; ++i) {
+            if (playerConnectionStatus.get(i) == null || playerConnectionStatus.get(i) == false) {
+                continue;
+            }
+            ArrayList<MoveOrder> moveOrders = phs.get(i).getPlayerMoveOrders();
+            for (MoveOrder mo : moveOrders) {
+                mo.execute(this.gameController.getRiskMap());
+            }
+        }
+    }
+
+    /**
+     * Resolve all the attack orders from all the players in one turn
+     * 
+     * @param playerNum              the number of players
+     * @param playerConnectionStatus the players' connection staus
+     * @param phs                    playerHandlers of all players
+     */
+    public HashMap<Integer, ArrayList<AttackOrder>> resolveAllAttackOrder(int playerNum,
+            HashMap<Integer, Boolean> playerConnectionStatus,
+            ArrayList<PlayHandler> phs) {
+        HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
+        ArrayList<AttackOrder> allAttack = new ArrayList<>();
+        for (int i = 0; i < playerNum; ++i) {
+            if (playerConnectionStatus.get(i) == null || playerConnectionStatus.get(i) == false) {
+                continue;
+            }
+            allAttack.addAll(phs.get(i).getPlayerAttackOrders());
+        }
+        this.gameController.groupAttackOrdersByDesTerritory(allAttack, attackOrdersGroupByTerritory);
+        System.out.println("================begin execute Attack Order =========");
+        this.gameController.executeAttackOrder(allAttack);
+        this.gameController.resolveAttackOrder(attackOrdersGroupByTerritory);
+
+        return this.gameController.groupAttackOrdersByPlayers(attackOrdersGroupByTerritory);
     }
 
     /**

@@ -19,9 +19,9 @@ public class MovePathWithSameOwnerRuleChecker extends OrderRuleChecker{
         Territory source = map.getTerritoryByName(sourceName);
         Territory destination = map.getTerritoryByName(destinationName);
         if (!map.hasPathWithSameOwner(source, destination)) {
-            return "There is no such a path from" +
+            return "There is no such a path from " +
                     sourceName + " to " + destinationName +
-                    "owned by " + player.getName();
+                    " owned by " + player.getName();
         } else {
             return null;
         }

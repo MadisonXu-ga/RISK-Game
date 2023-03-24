@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.server;
+package edu.duke.ece651.team5.shared;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,58 +112,12 @@ public class GameController {
     }
 
     /**
-     * Resolve all the move orders from all the players in one turn
-     * 
-     * @param playerNum              the number of players
-     * @param playerConnectionStatus the players' connection staus
-     * @param phs                    playerHandlers of all players
-     */
-    public void resolveAllMoveOrders(int playerNum, HashMap<Integer, Boolean> playerConnectionStatus,
-            ArrayList<PlayHandler> phs) {
-        for (int i = 0; i < playerNum; ++i) {
-            if (playerConnectionStatus.get(i) == null || playerConnectionStatus.get(i) == false) {
-                continue;
-            }
-            ArrayList<MoveOrder> moveOrders = phs.get(i).getPlayerMoveOrders();
-            for (MoveOrder mo : moveOrders) {
-                mo.execute(this.getRiskMap());
-            }
-        }
-    }
-
-    /**
-     * Resolve all the attack orders from all the players in one turn
-     * 
-     * @param playerNum              the number of players
-     * @param playerConnectionStatus the players' connection staus
-     * @param phs                    playerHandlers of all players
-     */
-    public HashMap<Integer, ArrayList<AttackOrder>> resolveAllAttackOrder(int playerNum,
-            HashMap<Integer, Boolean> playerConnectionStatus,
-            ArrayList<PlayHandler> phs) {
-        HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory = new HashMap<>();
-        ArrayList<AttackOrder> allAttack = new ArrayList<>();
-        for (int i = 0; i < playerNum; ++i) {
-            if (playerConnectionStatus.get(i) == null || playerConnectionStatus.get(i) == false) {
-                continue;
-            }
-            allAttack.addAll(phs.get(i).getPlayerAttackOrders());
-        }
-        groupAttackOrdersByDesTerritory(allAttack, attackOrdersGroupByTerritory);
-        System.out.println("================begin execute Attack Order =========");
-        executeAttackOrder(allAttack);
-        resolveAttackOrder(attackOrdersGroupByTerritory);
-
-        return groupAttackOrdersByPlayers(attackOrdersGroupByTerritory);
-    }
-
-    /**
      * Group attack orders by player ids
      * 
      * @param attackOrdersGroupByTerritory attack orders group by territories
      * @return attack orders group by player id
      */
-    protected HashMap<Integer, ArrayList<AttackOrder>> groupAttackOrdersByPlayers(
+    public HashMap<Integer, ArrayList<AttackOrder>> groupAttackOrdersByPlayers(
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
         HashMap<Integer, ArrayList<AttackOrder>> attackOrdersGroupByPlayers = new HashMap<>();
         for (String terr : attackOrdersGroupByTerritory.keySet()) {
@@ -187,13 +141,13 @@ public class GameController {
      * @param playerName player name
      * @return player id
      */
-    private int getPlayerNumByName(String playerName) {
+    protected int getPlayerNumByName(String playerName) {
         for (int i = 0; i < playerNames.size(); ++i) {
             if (playerName.equals(playerNames.get(i))) {
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
 
     /**
@@ -202,7 +156,7 @@ public class GameController {
      * @param attackOrders                 one player's attackOrders in one turn
      * @param attackOrdersGroupByTerritory the result I want to change
      */
-    private void groupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
+    public void groupAttackOrdersByDesTerritory(ArrayList<AttackOrder> attackOrders,
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
         for (AttackOrder attackOrder : attackOrders) {
             String destinationTerr = attackOrder.getDestinationName();
@@ -240,7 +194,7 @@ public class GameController {
         for (int i = 0; i < fightOrders.size(); ++i) {
             check.add(true);
         }
-        while (checkWin(check)) {
+        while (!checkWin(check)) {
             for (int i = 0; i < fightOrders.size(); i++) {
                 if (checkWin(check)) {
                     break;
@@ -273,8 +227,9 @@ public class GameController {
                 }
             }
         }
-        System.out.println("winner: " + fightOrders.get(0).getPlayerName());
-        resolveWinnerForThisRound(fightOrders.get(0), fightingTerri);
+        int winnerIdx = check.indexOf(true);
+        System.out.println("winner: " + fightOrders.get(winnerIdx).getPlayerName());
+        resolveWinnerForThisRound(fightOrders.get(winnerIdx), fightingTerri);
     }
 
     private boolean checkWin(ArrayList<Boolean> check) {

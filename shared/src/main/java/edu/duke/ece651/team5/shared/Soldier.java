@@ -1,10 +1,10 @@
 package edu.duke.ece651.team5.shared;
 
-import java.io.Serial;
+// import java.io.Serial;
 import java.io.Serializable;
 
 public class Soldier extends Unit implements Serializable{
-    @Serial
+    // @Serial
     private static final long serialVersionUID = -8795509670021307809L;
 
     @Override

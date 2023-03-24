@@ -153,8 +153,8 @@ public class TextPlayer {
     String instruction = "Please enter your unit number of units to " 
     + type + ", the source territory, and the destination territory.\n"
     + "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n"; 
-    boolean check = false;
-    do{
+    // boolean check = false;
+    // do{
       try{
         String input = readUserInput(instruction);
         ArrayList<String> inputs = parseUserInput(input);
@@ -201,7 +201,7 @@ public class TextPlayer {
       }catch(Exception e){
         out.println("Not a valid input, please try again");
       }
-    }while(!check);
+    // }while(!check);
   }
 
   /**

@@ -1,12 +1,12 @@
 package edu.duke.ece651.team5.shared;
 
-import java.io.Serial;
+// import java.io.Serial;
 import java.util.HashMap;
 import java.util.Objects;
 import java.io.Serializable;
 
 public class Territory implements Serializable {
-    @Serial
+    // @Serial
     private static final long serialVersionUID = -7740100550480738933L;
     private final String name;
     private final HashMap<Unit, Integer> units;

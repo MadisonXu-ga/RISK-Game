@@ -1,11 +1,11 @@
 package edu.duke.ece651.team5.shared;
 
-import java.io.Serial;
+// import java.io.Serial;
 import java.io.Serializable;
 
 public class MoveOrder extends BasicOrder implements Serializable {
 
-    @Serial
+    // @Serial
     private static final long serialVersionUID = -5458702819007392881L;
 
     public MoveOrder(String sourceName, String destinationName, int number, Unit type, String playerName) {

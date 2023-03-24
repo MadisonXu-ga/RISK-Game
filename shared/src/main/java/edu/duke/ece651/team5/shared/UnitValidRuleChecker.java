@@ -6,20 +6,23 @@ import java.util.Map;
 
 public class UnitValidRuleChecker {
 
+    public UnitValidRuleChecker(){
+
+    }
+
     public boolean checkUnitValid(RISKMap riskMap, HashMap<String, Integer> placementInfo) {
         int unitSum = 0;
         for (Map.Entry<String, Integer> entry : placementInfo.entrySet()) {
             // TODO: check owner
             // check number valid
-            if (entry.getValue() <= 0 || entry.getValue() > riskMap.getPlayers().get(0).getAvailableUnit()) {
-                System.out.println("check number failed");
+            // if (entry.getValue() <= 0 || entry.getValue() > riskMap.getPlayers().get(0).getAvailableUnit()) {
+            if (entry.getValue() <= 0 || entry.getValue() > riskMap.getAvailableUnit()) {
                 return false;
             }
             unitSum += entry.getValue();
         }
         // TODO: I may want to get initial availableUnit from
-        System.out.println("unit Sum: " + unitSum);
-        if (unitSum != riskMap.getPlayers().get(0).getAvailableUnit()) {
+        if (unitSum != riskMap.getAvailableUnit()) {
             return false;
         }
         return true;
@@ -40,7 +43,6 @@ public class UnitValidRuleChecker {
                 tryToUseUnits.put(src, unitNum + temp);
             }
         }
-
         for (String terr : tryToUseUnits.keySet()) {
             int terrUnit = map.getTerritoryByName(terr).getUnitNum(UnitType.SOLDIER);
             if (terrUnit < tryToUseUnits.get(terr)) {

@@ -9,17 +9,20 @@ public class RISKMap implements Serializable {
     private ArrayList<Territory> territories;
     private ArrayList<Player> players;
     private HashMap<Territory, HashSet<Territory>> connection;
+    private int availableUnit;
 
     public RISKMap(){
         territories = new ArrayList<>();
         connection = new HashMap<>();
         initMapFromConfigFile("map_config.txt");
+        this.availableUnit = 50;
     }
 
     public RISKMap(String fileName) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
         initMapFromConfigFile(fileName);
+        this.availableUnit = 50;
     }
 
     public RISKMap(ArrayList<Player> players) {
@@ -29,6 +32,10 @@ public class RISKMap implements Serializable {
 
     public void initPlayers(ArrayList<Player> players){
         this.players = players;
+    }
+
+    public int getAvailableUnit(){
+        return availableUnit;
     }
 
     public ArrayList<Player> getPlayers(){

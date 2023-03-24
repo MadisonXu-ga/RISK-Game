@@ -18,4 +18,20 @@ class AttackOrderTest {
         int narniaUnitNum = narnia.getUnitNum(UnitType.SOLDIER);
         assertEquals(8, narniaUnitNum);
     }
+
+    @Test
+    void testLoseOneUnit() {
+        AttackOrder attack = new AttackOrder("Narnia", "Midkemia",
+                2, UnitType.SOLDIER, "Green");
+        attack.loseOneUnit();
+        assertEquals(1, attack.getNumber());
+    }
+
+    @Test
+    void testUpdateUnitNumber() {
+        AttackOrder attack = new AttackOrder("Narnia", "Midkemia",
+                2, UnitType.SOLDIER, "Green");
+        attack.updateUnitNumber(3);
+        assertEquals(5, attack.getNumber());
+    }
 }

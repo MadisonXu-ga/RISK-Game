@@ -13,19 +13,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UnitValidRuleCheckerTest {
-  @Mock private RISKMap mockMap;
-  
+  @Mock
+  private RISKMap mockMap;
+
   @Test
   void testCheckAttackOrderUnitValid() {
     RISKMap testMap = createTestMap();
     initMap(testMap, 2);
     initUnitPlacement(testMap);
+    UnitValidRuleChecker checker = new UnitValidRuleChecker();
     // TODO: continue testing
-  }
-
-  @Test
-  void testCheckMoveOrderUnitValid() {
-
+    ArrayList<AttackOrder> aos = new ArrayList<>();
+    AttackOrder m1 = new AttackOrder("Narnia", "Elantris", 5, UnitType.SOLDIER, "Green");
+    aos.add(m1);
+    assertEquals(null, checker.checkAttackOrderUnitValid(testMap, aos));
+    AttackOrder m2 = new AttackOrder("Elantris", "Narnia", 5, null, null);
+    aos.add(m2);
+    assertEquals(null, checker.checkAttackOrderUnitValid(testMap, aos));
+    AttackOrder m3 = new AttackOrder("Narnia", "Midkemia", 6, UnitType.SOLDIER, "Green");
+    aos.add(m3);
+    assertEquals("The number of units to attack exceeds source territory's available units number!",
+        checker.checkAttackOrderUnitValid(testMap, aos));
   }
 
   @Test

@@ -27,7 +27,7 @@ public class Server {
 
     private ArrayList<PlayerConnection> clientIOs;
 
-    private GameController gameController;
+    public GameController gameController;
 
     // true -> normal accept; null -> lost but watch the game;
     // false -> lost and disconnect.

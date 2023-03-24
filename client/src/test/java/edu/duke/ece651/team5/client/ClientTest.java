@@ -72,8 +72,8 @@ public class ClientTest {
 
   @Test
   void testCreatePlayer() throws IOException, ClassNotFoundException, InterruptedException{
-    initServer();
     Client client = new Client(null, null);
+    initServer();
     client.createPlayer();
     String test = (String)client.playerConnection.readData();
     assertEquals("test", test);

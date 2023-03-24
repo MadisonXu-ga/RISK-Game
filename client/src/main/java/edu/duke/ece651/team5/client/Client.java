@@ -158,6 +158,8 @@ public class Client {
       if(!res.isEmpty()){
         isLose = true;
         playerConnection.writeData(res);
+      }else{
+        out.println("No winner for this round, let's start a new one!");
       }
     }
     return msg;

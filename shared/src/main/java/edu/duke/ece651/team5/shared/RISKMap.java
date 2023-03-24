@@ -13,11 +13,17 @@ public class RISKMap implements Serializable {
     public RISKMap(){
         territories = new ArrayList<>();
         connection = new HashMap<>();
-        initMapFromConfigFile();
+        initMapFromConfigFile("map_config.txt");
+    }
+
+    public RISKMap(String fileName) {
+        territories = new ArrayList<>();
+        connection = new HashMap<>();
+        initMapFromConfigFile(fileName);
     }
 
     public RISKMap(ArrayList<Player> players) {
-        this();
+        this("map_config.txt");
         this.players = players;
     }
 
@@ -33,9 +39,9 @@ public class RISKMap implements Serializable {
         return territories;
     }
 
-    private void initMapFromConfigFile() {
+    private void initMapFromConfigFile(String fileName) {
         InputStream inputStream =
-                getClass().getClassLoader().getResourceAsStream("map_config.txt");
+                getClass().getClassLoader().getResourceAsStream(fileName);
         //String fileName = "shared/src/test/resources/map_config.txt";
         ArrayList<Territory> territoryList = new ArrayList<>();
         try {

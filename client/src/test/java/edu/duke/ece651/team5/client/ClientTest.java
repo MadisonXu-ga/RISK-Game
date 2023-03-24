@@ -72,14 +72,16 @@ public class ClientTest {
 
   @Test
   void testCreatePlayer() throws IOException, ClassNotFoundException, InterruptedException{
-    Client client = new Client(null, null);
-    initServer();
+    PlayerConnection test = mock(PlayerConnection.class);
+    when(test.readData()).thenReturn("test");
+
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    BufferedReader input = new BufferedReader(new StringReader("1"));
+    PrintStream output = new PrintStream(bytes, true);
+    Client client = createPlayer(test, input, output);
     client.createPlayer();
-    String test = (String)client.playerConnection.readData();
-    assertEquals("test", test);
-    client.playerConnection.close();
-    Thread.sleep(1000);
-    closeServer();
+    String data = (String)client.playerConnection.readData();
+    assertEquals("test", data);
   }
 
 

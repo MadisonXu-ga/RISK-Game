@@ -5,11 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.io.StringReader;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -51,26 +54,29 @@ public class ServerTest {
     }
 
     // TODO: Later need to update this when there is more functions in map
-    @Disabled
-    @Test
-    void testMultipleClients() throws SocketException, IOException, InterruptedException, ClassNotFoundException {
-        int port = 9999;
-        Server server = new Server(port);
-        this.socket1 = new Socket("localhost", port);
-        this.socket2 = new Socket("localhost", port);
-        this.socket3 = new Socket("localhost", port);
+    // @Disabled
+    // @Test
+    // void testMultipleClients() throws SocketException, IOException, InterruptedException, ClassNotFoundException {
+    //     int port = 9999;
+    //     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    //     BufferedReader input = new BufferedReader(new StringReader("4"));
+    //     PrintStream output = new PrintStream(bytes, true);
+    //     Server server = new Server(port, output);
+    //     this.socket1 = new Socket("localhost", port);
+    //     this.socket2 = new Socket("localhost", port);
+    //     this.socket3 = new Socket("localhost", port);
 
-        createClient(socket1, port);
-        createClient(socket2, port);
-        createClient(socket3, port);
+    //     createClient(socket1, port);
+    //     createClient(socket2, port);
+    //     createClient(socket3, port);
 
-        server.acceptClients();
-        server.initGame();
+    //     server.acceptClients();
+    //     server.initGame();
 
-        socket1.close();
-        socket2.close();
-        socket3.close();
+    //     socket1.close();
+    //     socket2.close();
+    //     socket3.close();
 
-        server.stop();
-    }
+    //     server.stop();
+    // }
 }

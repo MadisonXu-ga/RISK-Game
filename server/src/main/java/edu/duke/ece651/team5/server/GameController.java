@@ -25,19 +25,25 @@ public class GameController {
     }
 
     public void assignTerritories(int numPlayers) {
-        //todo change name
-        // ArrayList<String> terriName = new ArrayList<>(Arrays.asList("Narnia", "Midkemia", "Oz", "Elantris", "Scadrial",
-        //         "Roshar", "Gondor", "Mordor", "Hogwarts"));
-        // ArrayList<String> terriName = new ArrayList<> (Arrays.asList("A", "B", "C"));
-        ArrayList<String> terriName = new ArrayList<>(Arrays.asList("Narnia", "Elantris", "Midkemia", "Scadrial", "Oz", "Roshar", "Gondor", "Mordor", "Hogwarts", "Thalassia", "Arathia", "Eryndor", "Sylvaria", "Kaelindor", "Eterna", "Celestia", "Frosthold", "Shadowmire", "Ironcliff", "Stormhaven", "Mythosia", "Draconia", "Emberfall", "Verdantia"));
+        ArrayList<String> terriName = new ArrayList<>(Arrays.asList(
+                "Narnia", "Elantris", "Midkemia", "Scadrial", "Oz", "Roshar",
+                "Gondor", "Mordor", "Hogwarts", "Thalassia", "Arathia",
+                "Eryndor", "Sylvaria", "Kaelindor", "Eterna", "Celestia",
+                "Frosthold", "Shadowmire", "Ironcliff", "Stormhaven",
+                "Mythosia", "Draconia", "Emberfall", "Verdantia"
+        ));
+
+        int numTerritories = terriName.size();
+        int territoriesPerPlayer = numTerritories / numPlayers;
+
         for (int i = 0; i < numPlayers; i++) {
             Player p = riskMap.getPlayerByName(playerNames.get(i));
-            for (int j = 0; j < (terriName.size() / numPlayers); j++) {
-                //todo change 3 
-                System.out.println(terriName.get(j + (i * numPlayers)));
-                System.out.println(riskMap.getTerritoryByName(terriName.get(j + (i * numPlayers))));
-                p.addTerritory(riskMap.getTerritoryByName(terriName.get(j + (i * numPlayers))));
-                riskMap.getTerritoryByName(terriName.get(j + (i * numPlayers))).setOwner(p);
+
+            for (int j = i * territoriesPerPlayer; j < (i + 1) * territoriesPerPlayer; j++) {
+                String territoryName = terriName.get(j);
+                Territory territory = riskMap.getTerritoryByName(territoryName);
+                p.addTerritory(territory);
+                territory.setOwner(p);
             }
         }
     }

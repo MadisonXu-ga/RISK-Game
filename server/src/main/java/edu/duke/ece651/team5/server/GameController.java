@@ -163,7 +163,7 @@ public class GameController {
      * @param attackOrdersGroupByTerritory attack orders group by territories
      * @return attack orders group by player id
      */
-    private HashMap<Integer, ArrayList<AttackOrder>> groupAttackOrdersByPlayers(
+    protected HashMap<Integer, ArrayList<AttackOrder>> groupAttackOrdersByPlayers(
             HashMap<String, ArrayList<AttackOrder>> attackOrdersGroupByTerritory) {
         HashMap<Integer, ArrayList<AttackOrder>> attackOrdersGroupByPlayers = new HashMap<>();
         for (String terr : attackOrdersGroupByTerritory.keySet()) {

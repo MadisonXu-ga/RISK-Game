@@ -207,6 +207,7 @@ public class Server {
             // move first
             out.println("Start to resolve move actions.");
             this.gameController.resolveAllMoveOrders(playerNum, playerConnectionStatus, phs);
+            out.println("Gondor unit after move order: " + this.gameController.getRiskMap().getTerritoryByName("Gondor").getUnitNum(UnitType.SOLDIER));
 
             // attack later
             out.println("Start to resolve attack actions.");

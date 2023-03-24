@@ -247,16 +247,19 @@ public class TextPlayer {
    * Responsible to print the commit result to player
    * @param commitApprove approvement sent from server
    */
-  public void printCommitResult(boolean commitApprove){
+  public void printCommitResult(boolean commitApprove, String errMsg){
     if(commitApprove){
       out.println("You successfully commit all your orders!");
     }else{
-      out.println("Sorry your commit is not successful, please give another try.");
+      out.println("Sorry your commit is not successful because: " + errMsg);
     }
   }
 
   public void printAttackResult (ArrayList<AttackOrder> attRes){
-    if(attRes == null){ return; }
+    if(attRes == null){ 
+      out.println("att res null"); 
+      return; 
+    }
     for (AttackOrder order: attRes){
       if(order. getNumber() == 0) {
         out.println("Your attack order to attack Territory " + order.getDestinationName() + " was lose in last round.");

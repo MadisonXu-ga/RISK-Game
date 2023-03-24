@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.duke.ece651.team5.shared.RISKMap;
+import edu.duke.ece651.team5.shared.UnitValidRuleChecker;
 
 public class InitializationHandler extends ConnectionHandler {
     private String name;

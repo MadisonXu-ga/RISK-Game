@@ -193,10 +193,10 @@ public class TextPlayer {
           // }else{
            //add order to moveOrders
             // check = true;
-            attackOrders.add(order);
+          attackOrders.add(order);
           //   return;
           // }
-          // return;
+          return;
         }
       }catch(Exception e){
         out.println("Not a valid input, please try again");

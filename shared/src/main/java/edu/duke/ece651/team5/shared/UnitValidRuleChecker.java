@@ -1,21 +1,14 @@
-package edu.duke.ece651.team5.server;
+package edu.duke.ece651.team5.shared;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.duke.ece651.team5.shared.AttackOrder;
-import edu.duke.ece651.team5.shared.BasicOrder;
-import edu.duke.ece651.team5.shared.MoveOrder;
-import edu.duke.ece651.team5.shared.Player;
-import edu.duke.ece651.team5.shared.RISKMap;
-import edu.duke.ece651.team5.shared.UnitType;
-
 public class UnitValidRuleChecker {
 
-    public boolean checkUnitValid(RISKMap riskMap, HashMap<String, Integer> uPs) {
+    public boolean checkUnitValid(RISKMap riskMap, HashMap<String, Integer> placementInfo) {
         int unitSum = 0;
-        for (Map.Entry<String, Integer> entry : uPs.entrySet()) {
+        for (Map.Entry<String, Integer> entry : placementInfo.entrySet()) {
             // TODO: check owner
             // check number valid
             if (entry.getValue() <= 0 || entry.getValue() > riskMap.getPlayers().get(0).getAvailableUnit()) {

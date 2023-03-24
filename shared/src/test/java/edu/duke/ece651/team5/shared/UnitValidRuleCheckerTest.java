@@ -10,6 +10,7 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class UnitValidRuleCheckerTest {
   @Mock
@@ -19,7 +20,8 @@ public class UnitValidRuleCheckerTest {
   void testCheckAttackOrderUnitValid() {
     RISKMap testMap = createTestMap();
     initMap(testMap, 2);
-
+    initUnitPlacement(testMap);
+    // TODO: continue testing
   }
 
   @Test
@@ -81,8 +83,20 @@ public class UnitValidRuleCheckerTest {
     }
   }
 
-  private void initUnitPlacement(RISKMap map){
-    game
-    
+  private void initUnitPlacement(RISKMap map) {
+    HashMap<String, Integer> placement = createPlaceInfo(10, 20, 20);
+    resolveUnitPlacement(map, placement);
+  }
+
+  private void resolveUnitPlacement(RISKMap map, HashMap<String, Integer> unitPlacements) {
+    for (Map.Entry<String, Integer> entry : unitPlacements.entrySet()) {
+      String name = entry.getKey();
+      System.out.println("num: name");
+      int unitNum = entry.getValue();
+      Territory terr = map.getTerritoryByName(name);
+      System.out.println("inital unitNum: " + terr.getUnitNum(UnitType.SOLDIER));
+      terr.updateUnitCount(UnitType.SOLDIER, false, unitNum);
+      System.out.println("Get updated: " + terr.getUnitNum(UnitType.SOLDIER));
+    }
   }
 }

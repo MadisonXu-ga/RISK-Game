@@ -62,6 +62,15 @@ public class Territory implements Serializable {
     }
 
     /**
+     * Set the unit count
+     * @param type the type of unit
+     * @param count the number of count that is going to be set
+     */
+    public void setUnitCount(Unit type, int count){
+        units.put(type, count);
+    }
+
+    /**
      * Set the owner of territory
      * @param owner the player that should own this territory
      */

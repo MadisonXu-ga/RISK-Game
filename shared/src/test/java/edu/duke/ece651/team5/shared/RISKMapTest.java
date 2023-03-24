@@ -4,13 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RISKMapTest {
-
     @Test
     void testGetTerritoryByName() {
         RISKMap map = new RISKMap();
@@ -78,4 +76,33 @@ class RISKMapTest {
         assertEquals(map2.getTerritories(), map.getTerritories());
     }
 
+    @Test
+    void testHasPathWithSameOwner() {
+        Player blue = new Player("Blue");
+        Player green = new Player("green");
+        RISKMap map = new RISKMap("test_map_config.txt");
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(blue);
+        players.add(green);
+        map.initPlayers(players);
+        ArrayList<Territory> territories = map.getTerritories();
+        for (int i = 0; i < territories.size(); i++) {
+            Territory territory = territories.get(i);
+            territory.setOwner(blue);
+            blue.addTerritory(territory);
+        }
+        for (int i = territories.size() / 2; i < territories.size(); i++) {
+            Territory territory = territories.get(i);
+            territory.setOwner(green);
+            green.addTerritory(territory);
+        }
+        Territory narnia = map.getTerritoryByName("Narnia");
+        Territory elantris = map.getTerritoryByName("Elantris");
+        boolean actual = map.hasPathWithSameOwner(narnia, elantris);
+        assertTrue(actual);
+
+        Territory roshar = map.getTerritoryByName("Roshar");
+        assertFalse(map.hasPathWithSameOwner(narnia, roshar));
+
+    }
 }

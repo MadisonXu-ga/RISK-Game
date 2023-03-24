@@ -2,6 +2,8 @@ package edu.duke.ece651.team5.shared;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,7 +17,6 @@ class RISKMapTest {
         Territory actual = map.getTerritoryByName("Oz");
         assertEquals("Oz", actual.getName());
         assertThrows(IllegalArgumentException.class, () -> map.getTerritoryByName("non-exist"));
-
     }
 
     @Test

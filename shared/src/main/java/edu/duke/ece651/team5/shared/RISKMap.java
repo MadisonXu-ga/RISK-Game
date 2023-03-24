@@ -50,7 +50,6 @@ public class RISKMap implements Serializable {
     private void initMapFromConfigFile(String fileName) {
         InputStream inputStream =
                 getClass().getClassLoader().getResourceAsStream(fileName);
-        //String fileName = "shared/src/test/resources/map_config.txt";
         ArrayList<Territory> territoryList = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -72,7 +71,7 @@ public class RISKMap implements Serializable {
                 addConnection(territoryName, Arrays.asList(connectionNameArray));
             }
             reader.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

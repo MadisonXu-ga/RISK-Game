@@ -42,7 +42,18 @@ public class PlayerTest {
         assertFalse(p1.equals(null));
         assertEquals(p1.hashCode(), p2.hashCode());
         assertEquals(0, p3.hashCode());
+    }
 
+    @Test
+    void testLostTerritory() {
+        Player p1 = new Player("red");
+        Territory t1 = new Territory("t1");
+        Territory t2 = new Territory("t2");
+        p1.addTerritory(t1);
+        p1.addTerritory(t2);
+        p1.loseTerritory(t1);
+        assertTrue(p1.getTerritories().contains(t2));
+        assertFalse(p1.getTerritories().contains(t1));
     }
 
 }

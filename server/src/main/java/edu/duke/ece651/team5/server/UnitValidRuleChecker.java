@@ -18,12 +18,14 @@ public class UnitValidRuleChecker {
         for (Map.Entry<String, Integer> entry : uPs.entrySet()) {
             // TODO: check owner
             // check number valid
-            if (entry.getValue() < 0 || entry.getValue() > riskMap.getPlayers().get(0).getAvailableUnit()) {
+            if (entry.getValue() <= 0 || entry.getValue() > riskMap.getPlayers().get(0).getAvailableUnit()) {
+                System.out.println("check number failed");
                 return false;
             }
             unitSum += entry.getValue();
         }
         // TODO: I may want to get initial availableUnit from
+        System.out.println("unit Sum: " + unitSum);
         if (unitSum != riskMap.getPlayers().get(0).getAvailableUnit()) {
             return false;
         }

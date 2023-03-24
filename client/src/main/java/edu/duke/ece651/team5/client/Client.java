@@ -147,6 +147,8 @@ public class Client {
   public String checkResult() throws IOException,ClassNotFoundException{
     //receive current turn's result
     //add attackResult and print the attack result
+    String test = (String) playerConnection.readData();
+    System.out.println("why receive string: " + test);
     ArrayList<AttackOrder> attackResult = (isLose) ? null: (ArrayList<AttackOrder>) playerConnection.readData();
     textPlayer.printAttackResult(attackResult);
     //receive current turn's result

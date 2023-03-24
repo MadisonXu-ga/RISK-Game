@@ -38,7 +38,6 @@ public class GameController {
 
         for (int i = 0; i < numPlayers; i++) {
             Player p = riskMap.getPlayerByName(playerNames.get(i));
-
             for (int j = i * territoriesPerPlayer; j < (i + 1) * territoriesPerPlayer; j++) {
                 String territoryName = terriName.get(j);
                 Territory territory = riskMap.getTerritoryByName(territoryName);

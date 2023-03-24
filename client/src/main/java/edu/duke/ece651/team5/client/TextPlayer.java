@@ -68,30 +68,35 @@ public class TextPlayer {
   public HashMap<String, Integer> unitPlacement(RISKMap currMap){
     // out.println("Begin placement");
     Player player = currMap.getPlayerByName(getPlayerName());
-    // out.println("Get player: " + player.getName());
-    int availableUnit = player.getAvailableUnit() - currMap.getTerritories().size();
+    
+    int availableUnit = player.getAvailableUnit() - player.getTerritories().size();;
+    out.println("Get availableunit size: " + availableUnit);
+    out.println("Get player size: " + player.getTerritories().size());
     int numTerries = player.getTerritories().size();
     // out.println("unit: " + availableUnit + " numTerries: " + numTerries);
     int count = 0;
     HashMap<String, Integer> placementInfo = new HashMap<>();
-    //iterate each territory this player is owned
+    //iterate each territory this player is owned`
     // out.println("Begin looping territories");
     for(Territory t: player.getTerritories()){
       //if player do not have enough unit or is select last territory, will assign automatically
-      if(availableUnit == 1 || count == numTerries-1){
+      if(availableUnit == 0 || count == numTerries-1){
         // out.println("Available unit = 0 or last terri"
+        System.out.println("put in territory: " + t.getName());
         placementInfo.put(t.getName(), 1);
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
       int placeUnit = parseNumFromUsr(instruction, 1, availableUnit, 0);
       System.out.println("success parse");
-      placementInfo.put(t.getName(), placeUnit);
+      System.out.println("put in territory: " + t.getName());
+      placementInfo.put(t.getName(), placeUnit + 1);
       //update available unit number
       availableUnit -= placeUnit;
       count++;
     }
-    // out.println("finish placement");
+    System.out.println("territory size " + currMap.getTerritories().size());
+    System.out.println("placement size " + placementInfo.size());
     return placementInfo;
   }
 
@@ -287,9 +292,9 @@ public class TextPlayer {
         }
         int check = upperBound-res;
         System.out.println("availale unit: " + check);
-        if(type == 0 && upperBound-res == 0){
-          continue;
-        }
+        // if(type == 0 && upperBound-res == 0){
+        //   continue;
+        // }
         status = true;
       } catch(Exception e) {
         out.println("Not a valid number input. Please try again");

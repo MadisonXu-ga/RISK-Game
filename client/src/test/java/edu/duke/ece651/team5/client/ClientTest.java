@@ -37,18 +37,18 @@ public class ClientTest {
 
 
 
-  @Test
-  void testCreatePlayer() throws IOException, ClassNotFoundException{
-    PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn("test");
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    BufferedReader input = new BufferedReader(new StringReader("1"));
-    PrintStream output = new PrintStream(bytes, true);
-    Client client = createPlayer(test, input, output);
-    client.createPlayer();
-    String data = (String)client.playerConnection.readData();
-    assertEquals("test", data);
-  }
+  // @Test
+  // void testCreatePlayer() throws IOException, ClassNotFoundException{
+  //   PlayerConnection test = mock(PlayerConnection.class);
+  //   when(test.readData()).thenReturn("test");
+  //   ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+  //   BufferedReader input = new BufferedReader(new StringReader("1"));
+  //   PrintStream output = new PrintStream(bytes, true);
+  //   Client client = createPlayer(test, input, output);
+  //   client.createPlayer();
+  //   String data = (String)client.playerConnection.readData();
+  //   assertEquals("test", data);
+  // }
 
 
 

@@ -24,26 +24,26 @@ public class GameControllerTest {
 
     ArrayList<Territory> greenExpected = new ArrayList<>(
             Arrays.asList(
-                        new Territory("Narnia"), new Territory("Elantris"),
-                        new Territory("Midkemia"), new Territory("Scadrial"),
-                        new Territory("Oz"), new Territory("Roshar"),
-                        new Territory("Gondor"), new Territory("Mordor")
+                        new Territory("Narnia"), new Territory("Scadrial"),
+                        new Territory("Gondor"), new Territory("Thalassia"),
+                        new Territory("Sylvaria"), new Territory("Celestia"),
+                        new Territory("Ironcliff"), new Territory("Draconia")
     ));
 
     ArrayList<Territory> blueExpected = new ArrayList<>(
             Arrays.asList(
-                    new Territory("Hogwarts"), new Territory("Thalassia"),
-                    new Territory("Arathia"), new Territory("Eryndor"),
-                    new Territory("Sylvaria"), new Territory("Kaelindor"),
-                    new Territory("Eterna"), new Territory("Celestia")
+                    new Territory("Elantris"), new Territory("Oz"),
+                    new Territory("Mordor"), new Territory("Arathia"),
+                    new Territory("Kaelindor"), new Territory("Frosthold"),
+                    new Territory("Stormhaven"), new Territory("Emberfall")
             ));
 
     ArrayList<Territory> redExpected = new ArrayList<>(
             Arrays.asList(
-                    new Territory("Frosthold"), new Territory("Shadowmire"),
-                    new Territory("Ironcliff"), new Territory("Stormhaven"),
-                    new Territory("Mythosia"), new Territory("Draconia"),
-                    new Territory("Emberfall"), new Territory("Verdantia")
+                    new Territory("Midkemia"), new Territory("Roshar"),
+                    new Territory("Hogwarts"), new Territory("Eryndor"),
+                    new Territory("Eterna"), new Territory("Shadowmire"),
+                    new Territory("Mythosia"), new Territory("Verdantia")
             ));
 
 

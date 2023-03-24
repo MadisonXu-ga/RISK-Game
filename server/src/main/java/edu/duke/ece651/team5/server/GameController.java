@@ -30,20 +30,16 @@ public class GameController {
                 "Gondor", "Mordor", "Hogwarts", "Thalassia", "Arathia",
                 "Eryndor", "Sylvaria", "Kaelindor", "Eterna", "Celestia",
                 "Frosthold", "Shadowmire", "Ironcliff", "Stormhaven",
-                "Mythosia", "Draconia", "Emberfall", "Verdantia"
-        ));
+                "Mythosia", "Draconia", "Emberfall", "Verdantia"));
 
         int numTerritories = terriName.size();
-        int territoriesPerPlayer = numTerritories / numPlayers;
 
-        for (int i = 0; i < numPlayers; i++) {
-            Player p = riskMap.getPlayerByName(playerNames.get(i));
-            for (int j = i * territoriesPerPlayer; j < (i + 1) * territoriesPerPlayer; j++) {
-                String territoryName = terriName.get(j);
-                Territory territory = riskMap.getTerritoryByName(territoryName);
-                p.addTerritory(territory);
-                territory.setOwner(p);
-            }
+        for (int i = 0; i < numTerritories; ++i) {
+            Player p = riskMap.getPlayerByName(playerNames.get(i % numPlayers));
+            String territoryName = terriName.get(i);
+            Territory territory = riskMap.getTerritoryByName(territoryName);
+            p.addTerritory(territory);
+            territory.setOwner(p);
         }
     }
 
@@ -231,43 +227,47 @@ public class GameController {
         }
     }
 
-    protected void beginFight(Territory fightingTerri, ArrayList<AttackOrder> fightOrders){
-        if(fightOrders.isEmpty()){
+    protected void beginFight(Territory fightingTerri, ArrayList<AttackOrder> fightOrders) {
+        if (fightOrders.isEmpty()) {
             return;
         }
-        AttackOrder defenseOrder = new AttackOrder(fightingTerri.getName(), fightingTerri.getName(), fightingTerri.getUnitNum(UnitType.SOLDIER), UnitType.SOLDIER, fightingTerri.getOwner().getName());
+        AttackOrder defenseOrder = new AttackOrder(fightingTerri.getName(), fightingTerri.getName(),
+                fightingTerri.getUnitNum(UnitType.SOLDIER), UnitType.SOLDIER, fightingTerri.getOwner().getName());
         defenseOrder.execute(riskMap);
         System.out.println("=====check defense unit amout: " + fightingTerri.getUnitNum(UnitType.SOLDIER));
         fightOrders.add(defenseOrder);
         ArrayList<Boolean> check = new ArrayList<>();
-        for(int i=0; i<fightOrders.size();++i){
+        for (int i = 0; i < fightOrders.size(); ++i) {
             check.add(true);
         }
-        while(checkWin(check)){
-            for(int i=0; i<fightOrders.size(); i++){
-                if(checkWin(check)) { break; }
-                if(!check.get(i)){
+        while (checkWin(check)) {
+            for (int i = 0; i < fightOrders.size(); i++) {
+                if (checkWin(check)) {
+                    break;
+                }
+                if (!check.get(i)) {
                     continue;
                 }
-                if(fightOrders.get(i).getNumber() == 0){
+                if (fightOrders.get(i).getNumber() == 0) {
                     // fightOrders.remove(i);
                     check.set(i, false);
                     continue;
                 }
                 int another = 0;
-                for(int j=i; j<fightOrders.size(); j++){
-                    if(!check.get(j)){j++;}
-                    else{
+                for (int j = i; j < fightOrders.size(); j++) {
+                    if (!check.get(j)) {
+                        j++;
+                    } else {
                         another = j;
                         break;
                     }
                 }
-                AttackOrder loserForThisRound = (rollDice()) ? fightOrders.get(i): fightOrders.get(another);
-                
+                AttackOrder loserForThisRound = (rollDice()) ? fightOrders.get(i) : fightOrders.get(another);
+
                 System.out.println("loser: " + loserForThisRound.getSourceName());
                 loserForThisRound.loseOneUnit();
                 System.out.println("unit after lose: " + loserForThisRound.getNumber());
-                if(loserForThisRound.getNumber() == 0){
+                if (loserForThisRound.getNumber() == 0) {
                     // fightOrders.remove(loserForThisRound);
                     check.set(fightOrders.indexOf(loserForThisRound), false);
                 }
@@ -276,7 +276,6 @@ public class GameController {
         System.out.println("winner: " + fightOrders.get(0).getPlayerName());
         resolveWinnerForThisRound(fightOrders.get(0), fightingTerri);
     }
-
 
     private boolean checkWin(ArrayList<Boolean> check) {
         int count = 0;

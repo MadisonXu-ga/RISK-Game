@@ -24,6 +24,8 @@ public class Server {
     private ArrayList<ObjectInputStream> clientIns;
     private ArrayList<ObjectOutputStream> clientOuts;
 
+    // private ArrayList<playerConnection>
+
     private GameController gameController;
 
     // true -> normal accept; null -> lost but watch the game;

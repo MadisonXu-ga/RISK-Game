@@ -68,13 +68,13 @@ public class TextPlayer {
   public HashMap<String, Integer> unitPlacement(RISKMap currMap){
     // out.println("Begin placement");
     Player player = currMap.getPlayerByName(getPlayerName());
-    
     int availableUnit = player.getAvailableUnit() - player.getTerritories().size();;
     out.println("Get availableunit size: " + availableUnit);
     out.println("Get player size: " + player.getTerritories().size());
     int numTerries = player.getTerritories().size();
     // out.println("unit: " + availableUnit + " numTerries: " + numTerries);
     int count = 0;
+    int checkUnit = 0;
     HashMap<String, Integer> placementInfo = new HashMap<>();
     //iterate each territory this player is owned`
     // out.println("Begin looping territories");
@@ -83,7 +83,9 @@ public class TextPlayer {
       if(availableUnit == 0 || count == numTerries-1){
         // out.println("Available unit = 0 or last terri"
         System.out.println("put in territory: " + t.getName());
-        placementInfo.put(t.getName(), 1);
+        System.out.println("checkUnit " + checkUnit);
+        placementInfo.put(t.getName(), availableUnit + 1);
+        checkUnit+= 1;
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
@@ -91,12 +93,15 @@ public class TextPlayer {
       System.out.println("success parse");
       System.out.println("put in territory: " + t.getName());
       placementInfo.put(t.getName(), placeUnit + 1);
+      checkUnit += placeUnit + 1;
+      System.out.println("checkUnit " + checkUnit);
       //update available unit number
       availableUnit -= placeUnit;
       count++;
     }
     System.out.println("territory size " + currMap.getTerritories().size());
     System.out.println("placement size " + placementInfo.size());
+    System.out.println("checkUnit " + checkUnit);
     return placementInfo;
   }
 

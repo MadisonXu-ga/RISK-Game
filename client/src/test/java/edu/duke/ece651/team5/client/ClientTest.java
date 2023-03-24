@@ -38,7 +38,7 @@ public class ClientTest {
 
 
   @Test
-  void testCreatePlayer() throws IOException, ClassNotFoundException, InterruptedException{
+  void testCreatePlayer() throws IOException, ClassNotFoundException{
     PlayerConnection test = mock(PlayerConnection.class);
     when(test.readData()).thenReturn("test");
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();

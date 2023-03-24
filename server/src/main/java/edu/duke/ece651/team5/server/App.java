@@ -16,7 +16,7 @@ public class App {
   public static void main(String[] args) throws SocketException, IOException, NumberFormatException, ClassNotFoundException, InterruptedException {
     // App a = new App();
     // System.out.println(a.getMessage());
-    Server server= new Server(57809);
+    Server server= new Server(57809, System.out);
     server.startRISCGame();
   }
 }

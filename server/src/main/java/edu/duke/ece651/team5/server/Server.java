@@ -21,10 +21,11 @@ public class Server {
     private ThreadPoolExecutor threadPool;
     // the sockets and io resources of all the clients
     private ArrayList<Socket> clientSockets;
-    private ArrayList<ObjectInputStream> clientIns;
-    private ArrayList<ObjectOutputStream> clientOuts;
+    // private ArrayList<ObjectInputStream> clientIns;
+    // private ArrayList<ObjectOutputStream> clientOuts;
+    private final PrintStream out;
 
-    // private ArrayList<playerConnection>
+    private ArrayList<PlayerConnection> clientIOs;
 
     private GameController gameController;
 
@@ -39,14 +40,16 @@ public class Server {
      * @throws IOException     if any IO failure
      * @throws SocketException if socket create failure
      */
-    public Server(int port) throws IOException, SocketException {
+    public Server(int port, PrintStream out) throws IOException, SocketException {
         this.port = port;
         this.serverSocket = new ServerSocket(this.port);
 
         this.playerNum = 0;
+        this.out = out;
         this.clientSockets = new ArrayList<>();
-        this.clientOuts = new ArrayList<>();
-        this.clientIns = new ArrayList<>();
+        // this.clientOuts = new ArrayList<>();
+        // this.clientIns = new ArrayList<>();
+        this.clientIOs = new ArrayList<>();
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
         this.threadPool = new ThreadPoolExecutor(4, 4, 100, TimeUnit.SECONDS, workQueue);
@@ -82,18 +85,25 @@ public class Server {
      */
     private void dealWithFirstClient() throws IOException, ClassNotFoundException {
         Socket firstClientSocket = this.serverSocket.accept();
-        System.out.println("Successfully accept the first player!");
+        out.println("Successfully accept the first player!");
 
-        ObjectOutputStream oos = new ObjectOutputStream(firstClientSocket.getOutputStream());
-        clientOuts.add(oos);
-        oos.writeObject("First");
-        oos.flush();
+        // create ios for first client
+        clientIOs.add(new PlayerConnection(firstClientSocket));
+        clientIOs.get(0).writeData("First");
+        this.playerNum = (int) clientIOs.get(0).readData();
 
-        ObjectInputStream ois = new ObjectInputStream(firstClientSocket.getInputStream());
-        this.playerNum = (int) ois.readObject();
-        clientIns.add(ois);
+        // ObjectOutputStream oos = new
+        // ObjectOutputStream(firstClientSocket.getOutputStream());
+        // clientOuts.add(oos);
+        // oos.writeObject("First");
+        // oos.flush();
 
-        System.out.println(
+        // ObjectInputStream ois = new
+        // ObjectInputStream(firstClientSocket.getInputStream());
+        // this.playerNum = (int) ois.readObject();
+        // clientIns.add(ois);
+
+        out.println(
                 "Successfully get the player num! This game is going to be played by " + this.playerNum + " players.");
 
         clientSockets.add(firstClientSocket);
@@ -110,7 +120,7 @@ public class Server {
         // accept one connection first, get playerNum from it
         dealWithFirstClient();
 
-        System.out.println("Start to accept remaining clients...");
+        out.println("Start to accept remaining clients...");
 
         // accept remaining connections, save their sockets and IO streams
         int acceptNum = 1;
@@ -118,9 +128,10 @@ public class Server {
             Socket clientSocket = this.serverSocket.accept();
             acceptNum += 1;
             clientSockets.add(clientSocket);
-            clientOuts.add(new ObjectOutputStream(clientSocket.getOutputStream()));
-            clientIns.add(new ObjectInputStream(clientSocket.getInputStream()));
-            System.out.println("Successfully accept player " + acceptNum);
+            clientIOs.add(new PlayerConnection(clientSocket));
+            // clientOuts.add(new ObjectOutputStream(clientSocket.getOutputStream()));
+            // clientIns.add(new ObjectInputStream(clientSocket.getInputStream()));
+            out.println("Successfully accept player " + acceptNum);
             if (acceptNum == this.playerNum) {
                 break;
             }
@@ -136,7 +147,7 @@ public class Server {
      * @throws InterruptedException if interrupt occurred in thread.sleep()
      */
     public void initGame() throws IOException, InterruptedException {
-        System.out.println("Start to initialize the game...");
+        out.println("Start to initialize the game...");
         // Initialize player connections. At the start, all the players are connected
         // normally.
         for (int i = 0; i < this.playerNum; ++i) {
@@ -146,7 +157,8 @@ public class Server {
         // Handle players' initialization process.
         ArrayList<InitializationHandler> handlers = new ArrayList<>();
         for (int i = 0; i < playerNum; ++i) {
-            InitializationHandler h = new InitializationHandler(clientOuts.get(i), clientIns.get(i),
+            InitializationHandler h = new InitializationHandler(clientIOs.get(i).getObjectOutputStream(),
+                    clientIOs.get(i).getObjectInputStream(),
                     gameController.getPlayerName(i), gameController.getRiskMap());
             handlers.add(h);
             this.threadPool.execute(h);
@@ -159,7 +171,7 @@ public class Server {
             gameController.resolveUnitPlacement(h.getUnitPlacement());
         }
 
-        System.out.println("Game initialization finished!");
+        out.println("Game initialization finished!");
     }
 
     /**
@@ -171,16 +183,17 @@ public class Server {
      * @throws ClassNotFoundException if readObject cast failed
      */
     public void playGame() throws InterruptedException, IOException, ClassNotFoundException {
-        System.out.println("Let's start to play the game!");
+        out.println("Let's start to play the game!");
         while (true) {
-            System.out.println("===============================");
-            System.out.println("Ready to start new turn!");
-            System.out.println("===============================");
+            out.println("===============================");
+            out.println("Ready to start new turn!");
+            out.println("===============================");
 
             // receive actions from players
             ArrayList<PlayHandler> phs = new ArrayList<>();
             for (int i = 0; i < playerNum; ++i) {
-                PlayHandler ph = new PlayHandler(clientOuts.get(i), clientIns.get(i), this.gameController,
+                PlayHandler ph = new PlayHandler(clientIOs.get(i).getObjectOutputStream(),
+                        clientIOs.get(i).getObjectInputStream(), this.gameController,
                         this.playerConnectionStatus.get(i), this.gameController.getPlayerName(i));
                 phs.add(ph);
                 this.threadPool.execute(ph);
@@ -188,15 +201,15 @@ public class Server {
 
             waitForAllThreadsFinished();
 
-            System.out.println("Player finished choosing actions.");
+            out.println("Player finished choosing actions.");
 
             // get each player's actions and resolve actions.
             // move first
-            System.out.println("Start to resolve move actions.");
+            out.println("Start to resolve move actions.");
             this.gameController.resolveAllMoveOrders(playerNum, playerConnectionStatus, phs);
 
             // attack later
-            System.out.println("Start to resolve attack actions.");
+            out.println("Start to resolve attack actions.");
             HashMap<Integer, ArrayList<AttackOrder>> attackResults = this.gameController
                     .resolveAllAttackOrder(playerNum, playerConnectionStatus, phs);
 
@@ -205,29 +218,30 @@ public class Server {
             sendAttackResultsToValidPlayers(attackResults);
 
             // check win or lose or null
-            System.out.print("Start to check players' game status (win/lose/playing) ...");
+            out.print("Start to check players' game status (win/lose/playing) ...");
 
             // send this turn results to connected players
             HashMap<String, Boolean> playerStatus = getPlayerStatus(this.gameController.getRiskMap());
             sendTurnResultsToConnectedPlayers(playerStatus);
-            System.out.println("Successfully sent results to players who are still connecting.");
+            out.println("Successfully sent results to players who are still connecting.");
 
             // check win
             String winPlayerName = checkWin(playerStatus);
             if (winPlayerName != null) {
-                System.out.println("Player " + winPlayerName + " won this game!");
+                out.println("Player " + winPlayerName + " won this game!");
                 break;
             } else {
                 // receive msgs from all lost players *in this one turn*
                 receiveChoicesFromLostPlayers(playerStatus);
             }
-            // System.out.println(new MapTextView(this.gameController.getRiskMap()).displayMap());
+            // out.println(new
+            // MapTextView(this.gameController.getRiskMap()).displayMap());
             this.gameController.addOneUnitToTerrirories();
 
-            System.out.println("This turn is finished.");
+            out.println("This turn is finished.");
         }
 
-        System.out.println("Game is over!");
+        out.println("Game is over!");
     }
 
     /**
@@ -244,7 +258,8 @@ public class Server {
             //
             if (this.playerConnectionStatus.get(i) != null && playerStatus.get(name) != null
                     && this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
-                String lostInfo = (String) clientIns.get(i).readObject();
+                // String lostInfo = (String) clientIns.get(i).readObject();
+                String lostInfo = (String) clientIOs.get(i).readData();
                 // if lost player want to disconnect
                 if (lostInfo.equals("Disconnect")) {
                     this.playerConnectionStatus.put(i, false);
@@ -269,10 +284,12 @@ public class Server {
                 continue;
             }
             if (attackResults.containsKey(i)) {
-                clientOuts.get(i).writeObject(attackResults.get(i));
+                clientIOs.get(i).writeData(attackResults.get(i));
+                // clientOuts.get(i).writeObject(attackResults.get(i));
             } else {
                 ArrayList<AttackOrder> emptyAttackOrder = new ArrayList<>();
-                clientOuts.get(i).writeObject(emptyAttackOrder);
+                clientIOs.get(i).writeData(emptyAttackOrder);
+                // clientOuts.get(i).writeObject(emptyAttackOrder);
             }
         }
     }
@@ -288,7 +305,8 @@ public class Server {
             if (playerConnectionStatus.get(i) != null && this.playerConnectionStatus.get(i) == false) {
                 continue;
             }
-            clientOuts.get(i).writeObject(playerStatus);
+            clientIOs.get(i).writeData(playerStatus);
+            // clientOuts.get(i).writeObject(playerStatus);
         }
     }
 
@@ -353,9 +371,9 @@ public class Server {
                 cSocket.close();
             }
             this.serverSocket.close();
-            System.out.println("Server stopped");
+            out.println("Server stopped");
         } catch (IOException e) {
-            System.out.println("Failed to stop server: " + e.getMessage());
+            out.println("Failed to stop server: " + e.getMessage());
         }
     }
 }

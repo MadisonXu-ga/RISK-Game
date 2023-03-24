@@ -1,8 +1,11 @@
 package edu.duke.ece651.team5.shared;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public abstract class BasicOrder implements Serializable{
+    @Serial
+    private static final long serialVersionUID = 1847314966415949919L;
     protected String sourceName;
     protected String destinationName;
     protected int number;

@@ -1,10 +1,13 @@
 package edu.duke.ece651.team5.shared;
 
+// import java.io.Serial;
 import java.util.HashMap;
 import java.util.Objects;
 import java.io.Serializable;
 
 public class Territory implements Serializable {
+    // @Serial
+    private static final long serialVersionUID = -7740100550480738933L;
     private final String name;
     private final HashMap<Unit, Integer> units;
     private Player owner;
@@ -59,6 +62,15 @@ public class Territory implements Serializable {
     }
 
     /**
+     * Set the unit count
+     * @param type the type of unit
+     * @param count the number of count that is going to be set
+     */
+    public void setUnitCount(Unit type, int count){
+        units.put(type, count);
+    }
+
+    /**
      * Set the owner of territory
      * @param owner the player that should own this territory
      */
@@ -105,10 +117,5 @@ public class Territory implements Serializable {
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Territory{" + "name='" + name + '\'' + '}';
     }
 }

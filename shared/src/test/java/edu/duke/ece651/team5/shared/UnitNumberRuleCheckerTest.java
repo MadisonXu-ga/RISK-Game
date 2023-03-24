@@ -14,10 +14,10 @@ class UnitNumberRuleCheckerTest {
         Territory scadrial = map.getTerritoryByName("Scadrial");
         elantris.updateUnitCount(UnitType.SOLDIER, false, 6);
         scadrial.updateUnitCount(UnitType.SOLDIER, false, 5);
-        MoveOrder move1 = new MoveOrder("Elantris", "Scadrial", 2, UnitType.SOLDIER);
+        MoveOrder move1 = new MoveOrder("Elantris", "Scadrial", 2, UnitType.SOLDIER, "Green");
         assertNull(unitNumberRuleChecker.checkMyRule(move1, null, map));
 
-        MoveOrder move2 = new MoveOrder("Elantris", "Scadrial", 100, UnitType.SOLDIER);
+        MoveOrder move2 = new MoveOrder("Elantris", "Scadrial", 100, UnitType.SOLDIER, "Green");
         assertEquals("There are only 6 units in Elantris, but you entered 100", unitNumberRuleChecker.checkMyRule(move2, null, map));
     }
 }

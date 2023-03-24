@@ -89,11 +89,12 @@ public class Client {
    * @throws ClassNotFoundException if unknown host failure
    */
   public void handlePlacement() throws IOException, ClassNotFoundException{
-    out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     boolean complete = false;
+    //gather placeInfo from textPlayer
+    RISKMap map = recvMap();
+    out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     do{
-      //gather placeInfo from textPlayer
-      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(recvMap());
+      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(map);
       out.println("\nWe got all your choices, sending your choices...\n");
       //write info to server
       playerConnection.writeData(placeInfo);
@@ -120,16 +121,19 @@ public class Client {
     }
     out.println("\nNow it's time to play the game!\n");
     boolean complete = false;
+    RISKMap map = recvMap();
     do{
       //gather actions(orders) from textPlayer
-      Action actions = textPlayer.playOneTurn(recvMap());
+      Action actions = textPlayer.playOneTurn(map);
       out.println("\nWe got all your orders, sending your orders...\n");
       //send info to server
       playerConnection.writeData(actions);
       //receive approval or not from server
       complete = isValidFromServer();
+      String errMsg = (String) playerConnection.readData();
+      System.out.println("why receive string: " +  errMsg);
        //display result accordingly
-      textPlayer.printCommitResult(complete);
+      textPlayer.printCommitResult(complete, errMsg);
     }while(!complete);
   }
 
@@ -143,10 +147,14 @@ public class Client {
    */
   @SuppressWarnings("unchecked")
   public String checkResult() throws IOException,ClassNotFoundException{
-    out.println("\nSeems like everyone finishes their turn.\nNow let's check the result of this round...\n");
+    //receive current turn's result
+    //add attackResult and print the attack result
+    ArrayList<AttackOrder> attackResult = (isLose) ? null: (ArrayList<AttackOrder>) playerConnection.readData();
+    textPlayer.printAttackResult(attackResult);
     //receive current turn's result
     HashMap<String, Boolean> result = (HashMap<String, Boolean>)playerConnection.readData();
     //check if there's a winner
+    out.println("\nNow let's check the result of this round...\n");
     String msg = textPlayer.checkWinner(result);
     //if no winner
     if(msg.isEmpty() && !isLose){
@@ -170,6 +178,7 @@ public class Client {
    */
   public void play(){
     try{
+      createPlayer();
       handlePlayerName();
       handlePlacement();
       String winner = "";
@@ -208,7 +217,5 @@ public class Client {
     boolean isValid = (Boolean) playerConnection.readData();
     return isValid;
   }
-
-
 
 }

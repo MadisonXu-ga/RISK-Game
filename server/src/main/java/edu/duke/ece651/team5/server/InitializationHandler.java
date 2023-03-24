@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.duke.ece651.team5.shared.RISKMap;
+import edu.duke.ece651.team5.shared.UnitValidRuleChecker;
 
 public class InitializationHandler extends ConnectionHandler {
     private String name;
@@ -14,10 +15,18 @@ public class InitializationHandler extends ConnectionHandler {
     private HashMap<String, Integer> unitPlacements;
     private UnitValidRuleChecker unitValidRuleChecker;
 
+    /**
+     * Constructor
+     * @param oos
+     * @param ois
+     * @param name
+     * @param riskMap
+     */
     public InitializationHandler(ObjectOutputStream oos, ObjectInputStream ois, String name, RISKMap riskMap) {
         super(oos, ois);
         this.name = name;
         this.riskMap = riskMap;
+        this.unitValidRuleChecker = new UnitValidRuleChecker();
     }
 
     @Override
@@ -33,7 +42,6 @@ public class InitializationHandler extends ConnectionHandler {
                 isValid = unitValidRuleChecker.checkUnitValid(riskMap, uPs);
                 sendObject(isValid);
             } while (!isValid);
-            sendObject(isValid);
             this.unitPlacements = uPs;
 
         } catch (IOException e) {

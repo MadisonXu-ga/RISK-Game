@@ -15,5 +15,4 @@ public class App {
     Client client = new Client(input, System.out);
     client.play();
   }
-  
 }

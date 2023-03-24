@@ -45,6 +45,13 @@ class TerritoryTest {
     }
 
     @Test
+    void testSetUnitCount() {
+        Territory t = new Territory("Oz");
+        t.setUnitCount(UnitType.SOLDIER, 2);
+        assertEquals(2, t.getUnitNum(UnitType.SOLDIER));
+    }
+
+    @Test
     void testAddHasOwner(){
 
         Territory oneTerritory = new Territory("Mordor", new HashMap<>());

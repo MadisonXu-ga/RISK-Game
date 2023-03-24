@@ -46,7 +46,7 @@ public class TextPlayer {
   public int selectNumPlayer(){
     out.println("Seems like you are the first player in the game!");
     String instruction = "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n";
-    int numPlayer = parseNumFromUsr(instruction, 2, 4);
+    int numPlayer = parseNumFromUsr(instruction, 2, 4,1);
     return numPlayer;
   }
 
@@ -66,24 +66,42 @@ public class TextPlayer {
    * @return a HashMap with key of Territory Name and value of number of desired unit
    */
   public HashMap<String, Integer> unitPlacement(RISKMap currMap){
+    // out.println("Begin placement");
     Player player = currMap.getPlayerByName(getPlayerName());
-    int availableUnit = player.getAvailableUnit();
+    int availableUnit = player.getAvailableUnit() - player.getTerritories().size();;
+    // out.println("Get availableunit size: " + availableUnit);
+    // out.println("Get player size: " + player.getTerritories().size());
     int numTerries = player.getTerritories().size();
+    // out.println("unit: " + availableUnit + " numTerries: " + numTerries);
     int count = 0;
+    int checkUnit = 0;
     HashMap<String, Integer> placementInfo = new HashMap<>();
-    //iterate each territory this player is owned
+    //iterate each territory this player is owned`
+    // out.println("Begin looping territories");
     for(Territory t: player.getTerritories()){
       //if player do not have enough unit or is select last territory, will assign automatically
       if(availableUnit == 0 || count == numTerries-1){
-        placementInfo.put(t.getName(), availableUnit);
+        // out.println("Available unit = 0 or last terri"
+        // System.out.println("put in territory: " + t.getName());
+        // System.out.println("checkUnit " + checkUnit);
+        placementInfo.put(t.getName(), availableUnit + 1);
+        checkUnit+= 1;
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
-      int placeUnit = parseNumFromUsr(instruction, 0, availableUnit);
-      placementInfo.put(t.getName(), placeUnit);
+      int placeUnit = parseNumFromUsr(instruction, 1, availableUnit, 0);
+      // System.out.println("success parse");
+      // System.out.println("put in territory: " + t.getName());
+      placementInfo.put(t.getName(), placeUnit + 1);
+      checkUnit += placeUnit + 1;
+      // System.out.println("checkUnit " + checkUnit);
       //update available unit number
       availableUnit -= placeUnit;
+      count++;
     }
+    // System.out.println("territory size " + currMap.getTerritories().size());
+    // System.out.println("placement size " + placementInfo.size());
+    // System.out.println("checkUnit " + checkUnit);
     return placementInfo;
   }
 
@@ -135,8 +153,8 @@ public class TextPlayer {
     String instruction = "Please enter your unit number of units to " 
     + type + ", the source territory, and the destination territory.\n"
     + "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n"; 
-    boolean check = false;
-    do{
+    // boolean check = false;
+    // do{
       try{
         String input = readUserInput(instruction);
         ArrayList<String> inputs = parseUserInput(input);
@@ -149,23 +167,41 @@ public class TextPlayer {
         String desTerri  = currMap.getTerritoryByName(inputs.get(2)).getName();
         if(type.toUpperCase().charAt(0) == 'M'){
           //create new move order
-          MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER);
+          MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER, playerName);
           //do rule check
-          //add order to moveOrders
-          moveOrders.add(order);
-          return;
+          // MoveOwnershipRuleChecker ruleCheck = new MoveOwnershipRuleChecker(new UnitNumberRuleChecker(new MovePathWithSameOwnerRuleChecker(null)));
+          // // String msg = ruleCheck.checkOrder(order, currMap.getPlayerByName(playerName), currMap);
+          // if(msg!=null){
+          //   out.println(msg);
+          //   return;
+          // }else{
+           //add order to moveOrders
+            // check = true;
+            moveOrders.add(order);
+            return;
+          // }
           //throw Illegal Exception if not success
         }else{
           //create new attack order
+          AttackOrder order = new AttackOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER, playerName);
           //add order to attackOrders
-          // attackOrders.add(0);
-          //throw Illegal Exception if not success
+          // AttackOwnershipRuleChecker ruleChecker = new AttackOwnershipRuleChecker(new AdjacentRuleChecker(null));
+          // String msg =ruleChecker.checkOrder(order, currMap.getPlayerByName(playerName), currMap);
+          // if(msg!=null){
+          //   out.println(msg);
+          //   return;
+          // }else{
+           //add order to moveOrders
+            // check = true;
+          attackOrders.add(order);
+          //   return;
+          // }
           return;
         }
       }catch(Exception e){
         out.println("Not a valid input, please try again");
       }
-    }while(!check);
+    // }while(!check);
   }
 
   /**
@@ -200,7 +236,7 @@ public class TextPlayer {
                 + "1. Continue to watch the game\n"
                 + "2. Quit the game\n"
                 + "Please enter 1 or 2\n";
-      int answer = parseNumFromUsr(instruction, 1, 2);
+      int answer = parseNumFromUsr(instruction, 1, 2, 1);
       response = (answer == 1) ? "Display" : "Disconnect";
     }
     return response;
@@ -211,11 +247,25 @@ public class TextPlayer {
    * Responsible to print the commit result to player
    * @param commitApprove approvement sent from server
    */
-  public void printCommitResult(boolean commitApprove){
+  public void printCommitResult(boolean commitApprove, String errMsg){
     if(commitApprove){
       out.println("You successfully commit all your orders!");
     }else{
-      out.println("Sorry your commit is not successful, please give another try.");
+      out.println("Sorry your commit is not successful because: " + errMsg);
+    }
+  }
+
+  public void printAttackResult (ArrayList<AttackOrder> attRes){
+    if(attRes == null){ 
+      // out.println("att res null"); 
+      return; 
+    }
+    for (AttackOrder order: attRes){
+      if(order. getNumber() == 0) {
+        out.println("Your attack order to attack Territory " + order.getDestinationName() + " was lose in last round.");
+      }else{
+      out.println( "Congratulations! You successfully own the Territory " + order.getDestinationName());
+      }
     }
   }
 
@@ -236,20 +286,28 @@ public class TextPlayer {
    * @param upperBound a upper bound to do bound check
    * @return return a valid int number inside the range
    */
-  private int parseNumFromUsr(String instruction, int lowerBound, int upperBound){
+  private int parseNumFromUsr(String instruction, int lowerBound, int upperBound, int type){
     boolean status = false;
     int res = 0;
     while(!status){
       try{
         String inputUnit = readUserInput(instruction);
         res = Integer.parseInt(inputUnit);
+        // System.out.println("do bound check.\n");
         if(res < lowerBound || res > upperBound){
           out.println("Number input out of range. Please try again.");
           continue;
         }
+        int check = upperBound-res;
+        // System.out.println("availale unit: " + check);
+        // if(type == 0 && upperBound-res == 0){
+        //   continue;
+        // }
         status = true;
       } catch(Exception e) {
         out.println("Not a valid number input. Please try again");
+        // res = parseNumFromUsr(instruction, lowerBound, upperBound);
+        // continue;
       }
     }
     return res;
@@ -260,12 +318,11 @@ public class TextPlayer {
    * @param prompt the helper instruction message
    * @return a string contained user input
    * @throws IOException will throw exception is msg is null
+   * @throws InterruptedException
    */
-  private String readUserInput(String prompt) throws IOException {
+  private String readUserInput(String prompt) throws IOException{
     out.println(prompt);
     String msg = inputReader.readLine();
-    if (msg == null)
-      throw new IOException("Invalid Format: input cannot be null");
     return msg;
   }
 
@@ -297,18 +354,5 @@ public class TextPlayer {
     return res;
   }
 
-  // private int getNumUnit(ArrayList<String> inputs){
-  //   return Integer.parseInt(inputs.get(0));
-  // }
-
-
-  // private Territory getSrcTerri(ArrayList<String> inputs, RISKMap currMap){
-  //   return currMap.getTerritoryByName(inputs.get(1));
-  // }
-
-
-  // private Territory getDesTerri(ArrayList<String> inputs, RISKMap currMap){
-  //   return currMap.getTerritoryByName(inputs.get(2));
-  // }
  
 }

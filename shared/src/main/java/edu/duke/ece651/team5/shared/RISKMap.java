@@ -5,23 +5,38 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class RISKMap implements Serializable {
+    // @Serial
     private static final long serialVersionUID = 3107749286550437606L;
-    private ArrayList<Territory> territories;
+    private final ArrayList<Territory> territories;
     private ArrayList<Player> players;
-    private HashMap<Territory, HashSet<Territory>> connection;
+    private final HashMap<Territory, HashSet<Territory>> connection;
+    private final int availableUnit;
 
     public RISKMap(){
         territories = new ArrayList<>();
         connection = new HashMap<>();
-        initMapFromConfigFile();
+        initMapFromConfigFile("map_config.txt");
+        this.availableUnit = 50;
+    }
+
+    public RISKMap(String fileName) {
+        territories = new ArrayList<>();
+        connection = new HashMap<>();
+        initMapFromConfigFile(fileName);
+        this.availableUnit = 50;
     }
 
     public RISKMap(ArrayList<Player> players) {
+        this("map_config.txt");
         this.players = players;
     }
 
     public void initPlayers(ArrayList<Player> players){
         this.players = players;
+    }
+
+    public int getAvailableUnit(){
+        return availableUnit;
     }
 
     public ArrayList<Player> getPlayers(){
@@ -32,16 +47,9 @@ public class RISKMap implements Serializable {
         return territories;
     }
 
-
-    public static void main(String[] args) {
-        RISKMap map = new RISKMap();
-        System.out.println(map.territories);
-        //System.out.println(map.connection);
-    }
-    private void initMapFromConfigFile() {
+    private void initMapFromConfigFile(String fileName) {
         InputStream inputStream =
-                getClass().getClassLoader().getResourceAsStream("map_config.txt");
-        //String fileName = "shared/src/test/resources/map_config.txt";
+                getClass().getClassLoader().getResourceAsStream(fileName);
         ArrayList<Territory> territoryList = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -63,7 +71,7 @@ public class RISKMap implements Serializable {
                 addConnection(territoryName, Arrays.asList(connectionNameArray));
             }
             reader.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -163,50 +171,5 @@ public class RISKMap implements Serializable {
         }
 
         return false;
-    }
-
-    //TODO move this to a separate class in the following way:
-    /*
-     * create an interface called assignTerritories
-     * then a subclass called pre-assgined with the methods below
-     * gamecontroller -> collects assigning, rules, validating, issue an order
-     *
-     */
-    /*
-    for each territory we need to do the folowing:
-    - iterate through all the players sequentially
-        - assign territories to the player
-    - each assigned territory needs to have a new "owner"
-    !right now it is assigned by going through the list of territories
-    TODO see if we want to get players to choose them
-    */
-    public void assignTerritories(){
-
-        Iterator<Territory> it = territories.iterator();
-
-
-        Integer ctr = 0;
-        while(it.hasNext()){
-
-            Territory currentTerritory = it.next();
-            Player currentPlayer = players.get(ctr % players.size());
-
-
-            chooseTerritory(currentTerritory, currentPlayer);
-            ctr++;
-
-        }
-    }
-
-    public boolean chooseTerritory(Territory aTerritory, Player possibleOwner){
-
-        if(aTerritory.hasOwner()){
-            return false;
-        }
-
-        aTerritory.setOwner(possibleOwner);
-        possibleOwner.addTerritory(aTerritory);
-        return true;
-
     }
 }

@@ -5,11 +5,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class RISKMap implements Serializable {
+    @Serial
     private static final long serialVersionUID = 3107749286550437606L;
-    private ArrayList<Territory> territories;
+    private final ArrayList<Territory> territories;
     private ArrayList<Player> players;
-    private HashMap<Territory, HashSet<Territory>> connection;
-    private int availableUnit;
+    private final HashMap<Territory, HashSet<Territory>> connection;
+    private final int availableUnit;
 
     public RISKMap(){
         territories = new ArrayList<>();

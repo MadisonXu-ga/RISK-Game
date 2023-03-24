@@ -12,6 +12,9 @@ public class RISKMap implements Serializable {
     private final HashMap<Territory, HashSet<Territory>> connection;
     private final int availableUnit;
 
+    /**
+     * Default constructor
+     */
     public RISKMap(){
         territories = new ArrayList<>();
         connection = new HashMap<>();
@@ -19,6 +22,10 @@ public class RISKMap implements Serializable {
         this.availableUnit = 50;
     }
 
+    /**
+     * Constructor for RISKMap
+     * @param fileName name of the config file
+     */
     public RISKMap(String fileName) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
@@ -31,22 +38,11 @@ public class RISKMap implements Serializable {
         this.players = players;
     }
 
-    public void initPlayers(ArrayList<Player> players){
-        this.players = players;
-    }
-
-    public int getAvailableUnit(){
-        return availableUnit;
-    }
-
-    public ArrayList<Player> getPlayers(){
-        return players;
-    }
-
-    public ArrayList<Territory> getTerritories(){
-        return territories;
-    }
-
+    /**
+     * init a map territories and their connection
+     * from a config file
+     * @param fileName name of the config file
+     */
     private void initMapFromConfigFile(String fileName) {
         InputStream inputStream =
                 getClass().getClassLoader().getResourceAsStream(fileName);
@@ -172,5 +168,25 @@ public class RISKMap implements Serializable {
         }
 
         return false;
+    }
+
+    /**
+     * setter for player
+     * @param players a list of player
+     */
+    public void initPlayers(ArrayList<Player> players){
+        this.players = players;
+    }
+
+    public int getAvailableUnit(){
+        return availableUnit;
+    }
+
+    public ArrayList<Player> getPlayers(){
+        return players;
+    }
+
+    public ArrayList<Territory> getTerritories(){
+        return territories;
     }
 }

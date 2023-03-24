@@ -34,39 +34,6 @@ public class ClientTest {
     return client;
   }
 
-  ServerSocket serverSocket;
-
-  private void initServer() throws IOException {
-    serverSocket = new ServerSocket(57809);
-
-    new Thread(() -> {
-        while (true) {
-            try {
-                Socket socket = serverSocket.accept();
-                new Thread(() -> {
-                    try {
-                        handleClient(socket);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }).start();
-  }
-
-  private void handleClient(Socket socket) throws IOException {
-      ObjectOutputStream outputObj = new ObjectOutputStream(socket.getOutputStream());
-      outputObj.writeObject("test");
-
-  }
-
-  private void closeServer() throws IOException {
-      serverSocket.close();
-  }
-
 
 
 
@@ -74,7 +41,6 @@ public class ClientTest {
   void testCreatePlayer() throws IOException, ClassNotFoundException, InterruptedException{
     PlayerConnection test = mock(PlayerConnection.class);
     when(test.readData()).thenReturn("test");
-
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("1"));
     PrintStream output = new PrintStream(bytes, true);

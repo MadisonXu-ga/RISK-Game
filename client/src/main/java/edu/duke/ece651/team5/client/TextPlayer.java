@@ -69,7 +69,7 @@ public class TextPlayer {
     // out.println("Begin placement");
     Player player = currMap.getPlayerByName(getPlayerName());
     // out.println("Get player: " + player.getName());
-    int availableUnit = player.getAvailableUnit();
+    int availableUnit = player.getAvailableUnit() - currMap.getTerritories().size();
     int numTerries = player.getTerritories().size();
     // out.println("unit: " + availableUnit + " numTerries: " + numTerries);
     int count = 0;
@@ -78,14 +78,14 @@ public class TextPlayer {
     // out.println("Begin looping territories");
     for(Territory t: player.getTerritories()){
       //if player do not have enough unit or is select last territory, will assign automatically
-      if(count == numTerries-1){
-        // out.println("Available unit = 0 or last terri");
-        placementInfo.put(t.getName(), availableUnit);
+      if(availableUnit == 1 || count == numTerries-1){
+        // out.println("Available unit = 0 or last terri"
+        placementInfo.put(t.getName(), 1);
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
       int placeUnit = parseNumFromUsr(instruction, 1, availableUnit, 0);
-      // out.println("place info: " + placeUnit + " " + t.getName());
+      out.println("success parse");
       placementInfo.put(t.getName(), placeUnit);
       //update available unit number
       availableUnit -= placeUnit;
@@ -280,10 +280,13 @@ public class TextPlayer {
       try{
         String inputUnit = readUserInput(instruction);
         res = Integer.parseInt(inputUnit);
+        out.println("do bound check.");
         if(res < lowerBound || res > upperBound){
           out.println("Number input out of range. Please try again.");
           continue;
         }
+        int check = upperBound-res;
+        out.println("availale unit: " + check);
         if(type == 0 && upperBound-res == 0){
           continue;
         }

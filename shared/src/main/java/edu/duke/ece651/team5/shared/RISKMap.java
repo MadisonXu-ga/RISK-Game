@@ -33,12 +33,6 @@ public class RISKMap implements Serializable {
         return territories;
     }
 
-
-    public static void main(String[] args) {
-        RISKMap map = new RISKMap();
-        System.out.println(map.territories);
-        //System.out.println(map.connection);
-    }
     private void initMapFromConfigFile() {
         InputStream inputStream =
                 getClass().getClassLoader().getResourceAsStream("map_config.txt");
@@ -164,50 +158,5 @@ public class RISKMap implements Serializable {
         }
 
         return false;
-    }
-
-    //TODO move this to a separate class in the following way:
-    /*
-     * create an interface called assignTerritories
-     * then a subclass called pre-assgined with the methods below
-     * gamecontroller -> collects assigning, rules, validating, issue an order
-     *
-     */
-    /*
-    for each territory we need to do the folowing:
-    - iterate through all the players sequentially
-        - assign territories to the player
-    - each assigned territory needs to have a new "owner"
-    !right now it is assigned by going through the list of territories
-    TODO see if we want to get players to choose them
-    */
-    public void assignTerritories(){
-
-        Iterator<Territory> it = territories.iterator();
-
-
-        Integer ctr = 0;
-        while(it.hasNext()){
-
-            Territory currentTerritory = it.next();
-            Player currentPlayer = players.get(ctr % players.size());
-
-
-            chooseTerritory(currentTerritory, currentPlayer);
-            ctr++;
-
-        }
-    }
-
-    public boolean chooseTerritory(Territory aTerritory, Player possibleOwner){
-
-        if(aTerritory.hasOwner()){
-            return false;
-        }
-
-        aTerritory.setOwner(possibleOwner);
-        possibleOwner.addTerritory(aTerritory);
-        return true;
-
     }
 }

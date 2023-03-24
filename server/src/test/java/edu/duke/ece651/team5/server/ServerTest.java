@@ -57,7 +57,6 @@ public class ServerTest {
     }
 
     // TODO: Later need to update this when there is more functions in map
-<<<<<<< HEAD
     @Disabled
     @Test
     void testMultipleClients() throws SocketException, IOException, InterruptedException, ClassNotFoundException {
@@ -66,19 +65,6 @@ public class ServerTest {
         this.socket1 = new Socket("localhost", port);
         this.socket2 = new Socket("localhost", port);
         this.socket3 = new Socket("localhost", port);
-=======
-    // @Disabled
-    // @Test
-    // void testMultipleClients() throws SocketException, IOException, InterruptedException, ClassNotFoundException {
-    //     int port = 9999;
-    //     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    //     BufferedReader input = new BufferedReader(new StringReader("4"));
-    //     PrintStream output = new PrintStream(bytes, true);
-    //     Server server = new Server(port, output);
-    //     this.socket1 = new Socket("localhost", port);
-    //     this.socket2 = new Socket("localhost", port);
-    //     this.socket3 = new Socket("localhost", port);
->>>>>>> c12bc844bd67163eeeb40b84500819e743cefa0e
 
     //     createClient(socket1, port);
     //     createClient(socket2, port);
@@ -91,7 +77,6 @@ public class ServerTest {
     //     socket2.close();
     //     socket3.close();
 
-<<<<<<< HEAD
         server.stop();
     }
 
@@ -161,8 +146,4 @@ public class ServerTest {
     pcs.put(3, null);
     return pcs;
 }
-=======
-    //     server.stop();
-    // }
->>>>>>> c12bc844bd67163eeeb40b84500819e743cefa0e
 }

@@ -187,13 +187,13 @@ public class GameController {
      * @param playerName player name
      * @return player id
      */
-    private int getPlayerNumByName(String playerName) {
+    protected int getPlayerNumByName(String playerName) {
         for (int i = 0; i < playerNames.size(); ++i) {
             if (playerName.equals(playerNames.get(i))) {
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
 
     /**

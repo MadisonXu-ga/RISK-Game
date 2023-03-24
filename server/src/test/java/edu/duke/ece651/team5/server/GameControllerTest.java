@@ -61,6 +61,13 @@ public class GameControllerTest {
   }
 
   @Test
+  void testGetPlayerNumByName(){
+      GameController gc = new GameController();
+      assertEquals(-1, gc.getPlayerNumByName("abc"));
+  }
+
+
+  @Test
   void testGetRiskMap() {
         GameController gc = new GameController();
         gc.assignTerritories(3);

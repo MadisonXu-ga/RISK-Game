@@ -46,11 +46,12 @@ public class TextPlayerTest {
   void testPlayOneTurn() {
     RISKMap map = createRISKMap();
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    TextPlayer p = createTextPlayer("M\n3-Elantris-Narnia\n3-E-Narnia\n3-Elantris-Narnia\nD\n", bytes);
+    TextPlayer p = createTextPlayer("M\n3-Elantris-Narnia\n3-E-Narnia\n3-Elantris-Narnia\nA\n3-Elantris-Narnia\nD\n", bytes);
     p.setPlayerName("Green");
     Action res = p.playOneTurn(map);
     Action expected = createAction();
     assertEquals(expected.getMoveOrders().size(), res.getMoveOrders().size());
+    assertEquals(expected.getAttackOrders().size(), res.getAttackOrders().size());
   }
 
   @Test
@@ -68,8 +69,7 @@ public class TextPlayerTest {
   private Action createAction(){
     ArrayList<AttackOrder> attackOrder = new ArrayList<>();
     ArrayList<MoveOrder> moveOrder = new ArrayList<>();
-    // attackOrder.add(3);
-    // attackOrder.add(4);
+    attackOrder.add(new AttackOrder("ELantris", "Narnia", 5, UnitType.SOLDIER, "Green"));
     moveOrder.add(new MoveOrder("Elantris", "Narnia", 3, UnitType.SOLDIER, "Green"));
     return new Action(attackOrder, moveOrder);
   }

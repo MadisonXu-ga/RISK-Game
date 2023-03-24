@@ -323,8 +323,6 @@ public class TextPlayer {
   private String readUserInput(String prompt) throws IOException{
     out.println(prompt);
     String msg = inputReader.readLine();
-    if (msg == null)
-      throw new IOException("Invalid Format: input cannot be null");
     return msg;
   }
 
@@ -356,18 +354,5 @@ public class TextPlayer {
     return res;
   }
 
-  // private int getNumUnit(ArrayList<String> inputs){
-  //   return Integer.parseInt(inputs.get(0));
-  // }
-
-
-  // private Territory getSrcTerri(ArrayList<String> inputs, RISKMap currMap){
-  //   return currMap.getTerritoryByName(inputs.get(1));
-  // }
-
-
-  // private Territory getDesTerri(ArrayList<String> inputs, RISKMap currMap){
-  //   return currMap.getTerritoryByName(inputs.get(2));
-  // }
  
 }

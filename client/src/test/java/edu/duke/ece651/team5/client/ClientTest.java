@@ -34,9 +34,50 @@ public class ClientTest {
     return client;
   }
 
+  ServerSocket serverSocket;
+
+  private void initServer() throws IOException {
+    serverSocket = new ServerSocket(57809);
+    new Thread(() -> {
+        while (true) {
+            try {
+                Socket socket = serverSocket.accept();
+                new Thread(() -> {
+                    try {
+                        handleClient(socket);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }).start();
+  }
+
+  private void handleClient(Socket socket) throws IOException {
+      ObjectOutputStream outputObj = new ObjectOutputStream(socket.getOutputStream());
+      outputObj.writeObject("test");
+
+  }
+
+  private void closeServer() throws IOException {
+      serverSocket.close();
+  }
+
+
+
+
   @Test
-  void testCreatePlayer(){
-    
+  void testCreatePlayer() throws IOException, ClassNotFoundException{
+    initServer();
+    Client client = new Client(null, null);
+    client.createPlayer();
+    String test = (String)client.playerConnection.readData();
+    assertEquals("test", test);
+    client.playerConnection.close();
+    closeServer();
   }
 
 

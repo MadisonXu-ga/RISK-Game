@@ -91,6 +91,8 @@ public class PlayHandler extends ConnectionHandler {
      */
     private String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
             UnitValidRuleChecker moveActionUnitChecker) {
+        HashMap<String, Integer> oldTerriUnitNum = new HashMap<>();
+        for()
         for (MoveOrder mo : mos) {
             String message = moveActionChecker.checkOrder(mo,
                     this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
@@ -100,6 +102,8 @@ public class PlayHandler extends ConnectionHandler {
         }
         return moveActionUnitChecker.checkMoveOrderUnitValid(this.gameController.getRiskMap(), mos);
     }
+
+    private HashMap<String, Integer> getOldTerrUnitNum(){}
 
     /*
      * Check whether attack orders are valid.

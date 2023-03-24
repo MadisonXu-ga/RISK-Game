@@ -16,9 +16,9 @@ public class UnitValidRuleCheckerTest {
   
   @Test
   void testCheckAttackOrderUnitValid() {
-    RISKMap testMap = spy(new RISKMap("test_map_config.txt"));
-    when(testMap.getTerritoryByName(Mockito.isA(String.class))).thenReturn(10);
-
+    RISKMap testMap = createTestMap();
+    initMap(testMap, 2);
+    
 
   }
 
@@ -55,18 +55,18 @@ public class UnitValidRuleCheckerTest {
   }
 
   private void initMap(RISKMap map, int numPlayers){
-    ArrayList<Player> playerNames = createplayers();
-    map.initPlayers(playerNames);
+    ArrayList<Player> players = createplayers();
+    map.initPlayers(players);
     ArrayList<String> terriName = new ArrayList<>(Arrays.asList(
             "Narnia", "Elantris", "Midkemia", "Scadrial", "Oz", "Roshar"));
+    ArrayList<String> playerNames = new ArrayList<>(Arrays.asList("Green", "Blue"));
     int numTerritories = terriName.size();
     for (int i = 0; i < numTerritories; ++i) {
         Player p = map.getPlayerByName(playerNames.get(i % numPlayers));
         String territoryName = terriName.get(i);
-        Territory territory = riskMap.getTerritoryByName(territoryName);
+        Territory territory = map.getTerritoryByName(territoryName);
         p.addTerritory(territory);
         territory.setOwner(p);
     }
-  }
   }
 }

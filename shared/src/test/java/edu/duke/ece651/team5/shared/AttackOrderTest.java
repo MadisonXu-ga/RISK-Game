@@ -13,11 +13,9 @@ class AttackOrderTest {
         Territory midkemia = map.getTerritoryByName("Midkemia");
         narnia.updateUnitCount(UnitType.SOLDIER, false, 10);
         midkemia.updateUnitCount(UnitType.SOLDIER, false, 12);
-        MoveOrder move = new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green");
-        move.execute(map);
-
-        move.execute(map);
+        AttackOrder attack = new AttackOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green");
+        attack.execute(map);
         int narniaUnitNum = narnia.getUnitNum(UnitType.SOLDIER);
-        assertEquals(6, narniaUnitNum);
+        assertEquals(8, narniaUnitNum);
     }
 }

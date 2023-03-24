@@ -38,6 +38,7 @@ public class ClientTest {
 
   private void initServer() throws IOException {
     serverSocket = new ServerSocket(57809);
+
     new Thread(() -> {
         while (true) {
             try {
@@ -71,13 +72,15 @@ public class ClientTest {
 
   @Test
   void testCreatePlayer() throws IOException, ClassNotFoundException{
-    initServer();
     Client client = new Client(null, null);
+    initServer();
+    
     client.createPlayer();
     String test = (String)client.playerConnection.readData();
     assertEquals("test", test);
-    client.playerConnection.close();
+    
     closeServer();
+    client.playerConnection.close();
   }
 
 

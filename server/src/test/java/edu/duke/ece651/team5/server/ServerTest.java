@@ -104,7 +104,7 @@ public class ServerTest {
         gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
         gc.getRiskMap().getTerritoryByName("Scadrial").updateUnitCount(UnitType.SOLDIER, false, 10);
         Server server = new Server(12345, System.out);
-        server.resolveAllMoveOrders(4, createPlayerConnectionStatus(), test);
+        server.resolveAllMoveOrders(3, createPlayerConnectionStatus(), test);
         assertEquals(8, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
         assertEquals(7, gc.getRiskMap().getTerritoryByName("Scadrial").getUnitNum(UnitType.SOLDIER));
   }
@@ -133,7 +133,7 @@ public class ServerTest {
         gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
         gc.getRiskMap().getTerritoryByName("Scadrial").updateUnitCount(UnitType.SOLDIER, false, 10);
         Server server = new Server(12345, System.out);
-        server.resolveAllAttackOrder(4, createPlayerConnectionStatus(), test);
+        server.resolveAllAttackOrder(3, createPlayerConnectionStatus(), test);
         assertEquals(8, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
         assertEquals(7, gc.getRiskMap().getTerritoryByName("Scadrial").getUnitNum(UnitType.SOLDIER));
   }

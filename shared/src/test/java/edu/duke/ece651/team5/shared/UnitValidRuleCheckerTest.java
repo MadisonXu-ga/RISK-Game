@@ -13,9 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UnitValidRuleCheckerTest {
-  @Mock
-  private RISKMap mockMap;
-
+  @Mock private RISKMap mockMap;
+  
   @Test
   void testCheckAttackOrderUnitValid() {
     RISKMap testMap = createTestMap();

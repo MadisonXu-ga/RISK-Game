@@ -34,9 +34,50 @@ public class ClientTest {
     return client;
   }
 
+  ServerSocket serverSocket;
+
+  private void initServer() throws IOException {
+    serverSocket = new ServerSocket(57809);
+    new Thread(() -> {
+        while (true) {
+            try {
+                Socket socket = serverSocket.accept();
+                new Thread(() -> {
+                    try {
+                        handleClient(socket);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }).start();
+  }
+
+  private void handleClient(Socket socket) throws IOException {
+      ObjectOutputStream outputObj = new ObjectOutputStream(socket.getOutputStream());
+      outputObj.writeObject("test");
+
+  }
+
+  private void closeServer() throws IOException {
+      serverSocket.close();
+  }
+
+
+
+
   @Test
-  void testCreatePlayer(){
-    
+  void testCreatePlayer() throws IOException, ClassNotFoundException{
+    initServer();
+    Client client = new Client(null, null);
+    client.createPlayer();
+    String test = (String)client.playerConnection.readData();
+    assertEquals("test", test);
+    client.playerConnection.close();
+    closeServer();
   }
 
 
@@ -162,7 +203,7 @@ public class ClientTest {
   void testPlayOneTurn() throws IOException, ClassNotFoundException{
     RISKMap map = createRISKMap();
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(map, false, true);
+    when(test.readData()).thenReturn(map, false,"Incorrect", true, "Correct");
 
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("M\n3-Elantris-Narnia\nD\nM\n3-Elantris-Narnia\nD\n"));
@@ -209,7 +250,7 @@ public class ClientTest {
       
     "\nWe got all your orders, sending your orders...\n" + 
       
-    "\nSorry your commit is not successful, please give another try." + 
+    "\nSorry your commit is not successful because: Incorrect" + 
       
       
     "\nGreen player:\n" + 

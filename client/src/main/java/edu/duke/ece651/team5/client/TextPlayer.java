@@ -69,8 +69,8 @@ public class TextPlayer {
     // out.println("Begin placement");
     Player player = currMap.getPlayerByName(getPlayerName());
     int availableUnit = player.getAvailableUnit() - player.getTerritories().size();;
-    out.println("Get availableunit size: " + availableUnit);
-    out.println("Get player size: " + player.getTerritories().size());
+    // out.println("Get availableunit size: " + availableUnit);
+    // out.println("Get player size: " + player.getTerritories().size());
     int numTerries = player.getTerritories().size();
     // out.println("unit: " + availableUnit + " numTerries: " + numTerries);
     int count = 0;
@@ -82,26 +82,26 @@ public class TextPlayer {
       //if player do not have enough unit or is select last territory, will assign automatically
       if(availableUnit == 0 || count == numTerries-1){
         // out.println("Available unit = 0 or last terri"
-        System.out.println("put in territory: " + t.getName());
-        System.out.println("checkUnit " + checkUnit);
+        // System.out.println("put in territory: " + t.getName());
+        // System.out.println("checkUnit " + checkUnit);
         placementInfo.put(t.getName(), availableUnit + 1);
         checkUnit+= 1;
         continue;
       }
       String instruction = "How many unit you want to place in your " + t.getName();
       int placeUnit = parseNumFromUsr(instruction, 1, availableUnit, 0);
-      System.out.println("success parse");
-      System.out.println("put in territory: " + t.getName());
+      // System.out.println("success parse");
+      // System.out.println("put in territory: " + t.getName());
       placementInfo.put(t.getName(), placeUnit + 1);
       checkUnit += placeUnit + 1;
-      System.out.println("checkUnit " + checkUnit);
+      // System.out.println("checkUnit " + checkUnit);
       //update available unit number
       availableUnit -= placeUnit;
       count++;
     }
-    System.out.println("territory size " + currMap.getTerritories().size());
-    System.out.println("placement size " + placementInfo.size());
-    System.out.println("checkUnit " + checkUnit);
+    // System.out.println("territory size " + currMap.getTerritories().size());
+    // System.out.println("placement size " + placementInfo.size());
+    // System.out.println("checkUnit " + checkUnit);
     return placementInfo;
   }
 
@@ -257,7 +257,7 @@ public class TextPlayer {
 
   public void printAttackResult (ArrayList<AttackOrder> attRes){
     if(attRes == null){ 
-      out.println("att res null"); 
+      // out.println("att res null"); 
       return; 
     }
     for (AttackOrder order: attRes){
@@ -293,13 +293,13 @@ public class TextPlayer {
       try{
         String inputUnit = readUserInput(instruction);
         res = Integer.parseInt(inputUnit);
-        System.out.println("do bound check.\n");
+        // System.out.println("do bound check.\n");
         if(res < lowerBound || res > upperBound){
           out.println("Number input out of range. Please try again.");
           continue;
         }
         int check = upperBound-res;
-        System.out.println("availale unit: " + check);
+        // System.out.println("availale unit: " + check);
         // if(type == 0 && upperBound-res == 0){
         //   continue;
         // }
@@ -323,8 +323,6 @@ public class TextPlayer {
   private String readUserInput(String prompt) throws IOException{
     out.println(prompt);
     String msg = inputReader.readLine();
-    if (msg == null)
-      throw new IOException("Invalid Format: input cannot be null");
     return msg;
   }
 
@@ -356,18 +354,5 @@ public class TextPlayer {
     return res;
   }
 
-  // private int getNumUnit(ArrayList<String> inputs){
-  //   return Integer.parseInt(inputs.get(0));
-  // }
-
-
-  // private Territory getSrcTerri(ArrayList<String> inputs, RISKMap currMap){
-  //   return currMap.getTerritoryByName(inputs.get(1));
-  // }
-
-
-  // private Territory getDesTerri(ArrayList<String> inputs, RISKMap currMap){
-  //   return currMap.getTerritoryByName(inputs.get(2));
-  // }
  
 }

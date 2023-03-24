@@ -46,11 +46,12 @@ public class TextPlayerTest {
   void testPlayOneTurn() {
     RISKMap map = createRISKMap();
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    TextPlayer p = createTextPlayer("M\n3-Elantris-Narnia\n3-E-Narnia\n3-Elantris-Narnia\nD\n", bytes);
+    TextPlayer p = createTextPlayer("M\n3-Elantris-Narnia\n3-E-Narnia\n3-Elantris-Narnia\nA\n3-Elantris-Narnia\nD\n", bytes);
     p.setPlayerName("Green");
     Action res = p.playOneTurn(map);
     Action expected = createAction();
     assertEquals(expected.getMoveOrders().size(), res.getMoveOrders().size());
+    assertEquals(expected.getAttackOrders().size(), res.getAttackOrders().size());
   }
 
   @Test
@@ -68,8 +69,7 @@ public class TextPlayerTest {
   private Action createAction(){
     ArrayList<AttackOrder> attackOrder = new ArrayList<>();
     ArrayList<MoveOrder> moveOrder = new ArrayList<>();
-    // attackOrder.add(3);
-    // attackOrder.add(4);
+    attackOrder.add(new AttackOrder("ELantris", "Narnia", 5, UnitType.SOLDIER, "Green"));
     moveOrder.add(new MoveOrder("Elantris", "Narnia", 3, UnitType.SOLDIER, "Green"));
     return new Action(attackOrder, moveOrder);
   }
@@ -129,9 +129,9 @@ public class TextPlayerTest {
     assertEquals(p.getPlayerName(), player.getName());
     HashMap<String, Integer> placementInfo = p.unitPlacement(map);
     HashMap<String, Integer> expected = new HashMap<>();
-    expected.put("Elantris", 10);
-    expected.put("Narnia", 15);
-    expected.put("Oz", 25);
+    expected.put("Elantris", 11);
+    expected.put("Narnia", 16);
+    expected.put("Oz", 23);
     assertEquals(expected, placementInfo);
 
   }
@@ -146,9 +146,9 @@ public class TextPlayerTest {
     assertEquals(p.getPlayerName(), player.getName());
     HashMap<String, Integer> placementInfo = p.unitPlacement(map);
     HashMap<String, Integer> expected = new HashMap<>();
-    expected.put("Elantris", 10);
-    expected.put("Narnia", 15);
-    expected.put("Oz", 25);
+    expected.put("Elantris", 11);
+    expected.put("Narnia", 16);
+    expected.put("Oz", 23);
 
     assertEquals(expected, placementInfo);
 
@@ -187,7 +187,7 @@ public class TextPlayerTest {
     TextPlayer p = createTextPlayer("10\n60\n15\n25\n", bytes);
    
     p.setPlayerName("Green");
-    p.printCommitResult(test);
+    p.printCommitResult(test, "Correct");
     assertEquals("This is your player name for this game: Green\nYou successfully commit all your orders!\n",  bytes.toString());
 
   }
@@ -200,8 +200,8 @@ public class TextPlayerTest {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     TextPlayer p = createTextPlayer("10\n60\n15\n25\n", bytes);
     p.setPlayerName("Green");
-    p.printCommitResult(!test);
-    assertEquals("This is your player name for this game: Green\nSorry your commit is not successful, please give another try.\n",  bytes.toString());
+    p.printCommitResult(!test, "Incorrect");
+    assertEquals("This is your player name for this game: Green\nSorry your commit is not successful because: Incorrect\n",  bytes.toString());
   }
 
   @Test

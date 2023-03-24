@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -55,18 +56,146 @@ public class GameControllerTest {
 
   @Test
   void testGetPlayerName() {
-
+        GameController gc = new GameController();
+        assertEquals("Green", gc.getPlayerName(0));
   }
 
   @Test
   void testGetRiskMap() {
-
+        GameController gc = new GameController();
+        gc.assignTerritories(3);
+        RISKMap map = gc.getRiskMap();
+        assertEquals(8, map.getPlayers().get(0).getTerritories().size());
+        assertEquals(24, map.getTerritories().size());
   }
 
   @Test
   void testResolveUnitPlacement() {
+        HashMap<String, Integer> placeInfo = new HashMap<>();
+        placeInfo.put("Narnia", 10);
+        placeInfo.put("Elantris", 40);
+        GameController gc = new GameController();
+        gc.resolveUnitPlacement(placeInfo);
+        assertEquals(10, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
+        assertEquals(40, gc.getRiskMap().getTerritoryByName("Elantris").getUnitNum(UnitType.SOLDIER));
 
   }
+
+  @Test
+  void testExecuteAttackOrder(){
+        GameController gc = new GameController();
+        gc.assignTerritories(3);
+        gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
+        ArrayList<AttackOrder> attackOrders = new ArrayList<>();
+        attackOrders.add(new AttackOrder("Narnia", "Elantris", 3, UnitType.SOLDIER, "Green"));
+        gc.executeAttackOrder(attackOrders);
+        assertEquals(7, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
+
+  }
+
+  @Test
+  void testMergeSamePlayers(){
+        HashMap<String, ArrayList<AttackOrder>> orders = createOrders();
+        GameController gc = new GameController();
+        HashMap<String, ArrayList<AttackOrder>> mergeOrders =  gc.mergeSamePlayers(orders);
+        assertEquals(2, mergeOrders.size());
+        assertEquals(5, mergeOrders.get("Elantris").get(0).getNumber());
+
+  }
+
+  @Test
+  void testResolveAllMoveOrders(){
+        ArrayList<MoveOrder> p0 = new ArrayList<>();
+        p0.add(new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green"));
+        ArrayList<MoveOrder> p2 = new ArrayList<>();
+        p2.add( new MoveOrder("Scadrial", "Roshar", 3, UnitType.SOLDIER, "Blue"));
+       
+        PlayHandler mockp0 = mock(PlayHandler.class);
+        PlayHandler mockp1 = mock(PlayHandler.class);
+        PlayHandler mockp2 = mock(PlayHandler.class);
+        PlayHandler mockp3 = mock(PlayHandler.class);
+        when(mockp0.getPlayerMoveOrders()).thenReturn(p0);
+        when(mockp2.getPlayerMoveOrders()).thenReturn(p2);
+        ArrayList<PlayHandler> test = new ArrayList<>();
+        test.add(mockp0);
+        test.add(mockp1);
+        test.add(mockp2);
+        test.add(mockp3);
+
+        GameController gc = new GameController();
+        gc.assignTerritories(3);
+        gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
+        gc.getRiskMap().getTerritoryByName("Scadrial").updateUnitCount(UnitType.SOLDIER, false, 10);
+        gc.resolveAllMoveOrders(4, createPlayerConnectionStatus(), test);
+        assertEquals(8, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
+        assertEquals(7, gc.getRiskMap().getTerritoryByName("Scadrial").getUnitNum(UnitType.SOLDIER));
+  }
+
+
+  @Test
+  void testResolveAllAttackOrders(){
+        ArrayList<AttackOrder> p0 = new ArrayList<>();
+        p0.add(new AttackOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green"));
+        ArrayList<AttackOrder> p2 = new ArrayList<>();
+        p2.add(new AttackOrder("Scadrial", "Roshar", 3, UnitType.SOLDIER, "Blue"));
+       
+        PlayHandler mockp0 = mock(PlayHandler.class);
+        PlayHandler mockp1 = mock(PlayHandler.class);
+        PlayHandler mockp2 = mock(PlayHandler.class);
+        PlayHandler mockp3 = mock(PlayHandler.class);
+        when(mockp0.getPlayerAttackOrders()).thenReturn(p0);
+        when(mockp2.getPlayerAttackOrders()).thenReturn(p2);
+        ArrayList<PlayHandler> test = new ArrayList<>();
+        test.add(mockp0);
+        test.add(mockp1);
+        test.add(mockp2);
+        test.add(mockp3);
+
+        GameController gc = new GameController();
+        gc.assignTerritories(3);
+        gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
+        gc.getRiskMap().getTerritoryByName("Scadrial").updateUnitCount(UnitType.SOLDIER, false, 10);
+        gc.resolveAllAttackOrder(4, createPlayerConnectionStatus(), test);
+        assertEquals(8, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
+        assertEquals(7, gc.getRiskMap().getTerritoryByName("Scadrial").getUnitNum(UnitType.SOLDIER));
+  }
+
+
+
+  private HashMap<Integer, Boolean> createPlayerConnectionStatus(){
+        HashMap<Integer, Boolean> pcs = new HashMap<>();
+        pcs.put(0, true);
+        pcs.put(1, false);
+        pcs.put(2, true);
+        pcs.put(3, null);
+        return pcs;
+  }
+
+
+  private HashMap<String, ArrayList<AttackOrder>> createOrders(){
+        HashMap<String, ArrayList<AttackOrder>> orders = new HashMap<>();
+        ArrayList<AttackOrder> attGreen = new ArrayList<>();
+        attGreen.add(new AttackOrder("Narnia", "Elantris", 2, UnitType.SOLDIER, "Green"));
+        attGreen.add(new AttackOrder("Midkemia", "Elantris", 3, UnitType.SOLDIER, "Green"));
+        
+        ArrayList<AttackOrder> attBlue = new ArrayList<>();
+        attBlue.add(new AttackOrder( "Elantris", "Narnia", 2, UnitType.SOLDIER, "Blue"));
+       
+        orders.put("Elantris", attGreen);
+        orders.put("Narnia", attBlue);
+
+        
+        return orders;
+}
+
+
+
+
+
+
+
+
+
   @Disabled
   @Test
   void testBeginFight(){

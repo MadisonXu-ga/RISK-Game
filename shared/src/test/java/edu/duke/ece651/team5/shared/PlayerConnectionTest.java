@@ -6,11 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class PlayerConnectionTest {
@@ -54,4 +50,30 @@ public class PlayerConnectionTest {
     doThrow(new IOException()).when(playerConnection).writeData("data");
     assertThrows(IOException.class, () -> playerConnection.writeData("data"));
   }
+
+
+    @Test
+    public void testGetObjectOutputStream() {
+        PlayerConnection playerConnection = mock(PlayerConnection.class);
+        ObjectOutputStream expectedOutput = mock(ObjectOutputStream.class);
+
+        when(playerConnection.getObjectOutputStream()).thenReturn(expectedOutput);
+
+        ObjectOutputStream actualOutput = playerConnection.getObjectOutputStream();
+
+        assertEquals(expectedOutput, actualOutput);
+    }
+
+    @Test
+    public void testGetObjectInputStream() {
+        PlayerConnection playerConnection = mock(PlayerConnection.class);
+        ObjectInputStream expectedInput = mock(ObjectInputStream.class);
+
+        when(playerConnection.getObjectInputStream()).thenReturn(expectedInput);
+
+        ObjectInputStream actualInput = playerConnection.getObjectInputStream();
+
+        assertEquals(expectedInput, actualInput);
+    }
+
 }

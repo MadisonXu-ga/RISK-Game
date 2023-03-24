@@ -162,7 +162,7 @@ public class ClientTest {
   void testPlayOneTurn() throws IOException, ClassNotFoundException{
     RISKMap map = createRISKMap();
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(map, false, true);
+    when(test.readData()).thenReturn(map, false,"Incorrect", true, "Correct");
 
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("M\n3-Elantris-Narnia\nD\nM\n3-Elantris-Narnia\nD\n"));
@@ -209,7 +209,7 @@ public class ClientTest {
       
     "\nWe got all your orders, sending your orders...\n" + 
       
-    "\nSorry your commit is not successful, please give another try." + 
+    "\nSorry your commit is not successful because: Incorrect" + 
       
       
     "\nGreen player:\n" + 

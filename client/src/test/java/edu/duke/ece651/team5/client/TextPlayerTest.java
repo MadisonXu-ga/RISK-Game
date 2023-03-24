@@ -129,9 +129,9 @@ public class TextPlayerTest {
     assertEquals(p.getPlayerName(), player.getName());
     HashMap<String, Integer> placementInfo = p.unitPlacement(map);
     HashMap<String, Integer> expected = new HashMap<>();
-    expected.put("Elantris", 10);
-    expected.put("Narnia", 15);
-    expected.put("Oz", 25);
+    expected.put("Elantris", 11);
+    expected.put("Narnia", 16);
+    expected.put("Oz", 23);
     assertEquals(expected, placementInfo);
 
   }
@@ -146,9 +146,9 @@ public class TextPlayerTest {
     assertEquals(p.getPlayerName(), player.getName());
     HashMap<String, Integer> placementInfo = p.unitPlacement(map);
     HashMap<String, Integer> expected = new HashMap<>();
-    expected.put("Elantris", 10);
-    expected.put("Narnia", 15);
-    expected.put("Oz", 25);
+    expected.put("Elantris", 11);
+    expected.put("Narnia", 16);
+    expected.put("Oz", 23);
 
     assertEquals(expected, placementInfo);
 
@@ -187,7 +187,7 @@ public class TextPlayerTest {
     TextPlayer p = createTextPlayer("10\n60\n15\n25\n", bytes);
    
     p.setPlayerName("Green");
-    p.printCommitResult(test);
+    p.printCommitResult(test, "Correct");
     assertEquals("This is your player name for this game: Green\nYou successfully commit all your orders!\n",  bytes.toString());
 
   }
@@ -200,8 +200,8 @@ public class TextPlayerTest {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     TextPlayer p = createTextPlayer("10\n60\n15\n25\n", bytes);
     p.setPlayerName("Green");
-    p.printCommitResult(!test);
-    assertEquals("This is your player name for this game: Green\nSorry your commit is not successful, please give another try.\n",  bytes.toString());
+    p.printCommitResult(!test, "Incorrect");
+    assertEquals("This is your player name for this game: Green\nSorry your commit is not successful because: Incorrect\n",  bytes.toString());
   }
 
   @Test

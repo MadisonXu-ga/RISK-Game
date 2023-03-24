@@ -280,7 +280,7 @@ public class TextPlayer {
       try{
         String inputUnit = readUserInput(instruction);
         res = Integer.parseInt(inputUnit);
-        System.out.println("do bound check.");
+        System.out.println("do bound check.\n");
         if(res < lowerBound || res > upperBound){
           out.println("Number input out of range. Please try again.");
           continue;

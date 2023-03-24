@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class RISKMap implements Serializable {
-    @Serial
+    // @Serial
     private static final long serialVersionUID = 3107749286550437606L;
     private final ArrayList<Territory> territories;
     private ArrayList<Player> players;

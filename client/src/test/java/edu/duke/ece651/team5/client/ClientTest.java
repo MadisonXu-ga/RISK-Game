@@ -29,59 +29,11 @@ public class ClientTest {
           catch(Exception e) {
           }
       }
-    }; 
+    };
     client.createPlayer();
     return client;
   }
-
-  ServerSocket serverSocket;
-
-  private void initServer() throws IOException {
-    serverSocket = new ServerSocket(57809);
-
-    new Thread(() -> {
-        while (true) {
-            try {
-                Socket socket = serverSocket.accept();
-                new Thread(() -> {
-                    try {
-                        handleClient(socket);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }).start();
-  }
-
-  private void handleClient(Socket socket) throws IOException {
-      ObjectOutputStream outputObj = new ObjectOutputStream(socket.getOutputStream());
-      outputObj.writeObject("test");
-
-  }
-
-  private void closeServer() throws IOException {
-      serverSocket.close();
-  }
-
-
-
-
-  // @Test
-  // void testCreatePlayer() throws IOException, ClassNotFoundException{
-  //   Client client = new Client(null, null);
-  //   initServer();
-    
-  //   client.createPlayer();
-  //   String test = (String)client.playerConnection.readData();
-  //   assertEquals("test", test);
-    
-  //   closeServer();
-  //   client.playerConnection.close();
-  // }
+  
 
 
 
@@ -206,7 +158,7 @@ public class ClientTest {
   void testPlayOneTurn() throws IOException, ClassNotFoundException{
     RISKMap map = createRISKMap();
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(map, false,"Incorrect", true, "Correct");
+    when(test.readData()).thenReturn(map, false, "Incorrect", true, "Correct");
 
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("M\n3-Elantris-Narnia\nD\nM\n3-Elantris-Narnia\nD\n"));
@@ -436,35 +388,5 @@ public class ClientTest {
       attRes.add(new AttackOrder("A", "B", 3, UnitType.SOLDIER, "Green"));
     }
     return attRes;
+    }
   }
-
-
-
-
-  // @Test
-  // void testCommunicate() {
-  //   int port = 12345;
-  //   try {
-  //     ServerSocket server = new ServerSocket (port) ;
-  //     Socket server_socket = server.accept();
-  //     ObjectOutputStream os = new ObjectOutputStream(server_socket.getOutputStream());
-  //     ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(server_socket.getInputStream()));
-  //     String received = (String) is.readObject();
-  //     Client client = new Client();
-  //     assertEquals("hello from client\n", received);
-  //     os.writeObject("hello from server\n");
-  //     os.flush();
-  //     // generate a map
-  //     RISKMap myMap = generateMap();
-  //     os.writeObject(myMap);
-  //     os.flush();
-  //     os.writeObject(1) ;
-  //     os.flush();
-  //     } catch (Exception e) {
-  //   }
-  //   Client client = new Client();
-  //   assertEquals("localhost/127.0.0.1:12345", client.getSocket().getRemoteSocketAddress().toString());
-
-  // }
-
-}

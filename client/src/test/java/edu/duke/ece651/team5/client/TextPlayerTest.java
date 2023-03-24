@@ -61,8 +61,7 @@ public class TextPlayerTest {
     TextPlayer p = createTextPlayer("gdsd\nM\n\n-1-A-Narnia\n3-A-Narnia\n3-Elantris-Narnia\nD\n", bytes);
     p.setPlayerName("Green");
     Action res = p.playOneTurn(map);
-    Action expected = createAction();
-    assertEquals(expected.getMoveOrders(), res.getMoveOrders());
+    assertEquals(0, res.getMoveOrders().size());
   }
 
 

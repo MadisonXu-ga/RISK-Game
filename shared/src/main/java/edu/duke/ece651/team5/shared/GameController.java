@@ -232,7 +232,7 @@ public class GameController {
         resolveWinnerForThisRound(fightOrders.get(winnerIdx), fightingTerri);
     }
 
-    private boolean checkWin(ArrayList<Boolean> check) {
+    protected boolean checkWin(ArrayList<Boolean> check) {
         int count = 0;
         for (int i = 0; i < check.size(); ++i) {
             if (check.get(i)) {

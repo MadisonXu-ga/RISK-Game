@@ -1,12 +1,12 @@
 package edu.duke.ece651.team5.shared;
 
-import java.io.Serial;
+// import java.io.Serial;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Player implements Serializable{
-  @Serial
+  // @Serial
   private static final long serialVersionUID = 1956072100912475484L;
   private String name;
   private ArrayList<Territory> territories;

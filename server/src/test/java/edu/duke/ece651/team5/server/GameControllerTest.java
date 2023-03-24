@@ -208,15 +208,14 @@ public class GameControllerTest {
         return orders;
 }
 
-
-
-
-
-
-
-
-
-
+  @Test
+  void testAddOneUnitToTerritories() {
+      GameController gameController = new GameController();
+      RISKMap riskMap = gameController.getRiskMap();
+      Territory oz = riskMap.getTerritoryByName("Oz");
+      gameController.addOneUnitToTerrirories();
+      assertEquals(1, oz.getUnitNum(UnitType.SOLDIER));
+  }
 
   @Disabled
   @Test

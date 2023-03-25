@@ -64,6 +64,7 @@ public class GameControllerTest {
   void testGetPlayerNumByName(){
       GameController gc = new GameController();
       assertEquals(-1, gc.getPlayerNumByName("abc"));
+      assertEquals(0, gc.getPlayerNumByName("Green"));
   }
 
 
@@ -110,73 +111,74 @@ public class GameControllerTest {
 
   }
 
-//   @Test
-//   void testResolveAllMoveOrders(){
-//         ArrayList<MoveOrder> p0 = new ArrayList<>();
-//         p0.add(new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green"));
-//         ArrayList<MoveOrder> p2 = new ArrayList<>();
-//         p2.add( new MoveOrder("Scadrial", "Roshar", 3, UnitType.SOLDIER, "Blue"));
+  // @Test
+  // void testResolveAllMoveOrders(){
+  //       ArrayList<MoveOrder> p0 = new ArrayList<>();
+  //       p0.add(new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green"));
+  //       ArrayList<MoveOrder> p2 = new ArrayList<>();
+  //       p2.add( new MoveOrder("Scadrial", "Roshar", 3, UnitType.SOLDIER, "Blue"));
        
-//         PlayHandler mockp0 = mock(PlayHandler.class);
-//         PlayHandler mockp1 = mock(PlayHandler.class);
-//         PlayHandler mockp2 = mock(PlayHandler.class);
-//         PlayHandler mockp3 = mock(PlayHandler.class);
-//         when(mockp0.getPlayerMoveOrders()).thenReturn(p0);
-//         when(mockp2.getPlayerMoveOrders()).thenReturn(p2);
-//         ArrayList<PlayHandler> test = new ArrayList<>();
-//         test.add(mockp0);
-//         test.add(mockp1);
-//         test.add(mockp2);
-//         test.add(mockp3);
+  //       PlayHandler mockp0 = mock(PlayHandler.class);
+  //       PlayHandler mockp1 = mock(PlayHandler.class);
+  //       PlayHandler mockp2 = mock(PlayHandler.class);
+  //       PlayHandler mockp3 = mock(PlayHandler.class);
+  //       when(mockp0.getPlayerMoveOrders()).thenReturn(p0);
+  //       when(mockp2.getPlayerMoveOrders()).thenReturn(p2);
+  //       ArrayList<PlayHandler> test = new ArrayList<>();
+  //       test.add(mockp0);
+  //       test.add(mockp1);
+  //       test.add(mockp2);
+  //       test.add(mockp3);
 
-//         GameController gc = new GameController();
-//         gc.assignTerritories(3);
-//         gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
-//         gc.getRiskMap().getTerritoryByName("Scadrial").updateUnitCount(UnitType.SOLDIER, false, 10);
-//         gc.resolveAllMoveOrders(4, createPlayerConnectionStatus(), test);
-//         assertEquals(8, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
-//         assertEquals(7, gc.getRiskMap().getTerritoryByName("Scadrial").getUnitNum(UnitType.SOLDIER));
-//   }
+  //       GameController gc = new GameController();
+  //       gc.assignTerritories(3);
+  //       gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
+  //       gc.getRiskMap().getTerritoryByName("Scadrial").updateUnitCount(UnitType.SOLDIER, false, 10);
+  //       gc.resolveAllMoveOrders(4, createPlayerConnectionStatus(), test);
+  //       assertEquals(8, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
+  //       assertEquals(7, gc.getRiskMap().getTerritoryByName("Scadrial").getUnitNum(UnitType.SOLDIER));
+  // }
 
 
-//   @Test
-//   void testResolveAllAttackOrders(){
-//         ArrayList<AttackOrder> p0 = new ArrayList<>();
-//         p0.add(new AttackOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green"));
-//         ArrayList<AttackOrder> p2 = new ArrayList<>();
-//         p2.add(new AttackOrder("Scadrial", "Roshar", 3, UnitType.SOLDIER, "Blue"));
+  @Test
+  void testResolveAllAttackOrders(){
+        ArrayList<AttackOrder> p0 = new ArrayList<>();
+        p0.add(new AttackOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green"));
+        p0.add(new AttackOrder("Oz", "Midkemia", 2, UnitType.SOLDIER, "Green"));
+        ArrayList<AttackOrder> p2 = new ArrayList<>();
+        p2.add(new AttackOrder("Scadrial", "Roshar", 3, UnitType.SOLDIER, "Blue"));
        
-//         PlayHandler mockp0 = mock(PlayHandler.class);
-//         PlayHandler mockp1 = mock(PlayHandler.class);
-//         PlayHandler mockp2 = mock(PlayHandler.class);
-//         PlayHandler mockp3 = mock(PlayHandler.class);
-//         when(mockp0.getPlayerAttackOrders()).thenReturn(p0);
-//         when(mockp2.getPlayerAttackOrders()).thenReturn(p2);
-//         ArrayList<PlayHandler> test = new ArrayList<>();
-//         test.add(mockp0);
-//         test.add(mockp1);
-//         test.add(mockp2);
-//         test.add(mockp3);
+        HashMap<String, ArrayList<AttackOrder>> test = new HashMap<>();
+        test.put("Midkemia", p0);
+        test.put("Roshar", p2);
 
-//         GameController gc = new GameController();
-//         gc.assignTerritories(3);
-//         gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
-//         gc.getRiskMap().getTerritoryByName("Scadrial").updateUnitCount(UnitType.SOLDIER, false, 10);
-//         gc.resolveAllAttackOrder(4, createPlayerConnectionStatus(), test);
-//         assertEquals(8, gc.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
-//         assertEquals(7, gc.getRiskMap().getTerritoryByName("Scadrial").getUnitNum(UnitType.SOLDIER));
-//   }
+        GameController gc = new GameController();
+        gc.assignTerritories(3);
+        gc.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
+        gc.getRiskMap().getTerritoryByName("Scadrial").updateUnitCount(UnitType.SOLDIER, false, 10);
+        gc.resolveAttackOrder(test);
+        assertEquals(2, gc.getRiskMap().getTerritoryByName("Midkemia").getUnitNum(UnitType.SOLDIER));
+        assertEquals(2, gc.getRiskMap().getTerritoryByName("Roshar").getUnitNum(UnitType.SOLDIER));
+  }
 
 
-//   @Test
-//   void testGroupAttackOrdersByPlayers(){
-//         HashMap<String, ArrayList<AttackOrder>> orders = createOrders();
-//         GameController gc = new GameController();
-//         HashMap<String, ArrayList<AttackOrder>> mergeOrders =  gc.groupAttackOrdersByPlayers(orders);
-//         assertEquals(2, mergeOrders.size());
-//         assertEquals(5, mergeOrders.get("Elantris").get(0).getNumber());
+  @Test
+  void testGroupAttackOrdersByPlayers(){
+        HashMap<String, ArrayList<AttackOrder>> orders = createOrders();
+        GameController gc = new GameController();
+        HashMap<Integer, ArrayList<AttackOrder>> mergeOrders =  gc.groupAttackOrdersByPlayers(orders);
+        assertEquals(2, mergeOrders.size());
 
-//   }
+  }
+
+  @Test
+  void testGroupAttackOrdersByTerris(){
+        HashMap<String, ArrayList<AttackOrder>> orders = createOrders();
+        GameController gc = new GameController();
+        HashMap<Integer, ArrayList<AttackOrder>> mergeOrders =  gc.groupAttackOrdersByPlayers(orders);
+        assertEquals(2, mergeOrders.size());
+
+  }
 
 
   private HashMap<String, ArrayList<AttackOrder>> createOrders(){
@@ -203,7 +205,6 @@ public class GameControllerTest {
       assertEquals(1, oz.getUnitNum(UnitType.SOLDIER));
   }
 
-  @Disabled
   @Test
   void testBeginFight(){
     ArrayList<AttackOrder> attackOrders = new ArrayList<>();
@@ -222,6 +223,7 @@ public class GameControllerTest {
     GameController gc = new GameController();
     gc.assignTerritories(3);
     gc.beginFight(toFight, attackOrders);
+    assert()
   }
   
   @Test
@@ -234,4 +236,7 @@ public class GameControllerTest {
       boolean b = gameController.checkWin(list);
       assertFalse(b);
   }
+
+
+
 }

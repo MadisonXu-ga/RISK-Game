@@ -181,6 +181,7 @@ public class GameController {
         }
     }
 
+
     protected void beginFight(Territory fightingTerri, ArrayList<AttackOrder> fightOrders) {
         if (fightOrders.isEmpty()) {
             return;
@@ -259,4 +260,6 @@ public class GameController {
         int y = rand.nextInt(20);
         return x > y;
     }
+
+
 }

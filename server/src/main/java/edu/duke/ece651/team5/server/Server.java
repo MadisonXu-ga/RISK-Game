@@ -92,17 +92,6 @@ public class Server {
         clientIOs.get(0).writeData("First");
         this.playerNum = (int) clientIOs.get(0).readData();
 
-        // ObjectOutputStream oos = new
-        // ObjectOutputStream(firstClientSocket.getOutputStream());
-        // clientOuts.add(oos);
-        // oos.writeObject("First");
-        // oos.flush();
-
-        // ObjectInputStream ois = new
-        // ObjectInputStream(firstClientSocket.getInputStream());
-        // this.playerNum = (int) ois.readObject();
-        // clientIns.add(ois);
-
         out.println(
                 "Successfully get the player num! This game is going to be played by " + this.playerNum + " players.");
 

@@ -251,12 +251,12 @@ public class ClientTest {
     PlayerConnection test = mock(PlayerConnection.class);
     when(test.readData()).thenReturn(attRes, res);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    BufferedReader input = new BufferedReader(new StringReader("1"));
+    BufferedReader input = new BufferedReader(new StringReader("Disconnect"));
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);
     client.textPlayer.setPlayerName("Green");
-    client.checkResult();
+    String msg = client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
     "Your attack order to attack Territory B was lose in last round.\n\n" + 
@@ -267,13 +267,14 @@ public class ClientTest {
     "2. Quit the game\n" + 
     "Please enter 1 or 2\n\n";
     assertEquals(expected, bytes.toString());
+    assertEquals("Disconnect", msg);
 
   }
 
   @Test
   void testCheckResult2() throws IOException, ClassNotFoundException{
     HashMap<String, Boolean> res = new HashMap<>();
-    res.put("Green", true);
+    res.put("Green", null);
     res.put("Red", null);
     ArrayList<AttackOrder> attRes = createAttRes(1);
 		PlayerConnection test = mock(PlayerConnection.class);
@@ -284,13 +285,12 @@ public class ClientTest {
 
     Client client = createPlayer(test, input, output);
     client.textPlayer.setPlayerName("Green");
-    client.checkResult();
+    String msg = client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
     "Congratulations! You successfully own the Territory B\n\n" + 
-    "Now let's check the result of this round...\n" +
-    "\nPlayer Green wins!\n" +
-    "Game End NOW\n";
+    "Now let's check the result of this round...\n\n" +
+    "No winner for this round, let's start a new one!\n";
     assertEquals(expected, bytes.toString());
   }
 

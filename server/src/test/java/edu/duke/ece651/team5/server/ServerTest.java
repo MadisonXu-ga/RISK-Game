@@ -187,8 +187,121 @@ public class ServerTest {
         return pcs;
     }
 
+    @Disabled
     @Test
     void testReceiveChoicesFromLostPlayers() {
-        
+
+    }
+
+    @Disabled
+    @Test
+    void testSendAttackResultsToValidPlayers() throws SocketException, IOException {
+        // Create mock objects
+        ByteArrayOutputStream mockBaos1 = new ByteArrayOutputStream();
+        ObjectOutputStream mockOos1 = new ObjectOutputStream(mockBaos1);
+
+        ByteArrayOutputStream mockBaos2 = new ByteArrayOutputStream();
+        ObjectOutputStream mockOos2 = new ObjectOutputStream(mockBaos2);
+
+        ByteArrayOutputStream mockBaos3 = new ByteArrayOutputStream();
+        ObjectOutputStream mockOos3 = new ObjectOutputStream(mockBaos3);
+
+        ArrayList<ObjectOutputStream> mockOosList = new ArrayList<>();
+        mockOosList.add(mockOos1);
+        mockOosList.add(mockOos2);
+        mockOosList.add(mockOos3);
+
+        Server server = new Server(23456, System.out);
+
+        HashMap<String, Boolean> mockPlayerStatus = new HashMap<>();
+        mockPlayerStatus.put("Player 1", true);
+        mockPlayerStatus.put("Player 2", true);
+        mockPlayerStatus.put("Player 3", true);
+
+        // Write object to mockOos1
+        mockOos1.writeObject(mockPlayerStatus);
+
+        // Set up mock behaviors
+        // Write object to mockOos1
+
+        //doNothing().when(mockOos2).writeObject(mockPlayerStatus);
+        //doThrow(new RuntimeException()).when(mockOos3).writeObject(mockPlayerStatus);
+
+        // Call method being tested
+        server.sendTurnResultsToConnectedPlayers(mockPlayerStatus);
+
+
+        // Verify mock behaviors
+        verify(mockOos1, times(1)).writeObject(mockPlayerStatus);
+        verify(mockOos2, times(1)).writeObject(mockPlayerStatus);
+        verify(mockOos3, times(1)).writeObject(mockPlayerStatus);
+    }
+
+    @Disabled
+    @Test
+    void testGetPlayerStatus() throws SocketException, IOException {
+        // Create a mock RISKMap object
+        RISKMap mockRiskMap = mock(RISKMap.class);
+
+        // Create some mock Player objects
+        Player mockPlayer1 = mock(Player.class);
+        Player mockPlayer2 = mock(Player.class);
+        Player mockPlayer3 = mock(Player.class);
+
+        // Create some mock Territory objects
+        Territory mockTerritory1 = mock(Territory.class);
+        Territory mockTerritory2 = mock(Territory.class);
+        Territory mockTerritory3 = mock(Territory.class);
+        Territory mockTerritory4 = mock(Territory.class);
+        Territory mockTerritory5 = mock(Territory.class);
+
+        // Set up mock behaviors for the RISKMap and Player objects
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(mockPlayer1);
+        players.add(mockPlayer2);
+        players.add(mockPlayer3);
+
+        ArrayList<Territory> territories1 = new ArrayList<>();
+        territories1.add(mockTerritory1);
+        territories1.add(mockTerritory2);
+
+        ArrayList<Territory> territories2 = new ArrayList<>();
+        territories2.add(mockTerritory3);
+        territories2.add(mockTerritory4);
+
+        ArrayList<Territory> territories3 = new ArrayList<>();
+        territories3.add(mockTerritory5);
+
+        ArrayList<Territory> allTerritories = new ArrayList<>();
+
+        when(mockRiskMap.getPlayers()).thenReturn(players);
+        when(mockPlayer1.getName()).thenReturn("Player 1");
+        when(mockPlayer1.getTerritories()).thenReturn(territories1);
+        when(mockPlayer2.getName()).thenReturn("Player 2");
+        when(mockPlayer2.getTerritories()).thenReturn(territories2);
+        when(mockPlayer3.getName()).thenReturn("Player 3");
+        when(mockPlayer3.getTerritories()).thenReturn(territories3);
+
+        // Set up mock behaviors for the Territory objects
+        when(mockRiskMap.getTerritories()).thenReturn(allTerritories);
+        when(mockTerritory1.getName()).thenReturn("Territory 1");
+        when(mockTerritory2.getName()).thenReturn("Territory 2");
+        when(mockTerritory3.getName()).thenReturn("Territory 3");
+        when(mockTerritory4.getName()).thenReturn("Territory 4");
+        when(mockTerritory5.getName()).thenReturn("Territory 5");
+
+        // Create the expected player status map
+        HashMap<String, Boolean> expectedPlayerStatus = new HashMap<>();
+        expectedPlayerStatus.put("Player 1", null);
+        expectedPlayerStatus.put("Player 2", null);
+        expectedPlayerStatus.put("Player 3", null);
+
+        Server server = new Server(25678, System.out);
+
+        // Call the method being tested
+        HashMap<String, Boolean> actualPlayerStatus = server.getPlayerStatus(mockRiskMap);
+
+        // Verify the results
+        assertEquals(expectedPlayerStatus, actualPlayerStatus);
     }
 }

@@ -24,6 +24,9 @@ public class GameController {
         this.riskMap = new RISKMap(defaultPlayers);
     }
 
+    /**
+     * @param numPlayers int
+     */
     public void assignTerritories(int numPlayers) {
         ArrayList<String> terriName = new ArrayList<>(Arrays.asList(
                 "Narnia", "Elantris", "Midkemia", "Scadrial", "Oz", "Roshar",
@@ -51,6 +54,9 @@ public class GameController {
         return playerNames.get(index);
     }
 
+    /**
+     * @param unitPlacements HashMap<String, Integer>
+     */
     public void resolveUnitPlacement(HashMap<String, Integer> unitPlacements) {
         for (Map.Entry<String, Integer> entry : unitPlacements.entrySet()) {
             String name = entry.getKey();
@@ -63,6 +69,9 @@ public class GameController {
         }
     }
 
+    /**
+     * @param attackOrders ArrayList<AttackOrder>
+     */
     public void executeAttackOrder(ArrayList<AttackOrder> attackOrders) {
         for (AttackOrder order : attackOrders) {
             order.execute(riskMap);
@@ -74,6 +83,12 @@ public class GameController {
         }
     }
 
+    /**
+     * combines attacking orders from different territories into a combined force
+     * 
+     * @param attackOrderByTerris HashMap<String, ArrayList<AttackOrder>>
+     * @return HashMap<String, ArrayList<AttackOrder>>
+     */
     public HashMap<String, ArrayList<AttackOrder>> mergeSamePlayers(
             HashMap<String, ArrayList<AttackOrder>> attackOrderByTerris) {
         // des terri, arraylist
@@ -171,7 +186,9 @@ public class GameController {
         }
     }
 
-    // todo merge attack order belong to same player
+    /**
+     * @param attackOrderByTerris HashMap<String, ArrayList<AttackOrder>>
+     */
     public void resolveAttackOrder(HashMap<String, ArrayList<AttackOrder>> attackOrderByTerris) {
         System.out.println("============resolve attack order================");
         HashMap<String, ArrayList<AttackOrder>> mergeSamePlayerOrders = mergeSamePlayers(attackOrderByTerris);
@@ -181,6 +198,10 @@ public class GameController {
         }
     }
 
+    /**
+     * @param fightingTerri Territory
+     * @param fightOrders   ArrayList<AttackOrder>
+     */
     protected void beginFight(Territory fightingTerri, ArrayList<AttackOrder> fightOrders) {
         if (fightOrders.isEmpty()) {
             return;
@@ -232,6 +253,11 @@ public class GameController {
         resolveWinnerForThisRound(fightOrders.get(winnerIdx), fightingTerri);
     }
 
+    /**
+     * checks if the fight is over
+     * 
+     * @return the count
+     */
     protected boolean checkWin(ArrayList<Boolean> check) {
         int count = 0;
         for (int i = 0; i < check.size(); ++i) {
@@ -243,6 +269,10 @@ public class GameController {
         return count == 1;
     }
 
+    /**
+     * @param winOrder      AttackOrder
+     * @param fightingTerri Territory
+     */
     protected void resolveWinnerForThisRound(AttackOrder winOrder, Territory fightingTerri) {
         fightingTerri.getOwner().loseTerritory(fightingTerri);
         Player winner = riskMap.getTerritoryByName(winOrder.getSourceName()).getOwner();
@@ -253,6 +283,11 @@ public class GameController {
         winner.addTerritory(fightingTerri);
     }
 
+    /**
+     * rolls dice
+     * 
+     * @return boolean who won
+     */
     protected boolean rollDice() {
         Random rand = new Random(42);
         int x = rand.nextInt(20);

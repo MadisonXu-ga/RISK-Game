@@ -258,7 +258,7 @@
   
 
 (defun dcoverage-map-nested (fn lst)
-  "Map FN over a two deep nested LST."
+  "RISKMap FN over a two deep nested LST."
   (mapcar (lambda (x) (mapcar fn x)) lst))
 
 

@@ -28,7 +28,7 @@ If you take a look, you will see that we have setup a few placeholder classes:
  - shared/src/main/java/edu/duke/ece651/teamX/shared/MyName.java
    is a class shared between the client and server.  This placeholder
    class just has getName(), but in RISC you might put things here
-   like Territory, Map, etc.
+   like Territory, RISKMap, etc.
  - client/src/main/java/edu/duke/ece651/teamX/client/App.java
    is the "client" code.  It makes use of the shared class MyName
    and calls MyName.getName() its getMessage() method.

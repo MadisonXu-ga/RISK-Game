@@ -12,17 +12,16 @@ public class RISKMap implements Serializable {
     private final HashMap<Territory, HashSet<Territory>> connection;
     private final int availableUnit;
 
-    public RISKMap(){
-        territories = new ArrayList<>();
-        connection = new HashMap<>();
-        initMapFromConfigFile("map_config.txt");
-        this.availableUnit = 50;
+    public RISKMap() {
+        this("map_config.txt");
     }
 
     public RISKMap(String fileName) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
-        initMapFromConfigFile(fileName);
+        InputStream inputStream =
+                getClass().getClassLoader().getResourceAsStream(fileName);
+        initMapFromConfigFile(inputStream);
         this.availableUnit = 50;
     }
 
@@ -47,9 +46,7 @@ public class RISKMap implements Serializable {
         return territories;
     }
 
-    private void initMapFromConfigFile(String fileName) {
-        InputStream inputStream =
-                getClass().getClassLoader().getResourceAsStream(fileName);
+    private void initMapFromConfigFile(InputStream inputStream) {
         ArrayList<Territory> territoryList = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));

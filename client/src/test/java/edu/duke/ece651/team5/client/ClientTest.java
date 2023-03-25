@@ -291,7 +291,7 @@ public class ClientTest {
     "Now let's check the result of this round...\n" +
     "\nNo winner for this round, let's start a new one!\n";
     assertEquals(expected, bytes.toString());
-    assertNull(message);
+    assertEquals("", message);
   }
 
   @Test

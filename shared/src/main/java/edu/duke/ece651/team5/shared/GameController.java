@@ -254,7 +254,7 @@ public class GameController {
     }
 
     protected boolean rollDice() {
-        Random rand = new Random();
+        Random rand = new Random(42);
         int x = rand.nextInt(20);
         int y = rand.nextInt(20);
         return x > y;

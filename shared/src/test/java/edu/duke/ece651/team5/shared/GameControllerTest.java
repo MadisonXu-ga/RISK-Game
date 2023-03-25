@@ -234,4 +234,11 @@ public class GameControllerTest {
       boolean b = gameController.checkWin(list);
       assertFalse(b);
   }
+
+    @Test
+    void rollDice() {
+      GameController gameController = new GameController();
+      boolean b = gameController.rollDice();
+      assertTrue(b);
+    }
 }

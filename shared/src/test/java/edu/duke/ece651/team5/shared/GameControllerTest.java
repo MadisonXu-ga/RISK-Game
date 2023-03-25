@@ -5,6 +5,8 @@ import edu.duke.ece651.team5.shared.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +15,24 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class GameControllerTest {
-  @Test
+    @Test
+    public void testResolveWinnerForThisRound(){
+        Player blue =  new Player("Blue");
+        Player green = new Player("Green");
+        AttackOrder winOrder = new AttackOrder("Narnia", "Elantris", 4, UnitType.SOLDIER, "Green");
+        Territory fightTerri = new Territory("Elantris");
+        fightTerri.setOwner(blue);
+        blue.addTerritory(fightTerri);
+
+
+        GameController gc = new GameController();
+        gc.riskMap.getTerritoryByName("Narnia").setOwner(green);
+        gc.riskMap.getTerritoryByName("Elantris").setOwner(blue);
+        gc.resolveWinnerForThisRound(winOrder, fightTerri);
+        assertEquals("Blue", gc.riskMap.getTerritoryByName("Elantris").getOwner().getName());
+    }
+
+    @Test
   void testAssignTerritories() {
     GameController gc = new GameController();
     assertEquals(0, gc.getRiskMap().getPlayerByName("Green").getTerritories().size());

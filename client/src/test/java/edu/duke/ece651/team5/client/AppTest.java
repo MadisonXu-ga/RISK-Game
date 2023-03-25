@@ -6,6 +6,7 @@ import edu.duke.ece651.team5.client.App;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 import java.io.*;
 
@@ -18,39 +19,28 @@ import org.junit.jupiter.api.Disabled;
 class AppTest {
 
 
-  @Test
-  void testMain() throws IOException, ClassNotFoundException, InterruptedException{
-		App.main(null);
-  }
+  // @Test
+  // void testMain() throws IOException, ClassNotFoundException, InterruptedException{
+	// 	App.main(null);
+  // }
 
-//   @Test
+    @Test
+    public void testMain() throws Exception {
+        // Arrange
+        String inputString = "Test Input String\n";
+        System.setIn(new ByteArrayInputStream(inputString.getBytes()));
+        BufferedReader mockInput = mock(BufferedReader.class);
+        when(mockInput.readLine()).thenReturn("Test Input String");
+        PrintStream mockOutput = mock(PrintStream.class);
+        Client mockClient = mock(Client.class);
 
-//  @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
-//   void test_main() throws IOException {
-//     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//     PrintStream out = new PrintStream(bytes, true);
-//     InputStream input = getClass().getClassLoader().getResourceAsStream("input.txt");
-//     assertNotNull(input);
 
-//     InputStream expectedStream = getClass().getClassLoader().getResourceAsStream("output.txt");
-//     assertNotNull(expectedStream);
+        // Act
+        App.main(null);
 
-//     InputStream oldIn = System.in;
-//     PrintStream oldOut = System.out;
-
-//     try {
-//       System.setIn(input);
-//       System.setOut(out);
-//       App.main(new String[0]);
-//     } finally {
-//       System.setIn(oldIn);
-//       System.setOut(oldOut);
-//     }
-
-//     String expected = new String(expectedStream.readAllBytes());
-//     String actual = bytes.toString();
-//     assertEquals(expected, actual);
-//   }
-  
+        // Assert
+        //verifyNew(Client.class).withArguments(mockInput, System.out);
+        verify(mockClient).play();
+    }
 
 }

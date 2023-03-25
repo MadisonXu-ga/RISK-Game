@@ -9,7 +9,7 @@ import java.util.Random;
 import edu.duke.ece651.team5.shared.*;;
 
 public class GameController {
-    private RISKMap riskMap;
+    protected RISKMap riskMap;
     private ArrayList<String> playerNames;
     private ArrayList<Player> defaultPlayers;
 
@@ -245,6 +245,7 @@ public class GameController {
 
     protected void resolveWinnerForThisRound(AttackOrder winOrder, Territory fightingTerri) {
         fightingTerri.getOwner().loseTerritory(fightingTerri);
+        riskMap.getTerritoryByName(winOrder.getSourceName());
         Player winner = riskMap.getTerritoryByName(winOrder.getSourceName()).getOwner();
         fightingTerri.setOwner(winner);
         System.out.println("new owner: " + fightingTerri.getOwner().getName());

@@ -14,6 +14,13 @@ public class PlayHandler extends ConnectionHandler {
     private Boolean playerConnectionStatus;
     private String playerName;
 
+    /**
+     * @param oos                    ObjectOutputStream
+     * @param ois                    ObjectInputStream
+     * @param gameController         GameController
+     * @param playerConnectionStatus Boolean
+     * @param playerName             String
+     */
     public PlayHandler(ObjectOutputStream oos, ObjectInputStream ois, GameController gameController,
             Boolean playerConnectionStatus, String playerName) {
         super(oos, ois);
@@ -59,8 +66,11 @@ public class PlayHandler extends ConnectionHandler {
         }
     }
 
-    /*
+    /**
      * Check whether player's actions are valid.
+     * 
+     * @param action Action
+     * @return String message
      */
     private String checkActions(Action action) {
         ArrayList<MoveOrder> mos = action.getMoveOrders();

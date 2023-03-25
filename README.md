@@ -7,6 +7,9 @@
 
 [Detailed coverage](https://mz213.pages.oit.duke.edu/team5-risc-game/dashboard.html)
 
+## UML Diagram
+https://app.diagrams.net/#G1KTyLsnkdNQ0dshPDDPIh9IM6hmnQTf1p
+
 ## Game Mechanics
 
 Welcome to our game! Here you will find the latest version of the RISC game from us, team 5.

@@ -250,7 +250,7 @@ public class ClientTest {
     PlayerConnection test = mock(PlayerConnection.class);
     when(test.readData()).thenReturn(attRes, res);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    BufferedReader input = new BufferedReader(new StringReader("1"));
+    BufferedReader input = new BufferedReader(new StringReader("1\nDisconnect"));
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);

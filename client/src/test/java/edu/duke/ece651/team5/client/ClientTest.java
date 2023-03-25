@@ -1,14 +1,13 @@
 package edu.duke.ece651.team5.client;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.shared.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Disabled;
@@ -256,7 +255,7 @@ public class ClientTest {
 
     Client client = createPlayer(test, input, output);
     client.textPlayer.setPlayerName("Green");
-    client.checkResult();
+    String message = client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
     "Your attack order to attack Territory B was lose in last round.\n\n" + 
@@ -267,13 +266,14 @@ public class ClientTest {
     "2. Quit the game\n" + 
     "Please enter 1 or 2\n\n";
     assertEquals(expected, bytes.toString());
+    assertEquals("Disconnect", message);
 
   }
 
   @Test
   void testCheckResult2() throws IOException, ClassNotFoundException{
     HashMap<String, Boolean> res = new HashMap<>();
-    res.put("Green", true);
+    res.put("Green", null);
     res.put("Red", null);
     ArrayList<AttackOrder> attRes = createAttRes(1);
 		PlayerConnection test = mock(PlayerConnection.class);
@@ -284,14 +284,14 @@ public class ClientTest {
 
     Client client = createPlayer(test, input, output);
     client.textPlayer.setPlayerName("Green");
-    client.checkResult();
+    String message = client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
     "Congratulations! You successfully own the Territory B\n\n" + 
     "Now let's check the result of this round...\n" +
-    "\nPlayer Green wins!\n" +
-    "Game End NOW\n";
+    "\nNo winner for this round, let's start a new one!\n";
     assertEquals(expected, bytes.toString());
+    assertNull(message);
   }
 
   @Test

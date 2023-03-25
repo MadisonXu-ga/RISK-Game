@@ -72,7 +72,7 @@ public class PlayHandler extends ConnectionHandler {
      * @param action Action
      * @return String message
      */
-    private String checkActions(Action action) {
+    protected String checkActions(Action action) {
         ArrayList<MoveOrder> mos = action.getMoveOrders();
         ArrayList<AttackOrder> aos = action.getAttackOrders();
 
@@ -107,7 +107,7 @@ public class PlayHandler extends ConnectionHandler {
      * @param oldTerriUnitNum       HashMap<String, Integer>
      * @return String message
      */
-    private String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
+    protected String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
             UnitValidRuleChecker moveActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
         String message = null;
         for (MoveOrder mo : mos) {
@@ -128,7 +128,7 @@ public class PlayHandler extends ConnectionHandler {
      * 
      * @return territories' unit number
      */
-    private HashMap<String, Integer> getTerrUnitNum() {
+    protected HashMap<String, Integer> getTerrUnitNum() {
         HashMap<String, Integer> TerriUnitNum = new HashMap<>();
         for (Territory terr : this.gameController.getRiskMap().getTerritories()) {
             TerriUnitNum.put(terr.getName(), terr.getUnitNum(UnitType.SOLDIER));
@@ -141,7 +141,7 @@ public class PlayHandler extends ConnectionHandler {
      * 
      * @param oldTerriUnitNum old territories' unit number
      */
-    private void revertTerrUnitChanges(HashMap<String, Integer> oldTerriUnitNum) {
+    protected void revertTerrUnitChanges(HashMap<String, Integer> oldTerriUnitNum) {
         for (Territory terr : this.gameController.getRiskMap().getTerritories()) {
             terr.setUnitCount(UnitType.SOLDIER, oldTerriUnitNum.get(terr.getName()));
         }
@@ -156,7 +156,7 @@ public class PlayHandler extends ConnectionHandler {
      * @param oldTerriUnitNum         HashMap<String, Integer>
      * @return String message
      */
-    private String checkAttackValid(ArrayList<AttackOrder> aos, OrderRuleChecker attackActionChecker,
+    protected String checkAttackValid(ArrayList<AttackOrder> aos, OrderRuleChecker attackActionChecker,
             UnitValidRuleChecker attackActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
         String message = null;
         for (AttackOrder ao : aos) {
@@ -178,14 +178,18 @@ public class PlayHandler extends ConnectionHandler {
      * 
      * @return action.getMoveOrders()
      */
-    public ArrayList<MoveOrder> getPlayerMoveOrders() {
+    protected ArrayList<MoveOrder> getPlayerMoveOrders() {
         return action.getMoveOrders();
     }
 
     /*
      * Get one player's valid attack orders in this turn.
      */
-    public ArrayList<AttackOrder> getPlayerAttackOrders() {
+    protected ArrayList<AttackOrder> getPlayerAttackOrders() {
         return action.getAttackOrders();
+    }
+
+    protected void setAction(Action action){
+        this.action = action;
     }
 }

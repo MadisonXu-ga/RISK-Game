@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.Disabled;
@@ -30,7 +31,7 @@ public class ServerTest {
     private Socket socket2;
     private Socket socket3;
 
-    private void createClient(Socket s, int port) {
+    private void createClient(Socket s, HashMap<String, Integer> unitplacement) {
         Thread clientThread = new Thread(() -> {
             try {
                 ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));
@@ -45,6 +46,9 @@ public class ServerTest {
 
                 RISKMap r = (RISKMap) ois.readObject();
                 assertNotNull(r);
+
+                oos.writeObject(unitplacement);
+
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -57,7 +61,6 @@ public class ServerTest {
     }
 
     // TODO: Later need to update this when there is more functions in map
-    @Disabled
     @Test
     void testMultipleClients() throws SocketException, IOException, InterruptedException, ClassNotFoundException {
         int port = 9999;
@@ -66,27 +69,57 @@ public class ServerTest {
         this.socket2 = new Socket("localhost", port);
         this.socket3 = new Socket("localhost", port);
 
-    //     createClient(socket1, port);
-    //     createClient(socket2, port);
-    //     createClient(socket3, port);
+        HashMap<String, Integer> unitplacement1 = new HashMap<>();
+        unitplacement1.put("Narnia", 10);
+        unitplacement1.put("Scadrial", 5);
+        unitplacement1.put("Gondor", 5);
+        unitplacement1.put("Thalassia", 5);
+        unitplacement1.put("Sylvaria", 5);
+        unitplacement1.put("Celestia", 5);
+        unitplacement1.put("Ironcliff", 5);
+        unitplacement1.put("Draconia", 10);
 
-    //     server.acceptClients();
-    //     server.initGame();
+        HashMap<String, Integer> unitplacement2 = new HashMap<>();
+        unitplacement2.put("Elantris", 10);
+        unitplacement2.put("Oz", 5);
+        unitplacement2.put("Mordor", 5);
+        unitplacement2.put("Arathia", 5);
+        unitplacement2.put("Kaelindor", 5);
+        unitplacement2.put("Frosthold", 5);
+        unitplacement2.put("Stormhaven", 5);
+        unitplacement2.put("Emberfall", 10);
 
-    //     socket1.close();
-    //     socket2.close();
-    //     socket3.close();
+        HashMap<String, Integer> unitplacement3 = new HashMap<>();
+        unitplacement3.put("Midkemia", 10);
+        unitplacement3.put("Roshar", 5);
+        unitplacement3.put("Hogwarts", 5);
+        unitplacement3.put("Eryndor", 5);
+        unitplacement3.put("Eterna", 5);
+        unitplacement3.put("Shadowmire", 5);
+        unitplacement3.put("Mythosia", 5);
+        unitplacement3.put("Verdantia", 10);
+
+        createClient(socket1, unitplacement1);
+        createClient(socket2, unitplacement2);
+        createClient(socket3, unitplacement3);
+
+        server.acceptClients();
+        server.initGame();
+
+        socket1.close();
+        socket2.close();
+        socket3.close();
 
         server.stop();
     }
 
     @Test
-  void testResolveAllMoveOrders() throws SocketException, IOException{
+    void testResolveAllMoveOrders() throws SocketException, IOException {
         ArrayList<MoveOrder> p0 = new ArrayList<>();
         p0.add(new MoveOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green"));
         ArrayList<MoveOrder> p2 = new ArrayList<>();
-        p2.add( new MoveOrder("Scadrial", "Roshar", 3, UnitType.SOLDIER, "Blue"));
-       
+        p2.add(new MoveOrder("Scadrial", "Roshar", 3, UnitType.SOLDIER, "Blue"));
+
         PlayHandler mockp0 = mock(PlayHandler.class);
         PlayHandler mockp1 = mock(PlayHandler.class);
         PlayHandler mockp2 = mock(PlayHandler.class);
@@ -108,15 +141,15 @@ public class ServerTest {
         server.resolveAllMoveOrders(4, createPlayerConnectionStatus(), test);
         assertEquals(8, server.gameController.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
         assertEquals(7, server.gameController.getRiskMap().getTerritoryByName("Scadrial").getUnitNum(UnitType.SOLDIER));
-  }
+    }
 
-  @Test
-  void testResolveAllAttackOrders() throws SocketException, IOException{
+    @Test
+    void testResolveAllAttackOrders() throws SocketException, IOException {
         ArrayList<AttackOrder> p0 = new ArrayList<>();
         p0.add(new AttackOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green"));
         ArrayList<AttackOrder> p1 = new ArrayList<>();
         p1.add(new AttackOrder("Elantris", "Midkemia", 3, UnitType.SOLDIER, "Blue"));
-       
+
         PlayHandler mockp0 = mock(PlayHandler.class);
         PlayHandler mockp1 = mock(PlayHandler.class);
         PlayHandler mockp2 = mock(PlayHandler.class);
@@ -138,19 +171,24 @@ public class ServerTest {
         server.gameController.getRiskMap().getTerritoryByName("Narnia").updateUnitCount(UnitType.SOLDIER, false, 10);
         server.gameController.getRiskMap().getTerritoryByName("Elantris").updateUnitCount(UnitType.SOLDIER, false, 10);
         server.gameController.getRiskMap().getTerritoryByName("Midkemia").updateUnitCount(UnitType.SOLDIER, false, 10);
-        
+
         server.resolveAllAttackOrder(4, createPlayerConnectionStatus(), test);
         assertEquals(8, server.gameController.getRiskMap().getTerritoryByName("Narnia").getUnitNum(UnitType.SOLDIER));
         assertEquals(7, server.gameController.getRiskMap().getTerritoryByName("Elantris").getUnitNum(UnitType.SOLDIER));
-  }
+    }
 
-  private HashMap<Integer, Boolean> createPlayerConnectionStatus(){
-    HashMap<Integer, Boolean> pcs = new HashMap<>();
-    pcs.put(0, true);
-    pcs.put(1, true);
-    pcs.put(2, true);
-    pcs.put(3, false);
-    pcs.put(4, null);
-    return pcs;
-}
+    private HashMap<Integer, Boolean> createPlayerConnectionStatus() {
+        HashMap<Integer, Boolean> pcs = new HashMap<>();
+        pcs.put(0, true);
+        pcs.put(1, true);
+        pcs.put(2, true);
+        pcs.put(3, false);
+        pcs.put(4, null);
+        return pcs;
+    }
+
+    @Test
+    void testReceiveChoicesFromLostPlayers() {
+        
+    }
 }

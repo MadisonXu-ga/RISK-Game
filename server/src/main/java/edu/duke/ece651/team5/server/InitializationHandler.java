@@ -17,10 +17,11 @@ public class InitializationHandler extends ConnectionHandler {
 
     /**
      * Constructor
-     * @param oos
-     * @param ois
-     * @param name
-     * @param riskMap
+     * 
+     * @param oos     ObjectOutputStream
+     * @param ois     ObjectInputStream
+     * @param name    name
+     * @param riskMap RISKMap
      */
     public InitializationHandler(ObjectOutputStream oos, ObjectInputStream ois, String name, RISKMap riskMap) {
         super(oos, ois);
@@ -51,6 +52,9 @@ public class InitializationHandler extends ConnectionHandler {
         }
     }
 
+    /**
+     * @return HashMap<String, Integer> unitPlacements
+     */
     public HashMap<String, Integer> getUnitPlacement() {
         return this.unitPlacements;
     }

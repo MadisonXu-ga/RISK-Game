@@ -21,12 +21,8 @@ public class Server {
     private ThreadPoolExecutor threadPool;
     // the sockets and io resources of all the clients
     private ArrayList<Socket> clientSockets;
-    // private ArrayList<ObjectInputStream> clientIns;
-    // private ArrayList<ObjectOutputStream> clientOuts;
     private final PrintStream out;
-
     private ArrayList<PlayerConnection> clientIOs;
-
     public GameController gameController;
 
     // true -> normal accept; null -> lost but watch the game;
@@ -47,8 +43,6 @@ public class Server {
         this.playerNum = 0;
         this.out = out;
         this.clientSockets = new ArrayList<>();
-        // this.clientOuts = new ArrayList<>();
-        // this.clientIns = new ArrayList<>();
         this.clientIOs = new ArrayList<>();
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
@@ -91,17 +85,6 @@ public class Server {
         clientIOs.add(new PlayerConnection(firstClientSocket));
         clientIOs.get(0).writeData("First");
         this.playerNum = (int) clientIOs.get(0).readData();
-
-        // ObjectOutputStream oos = new
-        // ObjectOutputStream(firstClientSocket.getOutputStream());
-        // clientOuts.add(oos);
-        // oos.writeObject("First");
-        // oos.flush();
-
-        // ObjectInputStream ois = new
-        // ObjectInputStream(firstClientSocket.getInputStream());
-        // this.playerNum = (int) ois.readObject();
-        // clientIns.add(ois);
 
         out.println(
                 "Successfully get the player num! This game is going to be played by " + this.playerNum + " players.");
@@ -207,11 +190,13 @@ public class Server {
             // move first
             out.println("Start to resolve move actions.");
             this.resolveAllMoveOrders(playerNum, playerConnectionStatus, phs);
-            out.println("Gondor unit after move order: " + this.gameController.getRiskMap().getTerritoryByName("Gondor").getUnitNum(UnitType.SOLDIER));
+            out.println("Gondor unit after move order: "
+                    + this.gameController.getRiskMap().getTerritoryByName("Gondor").getUnitNum(UnitType.SOLDIER));
 
             // attack later
             out.println("Start to resolve attack actions.");
-            HashMap<Integer, ArrayList<AttackOrder>> attackResults = this.resolveAllAttackOrder(playerNum, playerConnectionStatus, phs);
+            HashMap<Integer, ArrayList<AttackOrder>> attackResults = this.resolveAllAttackOrder(playerNum,
+                    playerConnectionStatus, phs);
 
             // send attack results to valid players according to their id
             // (only contains their attack orders)

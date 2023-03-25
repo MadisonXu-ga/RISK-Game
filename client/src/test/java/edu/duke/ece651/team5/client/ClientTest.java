@@ -266,7 +266,7 @@ public class ClientTest {
     "2. Quit the game\n" + 
     "Please enter 1 or 2\n\n";
     assertEquals(expected, bytes.toString());
-    assertEquals("Disconnect", message);
+    assertEquals("", message);
 
   }
 

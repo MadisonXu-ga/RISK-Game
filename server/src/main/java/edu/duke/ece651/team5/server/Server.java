@@ -286,7 +286,7 @@ public class Server {
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    private void receiveChoicesFromLostPlayers(HashMap<String, Boolean> playerStatus)
+    protected void receiveChoicesFromLostPlayers(HashMap<String, Boolean> playerStatus)
             throws ClassNotFoundException, IOException {
         for (int i = 0; i < playerNum; ++i) {
             String name = this.gameController.getPlayerName(i);

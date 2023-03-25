@@ -99,8 +99,6 @@ public class ServerTest {
         unitplacement3.put("Mythosia", 5);
         unitplacement3.put("Verdantia", 10);
 
-        
-
         createClient(socket1, unitplacement1);
         createClient(socket2, unitplacement2);
         createClient(socket3, unitplacement3);
@@ -187,5 +185,10 @@ public class ServerTest {
         pcs.put(3, false);
         pcs.put(4, null);
         return pcs;
+    }
+
+    @Test
+    void testReceiveChoicesFromLostPlayers() {
+        
     }
 }

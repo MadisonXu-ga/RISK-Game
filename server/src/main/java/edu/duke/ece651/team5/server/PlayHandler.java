@@ -98,8 +98,14 @@ public class PlayHandler extends ConnectionHandler {
         return message;
     }
 
-    /*
+    /**
      * Check whether move orders are valid.
+     * 
+     * @param mos                   ArrayList<MoveOrder>
+     * @param moveActionChecker     OrderRuleChecker
+     * @param moveActionUnitChecker UnitValidRuleChecker
+     * @param oldTerriUnitNum       HashMap<String, Integer>
+     * @return String message
      */
     private String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
             UnitValidRuleChecker moveActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
@@ -141,8 +147,14 @@ public class PlayHandler extends ConnectionHandler {
         }
     }
 
-    /*
+    /**
      * Check whether attack orders are valid.
+     * 
+     * @param aos                     ArrayList<AttackOrder>
+     * @param attackActionChecker     OrderRuleChecker
+     * @param attackActionUnitChecker UnitValidRuleChecker
+     * @param oldTerriUnitNum         HashMap<String, Integer>
+     * @return String message
      */
     private String checkAttackValid(ArrayList<AttackOrder> aos, OrderRuleChecker attackActionChecker,
             UnitValidRuleChecker attackActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
@@ -161,8 +173,10 @@ public class PlayHandler extends ConnectionHandler {
         return message;
     }
 
-    /*
+    /**
      * Get one player's valid move orders in this turn.
+     * 
+     * @return action.getMoveOrders()
      */
     public ArrayList<MoveOrder> getPlayerMoveOrders() {
         return action.getMoveOrders();

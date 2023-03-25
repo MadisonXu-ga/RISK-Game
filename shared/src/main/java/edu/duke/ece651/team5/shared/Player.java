@@ -5,44 +5,52 @@ import java.util.ArrayList;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Player implements Serializable{
+public class Player implements Serializable {
   // @Serial
   private static final long serialVersionUID = 1956072100912475484L;
   private String name;
   private ArrayList<Territory> territories;
   private int availableUnit;
 
-  public Player(String color){
+  /**
+   * @param color string
+   */
+  public Player(String color) {
     this.name = color;
     this.territories = new ArrayList<>();
     this.availableUnit = 50;
   }
 
-  public void addTerritory(Territory aTerritory){
+  /**
+   * @param aTerritory territory
+   */
+  public void addTerritory(Territory aTerritory) {
     territories.add(aTerritory);
   }
 
-  public int getAvailableUnit(){
+  public int getAvailableUnit() {
     return availableUnit;
   }
 
-  public ArrayList<Territory> getTerritories(){
+  public ArrayList<Territory> getTerritories() {
     return territories;
   }
 
-  public String getName(){
+  public String getName() {
 
     return name;
   }
 
-  public void loseTerritory(Territory t){
+  public void loseTerritory(Territory t) {
     territories.remove(t);
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
     Player player = (Player) o;
 

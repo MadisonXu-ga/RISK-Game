@@ -3,8 +3,7 @@ package edu.duke.ece651.team5.shared;
 import java.io.Serializable;
 // import java.io.Serial;
 
-
-public abstract class BasicOrder implements Serializable{
+public abstract class BasicOrder implements Serializable {
     // @Serial
     private static final long serialVersionUID = 1847314966415949919L;
     protected String sourceName;
@@ -13,6 +12,13 @@ public abstract class BasicOrder implements Serializable{
     protected Unit type;
     protected String playerName;
 
+    /**
+     * @param sourceName      String
+     * @param destinationName String
+     * @param number          int
+     * @param type            Unit
+     * @param playerName      String
+     */
     public BasicOrder(String sourceName, String destinationName, int number, Unit type, String playerName) {
         this.sourceName = sourceName;
         this.destinationName = destinationName;
@@ -21,22 +27,24 @@ public abstract class BasicOrder implements Serializable{
         this.playerName = playerName;
     }
 
-    public void loseOneUnit(){
+    public void loseOneUnit() {
         number--;
     }
 
-    public void updateUnitNumber(int update){
+    public void updateUnitNumber(int update) {
         number += update;
     }
 
     /**
      * The actual updates if an order is executed
+     * 
      * @param map the map
      */
     public abstract void execute(RISKMap map);
 
     /**
      * Getter for source territory name
+     * 
      * @return the name of source destination
      */
     public String getSourceName() {
@@ -45,6 +53,7 @@ public abstract class BasicOrder implements Serializable{
 
     /**
      * Getter for destination territory name
+     * 
      * @return the name of dest territory
      */
     public String getDestinationName() {
@@ -53,6 +62,7 @@ public abstract class BasicOrder implements Serializable{
 
     /**
      * Getter for number of units that is going to change
+     * 
      * @return number
      */
     public int getNumber() {
@@ -61,15 +71,14 @@ public abstract class BasicOrder implements Serializable{
 
     /**
      * Getter for unit type
+     * 
      * @return the type
      */
     public Unit getType() {
         return type;
     }
 
-
-    public String getPlayerName(){
+    public String getPlayerName() {
         return playerName;
     }
 }
-

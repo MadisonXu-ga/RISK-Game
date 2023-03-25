@@ -16,36 +16,46 @@ public class RISKMap implements Serializable {
         this("map_config.txt");
     }
 
+    /**
+     * @param fileName string
+     */
     public RISKMap(String fileName) {
         territories = new ArrayList<>();
         connection = new HashMap<>();
-        InputStream inputStream =
-                getClass().getClassLoader().getResourceAsStream(fileName);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
         initMapFromConfigFile(inputStream);
         this.availableUnit = 50;
     }
 
+    /**
+     * @param players ArrayList<Player>
+     */
     public RISKMap(ArrayList<Player> players) {
         this("map_config.txt");
         this.players = players;
     }
 
-    public void initPlayers(ArrayList<Player> players){
+    public void initPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 
-    public int getAvailableUnit(){
+    public int getAvailableUnit() {
         return availableUnit;
     }
 
-    public ArrayList<Player> getPlayers(){
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
-    public ArrayList<Territory> getTerritories(){
+    public ArrayList<Territory> getTerritories() {
         return territories;
     }
 
+    /**
+     * reads file to initi the territories
+     * 
+     * @param inputStream InputStream
+     */
     private void initMapFromConfigFile(InputStream inputStream) {
         ArrayList<Territory> territoryList = new ArrayList<>();
         try {
@@ -53,7 +63,7 @@ public class RISKMap implements Serializable {
             String line;
             line = reader.readLine();
             String[] names = line.split(", ");
-            for (String name: names) {
+            for (String name : names) {
                 Territory t = new Territory(name);
                 territoryList.add(t);
             }
@@ -75,6 +85,7 @@ public class RISKMap implements Serializable {
 
     /**
      * Get a certain territory by its name
+     * 
      * @param name the name of the territory
      * @return the territory with this name
      */
@@ -89,6 +100,7 @@ public class RISKMap implements Serializable {
 
     /**
      * Get a certain player by its color
+     * 
      * @param name color
      * @return the palyer with this color
      */
@@ -103,7 +115,8 @@ public class RISKMap implements Serializable {
 
     /**
      * Helper function to initialize the connections between territories
-     * @param name territory name
+     * 
+     * @param name  territory name
      * @param names all the neighbours' name of this territory
      */
     private void addConnection(String name, List<String> names) {
@@ -120,6 +133,7 @@ public class RISKMap implements Serializable {
 
     /**
      * To tell if two territories are adjacent
+     * 
      * @param t1 one territory
      * @param t2 the other
      * @return true of they are adjacent, otherwise false
@@ -130,6 +144,7 @@ public class RISKMap implements Serializable {
 
     /**
      * Get all adjacent territories for a certain territory
+     * 
      * @param t any territory
      * @return the set of adjacent territories
      */
@@ -141,7 +156,8 @@ public class RISKMap implements Serializable {
      * Using BFS to tell if there is a path from source to dest
      * where all the passing territories all belong to
      * the owner of source and dest
-     * @param source start of the path
+     * 
+     * @param source      start of the path
      * @param destination end of the path
      * @return true if exist such a path, otherwise false
      */

@@ -17,6 +17,12 @@ import org.junit.jupiter.api.Disabled;
 
 class AppTest {
 
+
+  @Test
+  void testMain() throws IOException, ClassNotFoundException, InterruptedException{
+		App.main(null);
+  }
+
 //   @Test
 
 //  @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)

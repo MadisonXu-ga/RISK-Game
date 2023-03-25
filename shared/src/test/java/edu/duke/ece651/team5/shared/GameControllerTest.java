@@ -79,11 +79,12 @@ public class GameControllerTest {
         assertEquals("Green", gc.getPlayerName(0));
   }
 
-  @Test
-  void testGetPlayerNumByName(){
-      GameController gc = new GameController();
-      assertEquals(-1, gc.getPlayerNumByName("abc"));
-  }
+    @Test
+    void testGetPlayerNumByName(){
+        GameController gc = new GameController();
+        assertEquals(-1, gc.getPlayerNumByName("abc"));
+        assertEquals(0, gc.getPlayerNumByName("Green"));
+    }
 
 
   @Test
@@ -222,26 +223,34 @@ public class GameControllerTest {
       assertEquals(1, oz.getUnitNum(UnitType.SOLDIER));
   }
 
-  @Disabled
-  @Test
-  void testBeginFight(){
-    ArrayList<AttackOrder> attackOrders = new ArrayList<>();
-    attackOrders.add(new AttackOrder("Scadrial", "Narnia", 3, UnitType.SOLDIER, "Blue"));
-    attackOrders.add(new AttackOrder("Mordor", "Narnia", 2, UnitType.SOLDIER, "Red"));
-    // attackOrders.add(new AttackOrder("C", "1", 5, UnitType.SOLDIER));
+    @Test
+    void testGroupAttackOrdersByPlayers(){
+        HashMap<String, ArrayList<AttackOrder>> orders = createOrders();
+        GameController gc = new GameController();
+        HashMap<Integer, ArrayList<AttackOrder>> mergeOrders =  gc.groupAttackOrdersByPlayers(orders);
+        assertEquals(2, mergeOrders.size());
 
-    RISKMap map = mock(RISKMap.class);
-    Territory toFight = mock(Territory.class);
+    }
 
-    when(toFight.getName()).thenReturn("Narnia");
-    when(toFight.getUnitNum(UnitType.SOLDIER)).thenReturn(3);
-    when(toFight.getOwner()).thenReturn(new Player("Green"));
+    @Test
+    void testBeginFight(){
+        ArrayList<AttackOrder> attackOrders = new ArrayList<>();
+        attackOrders.add(new AttackOrder("Scadrial", "Narnia", 3, UnitType.SOLDIER, "Blue"));
+        attackOrders.add(new AttackOrder("Mordor", "Narnia", 2, UnitType.SOLDIER, "Red"));
+        // attackOrders.add(new AttackOrder("C", "1", 5, UnitType.SOLDIER));
+
+        RISKMap map = mock(RISKMap.class);
+        Territory toFight = mock(Territory.class);
+
+        when(toFight.getName()).thenReturn("Narnia");
+        when(toFight.getUnitNum(UnitType.SOLDIER)).thenReturn(3);
+        when(toFight.getOwner()).thenReturn(new Player("Green"));
 
 
-    GameController gc = new GameController();
-    gc.assignTerritories(3);
-    gc.beginFight(toFight, attackOrders);
-  }
+        GameController gc = new GameController();
+        gc.assignTerritories(3);
+        gc.beginFight(toFight, attackOrders);
+    }
   
   @Test
     void testCheckWin() {

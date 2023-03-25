@@ -4,7 +4,6 @@ package edu.duke.ece651.team5.shared;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 //todo change Integer to AttackOrder object and moveOrder object
 public class Action implements Serializable {
   // @Serial
@@ -12,16 +11,26 @@ public class Action implements Serializable {
   ArrayList<AttackOrder> attackOrders;
   ArrayList<MoveOrder> moveOrders;
 
-  public Action(ArrayList<AttackOrder> attackOrders, ArrayList<MoveOrder> moveOrders){
+  /**
+   * @param attackOrders ArrayList<AttackOrder>
+   * @param moveOrders   ArrayList<MoveOrder>
+   */
+  public Action(ArrayList<AttackOrder> attackOrders, ArrayList<MoveOrder> moveOrders) {
     this.attackOrders = attackOrders;
     this.moveOrders = moveOrders;
   }
 
-  public ArrayList<AttackOrder> getAttackOrders(){
+  /**
+   * @return ArrayList<AttackOrder> attackOrders
+   */
+  public ArrayList<AttackOrder> getAttackOrders() {
     return attackOrders;
   }
 
-  public ArrayList<MoveOrder> getMoveOrders(){
+  /**
+   * @return ArrayList<MoveOrder> moveOrders
+   */
+  public ArrayList<MoveOrder> getMoveOrders() {
     return moveOrders;
   }
 

@@ -12,6 +12,9 @@ public class Territory implements Serializable {
     private final HashMap<Unit, Integer> units;
     private Player owner;
 
+    /**
+     * @param name string
+     */
     public Territory(String name) {
         this.name = name;
         HashMap<Unit, Integer> initUnits = new HashMap<>();
@@ -27,6 +30,7 @@ public class Territory implements Serializable {
 
     /**
      * Get the territory name
+     * 
      * @return the name of the territory
      */
     public String getName() {
@@ -35,6 +39,7 @@ public class Territory implements Serializable {
 
     /**
      * Get the number of a certain unit type
+     * 
      * @param unit unit type
      * @return the number of this type of unit placed in this territory
      */
@@ -44,74 +49,83 @@ public class Territory implements Serializable {
 
     /**
      * Update the unit count
-     * @param type the type of unit
+     * 
+     * @param type  the type of unit
      * @param isOut update direction, true for subtract and false for add
      * @param count the number of count that is going to be updated
      */
     public void updateUnitCount(Unit type, boolean isOut, int count) {
-        //if (units.containsKey(type)) {
-            int currentCount = units.get(type);
-            if (isOut) {
-                units.put(type, currentCount - count);
-            } else {
-                units.put(type, currentCount + count);
-            }
-        //} else {
-            //throw new IllegalArgumentException("this unit type does not exist");
-        //}
+        // if (units.containsKey(type)) {
+        int currentCount = units.get(type);
+        if (isOut) {
+            units.put(type, currentCount - count);
+        } else {
+            units.put(type, currentCount + count);
+        }
+        // } else {
+        // throw new IllegalArgumentException("this unit type does not exist");
+        // }
     }
 
     /**
      * Set the unit count
-     * @param type the type of unit
+     * 
+     * @param type  the type of unit
      * @param count the number of count that is going to be set
      */
-    public void setUnitCount(Unit type, int count){
+    public void setUnitCount(Unit type, int count) {
         units.put(type, count);
     }
 
     /**
      * Set the owner of territory
+     * 
      * @param owner the player that should own this territory
      */
-    public void setOwner(Player owner){
+    public void setOwner(Player owner) {
         this.owner = owner;
     }
 
     /**
      * To tell if the territory has an owner
+     * 
      * @return true if it does, otherwise false
      */
-    public boolean hasOwner(){
+    public boolean hasOwner() {
         return owner != null;
     }
 
     /**
      * Get the owner of this territory
+     * 
      * @return the owner
      */
-    public Player getOwner(){
+    public Player getOwner() {
         return owner;
     }
 
     /**
      * to tell if two territories equals (on name)
+     * 
      * @param o another object
      * @return true if the names of two territories equals
      *         false if names do not equal
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-    
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
         Territory territory = (Territory) o;
-    
+
         return Objects.equals(name, territory.name);
     }
 
     /**
      * hashcode for territory compute with name
+     * 
      * @return hashcode
      */
     @Override

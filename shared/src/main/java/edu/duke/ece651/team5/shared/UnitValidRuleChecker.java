@@ -6,16 +6,22 @@ import java.util.Map;
 
 public class UnitValidRuleChecker {
 
-    public UnitValidRuleChecker(){
+    public UnitValidRuleChecker() {
 
     }
 
+    /**
+     * @param riskMap       RISKMap
+     * @param placementInfo HashMap<String, Integer>
+     * @return boolean
+     */
     public boolean checkUnitValid(RISKMap riskMap, HashMap<String, Integer> placementInfo) {
         int unitSum = 0;
         for (Map.Entry<String, Integer> entry : placementInfo.entrySet()) {
             // TODO: check owner
             // check number valid
-            // if (entry.getValue() <= 0 || entry.getValue() > riskMap.getPlayers().get(0).getAvailableUnit()) {
+            // if (entry.getValue() <= 0 || entry.getValue() >
+            // riskMap.getPlayers().get(0).getAvailableUnit()) {
             if (entry.getValue() <= 0 || entry.getValue() > riskMap.getAvailableUnit()) {
                 return false;
             }
@@ -28,6 +34,11 @@ public class UnitValidRuleChecker {
         return true;
     }
 
+    /**
+     * @param map    RISKMap
+     * @param orders ArrayList<AttackOrder>
+     * @return String
+     */
     public String checkAttackOrderUnitValid(RISKMap map, ArrayList<AttackOrder> orders) {
         HashMap<String, Integer> tryToUseUnits = new HashMap<>();
 

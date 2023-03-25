@@ -331,7 +331,7 @@ public class Server {
      * @throws IOException
      * @throws InterruptedException
      */
-    private void sendTurnResultsToConnectedPlayers(HashMap<String, Boolean> playerStatus) throws IOException {
+    protected void sendTurnResultsToConnectedPlayers(HashMap<String, Boolean> playerStatus) throws IOException {
         for (int i = 0; i < playerNum; ++i) {
             if (playerConnectionStatus.get(i) != null && this.playerConnectionStatus.get(i) == false) {
                 continue;
@@ -361,7 +361,7 @@ public class Server {
      *                     win
      * @return return null if nobody win, winner's name if there is a winner
      */
-    private String checkWin(HashMap<String, Boolean> playerStatus) {
+    public String checkWin(HashMap<String, Boolean> playerStatus) {
         for (String name : playerStatus.keySet()) {
             if (playerStatus.get(name) != null && playerStatus.get(name) == true) {
                 return name;
@@ -376,7 +376,7 @@ public class Server {
      * @param riskMap
      * @return
      */
-    private HashMap<String, Boolean> getPlayerStatus(RISKMap riskMap) {
+    protected HashMap<String, Boolean> getPlayerStatus(RISKMap riskMap) {
         HashMap<String, Boolean> playerStatus = new HashMap<>();
         ArrayList<Player> players = riskMap.getPlayers();
         for (Player player : players) {

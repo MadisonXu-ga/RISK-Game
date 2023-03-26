@@ -3,8 +3,9 @@ package edu.duke.ece651.team5.shared;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Data;
 
-
+@Data
 public class Territory {
     private int id;
     private String name;
@@ -31,19 +32,4 @@ public class Territory {
         this.soldierArmy = new SoldierArmy();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public SoldierArmy getSoldierArmy() {
-        return soldierArmy;
-    }
 }

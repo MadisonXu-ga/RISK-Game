@@ -57,9 +57,11 @@ public class RISKMap {
             ObjectMapper mapper = new ObjectMapper();
             SimpleModule module = new SimpleModule();
             module.addSerializer(SoldierArmy.class, new SoldierArmySerializer());
+            module.addDeserializer(SoldierArmy.class, new SoldierArmyDeserializer());
             mapper.registerModule(module);
             String json = mapper.writeValueAsString(map);
             System.out.println(json);
+            RISKMap riskMap2 = mapper.readValue(json, RISKMap.class);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -10,7 +10,6 @@ import java.util.*;
 
 @Data
 public class RISKMap {
-
     private Map<String, Territory> territories;
     private HashMap<Integer, List<Edge>> connections;
 
@@ -41,6 +40,7 @@ public class RISKMap {
         Map<String, Territory> territories = new HashMap<>();
         territories.put("Territory 1", new Territory(1, "Territory 1", "Player 1"));
         territories.put("Territory 2", new Territory(2, "Territory 2", null));
+
 
         HashMap<Integer, List<Edge>> connections = new HashMap<>();
         connections.put(1,

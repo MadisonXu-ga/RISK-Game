@@ -1,40 +1,37 @@
 package edu.duke.ece651.team5.shared;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static edu.duke.ece651.team5.shared.Constants.DEFAULT_INIT_SOLDIER_NUM;
 
 public class SoldierArmy {
-    private List<Soldier> soldiers;
+    private Map<Soldier, Integer> soldiers = new HashMap<>();
 
     public SoldierArmy() {
-        soldiers = new ArrayList<>();
-        addSoldiers(SoldierType.INFANTRY, 1, DEFAULT_INIT_SOLDIER_NUM);
+        addSoldier(new Soldier(SoldierType.INFANTRY, 1), DEFAULT_INIT_SOLDIER_NUM);
+        addSoldier(new Soldier(SoldierType.ARTILLERY, 1), DEFAULT_INIT_SOLDIER_NUM);
     }
 
-    public void addSoldiers(SoldierType type, int level, int numSoldiers) {
-        // check if there are any soldiers of the given type and level already
-        for (Soldier soldier : soldiers) {
-            if (soldier.getType() == type && soldier.getLevel() == level) {
-                soldier.setSoldierNum(soldier.getSoldierNum() + numSoldiers);
-                return;
-            }
+    public void addSoldier(Soldier soldier, int count) {
+        soldiers.put(soldier, soldiers.getOrDefault(soldier, 0) + count);
+    }
+
+    public void removeSoldier(Soldier soldier, int count) {
+        int currentCount = soldiers.getOrDefault(soldier, 0);
+        int newCount = Math.max(currentCount - count, 0);
+        if (newCount == 0) {
+            soldiers.remove(soldier);
+        } else {
+            soldiers.put(soldier, newCount);
         }
-
-        // if no soldiers of the given type and level were found, add a new one
-        soldiers.add(new Soldier(type, level, numSoldiers));
     }
 
-    // similar methods for removing soldiers, getting the number of soldiers of a given type and level, etc.
-
-
-    public List<Soldier> getSoldiers() {
-        return soldiers;
+    public int getSoldierCount(Soldier soldier) {
+        return soldiers.getOrDefault(soldier, 0);
     }
 
-    public void setSoldiers(List<Soldier> soldiers) {
-        this.soldiers = soldiers;
+    public Map<Soldier, Integer> getAllSoldiers() {
+        return Collections.unmodifiableMap(soldiers);
     }
 }
 

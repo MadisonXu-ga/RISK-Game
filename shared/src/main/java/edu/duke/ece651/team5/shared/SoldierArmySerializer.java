@@ -5,23 +5,19 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class SoldierArmySerializer extends JsonSerializer<SoldierArmy> {
-
     @Override
-    public void serialize(SoldierArmy value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        gen.writeStartObject();  // start writing the SoldierArmy object to JSON
-        gen.writeArrayFieldStart("soldiers");  // start writing the "soldiers" array
-
-        // write each Soldier object to the "soldiers" array
-        for (Soldier soldier : value.getSoldiers()) {
-            gen.writeStartObject();  // start writing the Soldier object to JSON
-            gen.writeStringField("type", soldier.getType().toString());  // write the soldier type as a string
-            gen.writeNumberField("level", soldier.getLevel());  // write the soldier level as a number
-            gen.writeNumberField("numSoldiers", soldier.getSoldierNum());  // write the number of soldiers as a number
-            gen.writeEndObject();  // end writing the Soldier object to JSON
+    public void serialize(SoldierArmy army, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        gen.writeStartArray();
+        for (Map.Entry<Soldier, Integer> entry : army.getAllSoldiers().entrySet()) {
+            gen.writeStartObject();
+            gen.writeObjectField("soldier", entry.getKey());
+            gen.writeNumberField("count", entry.getValue());
+            gen.writeEndObject();
         }
-        gen.writeEndArray();  // end writing the "soldiers" array
-        gen.writeEndObject();  // end writing the SoldierArmy object to JSON
+        gen.writeEndArray();
     }
 }
+

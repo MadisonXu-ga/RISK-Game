@@ -1,29 +1,17 @@
 package edu.duke.ece651.team5.shared;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class Soldier {
-    int level;
-    SoldierType type;
-    int soldierNum;
+    private SoldierType type;
+    private int level;
 
-    public Soldier(SoldierType soldierType, int level, int number) {
+
+    public Soldier(SoldierType type, int level) {
+        this.type = type;
         this.level = level;
-        this.type = soldierType;
-        this.soldierNum = number;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public SoldierType getType() {
-        return type;
-    }
-
-    public int getSoldierNum() {
-        return soldierNum;
-    }
-
-    public void setSoldierNum(int soldierNum) {
-        this.soldierNum = soldierNum;
     }
 }

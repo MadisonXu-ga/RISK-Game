@@ -3,15 +3,13 @@ package edu.duke.ece651.team5.shared;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class RISKMap {
 
-    private List<Territory> territories;
+    private Map<String, Territory> territories;
     private HashMap<Integer, List<Edge>> connections;
 
     public static class Edge {
@@ -57,7 +55,7 @@ public class RISKMap {
 
 
     @JsonCreator
-    public RISKMap(@JsonProperty("territories") List<Territory> territories,
+    public RISKMap(@JsonProperty("territories") Map<String, Territory> territories,
                    @JsonProperty("connections") HashMap<Integer, List<Edge>> connections) {
         this.territories = territories;
         this.connections = connections;
@@ -65,13 +63,11 @@ public class RISKMap {
 
 
     // getters and setters
-
-
-    public List<Territory> getTerritories() {
+    public Map<String, Territory> getTerritories() {
         return territories;
     }
 
-    public void setTerritories(List<Territory> territories) {
+    public void setTerritories(Map<String, Territory> territories) {
         this.territories = territories;
     }
 
@@ -84,9 +80,9 @@ public class RISKMap {
     }
 
     public static void main(String[] args) {
-        List<Territory> territories = new ArrayList<>();
-        territories.add(new Territory(1, "Territory 1", "Player 1", 10));
-        territories.add(new Territory(2, "Territory 2", null, 0));
+        Map<String, Territory> territories = new HashMap<>();
+        territories.put("Territory 1", new Territory(1, "Territory 1", "Player 1"));
+        territories.put("Territory 2", new Territory(2, "Territory 2", null));
 
         HashMap<Integer, List<Edge>> connections = new HashMap<>();
         connections.put(1,
@@ -101,6 +97,9 @@ public class RISKMap {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
+            SimpleModule module = new SimpleModule();
+            module.addSerializer(SoldierArmy.class, new SoldierArmySerializer());
+            mapper.registerModule(module);
             String json = mapper.writeValueAsString(map);
             System.out.println(json);
         } catch (Exception e) {

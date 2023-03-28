@@ -21,8 +21,6 @@ public class Server {
     private ThreadPoolExecutor threadPool;
     // the sockets and io resources of all the clients
     private ArrayList<Socket> clientSockets;
-    // private ArrayList<ObjectInputStream> clientIns;
-    // private ArrayList<ObjectOutputStream> clientOuts;
     private final PrintStream out;
 
     private ArrayList<PlayerConnection> clientIOs;
@@ -47,8 +45,6 @@ public class Server {
         this.playerNum = 0;
         this.out = out;
         this.clientSockets = new ArrayList<>();
-        // this.clientOuts = new ArrayList<>();
-        // this.clientIns = new ArrayList<>();
         this.clientIOs = new ArrayList<>();
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
@@ -196,35 +192,39 @@ public class Server {
             // move first
             out.println("Start to resolve move actions.");
             this.resolveAllMoveOrders(playerNum, playerConnectionStatus, phs);
-            out.println("Gondor unit after move order: " + this.gameController.getRiskMap().getTerritoryByName("Gondor").getUnitNum(UnitType.SOLDIER));
+            out.println("Gondor unit after move order: "
+                    + this.gameController.getRiskMap().getTerritoryByName("Gondor").getUnitNum(UnitType.SOLDIER));
 
             // attack later
             out.println("Start to resolve attack actions.");
-            HashMap<Integer, ArrayList<AttackOrder>> attackResults = this.resolveAllAttackOrder(playerNum, playerConnectionStatus, phs);
+            HashMap<Integer, ArrayList<AttackOrder>> attackResults = this.resolveAllAttackOrder(playerNum,
+                    playerConnectionStatus, phs);
 
             // send attack results to valid players according to their id
             // (only contains their attack orders)
-            sendAttackResultsToValidPlayers(attackResults);
+            sendAttackResultsToValidPlayers(attackResults, playerConnectionStatus, clientIOs);
 
             // check win or lose or null
             out.print("Start to check players' game status (win/lose/playing) ...");
 
             // send this turn results to connected players
-            HashMap<String, Boolean> playerStatus = getPlayerStatus(this.gameController.getRiskMap());
-            sendTurnResultsToConnectedPlayers(playerStatus);
+            PlayerStatusChecker playerStatusChecker = new PlayerStatusChecker();
+            HashMap<String, Boolean> playerStatus = playerStatusChecker
+                    .getPlayerStatus(this.gameController.getRiskMap());
+            sendTurnResultsToConnectedPlayers(playerStatus, playerConnectionStatus, clientIOs);
             out.println("Successfully sent results to players who are still connecting.");
 
             // check win
-            String winPlayerName = checkWin(playerStatus);
+            String winPlayerName = playerStatusChecker.checkWin(playerStatus);
             if (winPlayerName != null) {
                 out.println("Player " + winPlayerName + " won this game!");
                 break;
             } else {
                 // receive msgs from all lost players *in this one turn*
-                receiveChoicesFromLostPlayers(playerStatus);
+                receiveChoicesFromLostPlayers(playerStatus, playerConnectionStatus,
+                        gameController.getRiskMap().getPlayers(), clientSockets, clientIOs);
             }
-            // out.println(new
-            // MapTextView(this.gameController.getRiskMap()).displayMap());
+
             this.gameController.addOneUnitToTerrirories();
 
             out.println("This turn is finished.");
@@ -286,62 +286,65 @@ public class Server {
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    protected void receiveChoicesFromLostPlayers(HashMap<String, Boolean> playerStatus)
+    protected void receiveChoicesFromLostPlayers(HashMap<String, Boolean> playerStatus,
+            HashMap<Integer, Boolean> playerConnectionStatus, ArrayList<Player> players,
+            ArrayList<Socket> clientSockets, ArrayList<PlayerConnection> clientIOs)
             throws ClassNotFoundException, IOException {
-        for (int i = 0; i < playerNum; ++i) {
-            String name = this.gameController.getPlayerName(i);
+        for (int i = 0; i < players.size(); ++i) {
+            String name = players.get(i).getName();
             //
-            if (this.playerConnectionStatus.get(i) != null && playerStatus.get(name) != null
-                    && this.playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
-                // String lostInfo = (String) clientIns.get(i).readObject();
+            if (playerConnectionStatus.get(i) != null && playerStatus.get(name) != null
+                    && playerConnectionStatus.get(i) == true && playerStatus.get(name) == false) {
                 String lostInfo = (String) clientIOs.get(i).readData();
                 // if lost player want to disconnect
                 if (lostInfo.equals("Disconnect")) {
-                    this.playerConnectionStatus.put(i, false);
-                    this.clientSockets.get(i).close();
+                    playerConnectionStatus.put(i, false);
+                    clientSockets.get(i).close();
                 } else if (lostInfo.equals("Display")) {
-                    this.playerConnectionStatus.put(i, null);
+                    playerConnectionStatus.put(i, null);
                 }
             }
         }
     }
 
+    // Already tested!!
     /**
      * send attack results to valid players
      * 
      * @param attackResults
      * @throws IOException
      */
-    private void sendAttackResultsToValidPlayers(HashMap<Integer, ArrayList<AttackOrder>> attackResults)
+    protected void sendAttackResultsToValidPlayers(HashMap<Integer, ArrayList<AttackOrder>> attackResults,
+            HashMap<Integer, Boolean> playerConnectionStatus, ArrayList<PlayerConnection> clientIOs)
             throws IOException {
-        for (int i = 0; i < playerNum; ++i) {
+        for (int i = 0; i < playerConnectionStatus.size(); ++i) {
             if (playerConnectionStatus.get(i) != null && playerConnectionStatus.get(i) == false) {
                 continue;
             }
             if (attackResults.containsKey(i)) {
                 clientIOs.get(i).writeData(attackResults.get(i));
-                // clientOuts.get(i).writeObject(attackResults.get(i));
             } else {
                 ArrayList<AttackOrder> emptyAttackOrder = new ArrayList<>();
                 clientIOs.get(i).writeData(emptyAttackOrder);
-                // clientOuts.get(i).writeObject(emptyAttackOrder);
             }
         }
     }
 
+    // ALready tested!!
     /**
      * Send this turn's results to all connected players
      * 
      * @throws IOException
      * @throws InterruptedException
      */
-    protected void sendTurnResultsToConnectedPlayers(HashMap<String, Boolean> playerStatus) throws IOException {
-        for (int i = 0; i < playerNum; ++i) {
-            if (playerConnectionStatus.get(i) != null && this.playerConnectionStatus.get(i) == false) {
+    protected void sendTurnResultsToConnectedPlayers(HashMap<String, Boolean> playerStatus,
+            HashMap<Integer, Boolean> playerConnectionStatus, ArrayList<PlayerConnection> clientIOs)
+            throws IOException {
+        for (int i = 0; i < playerConnectionStatus.size(); ++i) {
+            if (playerConnectionStatus.get(i) != null && playerConnectionStatus.get(i) == false) {
                 continue;
             }
             clientIOs.get(i).writeData(playerStatus);
-            // clientOuts.get(i).writeObject(playerStatus);
         }
     }
 
@@ -355,44 +358,6 @@ public class Server {
         while (threadPool.getActiveCount() > 0 || !threadPool.getQueue().isEmpty()) {
             Thread.sleep(1000);
         }
-    }
-
-    /**
-     * check win
-     * win return name, otherwise return null
-     * 
-     * @param playerStatus pass playerStatus to check whether there is any player
-     *                     win
-     * @return return null if nobody win, winner's name if there is a winner
-     */
-    public String checkWin(HashMap<String, Boolean> playerStatus) {
-        for (String name : playerStatus.keySet()) {
-            if (playerStatus.get(name) != null && playerStatus.get(name) == true) {
-                return name;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * get player's win/lose/playing status from map
-     * 
-     * @param riskMap
-     * @return
-     */
-    protected HashMap<String, Boolean> getPlayerStatus(RISKMap riskMap) {
-        HashMap<String, Boolean> playerStatus = new HashMap<>();
-        ArrayList<Player> players = riskMap.getPlayers();
-        for (Player player : players) {
-            if (player.getTerritories().size() == 0) {
-                playerStatus.put(player.getName(), false);
-            } else if (player.getTerritories().size() == riskMap.getTerritories().size()) {
-                playerStatus.put(player.getName(), true);
-            } else {
-                playerStatus.put(player.getName(), null);
-            }
-        }
-        return playerStatus;
     }
 
     /**

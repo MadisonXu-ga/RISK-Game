@@ -23,6 +23,9 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import edu.duke.ece651.team5.shared.*;
 
@@ -30,6 +33,15 @@ public class ServerTest {
     private Socket socket1;
     private Socket socket2;
     private Socket socket3;
+
+    @Mock
+    ArrayList<PlayerConnection> mockClientIOs;
+
+    @Mock
+    HashMap<Integer, Boolean> mockPlayerConnectionStatus;
+
+    @Mock
+    HashMap<String, Boolean> mockPlayerStatus;
 
     private void createClient(Socket s, HashMap<String, Integer> unitplacement) {
         Thread clientThread = new Thread(() -> {
@@ -187,121 +199,139 @@ public class ServerTest {
         return pcs;
     }
 
-    @Disabled
     @Test
-    void testReceiveChoicesFromLostPlayers() {
+    void testReceiveChoicesFromLostPlayers() throws SocketException, IOException, ClassNotFoundException {
+        MockitoAnnotations.openMocks(this);
 
+        ArrayList<Player> mockPlayers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            mockPlayers.add(mock(Player.class));
+        }
+
+        for (int i = 0; i < 10; ++i) {
+            when(mockPlayers.get(i).getName()).thenReturn("player" + (i + 1));
+        }
+
+        HashMap<Integer, Boolean> playerConnectionStatus = new HashMap<>();
+        playerConnectionStatus.put(0, null);
+        playerConnectionStatus.put(1, false);
+        playerConnectionStatus.put(2, true);
+        playerConnectionStatus.put(3, null);
+        playerConnectionStatus.put(4, false);
+        playerConnectionStatus.put(5, true);
+        playerConnectionStatus.put(6, null);
+        playerConnectionStatus.put(7, false);
+        playerConnectionStatus.put(8, true);
+        playerConnectionStatus.put(9, true);
+
+        when(mockPlayerStatus.get("player1")).thenReturn(null);
+        when(mockPlayerStatus.get("player2")).thenReturn(null);
+        when(mockPlayerStatus.get("player3")).thenReturn(null);
+        when(mockPlayerStatus.get("player4")).thenReturn(true);
+        when(mockPlayerStatus.get("player5")).thenReturn(true);
+        when(mockPlayerStatus.get("player6")).thenReturn(true);
+        when(mockPlayerStatus.get("player7")).thenReturn(false);
+        when(mockPlayerStatus.get("player8")).thenReturn(false);
+        when(mockPlayerStatus.get("player9")).thenReturn(false);
+        when(mockPlayerStatus.get("player10")).thenReturn(false);
+
+        ArrayList<Socket> mockClientSockets = mock(ArrayList.class);
+        for(int i=0; i<10; ++i){
+            Socket mockSocket = mock(Socket.class);
+            doNothing().when(mockSocket).close();
+            when(mockClientSockets.get(i)).thenReturn(mockSocket);
+        }
+        
+        for(int i=0; i<10; ++i){
+            PlayerConnection p = mock(PlayerConnection.class);
+            when(mockClientIOs.get(i)).thenReturn(p);
+        }
+
+        when(mockClientIOs.get(8).readData()).thenReturn("Disconnect");
+        when(mockClientIOs.get(9).readData()).thenReturn("Display");
+
+        Server server = new Server(23457, System.out);
+        server.receiveChoicesFromLostPlayers(mockPlayerStatus, playerConnectionStatus, mockPlayers, mockClientSockets,
+                mockClientIOs);
+        verify(mockClientSockets.get(8)).close();
+        assertEquals(false, playerConnectionStatus.get(8));
+        assertEquals(null, playerConnectionStatus.get(9));
+
+        server.stop();
     }
 
-    @Disabled
     @Test
     void testSendAttackResultsToValidPlayers() throws SocketException, IOException {
-        // Create mock objects
-        ByteArrayOutputStream mockBaos1 = new ByteArrayOutputStream();
-        ObjectOutputStream mockOos1 = new ObjectOutputStream(mockBaos1);
+        MockitoAnnotations.openMocks(this);
 
-        ByteArrayOutputStream mockBaos2 = new ByteArrayOutputStream();
-        ObjectOutputStream mockOos2 = new ObjectOutputStream(mockBaos2);
+        Server server = new Server(23457, System.out);
 
-        ByteArrayOutputStream mockBaos3 = new ByteArrayOutputStream();
-        ObjectOutputStream mockOos3 = new ObjectOutputStream(mockBaos3);
+        HashMap<Integer, ArrayList<AttackOrder>> mockAttackResults = new HashMap<>();
 
-        ArrayList<ObjectOutputStream> mockOosList = new ArrayList<>();
-        mockOosList.add(mockOos1);
-        mockOosList.add(mockOos2);
-        mockOosList.add(mockOos3);
+        ArrayList<AttackOrder> attackOrders = new ArrayList<>();
+        AttackOrder mockAttackOrder1 = mock(AttackOrder.class);
+        attackOrders.add(mockAttackOrder1);
+        mockAttackResults.put(0, attackOrders);
 
-        Server server = new Server(23456, System.out);
+        when(mockPlayerConnectionStatus.get(0)).thenReturn(true);
+        when(mockPlayerConnectionStatus.get(1)).thenReturn(false);
+        when(mockPlayerConnectionStatus.get(2)).thenReturn(null);
+        when(mockPlayerConnectionStatus.get(3)).thenReturn(true);
 
-        HashMap<String, Boolean> mockPlayerStatus = new HashMap<>();
-        mockPlayerStatus.put("Player 1", true);
-        mockPlayerStatus.put("Player 2", true);
-        mockPlayerStatus.put("Player 3", true);
+        when(mockPlayerConnectionStatus.size()).thenReturn(4);
 
-        // Write object to mockOos1
-        mockOos1.writeObject(mockPlayerStatus);
+        PlayerConnection p1 = mock(PlayerConnection.class);
+        PlayerConnection p2 = mock(PlayerConnection.class);
+        PlayerConnection p3 = mock(PlayerConnection.class);
+        PlayerConnection p4 = mock(PlayerConnection.class);
 
-        // Set up mock behaviors
-        // Write object to mockOos1
+        when(mockClientIOs.get(0)).thenReturn(p1);
+        when(mockClientIOs.get(1)).thenReturn(p2);
+        when(mockClientIOs.get(2)).thenReturn(p3);
+        when(mockClientIOs.get(3)).thenReturn(p4);
 
-        //doNothing().when(mockOos2).writeObject(mockPlayerStatus);
-        //doThrow(new RuntimeException()).when(mockOos3).writeObject(mockPlayerStatus);
+        server.sendAttackResultsToValidPlayers(mockAttackResults, mockPlayerConnectionStatus, mockClientIOs);
+        verify(mockClientIOs.get(0)).writeData(mockAttackResults.get(0));
+        verify(mockClientIOs.get(1), never()).writeData(new ArrayList<AttackOrder>());
+        verify(mockClientIOs.get(2)).writeData(new ArrayList<AttackOrder>());
+        verify(mockClientIOs.get(3)).writeData(new ArrayList<AttackOrder>());
 
-        // Call method being tested
-        server.sendTurnResultsToConnectedPlayers(mockPlayerStatus);
-
-
-        // Verify mock behaviors
-        verify(mockOos1, times(1)).writeObject(mockPlayerStatus);
-        verify(mockOos2, times(1)).writeObject(mockPlayerStatus);
-        verify(mockOos3, times(1)).writeObject(mockPlayerStatus);
+        server.stop();
     }
 
-    @Disabled
     @Test
-    void testGetPlayerStatus() throws SocketException, IOException {
-        // Create a mock RISKMap object
-        RISKMap mockRiskMap = mock(RISKMap.class);
+    void testSendTurnResultsToConnectedPlayers() throws IOException {
+        HashMap<String, Boolean> playerStatus = new HashMap<>();
+        HashMap<Integer, Boolean> playerConnectionStatus = new HashMap<>();
+        ArrayList<PlayerConnection> clientIOs = new ArrayList<>();
 
-        // Create some mock Player objects
-        Player mockPlayer1 = mock(Player.class);
-        Player mockPlayer2 = mock(Player.class);
-        Player mockPlayer3 = mock(Player.class);
+        PlayerConnection clientIO1 = mock(PlayerConnection.class);
+        PlayerConnection clientIO2 = mock(PlayerConnection.class);
+        PlayerConnection clientIO3 = mock(PlayerConnection.class);
 
-        // Create some mock Territory objects
-        Territory mockTerritory1 = mock(Territory.class);
-        Territory mockTerritory2 = mock(Territory.class);
-        Territory mockTerritory3 = mock(Territory.class);
-        Territory mockTerritory4 = mock(Territory.class);
-        Territory mockTerritory5 = mock(Territory.class);
+        clientIOs.add(clientIO1);
+        clientIOs.add(clientIO2);
+        clientIOs.add(clientIO3);
 
-        // Set up mock behaviors for the RISKMap and Player objects
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(mockPlayer1);
-        players.add(mockPlayer2);
-        players.add(mockPlayer3);
+        // Set up the data
+        playerStatus.put("player1", true);
+        playerStatus.put("player2", false);
+        playerStatus.put("player3", false);
 
-        ArrayList<Territory> territories1 = new ArrayList<>();
-        territories1.add(mockTerritory1);
-        territories1.add(mockTerritory2);
+        playerConnectionStatus.put(0, true);
+        playerConnectionStatus.put(1, null);
+        playerConnectionStatus.put(2, false);
 
-        ArrayList<Territory> territories2 = new ArrayList<>();
-        territories2.add(mockTerritory3);
-        territories2.add(mockTerritory4);
+        Server server = new Server(23457, System.out);
 
-        ArrayList<Territory> territories3 = new ArrayList<>();
-        territories3.add(mockTerritory5);
+        // Call the method to test
+        server.sendTurnResultsToConnectedPlayers(playerStatus, playerConnectionStatus, clientIOs);
 
-        ArrayList<Territory> allTerritories = new ArrayList<>();
+        // Verify that the correct methods were called on the mocked objects
+        verify(clientIO1).writeData(playerStatus);
+        verify(clientIO2).writeData(playerStatus);
+        verify(clientIO3, never()).writeData(playerStatus);
 
-        when(mockRiskMap.getPlayers()).thenReturn(players);
-        when(mockPlayer1.getName()).thenReturn("Player 1");
-        when(mockPlayer1.getTerritories()).thenReturn(territories1);
-        when(mockPlayer2.getName()).thenReturn("Player 2");
-        when(mockPlayer2.getTerritories()).thenReturn(territories2);
-        when(mockPlayer3.getName()).thenReturn("Player 3");
-        when(mockPlayer3.getTerritories()).thenReturn(territories3);
-
-        // Set up mock behaviors for the Territory objects
-        when(mockRiskMap.getTerritories()).thenReturn(allTerritories);
-        when(mockTerritory1.getName()).thenReturn("Territory 1");
-        when(mockTerritory2.getName()).thenReturn("Territory 2");
-        when(mockTerritory3.getName()).thenReturn("Territory 3");
-        when(mockTerritory4.getName()).thenReturn("Territory 4");
-        when(mockTerritory5.getName()).thenReturn("Territory 5");
-
-        // Create the expected player status map
-        HashMap<String, Boolean> expectedPlayerStatus = new HashMap<>();
-        expectedPlayerStatus.put("Player 1", null);
-        expectedPlayerStatus.put("Player 2", null);
-        expectedPlayerStatus.put("Player 3", null);
-
-        Server server = new Server(25678, System.out);
-
-        // Call the method being tested
-        HashMap<String, Boolean> actualPlayerStatus = server.getPlayerStatus(mockRiskMap);
-
-        // Verify the results
-        assertEquals(expectedPlayerStatus, actualPlayerStatus);
+        server.stop();
     }
 }

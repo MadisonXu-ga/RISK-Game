@@ -9,7 +9,7 @@ public class SoldierArmy {
 
     public SoldierArmy() {
         addSoldier(new Soldier(SoldierType.INFANTRY, 1), DEFAULT_INIT_SOLDIER_NUM);
-        addSoldier(new Soldier(SoldierType.ARTILLERY, 1), DEFAULT_INIT_SOLDIER_NUM);
+        // addSoldier(new Soldier(SoldierType.ARTILLERY, 1), DEFAULT_INIT_SOLDIER_NUM);
     }
 
     public void addSoldier(Soldier soldier, int count) {
@@ -26,6 +26,10 @@ public class SoldierArmy {
         }
     }
 
+    public void updateSoldier(Map<Soldier, Integer> soldiers){
+        this.soldiers = soldiers;
+    }
+
     public int getSoldierCount(Soldier soldier) {
         return soldiers.getOrDefault(soldier, 0);
     }
@@ -33,5 +37,23 @@ public class SoldierArmy {
     public Map<Soldier, Integer> getAllSoldiers() {
         return Collections.unmodifiableMap(soldiers);
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof SoldierArmy)) {
+            return false;
+        }
+        SoldierArmy soldierArmy = (SoldierArmy) o;
+        return Objects.equals(soldiers, soldierArmy.soldiers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(soldiers);
+    }
+
 }
 

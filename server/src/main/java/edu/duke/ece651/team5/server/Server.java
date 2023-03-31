@@ -31,6 +31,10 @@ public class Server {
     // false -> lost and disconnect.
     HashMap<Integer, Boolean> playerConnectionStatus;
 
+    // ----------add v2 new features------------
+    private ArrayList<PlayerConnection> clients;
+    private UserManager userManager;
+
     /**
      * Default constructor of server
      * 
@@ -48,15 +52,40 @@ public class Server {
         this.clientIOs = new ArrayList<>();
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
-        this.threadPool = new ThreadPoolExecutor(4, 4, 100, TimeUnit.SECONDS, workQueue);
+        this.threadPool = new ThreadPoolExecutor(20, 20, 100, TimeUnit.SECONDS, workQueue);
         serverSocket.setSoTimeout(1200000);
 
         // Game info initialization.
         gameController = new GameController();
 
         this.playerConnectionStatus = new HashMap<>();
+
+        // ------------------v2 new code-------------------------
+        this.clients = new ArrayList<>();
+        this.userManager = new UserManager();
     }
 
+    /**
+     * server start to accept clients(players)
+     * 
+     * @throws IOException
+     */
+    public void start() throws IOException {
+        while (true) {
+            Socket clientSocket = this.serverSocket.accept();
+            PlayerConnection playerConnection = new PlayerConnection(clientSocket);
+            clients.add(playerConnection);
+            UserHandler userHandler = new UserHandler(playerConnection, userManager);
+            this.threadPool.execute(userHandler);
+        }
+    }
+
+
+
+    
+    // -------------------v1 code-----------------------
+
+    // TODO: may move this method to Game
     /**
      * The method need to call when we want to start a game.
      * 
@@ -114,8 +143,6 @@ public class Server {
             acceptNum += 1;
             clientSockets.add(clientSocket);
             clientIOs.add(new PlayerConnection(clientSocket));
-            // clientOuts.add(new ObjectOutputStream(clientSocket.getOutputStream()));
-            // clientIns.add(new ObjectInputStream(clientSocket.getInputStream()));
             out.println("Successfully accept player " + acceptNum);
             if (acceptNum == this.playerNum) {
                 break;

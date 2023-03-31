@@ -50,6 +50,8 @@ public class UserHandlerTest {
         inputInfo.add("user1");
         inputInfo.add("abc123");
 
+        when(mockPlayerConnection.readData()).thenReturn(inputInfo);
+
         // success
         userHandler.handleSignUp();
         verify(mockPlayerConnection).writeData("Sign up succeeded");

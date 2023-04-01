@@ -13,7 +13,6 @@ public class UserHandler implements Runnable {
     private UserManager userManager;
     private HashMap<String, Runnable> operationHandlers;
 
-    // TODO: is there any better way?
     boolean logged_in;
 
     public UserHandler(PlayerConnection playerConnection, UserManager userManager) {
@@ -22,24 +21,9 @@ public class UserHandler implements Runnable {
         this.operationHandlers = new HashMap<>();
         this.logged_in = false;
 
-        // TODO: if add function, it cannot throw the exception out
-        // TODO: if I server use enum to replace these, should i ask client to send enum
-        // to me?
-        this.operationHandlers.put("Login", () -> {
-            try {
-                handleLogin();
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        this.operationHandlers.put("Signup", () -> {
-            try {
-                handleSignUp();
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
-            }
-        });
+        // initializa functions
+        this.operationHandlers.put("Login", this::handleLogin);
+        this.operationHandlers.put("Signup", this::handleSignUp);
     }
 
     @Override
@@ -55,7 +39,6 @@ public class UserHandler implements Runnable {
             }
         }
 
-        // TODO: redundancy?
         // loop for game
         while (logged_in) {
             String op;
@@ -63,7 +46,6 @@ public class UserHandler implements Runnable {
                 op = (String) playerConnection.getObjectInputStream().readObject();
                 handleUserOperation(op);
             } catch (ClassNotFoundException | IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -86,27 +68,35 @@ public class UserHandler implements Runnable {
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    protected void handleLogin() throws ClassNotFoundException, IOException {
+    protected void handleLogin() {
         // read info from client
-        ArrayList<String> inputInfo = (ArrayList<String>) playerConnection.readData();
-        String inputName = inputInfo.get(0);
-        String inputPassword = inputInfo.get(1);
+        try {
+            ArrayList<String> inputInfo = (ArrayList<String>) playerConnection.readData();
+            String inputName = inputInfo.get(0);
+            String inputPassword = inputInfo.get(1);
 
-        // check if user exists
-        if (!userManager.findUser(inputName)) {
-            playerConnection.writeData("Not exists");
-            return;
+            // check if user exists
+            if (!userManager.findUser(inputName)) {
+                playerConnection.writeData("Not exists");
+                return;
+            }
+
+            // authenticate password
+            if (!userManager.authenticate(inputName, inputPassword)) {
+                playerConnection.writeData("Not match");
+                return;
+            }
+
+            // success
+            playerConnection.writeData("Login succeeded");
+            userManager.changeUserStatus(inputName, UserStatus.LOGGED_IN);
+
+            logged_in = true;
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
-        // authenticate password
-        if (!userManager.authenticate(inputName, inputPassword)) {
-            playerConnection.writeData("Not match");
-            return;
-        }
-
-        // success
-        playerConnection.writeData("Login succeeded");
-        logged_in = true;
     }
 
     /**
@@ -116,21 +106,35 @@ public class UserHandler implements Runnable {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    protected void handleSignUp() throws ClassNotFoundException, IOException {
-        // read info from client
-        ArrayList<String> inputInfo = (ArrayList<String>) playerConnection.readData();
-        String inputName = inputInfo.get(0);
-        String inputPassword = inputInfo.get(1);
+    protected void handleSignUp() {
+        try {
+            // read info from client
+            ArrayList<String> inputInfo = (ArrayList<String>) playerConnection.readData();
+            String inputName = inputInfo.get(0);
+            String inputPassword = inputInfo.get(1);
 
-        // check if user exists
-        if (userManager.findUser(inputName)) {
-            playerConnection.writeData("User exists");
-            return;
+            // check if user exists
+            if (userManager.findUser(inputName)) {
+                playerConnection.writeData("User exists");
+                return;
+            }
+
+            // success
+            userManager.addUser(inputName, inputPassword);
+            playerConnection.writeData("Sign up succeeded");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
 
-        // success
-        userManager.addUser(inputName, inputPassword);
-        playerConnection.writeData("Sign up succeeded");
+    protected void handleBeginGame() {
+        try {
+            int playerNum = (int) playerConnection.readData();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
 }

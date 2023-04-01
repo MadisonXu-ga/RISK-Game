@@ -10,7 +10,7 @@ public class User {
     public User(String name, String passwrod) {
         this.name = name;
         this.password = passwrod;
-        this.status = UserStatus.LOGGED_IN;
+        this.status = UserStatus.LOGGED_OUT;
     }
 
     public String getUserName() {
@@ -23,5 +23,9 @@ public class User {
 
     public UserStatus getUserStatus() {
         return status;
+    }
+
+    public void setUserStatus(UserStatus newStatus) {
+        this.status = newStatus;
     }
 }

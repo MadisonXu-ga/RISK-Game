@@ -8,4 +8,8 @@ public class MyEnum {
     public enum UserStatus {
         LOGGED_IN, LOGGED_OUT
     }
+
+    public enum GameStatus {
+        WAITING, INITIALIZED, STARTED, PAUSED, ENDED
+    }
 }

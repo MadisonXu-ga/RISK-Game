@@ -1,19 +1,45 @@
 package edu.duke.ece651.team5.shared;
 
-import java.util.LinkedHashMap;
-import java.util.Random;
+import java.io.Serializable;
+import java.util.Map;
 
-public class AttackOrder extends BasicOrder {
-    
+public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, Serializable{
 
-    public AttackOrder(String source, String destination, int number, Unit type, String playerName) {
-        super(source, destination, number, type, playerName);
 
+    public AttackOrder(String sourceName, String destinationName,  Map<Soldier, Integer> soldiers,  String playerName) {
+        super(sourceName, destinationName, soldiers, playerName);
+    }
+
+    @Override
+    public int compareTo(AttackOrder other) {
+        return playerName.compareTo(other.playerName);
     }
 
     @Override
     public void execute(RISKMap map) {
         Territory source = map.getTerritoryByName(sourceName);
-        source.updateUnitCount(UnitType.SOLDIER, true, number);
+        soldierToNumber.forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
     }
+
+    // todo: add predicate
+    public void mergeWith(AttackOrder other) {
+        other.getSoldierToNumber().entrySet().stream()
+        .filter(entry -> this.getDestinationName().equals(other.getDestinationName()))
+        .forEach(entry -> soldierToNumber.merge(entry.getKey(), entry.getValue(), Integer::sum));
+    }
+
+    //todo update soldiers
+    public void loseOneUnit() {
+        
+    }
+
+    //todo updat unitNum
+    public void updateUnitNumber(int update) {
+        
+    }
+
+
+
+    
+    
 }

@@ -1,59 +1,55 @@
 package edu.duke.ece651.team5.shared;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.HashMap;
-
 import org.junit.jupiter.api.Test;
-import edu.duke.ece651.team5.shared.MyName;
+
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 public class PlayerTest {
- 
+
     @Test
-    void testNewPlayer(){
-
-        Player redPlayer = new Player("red");
-
-        Territory oneTerritory = new Territory("Narnia", new HashMap<>());
-
-        redPlayer.addTerritory(oneTerritory);
-
-        //check for name
-        assertEquals(redPlayer.getName(), "red");
-        
-        //check that the territory is added to the player
-        assertTrue(redPlayer.getTerritories().contains(oneTerritory));
-
+    public void testAddTerritory() {
+        Player player = new Player("Red");
+        Territory territory = new Territory(1, "Territory1", "Blue");
+        player.addTerritory(territory);
+        List<Territory> territories = player.getTerritories();
+        assertTrue(territories.contains(territory));
     }
 
     @Test
-    void getAvailableUnit(){
-        Player redPlayer = new Player("red");
-        assertEquals(50, redPlayer.getAvailableUnit());
+    public void testGetMaxTechnologyLevel() {
+        Player player = new Player("Red");
+        int maxTechLevel = 2;
+        player.setMaxTechnologyLevel(maxTechLevel);
+        assertEquals(maxTechLevel, player.getMaxTechnologyLevel());
     }
 
     @Test
-    void testEqualPlayers(){
-        Player p1 = new Player("red");
-        Player p2 = new Player("red");
-        Player p3 = new Player(null);
-        assertTrue(p1.equals(p2));
-        assertFalse(p1.equals(p3));
-        assertFalse(p1.equals(null));
-        assertEquals(p1.hashCode(), p2.hashCode());
-        assertEquals(0, p3.hashCode());
+    public void testLoseTerritory() {
+        Player player = new Player("Red");
+        Territory territory1 = new Territory(1, "Territory1", "Red");
+        Territory territory2 = new Territory(2, "Territory2", "Red");
+        player.addTerritory(territory1);
+        player.addTerritory(territory2);
+        player.loseTerritory(territory1);
+        assertFalse(player.getTerritories().contains(territory1));
+        assertTrue(player.getTerritories().contains(territory2));
     }
 
     @Test
-    void testLostTerritory() {
-        Player p1 = new Player("red");
-        Territory t1 = new Territory("t1");
-        Territory t2 = new Territory("t2");
-        p1.addTerritory(t1);
-        p1.addTerritory(t2);
-        p1.loseTerritory(t1);
-        assertTrue(p1.getTerritories().contains(t2));
-        assertFalse(p1.getTerritories().contains(t1));
+    public void testEquals() {
+        Player player1 = new Player("Red");
+        Player player2 = new Player("Red");
+        Player player3 = new Player("Blue");
+        assertTrue(player1.equals(player2));
+        assertFalse(player1.equals(player3));
     }
 
+    @Test
+    public void testHashCode() {
+        Player player1 = new Player("Red");
+        Player player2 = new Player("Red");
+        assertEquals(player1.hashCode(), player2.hashCode());
+    }
 }
+

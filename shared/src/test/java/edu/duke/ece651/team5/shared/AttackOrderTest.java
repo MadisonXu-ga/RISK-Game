@@ -1,44 +1,49 @@
 package edu.duke.ece651.team5.shared;
 
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.HashMap;
+import java.util.Map;
 
-class AttackOrderTest {
+public class AttackOrderTest {
 
-    @Test
-    void execute() {
-        RISKMap map = new RISKMap();
-        Territory narnia = map.getTerritoryByName("Narnia");
-        Territory midkemia = map.getTerritoryByName("Midkemia");
-        narnia.updateUnitCount(UnitType.SOLDIER, false, 10);
-        midkemia.updateUnitCount(UnitType.SOLDIER, false, 12);
-        AttackOrder attack = new AttackOrder("Narnia", "Midkemia", 2, UnitType.SOLDIER, "Green");
-        attack.execute(map);
-        int narniaUnitNum = narnia.getUnitNum(UnitType.SOLDIER);
-        assertEquals(8, narniaUnitNum);
+
+    private AttackOrder attackOrder1;
+    private AttackOrder attackOrder2;
+
+    @BeforeEach
+    void setUp() {
+        Map<Soldier, Integer> soldiers1 = new HashMap<>();
+        soldiers1.put(new Soldier(SoldierType.INFANTRY, 1), 5);
+        soldiers1.put(new Soldier(SoldierType.CAVALRY, 1), 3);
+        attackOrder1 = new AttackOrder("source1", "destination1", soldiers1, "player1");
+
+        Map<Soldier, Integer> soldiers2 = new HashMap<>();
+        soldiers2.put(new Soldier(SoldierType.INFANTRY, 1), 2);
+        soldiers2.put(new Soldier(SoldierType.ARTILLERY, 1), 1);
+        attackOrder2 = new AttackOrder("source2", "destination1", soldiers2, "player1");
     }
 
     @Test
-    void testLoseOneUnit() {
-        AttackOrder attack = new AttackOrder("Narnia", "Midkemia",
-                2, UnitType.SOLDIER, "Green");
-        attack.loseOneUnit();
-        assertEquals(1, attack.getNumber());
+    void testMergeWith() {
+        attackOrder1.mergeWith(attackOrder2);
+        Map<Soldier, Integer> expectedSoldiers = new HashMap<>();
+        expectedSoldiers.put(new Soldier(SoldierType.INFANTRY, 1), 7);
+        expectedSoldiers.put(new Soldier(SoldierType.CAVALRY, 1), 3);
+        expectedSoldiers.put(new Soldier(SoldierType.ARTILLERY, 1), 1);
+        Assertions.assertEquals(expectedSoldiers, attackOrder1.getSoldierToNumber());
     }
 
     @Test
-    void testUpdateUnitNumber() {
-        AttackOrder attack = new AttackOrder("Narnia", "Midkemia",
-                2, UnitType.SOLDIER, "Green");
-        attack.updateUnitNumber(3);
-        assertEquals(5, attack.getNumber());
+    void testCompareTo() {
+
     }
 
     @Test
-    void testGetPlayerName() {
-        AttackOrder attack = new AttackOrder("Narnia", "Midkemia",
-                2, UnitType.SOLDIER, "Green");
-        assertEquals("Green", attack.getPlayerName());
+    void testExecute() {
+
     }
 }

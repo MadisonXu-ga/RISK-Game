@@ -131,6 +131,7 @@ public class UserHandler implements Runnable {
     protected void handleBeginGame() {
         try {
             int playerNum = (int) playerConnection.readData();
+            
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

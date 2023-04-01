@@ -25,7 +25,7 @@ public class Server {
 
     private ArrayList<PlayerConnection> clientIOs;
 
-    public GameController gameController;
+    // public GameController gameController;
 
     // true -> normal accept; null -> lost but watch the game;
     // false -> lost and disconnect.
@@ -34,6 +34,7 @@ public class Server {
     // ----------add v2 new features------------
     private ArrayList<PlayerConnection> clients;
     private UserManager userManager;
+    
 
     /**
      * Default constructor of server

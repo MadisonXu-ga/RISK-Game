@@ -295,4 +295,6 @@ public class GameController {
         int y = rand.nextInt(20);
         return x > y;
     }
+
+
 }

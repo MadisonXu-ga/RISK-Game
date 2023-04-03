@@ -1,6 +1,5 @@
 package edu.duke.ece651.team5.shared;
 
-
 import java.util.*;
 
 public class RISKMap {
@@ -28,34 +27,67 @@ public class RISKMap {
         return territories.get(name);
     }
 
-
+    public Territory getTerritoryById(int id) {
+        return territories.values()
+                .stream()
+                .filter(territory -> territory.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
 
 
     public RISKMap(Map<String, Territory> territories,
-                   HashMap<Integer, List<Edge>> connections) {
+                    HashMap<Integer, List<Edge>> connections) {
         this.territories = territories;
+        this.connections = connections;
     }
 
-    public static void main(String[] args) {
-        Map<String, Territory> territories = new HashMap<>();
-        territories.put("Territory 1", new Territory(1, "Territory 1", "Player 1"));
-        territories.put("Territory 2", new Territory(2, "Territory 2", null));
-
-
-        HashMap<Integer, List<Edge>> connections = new HashMap<>();
-        connections.put(1,
-                new ArrayList<>(
-                        Arrays.asList(
-                        new Edge(1, 2, 5),
-                        new Edge(1, 3, 8))));
-        connections.put(2, new ArrayList<>());
-        connections.put(3, new ArrayList<>());
-
-        
-
-        RISKMap map = new RISKMap(territories, connections);
-
-
+    public boolean isAdjacent(Territory srcTerri, Territory destTerry){
+        int srcId = srcTerri.getId();
+        int destId = destTerry.getId();
+        return connections.get(srcId).stream().anyMatch(edge -> edge.to == destId);
     }
+
+
+    public int getShortestPathDistance(String sourceName, String destName) {
+        Territory source = getTerritoryByName(sourceName);
+        Territory dest = getTerritoryByName(destName);
+
+        Map<Territory, Integer> distances = new HashMap<>();
+        Set<Territory> visited = new HashSet<>();
+        for (Territory territory : territories.values()) {
+            distances.put(territory, Integer.MAX_VALUE);
+        }
+        distances.put(source, 0);
+
+        PriorityQueue<Map.Entry<Territory, Integer>> pq = new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
+        pq.offer(new AbstractMap.SimpleEntry<>(source, 0));
+
+        while (!visited.contains(dest) && !pq.isEmpty()) {
+            Territory current = pq.poll().getKey();
+
+            List<Edge> edges = connections.get(current.getId());
+            if (edges != null) {
+                for (Edge edge : edges) {
+                    int neighbourId = edge.to;
+                    Territory neighbor = getTerritoryById(neighbourId);
+                    if (!source.getOwner().equals(neighbor.getOwner()) || !dest.getOwner().equals(neighbor.getOwner())) {
+                        continue;  // skip neighbors with different owners
+                    }
+                    int newDist = distances.get(current) + edge.distance;
+                    if (newDist < distances.get(neighbor)) {
+                        distances.put(neighbor, newDist);
+                        pq.offer(new AbstractMap.SimpleEntry<>(neighbor, newDist));
+                    }
+                }
+            }
+
+            visited.add(current);
+        }
+
+        return distances.get(dest);
+    }
+
+
 
 }

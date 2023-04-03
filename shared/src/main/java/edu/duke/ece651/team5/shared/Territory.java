@@ -2,28 +2,34 @@ package edu.duke.ece651.team5.shared;
 
 import java.util.Objects;
 
+
+
 public class Territory {
     private int id;
     private String name;
-    private String owner;
+    private Player owner;
     private SoldierArmy soldierArmy;
+
 
     //todo may need to change owner string to player object
 
-    public Territory(int id, String name, String owner, SoldierArmy soldierArmy) {
+    public Territory(int id, String name, Player owner, SoldierArmy soldierArmy) {
         this.id = id;
         this.name = name;
         this.owner = owner;
         this.soldierArmy = soldierArmy;
     }
 
-    public Territory(int id, String name, String owner) {
+    public Territory(int id, String name, Player owner) {
         this.id = id;
         this.name = name;
         this.owner = owner;
         this.soldierArmy = new SoldierArmy();
     }
 
+    public void produceResource(Resource resource) {
+        owner.addResourceFromTerritory(resource, Constants.PRODUCE_FOOD_RESOURCE_PER_TURN);
+    }
 
     public int getId() {
         return this.id;
@@ -41,11 +47,11 @@ public class Territory {
         this.name = name;
     }
 
-    public String getOwner() {
+    public Player getOwner() {
         return this.owner;
     }
 
-    public void setOwner(String newOwner) {
+    public void setOwner(Player newOwner) {
         this.owner = newOwner;
     }
 

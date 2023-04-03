@@ -6,22 +6,23 @@ import java.util.Map;
 public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, Serializable{
 
 
-    public AttackOrder(String sourceName, String destinationName,  Map<Soldier, Integer> soldiers,  String playerName) {
-        super(sourceName, destinationName, soldiers, playerName);
+    public AttackOrder(String sourceName, String destinationName, Map<Soldier, Integer> soldiers, Player player) {
+        super(sourceName, destinationName, soldiers, player);
     }
 
     @Override
     public int compareTo(AttackOrder other) {
-        return playerName.compareTo(other.playerName);
+        return player.getName().compareTo(other.player.getName());
     }
 
     @Override
     public void execute(RISKMap map) {
         Territory source = map.getTerritoryByName(sourceName);
         soldierToNumber.forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
+        //todo: function to cost food unit
+        
     }
 
-    // todo: add predicate
     public void mergeWith(AttackOrder other) {
         other.getSoldierToNumber().entrySet().stream()
         .filter(entry -> this.getDestinationName().equals(other.getDestinationName()))

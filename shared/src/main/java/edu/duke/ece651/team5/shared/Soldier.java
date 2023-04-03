@@ -1,57 +1,36 @@
 package edu.duke.ece651.team5.shared;
 
-import java.util.Objects;
-
 public class Soldier {
-    private SoldierType type;
-    private int level;
+    private SoldierLevel level;
 
-
-    public Soldier(SoldierType type, int level) {
-        this.type = type;
+    public Soldier(SoldierLevel level) {
         this.level = level;
     }
 
-
-    public SoldierType getType() {
-        return this.type;
-    }
-
-    public int getLevel() {
+    public SoldierLevel getLevel() {
         return this.level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void upgradeLevel(SoldierLevel targetLevel) {
+        // todo: rule checker
+        assert(this.level.ordinal() < targetLevel.ordinal());
+        this.level = targetLevel;
     }
-
 
     @Override
     public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Soldier)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         Soldier soldier = (Soldier) o;
-        return Objects.equals(type, soldier.type) && level == soldier.level;
+
+        return level == soldier.level;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, level);
+        return level != null ? level.hashCode() : 0;
     }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " type='" + getType() + "'" +
-            ", level='" + getLevel() + "'" +
-            "}";
-    }
-
-
-
 
 
 }

@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.shared;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ public class SoldierArmyTest {
 
     @Test
     public void testAddSoldier() {
-        Soldier soldier = new Soldier(SoldierType.INFANTRY, 1);
+        Soldier soldier = new Soldier(SoldierLevel.INFANTRY);
         int count = 5;
         army.addSoldier(soldier, count);
 
@@ -33,7 +34,7 @@ public class SoldierArmyTest {
 
     @Test
     public void testRemoveSoldier() {
-        Soldier soldier = new Soldier(SoldierType.INFANTRY, 1);
+        Soldier soldier = new Soldier(SoldierLevel.INFANTRY);
         int count = 5;
         army.addSoldier(soldier, count);
 
@@ -45,9 +46,9 @@ public class SoldierArmyTest {
     }
 
     @Test
-    public void testUpdateSoldier() {
-        Soldier soldier1 = new Soldier(SoldierType.INFANTRY, 1);
-        Soldier soldier2 = new Soldier(SoldierType.ARTILLERY, 2);
+    public void testSetSoldier() {
+        Soldier soldier1 = new Soldier(SoldierLevel.INFANTRY);
+        Soldier soldier2 = new Soldier(SoldierLevel.ARTILLERY);
         int count1 = 5;
         int count2 = 3;
 
@@ -55,23 +56,24 @@ public class SoldierArmyTest {
         soldiers.put(soldier1, count1);
         soldiers.put(soldier2, count2);
 
-        army.updateSoldier(soldiers);
+        army.setSoldiers(soldiers);
 
         assertEquals(count1, army.getSoldierCount(soldier1));
         assertEquals(count2, army.getSoldierCount(soldier2));
-        assertFalse(army.getAllSoldiers().containsKey(new Soldier(SoldierType.INFANTRY, 2)));
+        assertTrue(army.getAllSoldiers().containsKey(new Soldier(SoldierLevel.INFANTRY)));
+        assertFalse(army.getAllSoldiers().containsKey(new Soldier(SoldierLevel.ARMOR)));
     }
 
     @Test
     public void testGetAllSoldiers() {
-        Soldier soldier = new Soldier(SoldierType.INFANTRY, 1);
+        Soldier soldier = new Soldier(SoldierLevel.INFANTRY);
         int count = 5;
         army.addSoldier(soldier, count);
 
         Map<Soldier, Integer> allSoldiers = army.getAllSoldiers();
 
         assertTrue(allSoldiers.containsKey(soldier));
-        assertEquals(count + DEFAULT_INIT_SOLDIER_NUM, allSoldiers.get(soldier).intValue());
+        assertEquals(count + DEFAULT_INIT_SOLDIER_NUM, allSoldiers.get(soldier));
         assertEquals(Collections.singletonMap(soldier, count + DEFAULT_INIT_SOLDIER_NUM), allSoldiers);
     }
 

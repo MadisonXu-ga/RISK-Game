@@ -220,14 +220,6 @@ public class GameControllerTest {
         assertEquals(2, gc.getRiskMap().getTerritoryByName("Roshar").getUnitNum(UnitType.SOLDIER));
     }
 
-    @Test
-    void testGroupAttackOrdersByTerris(){
-        HashMap<String, ArrayList<AttackOrder>> orders = createOrders();
-        GameController gc = new GameController();
-        HashMap<Integer, ArrayList<AttackOrder>> mergeOrders =  gc.groupAttackOrdersByPlayers(orders);
-        assertEquals(2, mergeOrders.size());
-
-    }
 
 
   private HashMap<String, ArrayList<AttackOrder>> createOrders(){

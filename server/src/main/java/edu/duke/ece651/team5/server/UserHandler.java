@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy.PascalCaseStrategy;
-
 import edu.duke.ece651.team5.shared.Game;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 import edu.duke.ece651.team5.server.MyEnum.*;
@@ -36,6 +34,12 @@ public class UserHandler implements Runnable {
         // initializa functions
         this.operationHandlers.put("Login", this::handleLogin);
         this.operationHandlers.put("Signup", this::handleSignUp);
+        this.operationHandlers.put("New game", this::handleNewGame);
+        this.operationHandlers.put("Retrieve active games", this::handleRetrieveActiveGames);
+        this.operationHandlers.put("Get joinable games", this::handleGetJoinableGames);
+        this.operationHandlers.put("Join game", this::handleJoinGame);
+        this.operationHandlers.put("Log out", this::handleLogOut);
+
     }
 
     @Override
@@ -62,8 +66,6 @@ public class UserHandler implements Runnable {
             }
         }
     }
-
-    // use enum to replace operation name!
 
     /**
      * 
@@ -116,10 +118,6 @@ public class UserHandler implements Runnable {
 
     /**
      * Handle sign up operation
-     * 
-     * @return
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
     protected void handleSignUp() {
         try {
@@ -143,6 +141,9 @@ public class UserHandler implements Runnable {
         }
     }
 
+    /**
+     * Handle create new game operation
+     */
     protected void handleNewGame() {
         try {
             int playerNum = (int) playerConnection.readData();
@@ -190,6 +191,9 @@ public class UserHandler implements Runnable {
         return gameIDs;
     }
 
+    /**
+     * Handle join game operation
+     */
     protected void handleJoinGame() {
         try {
             int gameID = (int) playerConnection.readData();
@@ -214,6 +218,9 @@ public class UserHandler implements Runnable {
         }
     }
 
+    /**
+     * Handle log out operation
+     */
     protected void handleLogOut() {
         // change user status, remove user communication resource
         try {
@@ -249,6 +256,12 @@ public class UserHandler implements Runnable {
         }
     }
 
+    /**
+     * Send message to active users in active games to pause game
+     * 
+     * @param game
+     * @throws IOException
+     */
     protected void pauseGame(GameController game) throws IOException {
         // send pause to every active user in the game
         for (User user : userGameMap.getGameUsers(game)) {
@@ -258,8 +271,17 @@ public class UserHandler implements Runnable {
         }
     }
 
+    /**
+     * Handle continue game operation
+     */
     protected void handleContinueGame() {
-        //
+        try {
+            int gameID = (int) playerConnection.readData();
+            // TODO:
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
 }

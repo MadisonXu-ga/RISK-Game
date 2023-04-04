@@ -1,8 +1,0 @@
-package edu.duke.ece651.team5.shared;
-
-public class Constants {
-    public static final int AVAILABLE_UNIT = 50;
-    public static final int GAME_MAX_TECHNOLOGY_LEVEL = 6;
-    public static final int DEFAULT_INIT_SOLDIER_NUM = 1;
-
-}

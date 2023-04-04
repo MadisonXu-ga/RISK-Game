@@ -32,9 +32,11 @@ public class Server {
     HashMap<Integer, Boolean> playerConnectionStatus;
 
     // ----------add v2 new features------------
-    private ArrayList<PlayerConnection> clients;
+    // private ArrayList<PlayerConnection> clients;
+    private HashMap<User, PlayerConnection> clients;
     private UserManager userManager;
-    
+    private ArrayList<GameController> allGames;
+    private UserGameMap userGameMap;
 
     /**
      * Default constructor of server
@@ -56,14 +58,13 @@ public class Server {
         this.threadPool = new ThreadPoolExecutor(20, 20, 100, TimeUnit.SECONDS, workQueue);
         serverSocket.setSoTimeout(1200000);
 
-        // Game info initialization.
-        gameController = new GameController();
-
         this.playerConnectionStatus = new HashMap<>();
 
         // ------------------v2 new code-------------------------
         this.clients = new ArrayList<>();
         this.userManager = new UserManager();
+        this.allGames = new ArrayList<>();
+        this.userGameMap = new UserGameMap();
     }
 
     /**
@@ -76,14 +77,11 @@ public class Server {
             Socket clientSocket = this.serverSocket.accept();
             PlayerConnection playerConnection = new PlayerConnection(clientSocket);
             clients.add(playerConnection);
-            UserHandler userHandler = new UserHandler(playerConnection, userManager);
+            UserHandler userHandler = new UserHandler(playerConnection, userManager, allGames, userGameMap);
             this.threadPool.execute(userHandler);
         }
     }
 
-
-
-    
     // -------------------v1 code-----------------------
 
     // TODO: may move this method to Game

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.PascalCaseStrategy;
+
+import edu.duke.ece651.team5.shared.Game;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 import edu.duke.ece651.team5.server.MyEnum.*;
 
@@ -12,14 +15,23 @@ public class UserHandler implements Runnable {
     private PlayerConnection playerConnection;
     private UserManager userManager;
     private HashMap<String, Runnable> operationHandlers;
+    private ArrayList<GameController> allGames;
+    private User currentUser;
+    private UserGameMap userGameMap;
+    private HashMap<User, PlayerConnection> clients;
 
-    boolean logged_in;
-
-    public UserHandler(PlayerConnection playerConnection, UserManager userManager) {
+    public UserHandler(PlayerConnection playerConnection, UserManager userManager, ArrayList<GameController> allGames,
+            UserGameMap userGameMap, HashMap<User, PlayerConnection> clients) {
         this.playerConnection = playerConnection;
         this.userManager = userManager;
         this.operationHandlers = new HashMap<>();
-        this.logged_in = false;
+
+        this.allGames = allGames;
+        this.currentUser = null;
+
+        this.userGameMap = userGameMap;
+
+        this.clients = clients;
 
         // initializa functions
         this.operationHandlers.put("Login", this::handleLogin);
@@ -30,7 +42,7 @@ public class UserHandler implements Runnable {
     public void run() {
         // try 10 times.
         // put this loop into another function (deal sign in)
-        while (!logged_in) {
+        while (currentUser == null) {
             try {
                 String op = (String) playerConnection.getObjectInputStream().readObject();
                 handleUserOperation(op);
@@ -40,7 +52,7 @@ public class UserHandler implements Runnable {
         }
 
         // loop for game
-        while (logged_in) {
+        while (currentUser != null) {
             String op;
             try {
                 op = (String) playerConnection.getObjectInputStream().readObject();
@@ -91,7 +103,10 @@ public class UserHandler implements Runnable {
             playerConnection.writeData("Login succeeded");
             userManager.changeUserStatus(inputName, UserStatus.LOGGED_IN);
 
-            logged_in = true;
+            currentUser = userManager.getUser(inputName);
+
+            // add user and connection to clients
+            clients.put(currentUser, playerConnection);
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -128,14 +143,123 @@ public class UserHandler implements Runnable {
         }
     }
 
-    protected void handleBeginGame() {
+    protected void handleNewGame() {
         try {
             int playerNum = (int) playerConnection.readData();
-            
+            // create new game
+            GameController newGame = new GameController(playerNum);
+            // add game to all games
+            allGames.add(newGame);
+            // let user join this game
+            String msg = newGame.joinGame(currentUser);
+            // actually this will never fail in logic
+            if (msg == null) {
+                playerConnection.writeData("Create successfully");
+                userGameMap.addGameToUser(currentUser, newGame);
+                userGameMap.addUserToGame(newGame, currentUser);
+            } else {
+                playerConnection.writeData(msg);
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    // TODO: now is user's all games not active.
+    // need to think delete game or not to fix this part
+    // think i should give number of players to client
+    protected ArrayList<Integer> handleRetrieveActiveGames() {
+        // TODO: seems like this part only need i return game id to client?
+        ArrayList<Integer> gameIDs = new ArrayList<>();
+        for (GameController game : userGameMap.getUserGames(currentUser)) {
+            gameIDs.add(game.getID());
+        }
+        return gameIDs;
+    }
+
+    // TODO: have similar problems as above
+    protected ArrayList<Integer> handleGetJoinableGames() {
+        ArrayList<Integer> gameIDs = new ArrayList<>();
+        for (GameController game : allGames) {
+            if (game.getStatus() == GameStatus.WAITING) {
+                gameIDs.add(game.getID());
+            }
+        }
+
+        return gameIDs;
+    }
+
+    protected void handleJoinGame() {
+        try {
+            int gameID = (int) playerConnection.readData();
+            for (GameController game : allGames) {
+                if (game.getID() == gameID) {
+                    String msg = game.joinGame(currentUser);
+                    // success
+                    if (msg == null) {
+                        userGameMap.addGameToUser(currentUser, game);
+                        userGameMap.addUserToGame(game, currentUser);
+                        playerConnection.writeData("Joined Success");
+                    }
+                    // fail
+                    else {
+                        playerConnection.writeData(msg);
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void handleLogOut() {
+        // change user status, remove user communication resource
+        try {
+            currentUser.setUserStatus(UserStatus.LOGGED_OUT);
+            playerConnection.close();
+
+            clients.remove(currentUser);
+
+            // tell other users in this user's active games
+            ArrayList<GameController> gamesNotStarted = new ArrayList<>();
+            for (GameController game : userGameMap.getUserGames(currentUser)) {
+                // if game not start, kick user out
+                if (game.getStatus() == GameStatus.WAITING) {
+                    // game.kickUserOut(currentUser);
+                    gamesNotStarted.add(game);
+                }
+                // if game started, pause game to wait user
+                else if (game.getStatus() != GameStatus.ENDED) {
+                    // notify all the active players
+                    pauseGame(game);
+                }
+            }
+
+            // deal with games that not started
+            for (GameController game : gamesNotStarted) {
+                game.kickUserOut(currentUser);
+                userGameMap.deleteMap(currentUser, game);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void pauseGame(GameController game) throws IOException {
+        // send pause to every active user in the game
+        for (User user : userGameMap.getGameUsers(game)) {
+            if (user.getUserStatus() == UserStatus.LOGGED_IN) {
+                clients.get(user).writeData("Pause");
+            }
+        }
+    }
+
+    protected void handleContinueGame() {
+        //
     }
 
 }

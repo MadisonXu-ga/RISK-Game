@@ -10,6 +10,6 @@ public class MyEnum {
     }
 
     public enum GameStatus {
-        WAITING, INITIALIZED, STARTED, PAUSED, ENDED
+        WAITING, INITIALIZING, STARTED, PAUSED, ENDED
     }
 }

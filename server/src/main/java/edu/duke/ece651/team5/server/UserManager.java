@@ -38,6 +38,10 @@ public class UserManager {
         return false;
     }
 
+    public User getUser(String name) {
+        return users.get(name);
+    }
+
     /**
      * Change specific user's status
      * 

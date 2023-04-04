@@ -15,7 +15,6 @@ public class MoveOrder extends BasicOrder implements Serializable {
     /**
      * The actual updates if an order is executed
      * move #number unit from source to dest
-     * 
      * @param map the map
      */
     @Override
@@ -27,6 +26,9 @@ public class MoveOrder extends BasicOrder implements Serializable {
         // consume resource
         int distance = map.getShortestPathDistance(sourceName, destinationName);
         // player.consumeResource(new Resource(ResourceType.FOOD),
-        // C * distance * );
+        //         C * distance * );
     }
 }
+
+
+

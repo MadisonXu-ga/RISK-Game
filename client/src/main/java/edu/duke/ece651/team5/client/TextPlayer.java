@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import edu.duke.ece651.team5.shared.*;
 
@@ -15,7 +16,7 @@ import edu.duke.ece651.team5.shared.*;
  * that ready to be sent to server
  */
 public class TextPlayer {
-  private String playerName;
+  private Player player;
 
   private final BufferedReader inputReader;
   private final PrintStream out;
@@ -37,7 +38,7 @@ public class TextPlayer {
    * @return playerName
    */
   public String getPlayerName() {
-    return playerName;
+    return player.getName();
   }
 
   /**
@@ -59,9 +60,9 @@ public class TextPlayer {
    * 
    * @param playerName
    */
-  public void setPlayerName(String playerName) {
-    out.println("This is your player name for this game: " + playerName);
-    this.playerName = playerName;
+  public void setPlayer(Player player) {
+    out.println("This is your player name for this game: " + player.getName());
+    this.player = player;
   }
 
   /**
@@ -72,9 +73,10 @@ public class TextPlayer {
    * @return a HashMap with key of Territory Name and value of number of desired
    *         unit
    */
-  public HashMap<String, Integer> unitPlacement(RISKMap currMap) {
-    Player player = currMap.getPlayerByName(getPlayerName());
-    int availableUnit = player.getAvailableUnit() - player.getTerritories().size();
+  public HashMap<String, Integer> unitPlacement(Game game) {
+    // RISKMap currMap = game.getMap();
+    // Player player = game.getPlayerByName(playerName);
+    int availableUnit = Constants.AVAILABLE_UNIT;
     int numTerries = player.getTerritories().size();
     int count = 0;
     int checkUnit = 0;
@@ -120,8 +122,8 @@ public class TextPlayer {
    * @return a Action objects contains all the orders user want to place for
    *         current turn
    */
-  public Action playOneTurn(RISKMap currMap) {
-    displayMap(currMap);
+  public Action playOneTurn(Game game) {
+    displayMap(game);
     String instruction = "What would you like to do?\n" + "(M)ove\n" + "(A)ttack\n" + "(D)one\n";
     boolean commit = false;
     // todo change type
@@ -136,7 +138,7 @@ public class TextPlayer {
           commit = true;
         } else {
           // create new Order
-          tryCreateNewOrder(type, attackOrders, moveOrders, currMap);
+          tryCreateNewOrder(type, attackOrders, moveOrders, game.getMap());
         }
       } catch (Exception e) {
         out.println("Input is invalid. Please try again");
@@ -159,13 +161,16 @@ public class TextPlayer {
       String desTerri = currMap.getTerritoryByName(inputs.get(2)).getName();
       if (type.toUpperCase().charAt(0) == 'M') {
         // create new move order
-        MoveOrder order = new MoveOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER, playerName);
+        //todo change soldier type accordingly
+        Map<Soldier, Integer> soldiers = new HashMap<>();
+        MoveOrder order = new MoveOrder(srcTerri, desTerri, soldiers, player);
         // do rule check
         moveOrders.add(order);
         return;
       } else {
         // create new attack order
-        AttackOrder order = new AttackOrder(srcTerri, desTerri, numUnit, UnitType.SOLDIER, playerName);
+        Map<Soldier, Integer> soldiers = new HashMap<>();
+        AttackOrder order = new AttackOrder(srcTerri, desTerri, soldiers, player);
         // add order to attackOrders
         attackOrders.add(order);
         return;
@@ -204,8 +209,8 @@ public class TextPlayer {
    */
   public String checkIfILose(HashMap<String, Boolean> result) {
     String response = "";
-    if (result.get(this.playerName) != null && !result.get(this.playerName)) {
-      String instruction = "Sorry Player " + this.playerName + ", you lose for this Game.\n"
+    if (result.get(this.player.getName()) != null && !result.get(this.player.getName())) {
+      String instruction = "Sorry Player " + this.player.getName() + ", you lose for this Game.\n"
           + "Now you have two options:\n"
           + "1. Continue to watch the game\n"
           + "2. Quit the game\n"
@@ -235,7 +240,7 @@ public class TextPlayer {
       return;
     }
     for (AttackOrder order : attRes) {
-      if (order.getNumber() == 0) {
+      if (order.getSoldierToNumber().size() == 0) {
         out.println("Your attack order to attack Territory " + order.getDestinationName() + " was lose in last round.");
       } else {
         out.println("Congratulations! You successfully own the Territory " + order.getDestinationName());
@@ -248,8 +253,8 @@ public class TextPlayer {
    * 
    * @param currMap the current map client received from server
    */
-  void displayMap(RISKMap currMap) {
-    MapTextView view = new MapTextView(currMap);
+  void displayMap(Game game) {
+    MapTextView view = new MapTextView(game);
     out.println(view.displayMap());
   }
 

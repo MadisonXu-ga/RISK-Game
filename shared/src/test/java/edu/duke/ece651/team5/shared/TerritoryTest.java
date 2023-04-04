@@ -1,8 +1,7 @@
 package edu.duke.ece651.team5.shared;
 
-import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 public class TerritoryTest {
 
@@ -75,7 +76,7 @@ public class TerritoryTest {
         Territory t = new Territory(1, "Territory A", new Player("Player 1"));
         Soldier s1 = new Soldier(SoldierLevel.INFANTRY);
         Soldier s2 = new Soldier(SoldierLevel.ARTILLERY);
-        t.getSoldierArmy().addSoldier(s1, 1);
+        t.getSoldierArmy().addSoldier(s1,1);
         t.getSoldierArmy().addSoldier(s2, 1);
 
         assertEquals(2, t.getSoldierArmy().getAllSoldiers().get(s1));
@@ -87,17 +88,17 @@ public class TerritoryTest {
         SoldierArmy army1 = new SoldierArmy();
         army1.addSoldier(new Soldier(SoldierLevel.INFANTRY), 5);
         army1.addSoldier(new Soldier(SoldierLevel.ARTILLERY), 3);
-
+    
         SoldierArmy army2 = new SoldierArmy();
         army2.addSoldier(new Soldier(SoldierLevel.INFANTRY), 10);
-
+    
         Territory territory = new Territory(2, "Territory 1", new Player("Player 1"), army1);
         territory.getSoldierArmy().setSoldiers(army2.getAllSoldiers());
-
+    
         Map<Soldier, Integer> expectedArmy = new HashMap<>();
         expectedArmy.put(new Soldier(SoldierLevel.INFANTRY), 11);
-
+    
         assertEquals(expectedArmy, territory.getSoldierArmy().getAllSoldiers());
     }
-
+    
 }

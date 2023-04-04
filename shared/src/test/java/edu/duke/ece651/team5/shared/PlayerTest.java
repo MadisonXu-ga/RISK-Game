@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.shared;
 
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,8 +21,8 @@ public class PlayerTest {
     public void testGetMaxTechnologyLevel() {
         Player player = new Player("Red");
         int maxTechLevel = 2;
-        // player.setMaxTechnologyLevel(maxTechLevel);
-        // assertEquals(maxTechLevel, player.getCurrTechnologyLevel());
+        //player.setMaxTechnologyLevel(maxTechLevel);
+        //assertEquals(maxTechLevel, player.getCurrTechnologyLevel());
     }
 
     @Test
@@ -52,3 +53,4 @@ public class PlayerTest {
         assertEquals(player1.hashCode(), player2.hashCode());
     }
 }
+

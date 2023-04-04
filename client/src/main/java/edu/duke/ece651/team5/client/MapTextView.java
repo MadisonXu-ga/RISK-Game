@@ -6,13 +6,15 @@ import edu.duke.ece651.team5.shared.*;
  * 
  */
 public class MapTextView {
-  private RISKMap map;
+  // private RISKMap map;
+  private Game game;
+  
 
   /**
    * @param map riskmap
    */
-  public MapTextView(RISKMap map) {
-    this.map = map;
+  public MapTextView(Game game) {
+    this.game = game;
   }
 
   /**
@@ -22,7 +24,7 @@ public class MapTextView {
    */
   public String displayMap() {
     StringBuilder view = new StringBuilder();
-    for (Player p : map.getPlayers()) {
+    for (Player p : game.getPlayers()) {
       view.append(p.getName() + " player:\n");
       view.append(printPlayerTerry(p));
       view.append("\n");
@@ -53,9 +55,10 @@ public class MapTextView {
   private String printTerriInfo(Territory t) {
     int count = 0;
     StringBuilder terriInfo = new StringBuilder();
-    terriInfo.append(t.getUnitNum(UnitType.SOLDIER) + " units: in " + t.getName());
+    terriInfo.append(t.getSoldierArmy().getTotalCountSolider() + " units: in " + t.getName());
     terriInfo.append(" (next to: ");
-    for (Territory neighbor : map.getAdjacentTerritories(t)) {
+    for (RISKMap.Edge edge : game.getMap().getConnections(t.getId())) {
+      Territory neighbor = game.getMap().getTerritoryById(edge.getTo());
       if (count != 0) {
         terriInfo.append(", ");
       }

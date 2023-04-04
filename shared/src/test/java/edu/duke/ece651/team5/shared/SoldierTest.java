@@ -35,3 +35,4 @@ public class SoldierTest {
         assertEquals(SoldierLevel.ARTILLERY, soldier.getLevel());
     }
 }
+

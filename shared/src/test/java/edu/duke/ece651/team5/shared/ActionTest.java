@@ -5,6 +5,8 @@ import edu.duke.ece651.team5.shared.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,18 +24,22 @@ public class ActionTest {
   void testGetMoveOrders() {
     Action act = createAction();
     ArrayList<MoveOrder> expected = new ArrayList<>();
-    expected.add(new MoveOrder("A", "B", 3, UnitType.SOLDIER, "Green"));
-    expected.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER, "Green"));
+    Map<Soldier, Integer> soldiers1 = new HashMap<>();
+    Player green = new Player("green");
+    expected.add(new MoveOrder("A", "B", soldiers1, green));
+    expected.add(new MoveOrder("C", "D", soldiers1, green));
     assertEquals(expected, act.getMoveOrders());
   }
 
   private Action createAction(){
     ArrayList<AttackOrder> attackOrder = new ArrayList<>();
     ArrayList<MoveOrder> moveOrder = new ArrayList<>();
+    Map<Soldier, Integer> soldiers1 = new HashMap<>();
+    Player green = new Player("green");
     // attackOrder.add(3);
     // attackOrder.add(4);
-    moveOrder.add(new MoveOrder("A", "B", 3, UnitType.SOLDIER, "Green"));
-    moveOrder.add(new MoveOrder("C", "D", 5, UnitType.SOLDIER, "Green"));
+    moveOrder.add(new MoveOrder("A", "B", soldiers1,  green));
+    moveOrder.add(new MoveOrder("C", "D", soldiers1, green));
     return new Action(attackOrder, moveOrder);
 
   }

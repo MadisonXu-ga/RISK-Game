@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,13 +24,13 @@ public class RISKMapTest {
 
         HashMap<Integer, List<RISKMap.Edge>> connections = new HashMap<>();
         connections.put(1, Arrays.asList(new RISKMap.Edge(1, 2, 5),
-                new RISKMap.Edge(1, 4, 1)));
+                                         new RISKMap.Edge(1, 4, 1)));
         connections.put(2, Arrays.asList(new RISKMap.Edge(2, 1, 5),
-                new RISKMap.Edge(2, 4, 3)));
+                                         new RISKMap.Edge(2, 4, 3)));
         connections.put(3, Arrays.asList(new RISKMap.Edge(3, 4, 4)));
         connections.put(4, Arrays.asList(new RISKMap.Edge(4, 1, 1),
-                new RISKMap.Edge(4, 2, 3),
-                new RISKMap.Edge(4, 3, 4)));
+                                         new RISKMap.Edge(4, 2, 3),
+                                         new RISKMap.Edge(4, 3, 4)));
 
         map = new RISKMap(territories, connections);
     }
@@ -74,10 +75,6 @@ public class RISKMapTest {
     @Test
     public void testGetShortestPathDistanceInvalidTerritory() {
         assertThrows(NullPointerException.class, () -> map.getShortestPathDistance("Territory 1", "Territory 5"));
-    }}
-
-    Territory roshar = map.getTerritoryByName("Roshar");
-
-    assertFalse(map.hasPathWithSameOwner(narnia, roshar));
     }
 }
+

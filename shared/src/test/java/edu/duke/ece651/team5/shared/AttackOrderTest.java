@@ -1,5 +1,7 @@
 package edu.duke.ece651.team5.shared;
 
+
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,14 +44,5 @@ public class AttackOrderTest {
     @Test
     void testExecute() {
 
-    }
-
-}
-
-    @Test
-    void testGetPlayerName() {
-        AttackOrder attack = new AttackOrder("Narnia", "Midkemia",
-                2, UnitType.SOLDIER, "Green");
-        assertEquals("Green", attack.getPlayerName());
     }
 }

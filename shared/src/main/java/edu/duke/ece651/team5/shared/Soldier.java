@@ -13,16 +13,14 @@ public class Soldier {
 
     public void upgradeLevel(SoldierLevel targetLevel) {
         // todo: rule checker
-        assert (this.level.ordinal() < targetLevel.ordinal());
+        assert(this.level.ordinal() < targetLevel.ordinal());
         this.level = targetLevel;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Soldier soldier = (Soldier) o;
 
@@ -33,5 +31,6 @@ public class Soldier {
     public int hashCode() {
         return level != null ? level.hashCode() : 0;
     }
+
 
 }

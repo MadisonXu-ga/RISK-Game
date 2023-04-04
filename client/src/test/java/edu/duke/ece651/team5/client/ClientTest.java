@@ -38,15 +38,16 @@ public class ClientTest {
 
   @Test
   void testRecvMap() throws IOException, ClassNotFoundException{
-    RISKMap map = mock(RISKMap.class);
+    // RISKMap map = mock(RISKMap.class);
+    Game game = mock(Game.class);
     PlayerConnection test = mock(PlayerConnection.class);
-    when(test.readData()).thenReturn(map);
+    when(test.readData()).thenReturn(game);
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     BufferedReader input = new BufferedReader(new StringReader("1"));
     PrintStream output = new PrintStream(bytes, true);
     Client client = createPlayer(test, input, output);
     
-    assertEquals(map, client.recvMap());
+    assertEquals(game, client.recvGame());
   }
 
 
@@ -97,7 +98,8 @@ public class ClientTest {
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);
-    client.textPlayer.setPlayerName("Green");
+    Player green = new Player("Green");
+    client.textPlayer.setPlayer(green);
     client.handlePlacement();
     String expected = 
     "This is your player name for this game: Green\n" + 
@@ -131,7 +133,8 @@ public class ClientTest {
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);
-    client.textPlayer.setPlayerName("Green");
+    Player green = new Player("Green");
+    client.textPlayer.setPlayer(green);
     client.isLose = true;
     client.playOneTurn();
     String expected = 
@@ -164,7 +167,8 @@ public class ClientTest {
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);
-    client.textPlayer.setPlayerName("Green");
+    Player green = new Player("Green");
+    client.textPlayer.setPlayer(green);
     client.playOneTurn();
     String expected =
     "This is your player name for this game: Green\n" +
@@ -254,7 +258,8 @@ public class ClientTest {
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);
-    client.textPlayer.setPlayerName("Green");
+    Player green = new Player("Green");
+    client.textPlayer.setPlayer(green);
     String message = client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
@@ -283,7 +288,8 @@ public class ClientTest {
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);
-    client.textPlayer.setPlayerName("Green");
+    Player green = new Player("Green");
+    client.textPlayer.setPlayer(green);
     String message = client.checkResult();
     String expected = 
     "This is your player name for this game: Green\n" +
@@ -308,7 +314,8 @@ public class ClientTest {
     PrintStream output = new PrintStream(bytes, true);
 
     Client client = createPlayer(test, input, output);
-    client.textPlayer.setPlayerName("Green");
+    Player green = new Player("Green");
+    client.textPlayer.setPlayer(green);
     client.isLose = true;
     client.checkResult();
     String expected = 

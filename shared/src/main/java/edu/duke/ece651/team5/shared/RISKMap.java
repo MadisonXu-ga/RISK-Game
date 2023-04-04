@@ -21,6 +21,17 @@ public class RISKMap {
             this.to = to;
             this.distance = distance;
         }
+
+        public int getTo(){
+            return to;
+        }
+    }
+
+
+    
+
+    public List<Edge> getConnections(int id){
+        return connections.get(id);
     }
 
     public Territory getTerritoryByName(String name){
@@ -91,5 +102,3 @@ public class RISKMap {
 
 
 }
-
-return false;}}

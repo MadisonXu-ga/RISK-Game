@@ -2,13 +2,16 @@ package edu.duke.ece651.team5.shared;
 
 import java.util.Objects;
 
+
+
 public class Territory {
     private int id;
     private String name;
     private Player owner;
     private SoldierArmy soldierArmy;
 
-    // todo may need to change owner string to player object
+
+    //todo may need to change owner string to player object
 
     public Territory(int id, String name, Player owner, SoldierArmy soldierArmy) {
         this.id = id;
@@ -36,11 +39,6 @@ public class Territory {
         this.id = id;
     }
 
-    /**
-     * Get the territory name
-     * 
-     * @return the name of the territory
-     */
     public String getName() {
         return this.name;
     }
@@ -69,13 +67,16 @@ public class Territory {
             return false;
         }
         Territory territory = (Territory) o;
-        return id == territory.id && Objects.equals(name, territory.name) && Objects.equals(owner, territory.owner)
-                && Objects.equals(soldierArmy, territory.soldierArmy);
+        return id == territory.id && Objects.equals(name, territory.name) && Objects.equals(owner, territory.owner) && Objects.equals(soldierArmy, territory.soldierArmy);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, owner, soldierArmy);
     }
+
+
+
+
 
 }

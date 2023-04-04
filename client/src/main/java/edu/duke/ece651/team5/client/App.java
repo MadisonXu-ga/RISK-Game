@@ -6,7 +6,6 @@ package edu.duke.ece651.team5.client;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import edu.duke.ece651.team5.shared.MyName;
 
 
 public class App {

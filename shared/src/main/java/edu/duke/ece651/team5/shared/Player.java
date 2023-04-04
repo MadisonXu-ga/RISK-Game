@@ -2,80 +2,79 @@ package edu.duke.ece651.team5.shared;
 
 import java.util.*;
 
+
 public class Player {
-  private final String name;
-  private final List<Territory> territories;
-  private int currTechnologyLevel;
-  private final Map<Resource, Integer> resourceToAmount;
+    private final String name;
+    private final List<Territory> territories;
+    private int currTechnologyLevel;
+    private final Map<Resource, Integer> resourceToAmount;
 
-  public Player(String color) {
-    this.name = color;
-    this.territories = new ArrayList<>();
-    currTechnologyLevel = 0;
-    resourceToAmount = new HashMap<>();
-  }
-
-  public void loseTerritory(Territory t) {
-    territories.remove(t);
-  }
-
-  public void consumeResource(Resource resource, int amount) {
-    int currentCount = resourceToAmount.getOrDefault(resource, 0);
-    int newCount = Math.max(currentCount - amount, 0);
-    if (newCount == 0) {
-      resourceToAmount.remove(resource);
-    } else {
-      resourceToAmount.put(resource, newCount);
+    public Player(String color) {
+        this.name = color;
+        this.territories = new ArrayList<>();
+        currTechnologyLevel = 0;
+        resourceToAmount = new HashMap<>();
     }
-  }
 
-  public int getResourceCount(Resource resource) {
-    return resourceToAmount.getOrDefault(resource, 0);
-  }
+    public void loseTerritory(Territory t) {
+        territories.remove(t);
+    }
 
-  public void addResourceFromTerritory(Resource resource, int num) {
-    resourceToAmount.put(resource,
-        resourceToAmount.getOrDefault(resource, 0) + num);
-  }
+    public void consumeResource(Resource resource, int amount) {
+        int currentCount = resourceToAmount.getOrDefault(resource, 0);
+        int newCount = Math.max(currentCount - amount, 0);
+        if (newCount == 0) {
+            resourceToAmount.remove(resource);
+        } else {
+            resourceToAmount.put(resource, newCount);
+        }
+    }
 
-  public void upgradeTechnologyLevel() {
-    this.currTechnologyLevel++;
-  }
+    public int getResourceCount(Resource resource) {
+        return resourceToAmount.getOrDefault(resource, 0);
+    }
 
-  public void addTerritory(Territory t) {
-    territories.add(t);
-  }
+    public void addResourceFromTerritory(Resource resource, int num) {
+        resourceToAmount.put(resource,
+                resourceToAmount.getOrDefault(resource, 0) + num);
+    }
 
-  public List<Territory> getTerritories() {
-    return territories;
-  }
+    public void upgradeTechnologyLevel() {
+        this.currTechnologyLevel++;
+    }
 
-  public int getCurrTechnologyLevel() {
-    return this.currTechnologyLevel;
-  }
+    public void addTerritory(Territory t) {
+        territories.add(t);
+    }
 
-  public Map<Resource, Integer> getResourceToAmount() {
-    return resourceToAmount;
-  }
+    public List<Territory> getTerritories() {
+        return territories;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public int getCurrTechnologyLevel() {
+        return this.currTechnologyLevel;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+    public Map<Resource, Integer> getResourceToAmount() {
+        return resourceToAmount;
+    }
 
-    Player player = (Player) o;
+    public String getName() {
+        return name;
+    }
 
-    return Objects.equals(name, player.name);
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-  @Override
-  public int hashCode() {
-    return name != null ? name.hashCode() : 0;
-  }
+        Player player = (Player) o;
+
+        return Objects.equals(name, player.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }

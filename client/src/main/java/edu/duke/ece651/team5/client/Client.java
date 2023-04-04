@@ -68,17 +68,18 @@ public class Client {
   public void handlePlayerName() throws IOException, ClassNotFoundException{
     out.println("\nWaiting to receive your player name...\n");
     String msg = (String) playerConnection.readData();
+    Player playerInfo = null;
     //if identified as first player, ask user choice for the number of player for this game
     if(msg.equals("First")){
       int numPlayer = textPlayer.selectNumPlayer();
       out.println("\nSending your choice..\n");
       playerConnection.writeData(numPlayer);
       //get player name for first user
-      msg = (String) playerConnection.readData();
+      playerInfo = (Player) playerConnection.readData();
     }
     //set player name
     out.println("\nWe got your player name!\n");
-    textPlayer.setPlayerName(msg);
+    textPlayer.setPlayer(playerInfo);
   }
 
   /**
@@ -91,10 +92,10 @@ public class Client {
   public void handlePlacement() throws IOException, ClassNotFoundException{
     boolean complete = false;
     //gather placeInfo from textPlayer
-    RISKMap map = recvMap();
+    Game game = recvGame();
     out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
     do{
-      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(map);
+      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(game);
       out.println("\nWe got all your choices, sending your choices...\n");
       //write info to server
       playerConnection.writeData(placeInfo);
@@ -116,15 +117,15 @@ public class Client {
   public void playOneTurn() throws IOException, ClassNotFoundException{
     if(isLose){
       out.println("\n------Spectator Mode------\n");
-      textPlayer.displayMap(recvMap());
+      textPlayer.displayMap(recvGame());
       return;
     }
     out.println("\nNow it's time to play the game!\n");
     boolean complete = false;
-    RISKMap map = recvMap();
+    Game game = recvGame();
     do{
       //gather actions(orders) from textPlayer
-      Action actions = textPlayer.playOneTurn(map);
+      Action actions = textPlayer.playOneTurn(game);
       out.println("\nWe got all your orders, sending your orders...\n");
       //send info to server
       playerConnection.writeData(actions);
@@ -200,11 +201,19 @@ public class Client {
    * @throws IOException if any IO failure
    * @throws ClassNotFoundException if unknown host failure
    */
-  protected RISKMap recvMap() throws IOException, ClassNotFoundException{
-    out.println("\nReceiving RISK map...");
-    RISKMap map = (RISKMap)playerConnection.readData();
-    out.println("\nReceived Map\n");
-    return map;
+  // protected RISKMap recvMap() throws IOException, ClassNotFoundException{
+  //   out.println("\nReceiving RISK map...");
+  //   // RISKMap map = (RISKMap)playerConnection.readData();
+  //   Game game = (Game)playerConnection.readData();
+  //   out.println("\nReceived Map\n");
+  //   return game.getMap();
+  // }
+  protected Game recvGame() throws IOException, ClassNotFoundException{
+    out.println("\nReceiving RISK Game...");
+    // RISKMap map = (RISKMap)playerConnection.readData();
+    Game game = (Game)playerConnection.readData();
+    out.println("\nReceived Game\n");
+    return game;
   }
 
   /**

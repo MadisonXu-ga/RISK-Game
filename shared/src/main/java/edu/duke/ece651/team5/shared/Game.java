@@ -12,6 +12,14 @@ public class Game {
         this.map = map;
     }
 
+    public Player getPlayerByName(String name){
+        return players
+        .stream()
+        .filter(player -> player.getName().equals(name))
+        .findFirst()
+        .orElse(null);
+    }
+
 
     public List<Player> getPlayers() {
         return this.players;

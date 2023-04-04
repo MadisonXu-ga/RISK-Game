@@ -16,19 +16,17 @@ public class Server {
     // the port of server
     private int port;
     // total number of player in this one game
-    private int playerNum;
     private ServerSocket serverSocket;
     private ThreadPoolExecutor threadPool;
     // the sockets and io resources of all the clients
     private ArrayList<Socket> clientSockets;
     private final PrintStream out;
 
-    private ArrayList<PlayerConnection> clientIOs;
-
     // public GameController gameController;
 
     // true -> normal accept; null -> lost but watch the game;
     // false -> lost and disconnect.
+    // TODO: move to gamecontroller
     HashMap<Integer, Boolean> playerConnectionStatus;
 
     // ----------add v2 new features------------
@@ -48,11 +46,8 @@ public class Server {
     public Server(int port, PrintStream out) throws IOException, SocketException {
         this.port = port;
         this.serverSocket = new ServerSocket(this.port);
-
-        this.playerNum = 0;
         this.out = out;
         this.clientSockets = new ArrayList<>();
-        this.clientIOs = new ArrayList<>();
 
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>(32);
         this.threadPool = new ThreadPoolExecutor(20, 20, 100, TimeUnit.SECONDS, workQueue);

@@ -29,6 +29,7 @@ public class GameController {
         this.status = GameStatus.WAITING;
         this.playerNum = playerNum;
         this.userNum = 0;
+        this.players = new ArrayList<>();
 
         createPlayers(playerNum);
     }
@@ -51,6 +52,15 @@ public class GameController {
         for (int i = 0; i < playerNum; ++i) {
             players.add(new Player(colors[i]));
         }
+    }
+
+    /**
+     * Mainly for test
+     * 
+     * @return
+     */
+    protected ArrayList<Player> getPlayers() {
+        return this.players;
     }
 
     /**

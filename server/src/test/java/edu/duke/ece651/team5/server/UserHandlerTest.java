@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,11 @@ public class UserHandlerTest {
     void testHandleLogin() throws ClassNotFoundException, IOException {
         PlayerConnection mockPlayerConnection = mock(PlayerConnection.class);
         UserManager userManager = new UserManager();
-        UserHandler userHandler = new UserHandler(mockPlayerConnection, userManager);
+        ArrayList<GameController> mockAllGames = mock(ArrayList.class);
+        UserGameMap mockUserGameMap = mock(UserGameMap.class);
+        HashMap<User, PlayerConnection> mockClients = mock(HashMap.class);
+        UserHandler userHandler = new UserHandler(mockPlayerConnection, userManager, mockAllGames, mockUserGameMap,
+                mockClients);
 
         ArrayList<String> inputInfo = new ArrayList<>();
         inputInfo.add("user1");
@@ -44,7 +49,11 @@ public class UserHandlerTest {
         // success
         PlayerConnection mockPlayerConnection = mock(PlayerConnection.class);
         UserManager userManager = new UserManager();
-        UserHandler userHandler = new UserHandler(mockPlayerConnection, userManager);
+        ArrayList<GameController> mockAllGames = mock(ArrayList.class);
+        UserGameMap mockUserGameMap = mock(UserGameMap.class);
+        HashMap<User, PlayerConnection> mockClients = mock(HashMap.class);
+        UserHandler userHandler = new UserHandler(mockPlayerConnection, userManager, mockAllGames, mockUserGameMap,
+                mockClients);
 
         ArrayList<String> inputInfo = new ArrayList<>();
         inputInfo.add("user1");

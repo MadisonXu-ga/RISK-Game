@@ -1,7 +1,0 @@
-Narnia, Elantris, Midkemia, Scadrial, Oz, Roshar
-Narnia: Elantris, Midkemia
-Elantris: Narnia, Midkemia, Scadrial, Roshar
-Midkemia: Elantris, Narnia, Scadrial, Oz
-Scadrial: Elantris, Narnia, Midkemia, Roshar, Oz
-Oz: Midkemia, Scadrial
-Roshar: Elantris, Scadrial

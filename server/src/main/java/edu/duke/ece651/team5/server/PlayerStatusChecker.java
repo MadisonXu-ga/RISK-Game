@@ -7,28 +7,28 @@ import edu.duke.ece651.team5.shared.Player;
 import edu.duke.ece651.team5.shared.RISKMap;
 
 public class PlayerStatusChecker {
-
-    // Already tested!
     /**
      * get player's win/lose/playing status from map
      * 
      * @param riskMap
      * @return
      */
-    public HashMap<String, Boolean> getPlayerStatus(RISKMap riskMap) {
-        HashMap<String, Boolean> playerStatus = new HashMap<>();
-        ArrayList<Player> players = riskMap.getPlayers();
-        for (Player player : players) {
-            if (player.getTerritories().size() == 0) {
-                playerStatus.put(player.getName(), false);
-            } else if (player.getTerritories().size() == riskMap.getTerritories().size()) {
-                playerStatus.put(player.getName(), true);
-            } else {
-                playerStatus.put(player.getName(), null);
-            }
-        }
-        return playerStatus;
-    }
+
+    // TODO: change this to match new map part
+    // public HashMap<String, Boolean> getPlayerStatus(RISKMap riskMap) {
+    //     HashMap<String, Boolean> playerStatus = new HashMap<>();
+    //     ArrayList<Player> players = riskMap.getPlayers();
+    //     for (Player player : players) {
+    //         if (player.getTerritories().size() == 0) {
+    //             playerStatus.put(player.getName(), false);
+    //         } else if (player.getTerritories().size() == riskMap.getTerritories().size()) {
+    //             playerStatus.put(player.getName(), true);
+    //         } else {
+    //             playerStatus.put(player.getName(), null);
+    //         }
+    //     }
+    //     return playerStatus;
+    // }
 
     /**
      * check win

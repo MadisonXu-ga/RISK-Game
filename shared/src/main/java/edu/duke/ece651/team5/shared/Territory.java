@@ -1,31 +1,39 @@
 package edu.duke.ece651.team5.shared;
 
-// import java.io.Serial;
-import java.util.HashMap;
 import java.util.Objects;
-import java.io.Serializable;
 
-public class Territory implements Serializable {
-    // @Serial
-    private static final long serialVersionUID = -7740100550480738933L;
-    private final String name;
-    private final HashMap<Unit, Integer> units;
+public class Territory {
+    private int id;
+    private String name;
     private Player owner;
+    private SoldierArmy soldierArmy;
 
-    /**
-     * @param name string
-     */
-    public Territory(String name) {
+    // todo may need to change owner string to player object
+
+    public Territory(int id, String name, Player owner, SoldierArmy soldierArmy) {
+        this.id = id;
         this.name = name;
-        HashMap<Unit, Integer> initUnits = new HashMap<>();
-        initUnits.put(UnitType.SOLDIER, 0);
-        this.units = initUnits;
+        this.owner = owner;
+        this.soldierArmy = soldierArmy;
     }
 
-    public Territory(String name, HashMap<Unit, Integer> units) {
+    public Territory(int id, String name, Player owner) {
+        this.id = id;
         this.name = name;
-        this.units = units;
-        this.owner = null;
+        this.owner = owner;
+        this.soldierArmy = new SoldierArmy();
+    }
+
+    public void produceResource(Resource resource) {
+        owner.addResourceFromTerritory(resource, Constants.PRODUCE_FOOD_RESOURCE_PER_TURN);
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -34,102 +42,40 @@ public class Territory implements Serializable {
      * @return the name of the territory
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    /**
-     * Get the number of a certain unit type
-     * 
-     * @param unit unit type
-     * @return the number of this type of unit placed in this territory
-     */
-    public int getUnitNum(Unit unit) {
-        return units.get(unit);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    /**
-     * Update the unit count
-     * 
-     * @param type  the type of unit
-     * @param isOut update direction, true for subtract and false for add
-     * @param count the number of count that is going to be updated
-     */
-    public void updateUnitCount(Unit type, boolean isOut, int count) {
-        // if (units.containsKey(type)) {
-        int currentCount = units.get(type);
-        if (isOut) {
-            units.put(type, currentCount - count);
-        } else {
-            units.put(type, currentCount + count);
-        }
-        // } else {
-        // throw new IllegalArgumentException("this unit type does not exist");
-        // }
-    }
-
-    /**
-     * Set the unit count
-     * 
-     * @param type  the type of unit
-     * @param count the number of count that is going to be set
-     */
-    public void setUnitCount(Unit type, int count) {
-        units.put(type, count);
-    }
-
-    /**
-     * Set the owner of territory
-     * 
-     * @param owner the player that should own this territory
-     */
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
-
-    /**
-     * To tell if the territory has an owner
-     * 
-     * @return true if it does, otherwise false
-     */
-    public boolean hasOwner() {
-        return owner != null;
-    }
-
-    /**
-     * Get the owner of this territory
-     * 
-     * @return the owner
-     */
     public Player getOwner() {
-        return owner;
+        return this.owner;
     }
 
-    /**
-     * to tell if two territories equals (on name)
-     * 
-     * @param o another object
-     * @return true if the names of two territories equals
-     *         false if names do not equal
-     */
+    public void setOwner(Player newOwner) {
+        this.owner = newOwner;
+    }
+
+    public SoldierArmy getSoldierArmy() {
+        return this.soldierArmy;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (o == this)
             return true;
-        if (o == null || getClass() != o.getClass())
+        if (!(o instanceof Territory)) {
             return false;
-
+        }
         Territory territory = (Territory) o;
-
-        return Objects.equals(name, territory.name);
+        return id == territory.id && Objects.equals(name, territory.name) && Objects.equals(owner, territory.owner)
+                && Objects.equals(soldierArmy, territory.soldierArmy);
     }
 
-    /**
-     * hashcode for territory compute with name
-     * 
-     * @return hashcode
-     */
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return Objects.hash(id, name, owner, soldierArmy);
     }
+
 }

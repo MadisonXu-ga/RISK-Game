@@ -1,38 +1,22 @@
 package edu.duke.ece651.team5.shared;
 
 import java.io.Serializable;
-// import java.io.Serial;
+import java.util.Map;
 
-public abstract class BasicOrder implements Serializable {
+public abstract class BasicOrder implements Order, Serializable {
     // @Serial
     private static final long serialVersionUID = 1847314966415949919L;
     protected String sourceName;
     protected String destinationName;
-    protected int number;
-    protected Unit type;
-    protected String playerName;
+    // todo: change this to soldier army
+    protected Map<Soldier, Integer> soldierToNumber;
+    protected Player player;
 
-    /**
-     * @param sourceName      String
-     * @param destinationName String
-     * @param number          int
-     * @param type            Unit
-     * @param playerName      String
-     */
-    public BasicOrder(String sourceName, String destinationName, int number, Unit type, String playerName) {
+    public BasicOrder(String sourceName, String destinationName, Map<Soldier, Integer> soldiers, Player player) {
         this.sourceName = sourceName;
         this.destinationName = destinationName;
-        this.number = number;
-        this.type = type;
-        this.playerName = playerName;
-    }
-
-    public void loseOneUnit() {
-        number--;
-    }
-
-    public void updateUnitNumber(int update) {
-        number += update;
+        this.soldierToNumber = soldiers;
+        this.player = player;
     }
 
     /**
@@ -61,24 +45,21 @@ public abstract class BasicOrder implements Serializable {
     }
 
     /**
-     * Getter for number of units that is going to change
-     * 
-     * @return number
-     */
-    public int getNumber() {
-        return number;
-    }
-
-    /**
-     * Getter for unit type
+     * Getter for soldier to number map
      * 
      * @return the type
      */
-    public Unit getType() {
-        return type;
+    public Map<Soldier, Integer> getSoldierToNumber() {
+        return soldierToNumber;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    /**
+     * get playerName
+     * 
+     * @return
+     */
+    public Player getPlayer() {
+        return player;
     }
+
 }

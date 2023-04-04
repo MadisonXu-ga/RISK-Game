@@ -1,121 +1,83 @@
 package edu.duke.ece651.team5.shared;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-class RISKMapTest {
+public class RISKMapTest {
+    private RISKMap map;
 
-    @Test
-    void testConstructor() throws IOException {
-        // do not need to assert here just mock to make it have error
-        InputStream inputStream = mock(InputStream.class);
-        when(inputStream.read()).thenReturn(-1); // simulate an empty input stream
-        when(inputStream.read(any(byte[].class))).thenReturn(-1); // simulate an empty input stream
+    @BeforeEach
+    public void setUp() {
+        Map<String, Territory> territories = new HashMap<>();
+        territories.put("Territory 1", new Territory(1, "Territory 1", new Player("Player 1")));
+        territories.put("Territory 2", new Territory(2, "Territory 2", new Player("Player 2")));
+        territories.put("Territory 3", new Territory(3, "Territory 3", new Player("Player 2")));
+        territories.put("Territory 4", new Territory(4, "Territory 4", new Player("Player 1")));
 
-        RISKMap map = new RISKMap("non-exist");
-        System.out.println("");
+        HashMap<Integer, List<RISKMap.Edge>> connections = new HashMap<>();
+        connections.put(1, Arrays.asList(new RISKMap.Edge(1, 2, 5),
+                new RISKMap.Edge(1, 4, 1)));
+        connections.put(2, Arrays.asList(new RISKMap.Edge(2, 1, 5),
+                new RISKMap.Edge(2, 4, 3)));
+        connections.put(3, Arrays.asList(new RISKMap.Edge(3, 4, 4)));
+        connections.put(4, Arrays.asList(new RISKMap.Edge(4, 1, 1),
+                new RISKMap.Edge(4, 2, 3),
+                new RISKMap.Edge(4, 3, 4)));
+
+        map = new RISKMap(territories, connections);
     }
 
     @Test
-    void testGetTerritoryByName() {
-        RISKMap map = new RISKMap();
-        Territory actual = map.getTerritoryByName("Oz");
-        assertEquals("Oz", actual.getName());
-        assertThrows(IllegalArgumentException.class, () -> map.getTerritoryByName("non-exist"));
+    public void getTerritoryByName() {
+        Territory territory1 = map.getTerritoryByName("Territory 1");
+        Territory t = new Territory(1, "Territory 1", new Player("Player 1"));
+        assertEquals(t, territory1);
     }
 
     @Test
-    void testIsAdjacent() {
-        RISKMap map = new RISKMap();
-        Territory narnia = map.getTerritoryByName("Narnia");
-        Territory elantris = map.getTerritoryByName("Elantris");
-        Territory hogwarts = map.getTerritoryByName("Hogwarts");
-        assertTrue(map.isAdjacent(narnia, elantris));
-        assertFalse(map.isAdjacent(narnia, hogwarts));
+    public void testIsAdjacent() {
+        Territory territory1 = map.getTerritoryByName("Territory 1");
+        Territory territory2 = map.getTerritoryByName("Territory 2");
+        Territory territory3 = map.getTerritoryByName("Territory 3");
+        assertTrue(map.isAdjacent(territory1, territory2));
+        assertFalse(map.isAdjacent(territory1, territory3));
     }
 
     @Test
-    void testGetAdjacentTerritories() {
-        RISKMap map = new RISKMap();
-        Territory narnia = map.getTerritoryByName("Narnia");
-        HashSet<Territory> actual = map.getAdjacentTerritories(narnia);
-        HashSet<Territory> expected = new HashSet<>(Arrays.asList(
-                map.getTerritoryByName("Elantris"),
-                map.getTerritoryByName("Midkemia")
-        ));
-        assertEquals(expected, actual);
-    }
-
-
-    @Test
-    void testGetPlayerByName(){
-        Player redPlayer = new Player("red");
-        Player bluePlayer = new Player("blue");
-
-        ArrayList<Player> playersArray = new ArrayList<>();
-        playersArray.add(bluePlayer);
-        playersArray.add(redPlayer);
-
-        RISKMap oneMap = new RISKMap(playersArray);
-        assertEquals("red", oneMap.getPlayerByName("red").getName());
-        assertThrows(IllegalArgumentException.class, () -> oneMap.getPlayerByName("rex"));
+    public void testGetShortestPathDistance() {
+        int expectedDistance = 1;
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 4");
+        assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
-    void testInitPlayer(){
-        Player redPlayer = new Player("red");
-        Player bluePlayer = new Player("blue");
-
-        ArrayList<Player> playersArray = new ArrayList<>();
-        playersArray.add(bluePlayer);
-        playersArray.add(redPlayer);
-        RISKMap oneMap = new RISKMap();
-        oneMap.initPlayers(playersArray);
-        assertEquals(playersArray, oneMap.getPlayers());
+    public void testGetShortestPathDistanceNoPath() {
+        int expectedDistance = Integer.MAX_VALUE;
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 2");
+        assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
-    void testGetTerritories(){
-        RISKMap map = new RISKMap();
-        RISKMap map2 = new RISKMap();
-        assertEquals(map2.getTerritories(), map.getTerritories());
+    public void testGetShortestPathDistanceSameTerritory() {
+        int expectedDistance = 0;
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 1");
+        assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
-    void testHasPathWithSameOwner() {
-        Player blue = new Player("Blue");
-        Player green = new Player("green");
-        RISKMap map = new RISKMap("test_map_config.txt");
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(blue);
-        players.add(green);
-        map.initPlayers(players);
-        ArrayList<Territory> territories = map.getTerritories();
-        for (int i = 0; i < territories.size(); i++) {
-            Territory territory = territories.get(i);
-            territory.setOwner(blue);
-            blue.addTerritory(territory);
-        }
-        for (int i = territories.size() / 2; i < territories.size(); i++) {
-            Territory territory = territories.get(i);
-            territory.setOwner(green);
-            green.addTerritory(territory);
-        }
-        Territory narnia = map.getTerritoryByName("Narnia");
-        Territory elantris = map.getTerritoryByName("Elantris");
-        boolean actual = map.hasPathWithSameOwner(narnia, elantris);
-        assertTrue(actual);
+    public void testGetShortestPathDistanceInvalidTerritory() {
+        assertThrows(NullPointerException.class, () -> map.getShortestPathDistance("Territory 1", "Territory 5"));
+    }}
 
-        Territory roshar = map.getTerritoryByName("Roshar");
-        assertFalse(map.hasPathWithSameOwner(narnia, roshar));
+    Territory roshar = map.getTerritoryByName("Roshar");
+
+    assertFalse(map.hasPathWithSameOwner(narnia, roshar));
     }
 }

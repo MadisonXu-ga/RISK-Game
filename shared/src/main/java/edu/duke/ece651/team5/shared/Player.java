@@ -1,48 +1,65 @@
 package edu.duke.ece651.team5.shared;
 
-// import java.io.Serial;
-import java.util.ArrayList;
-import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
-public class Player implements Serializable {
-  // @Serial
-  private static final long serialVersionUID = 1956072100912475484L;
-  private String name;
-  private ArrayList<Territory> territories;
-  private int availableUnit;
+public class Player {
+  private final String name;
+  private final List<Territory> territories;
+  private int currTechnologyLevel;
+  private final Map<Resource, Integer> resourceToAmount;
 
-  /**
-   * @param color string
-   */
   public Player(String color) {
     this.name = color;
     this.territories = new ArrayList<>();
-    this.availableUnit = 50;
-  }
-
-  /**
-   * @param aTerritory territory
-   */
-  public void addTerritory(Territory aTerritory) {
-    territories.add(aTerritory);
-  }
-
-  public int getAvailableUnit() {
-    return availableUnit;
-  }
-
-  public ArrayList<Territory> getTerritories() {
-    return territories;
-  }
-
-  public String getName() {
-
-    return name;
+    currTechnologyLevel = 0;
+    resourceToAmount = new HashMap<>();
   }
 
   public void loseTerritory(Territory t) {
     territories.remove(t);
+  }
+
+  public void consumeResource(Resource resource, int amount) {
+    int currentCount = resourceToAmount.getOrDefault(resource, 0);
+    int newCount = Math.max(currentCount - amount, 0);
+    if (newCount == 0) {
+      resourceToAmount.remove(resource);
+    } else {
+      resourceToAmount.put(resource, newCount);
+    }
+  }
+
+  public int getResourceCount(Resource resource) {
+    return resourceToAmount.getOrDefault(resource, 0);
+  }
+
+  public void addResourceFromTerritory(Resource resource, int num) {
+    resourceToAmount.put(resource,
+        resourceToAmount.getOrDefault(resource, 0) + num);
+  }
+
+  public void upgradeTechnologyLevel() {
+    this.currTechnologyLevel++;
+  }
+
+  public void addTerritory(Territory t) {
+    territories.add(t);
+  }
+
+  public List<Territory> getTerritories() {
+    return territories;
+  }
+
+  public int getCurrTechnologyLevel() {
+    return this.currTechnologyLevel;
+  }
+
+  public Map<Resource, Integer> getResourceToAmount() {
+    return resourceToAmount;
+  }
+
+  public String getName() {
+    return name;
   }
 
   @Override

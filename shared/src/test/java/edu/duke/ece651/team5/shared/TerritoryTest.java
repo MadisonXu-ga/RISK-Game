@@ -6,77 +6,98 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TerritoryTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class TerritoryTest {
 
     @Test
-    void testGetName() {
-        Territory hogwarts = new Territory("Hogwarts", null);
-        String actual = hogwarts.getName();
-        String expected = "Hogwarts";
-        assertEquals(expected, actual);
+    public void testConstructorWithSoldierArmy() {
+        SoldierArmy sa = new SoldierArmy();
+        Territory t = new Territory(1, "Territory A", new Player("Player 1"), sa);
+        assertEquals(1, t.getId());
+        assertEquals("Territory A", t.getName());
+        assertEquals("Player 1", t.getOwner().getName());
+        assertEquals(sa, t.getSoldierArmy());
     }
 
     @Test
-    void testGetUnitNum() {
-        HashMap<Unit, Integer> units = new HashMap<>();
-        units.put(UnitType.SOLDIER, 10);
-        Territory hogwarts = new Territory("Hogwarts", units);
-        int actual = hogwarts.getUnitNum(UnitType.SOLDIER);
-        assertEquals(10, actual);
+    public void testConstructorWithoutSoldierArmy() {
+        Territory t = new Territory(1, "Territory A", new Player("Player 1"));
+        assertEquals(1, t.getId());
+        assertEquals("Territory A", t.getName());
+        assertEquals("Player 1", t.getOwner().getName());
+        assertNotNull(t.getSoldierArmy());
     }
 
     @Test
-    void testUpdateUnitCount() {
-        HashMap<Unit, Integer> units = new HashMap<>();
-        units.put(UnitType.SOLDIER, 10);
-        Territory hogwarts = new Territory("Hogwarts", units);
-        hogwarts.updateUnitCount(UnitType.SOLDIER, true, 5);
-        int actual1 = hogwarts.getUnitNum(UnitType.SOLDIER);
-        int expected1 = 5;
-        assertEquals(expected1, actual1);
+    public void testGettersAndSetters() {
+        Territory t = new Territory(1, "Territory A", new Player("Player 1"));
+        assertEquals(1, t.getId());
+        assertEquals("Territory A", t.getName());
+        assertEquals("Player 1", t.getOwner().getName());
+        assertNotNull(t.getSoldierArmy());
 
-        hogwarts.updateUnitCount(UnitType.SOLDIER, false, 3);
-        int actual2 = hogwarts.getUnitNum(UnitType.SOLDIER);
-        int expected2 = 8;
-        assertEquals(expected2, actual2);
-
-        // assertThrows(IllegalArgumentException.class, () -> hogwarts.updateUnitCount(new Soldier(), false, 1));
-
+        t.setId(2);
+        t.setName("Territory B");
+        t.setOwner(new Player("Player 2"));
+        assertEquals(2, t.getId());
+        assertEquals("Territory B", t.getName());
+        assertEquals("Player 2", t.getOwner().getName());
     }
 
     @Test
-    void testSetUnitCount() {
-        Territory t = new Territory("Oz");
-        t.setUnitCount(UnitType.SOLDIER, 2);
-        assertEquals(2, t.getUnitNum(UnitType.SOLDIER));
+    public void testEqualsAndHashCode() {
+        Territory t1 = new Territory(1, "Territory A", new Player("Player 1"));
+        Territory t2 = new Territory(1, "Territory A", new Player("Player 1"));
+        Territory t3 = new Territory(2, "Territory B", new Player("Player 2"));
+
+        assertEquals(t1, t2);
+        assertEquals(t1.hashCode(), t2.hashCode());
+        assertNotEquals(t1, t3);
+        assertNotEquals(t1.hashCode(), t3.hashCode());
     }
 
     @Test
-    void testAddHasOwner(){
+    public void testGetSoldierCount() {
+        Territory t = new Territory(1, "Territory A", new Player("Player 1"));
+        Soldier s = new Soldier(SoldierLevel.INFANTRY);
 
-        Territory oneTerritory = new Territory("Mordor", new HashMap<>());
-        Player greenPlayer = new Player("green");
-
-        oneTerritory.setOwner(greenPlayer);
-
-        assertTrue(oneTerritory.hasOwner());
-        assertEquals(greenPlayer, oneTerritory.getOwner());
-        
+        assertEquals(1, t.getSoldierArmy().getSoldierCount(s));
+        t.getSoldierArmy().addSoldier(s, 1);
+        assertEquals(2, t.getSoldierArmy().getSoldierCount(s));
     }
 
     @Test
-    void testEquals_and_Hashcode_Territory(){
+    public void testGetAllSoldiers() {
+        Territory t = new Territory(1, "Territory A", new Player("Player 1"));
+        Soldier s1 = new Soldier(SoldierLevel.INFANTRY);
+        Soldier s2 = new Soldier(SoldierLevel.ARTILLERY);
+        t.getSoldierArmy().addSoldier(s1, 1);
+        t.getSoldierArmy().addSoldier(s2, 1);
 
-        //TODO here we need to test when a territory doesnt equate to "this "
-        Territory terr1 = new Territory("green", new HashMap<>());
-        Territory terr2 = new Territory("green", new HashMap<>());
-        Territory terr3 = new Territory(null, new HashMap<>());
-        
-        assertTrue(terr1.equals(terr2));
-        assertFalse(terr1.equals(terr3));
-        assertFalse(terr1.equals(1));
-        assertFalse(terr1.equals(null));
-        assertEquals(terr1.hashCode(), terr2.hashCode());
-        assertEquals(0, terr3.hashCode());
+        assertEquals(2, t.getSoldierArmy().getAllSoldiers().get(s1));
+        assertEquals(1, t.getSoldierArmy().getAllSoldiers().get(s2));
     }
+
+    @Test
+    public void testUpdateSoldier() {
+        SoldierArmy army1 = new SoldierArmy();
+        army1.addSoldier(new Soldier(SoldierLevel.INFANTRY), 5);
+        army1.addSoldier(new Soldier(SoldierLevel.ARTILLERY), 3);
+
+        SoldierArmy army2 = new SoldierArmy();
+        army2.addSoldier(new Soldier(SoldierLevel.INFANTRY), 10);
+
+        Territory territory = new Territory(2, "Territory 1", new Player("Player 1"), army1);
+        territory.getSoldierArmy().setSoldiers(army2.getAllSoldiers());
+
+        Map<Soldier, Integer> expectedArmy = new HashMap<>();
+        expectedArmy.put(new Soldier(SoldierLevel.INFANTRY), 11);
+
+        assertEquals(expectedArmy, territory.getSoldierArmy().getAllSoldiers());
+    }
+
 }

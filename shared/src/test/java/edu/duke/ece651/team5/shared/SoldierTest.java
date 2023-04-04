@@ -1,24 +1,37 @@
 package edu.duke.ece651.team5.shared;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class SoldierTest {
-  @Test
-  void testEqualsAndHash() {
-    Soldier s1 = new Soldier();
-    Soldier s2 = new Soldier();
-    Soldier s3 = new Soldier();
 
-    assertTrue(s1.equals(s2));
-    assertTrue(s1.equals(s1));
-    assertFalse(s1.equals(1));
-    assertEquals(s1.hashCode(), s3.hashCode());
+    @Test
+    public void testEqualsAndHashCode() {
+        Soldier soldier1 = new Soldier(SoldierLevel.INFANTRY);
+        Soldier soldier2 = new Soldier(SoldierLevel.INFANTRY);
+        Soldier soldier3 = new Soldier(SoldierLevel.ARTILLERY);
 
-  }
+        // test equals method
+        assertTrue(soldier1.equals(soldier2));
+        assertFalse(soldier1.equals(soldier3));
 
+        // test hashCode method
+        assertEquals(soldier1.hashCode(), soldier2.hashCode());
+        assertNotEquals(soldier1.hashCode(), soldier3.hashCode());
+    }
 
+    @Test
+    public void testGetLevel() {
+        Soldier soldier = new Soldier(SoldierLevel.CAVALRY);
+
+        assertEquals(SoldierLevel.CAVALRY, soldier.getLevel());
+    }
+
+    @Test
+    public void testUpgrade() {
+        Soldier soldier = new Soldier(SoldierLevel.CAVALRY);
+        soldier.upgradeLevel(SoldierLevel.ARTILLERY);
+        assertEquals(SoldierLevel.ARTILLERY, soldier.getLevel());
+    }
 }

@@ -17,6 +17,6 @@ public class App {
     // App a = new App();
     // System.out.println(a.getMessage());
     Server server= new Server(57809, System.out);
-    server.startRISCGame();
+    server.start();
   }
 }

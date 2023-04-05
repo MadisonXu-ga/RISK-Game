@@ -8,7 +8,6 @@ import edu.duke.ece651.team5.shared.*;
 public class MapTextView {
   // private RISKMap map;
   private Game game;
-  
 
   /**
    * @param map riskmap

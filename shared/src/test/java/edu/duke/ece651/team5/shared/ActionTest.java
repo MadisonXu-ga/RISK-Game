@@ -31,14 +31,14 @@ public class ActionTest {
     assertEquals(expected, act.getMoveOrders());
   }
 
-  private Action createAction(){
+  private Action createAction() {
     ArrayList<AttackOrder> attackOrder = new ArrayList<>();
     ArrayList<MoveOrder> moveOrder = new ArrayList<>();
     Map<Soldier, Integer> soldiers1 = new HashMap<>();
     Player green = new Player("green");
     // attackOrder.add(3);
     // attackOrder.add(4);
-    moveOrder.add(new MoveOrder("A", "B", soldiers1,  green));
+    moveOrder.add(new MoveOrder("A", "B", soldiers1, green));
     moveOrder.add(new MoveOrder("C", "D", soldiers1, green));
     return new Action(attackOrder, moveOrder);
 

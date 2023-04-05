@@ -161,7 +161,7 @@ public class TextPlayer {
       String desTerri = currMap.getTerritoryByName(inputs.get(2)).getName();
       if (type.toUpperCase().charAt(0) == 'M') {
         // create new move order
-        //todo change soldier type accordingly
+        // todo change soldier type accordingly
         Map<Soldier, Integer> soldiers = new HashMap<>();
         MoveOrder order = new MoveOrder(srcTerri, desTerri, soldiers, player);
         // do rule check

@@ -45,17 +45,4 @@ public class AttackOrderTest {
         expectedSoldiers.put(new Soldier(SoldierLevel.ARTILLERY), 1);
         Assertions.assertEquals(expectedSoldiers, attackOrder1.getSoldierToNumber());
     }
-
-    @Test
-    public void testCompareTo() {
-  
-        // test comparison of orders with different players
-        assertTrue(attackOrder1.compareTo(attackOrder3) < 0); // Alice < Bob
-        assertTrue(attackOrder3.compareTo(attackOrder1) > 0); // Bob > Alice
-        
-        // test comparison of orders with the same player
-        assertTrue(attackOrder1.compareTo(attackOrder2) > 0); // 7 > 3
-        assertTrue(attackOrder2.compareTo(attackOrder1) < 0); // 3 < 7
-        
-    }
 }

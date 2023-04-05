@@ -11,8 +11,5 @@ import edu.duke.ece651.team5.shared.MyName;
 
 public class App {
   public static void main(String[] args) {
-    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    // Client client = new Client(input, System.out);
-    // client.play();
   }
 }

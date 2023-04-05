@@ -1,6 +1,10 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.game;
 
 import java.util.Objects;
+
+import edu.duke.ece651.team5.shared.Constants;
+import edu.duke.ece651.team5.shared.allResource.Resource;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 
 

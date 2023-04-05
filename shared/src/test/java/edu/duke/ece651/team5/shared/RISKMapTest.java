@@ -9,6 +9,10 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.RISKMap;
+import edu.duke.ece651.team5.shared.game.Territory;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RISKMapTest {

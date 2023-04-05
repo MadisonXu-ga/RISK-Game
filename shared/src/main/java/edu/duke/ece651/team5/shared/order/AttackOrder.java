@@ -1,7 +1,12 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.order;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.RISKMap;
+import edu.duke.ece651.team5.shared.game.Territory;
+import edu.duke.ece651.team5.shared.unit.Soldier;
 
 public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, Serializable{
 
@@ -29,15 +34,8 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
         .forEach(entry -> soldierToNumber.merge(entry.getKey(), entry.getValue(), Integer::sum));
     }
 
-    //todo update soldiers
-    public void loseOneUnit() {
-        
-    }
+    
 
-    //todo updat unitNum
-    public void updateUnitNumber(int update) {
-        
-    }
 
 
 

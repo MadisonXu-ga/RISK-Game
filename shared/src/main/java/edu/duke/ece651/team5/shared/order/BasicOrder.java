@@ -1,9 +1,14 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.order;
 
 
 
 import java.io.Serializable;
 import java.util.Map;
+
+import edu.duke.ece651.team5.shared.Order;
+import edu.duke.ece651.team5.shared.Player;
+import edu.duke.ece651.team5.shared.RISKMap;
+import edu.duke.ece651.team5.shared.unit.Soldier;
 
 public abstract class BasicOrder implements Order, Serializable {
      // @Serial

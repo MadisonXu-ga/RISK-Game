@@ -1,6 +1,8 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.game;
 
 import java.util.*;
+
+import edu.duke.ece651.team5.shared.allResource.Resource;
 
 
 public class Player {

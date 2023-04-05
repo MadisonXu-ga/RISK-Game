@@ -107,10 +107,8 @@ public class GameController {
                 break;
             }
         }
-        System.out.println("1");
         // find the user and remove it
         if (playerColor != null) {
-            System.out.println("2");
             playerToUserMap.remove(playerColor);
         }
     }

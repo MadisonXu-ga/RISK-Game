@@ -3,6 +3,7 @@ package edu.duke.ece651.team5.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import edu.duke.ece651.team5.shared.Game;
 import edu.duke.ece651.team5.shared.PlayerConnection;
@@ -13,12 +14,14 @@ public class UserHandler implements Runnable {
     private PlayerConnection playerConnection;
     private UserManager userManager;
     private HashMap<String, Runnable> operationHandlers;
-    private ArrayList<GameController> allGames;
+    // private ArrayList<GameController> allGames;
+    private HashMap<Integer, GameController> allGames;
     private User currentUser;
     private UserGameMap userGameMap;
     private HashMap<User, PlayerConnection> clients;
 
-    public UserHandler(PlayerConnection playerConnection, UserManager userManager, ArrayList<GameController> allGames,
+    public UserHandler(PlayerConnection playerConnection, UserManager userManager,
+            HashMap<Integer, GameController> allGames,
             UserGameMap userGameMap, HashMap<User, PlayerConnection> clients) {
         this.playerConnection = playerConnection;
         this.userManager = userManager;
@@ -150,7 +153,7 @@ public class UserHandler implements Runnable {
             // create new game
             GameController newGame = new GameController(playerNum);
             // add game to all games
-            allGames.add(newGame);
+            allGames.put(newGame.getID(), newGame);
             // let user join this game
             String msg = newGame.joinGame(currentUser);
             // actually this will never fail in logic
@@ -182,9 +185,9 @@ public class UserHandler implements Runnable {
     // TODO: have similar problems as above
     protected ArrayList<Integer> handleGetJoinableGames() {
         ArrayList<Integer> gameIDs = new ArrayList<>();
-        for (GameController game : allGames) {
-            if (game.getStatus() == GameStatus.WAITING) {
-                gameIDs.add(game.getID());
+        for (Map.Entry<Integer, GameController> entry : allGames.entrySet()) {
+            if (entry.getValue().getStatus() == GameStatus.WAITING) {
+                gameIDs.add(entry.getKey());
             }
         }
 
@@ -197,21 +200,19 @@ public class UserHandler implements Runnable {
     protected void handleJoinGame() {
         try {
             int gameID = (int) playerConnection.readData();
-            for (GameController game : allGames) {
-                if (game.getID() == gameID) {
-                    String msg = game.joinGame(currentUser);
-                    // success
-                    if (msg == null) {
-                        userGameMap.addGameToUser(currentUser, game);
-                        userGameMap.addUserToGame(game, currentUser);
-                        playerConnection.writeData("Joined Success");
-                    }
-                    // fail
-                    else {
-                        playerConnection.writeData(msg);
-                    }
-                }
+            GameController gameToJoin = allGames.get(gameID);
+            String msg = gameToJoin.joinGame(currentUser);
+            // success
+            if (msg == null) {
+                userGameMap.addGameToUser(currentUser, gameToJoin);
+                userGameMap.addUserToGame(gameToJoin, currentUser);
+                playerConnection.writeData("Joined Success");
             }
+            // fail
+            else {
+                playerConnection.writeData(msg);
+            }
+
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -240,7 +241,7 @@ public class UserHandler implements Runnable {
                 // if game started, pause game to wait user
                 else if (game.getStatus() != GameStatus.ENDED) {
                     // notify all the active players
-                    pauseGame(game);
+                    broadcastPauseGame(game);
                 }
             }
 
@@ -259,14 +260,29 @@ public class UserHandler implements Runnable {
     /**
      * Send message to active users in active games to pause game
      * 
-     * @param game
+     * @param game the game to pause
      * @throws IOException
      */
-    protected void pauseGame(GameController game) throws IOException {
+    protected void broadcastPauseGame(GameController game) throws IOException {
         // send pause to every active user in the game
         for (User user : userGameMap.getGameUsers(game)) {
-            if (user.getUserStatus() == UserStatus.LOGGED_IN) {
+            if (user.getUserStatus() == UserStatus.LOGGED_IN && game.getUserActiveStatus(user)) {
                 clients.get(user).writeData("Pause");
+                // pause reason (userid)
+            }
+        }
+    }
+
+    /**
+     * Send message to active users(actually all) in active games to continue game
+     * 
+     * @param game the game to continue
+     * @throws IOException
+     */
+    protected void broadcastContinueGame(GameController game) throws IOException {
+        for (User user : userGameMap.getGameUsers(game)) {
+            if (user.getUserStatus() == UserStatus.LOGGED_IN && game.getUserActiveStatus(user)) {
+                clients.get(user).writeData("Continue");
             }
         }
     }
@@ -278,9 +294,37 @@ public class UserHandler implements Runnable {
         try {
             int gameID = (int) playerConnection.readData();
             // TODO:
+            boolean canContinue = allGames.get(gameID).continueGame(currentUser);
+            // if all users are active in this game, can continue
+            if (canContinue) {
+                broadcastContinueGame(allGames.get(gameID));
+            }
+            // else tell this user to pause
+            else {
+                clients.get(currentUser).writeData("Pause");
+            }
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
+        }
+    }
+
+    protected void handleUnitPlacement(){
+        try {
+            int gameID = (int) playerConnection.readData();
+        } catch (ClassNotFoundException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    protected void handleMoveOrder(){
+        try {
+            int gameID = (int) playerConnection.readData();
+
+        } catch (ClassNotFoundException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 

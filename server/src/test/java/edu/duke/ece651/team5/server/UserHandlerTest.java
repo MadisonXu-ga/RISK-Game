@@ -15,7 +15,7 @@ public class UserHandlerTest {
     void testHandleLogin() throws ClassNotFoundException, IOException {
         PlayerConnection mockPlayerConnection = mock(PlayerConnection.class);
         UserManager userManager = new UserManager();
-        ArrayList<GameController> mockAllGames = mock(ArrayList.class);
+        HashMap<Integer, GameController> mockAllGames = mock(HashMap.class);
         UserGameMap mockUserGameMap = mock(UserGameMap.class);
         HashMap<User, PlayerConnection> mockClients = mock(HashMap.class);
         UserHandler userHandler = new UserHandler(mockPlayerConnection, userManager, mockAllGames, mockUserGameMap,
@@ -49,7 +49,7 @@ public class UserHandlerTest {
         // success
         PlayerConnection mockPlayerConnection = mock(PlayerConnection.class);
         UserManager userManager = new UserManager();
-        ArrayList<GameController> mockAllGames = mock(ArrayList.class);
+        HashMap<Integer, GameController> mockAllGames = mock(HashMap.class);
         UserGameMap mockUserGameMap = mock(UserGameMap.class);
         HashMap<User, PlayerConnection> mockClients = mock(HashMap.class);
         UserHandler userHandler = new UserHandler(mockPlayerConnection, userManager, mockAllGames, mockUserGameMap,
@@ -68,6 +68,13 @@ public class UserHandlerTest {
         // exists
         userHandler.handleSignUp();
         verify(mockPlayerConnection).writeData("User exists");
+    }
+
+    @Test
+    void testHandleNewGame(){
+        PlayerConnection mockPlayerConnection = mock(PlayerConnection.class);
+        UserManager userManager = new UserManager();
+        
     }
 
     @Test

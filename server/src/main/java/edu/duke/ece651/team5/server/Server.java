@@ -33,7 +33,8 @@ public class Server {
     // private ArrayList<PlayerConnection> clients;
     private HashMap<User, PlayerConnection> clients;
     private UserManager userManager;
-    private ArrayList<GameController> allGames;
+    // private ArrayList<GameController> allGames;
+    private HashMap<Integer, GameController> allGames;
     private UserGameMap userGameMap;
 
     /**
@@ -58,7 +59,8 @@ public class Server {
         // ------------------v2 new code-------------------------
         this.clients = new HashMap<>();
         this.userManager = new UserManager();
-        this.allGames = new ArrayList<>();
+        // this.allGames = new ArrayList<>();
+        this.allGames = new HashMap<>();
         this.userGameMap = new UserGameMap();
     }
 

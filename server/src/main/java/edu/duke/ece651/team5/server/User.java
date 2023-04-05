@@ -1,5 +1,7 @@
 package edu.duke.ece651.team5.server;
 
+import java.util.Objects;
+
 import edu.duke.ece651.team5.server.MyEnum.*;
 
 public class User {
@@ -27,5 +29,21 @@ public class User {
 
     public void setUserStatus(UserStatus newStatus) {
         this.status = newStatus;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (object == null || getClass() != object.getClass())
+            return false;
+
+        User user = (User) object;
+        return Objects.equals(name, user.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 }

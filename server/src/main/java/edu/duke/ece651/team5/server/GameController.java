@@ -30,6 +30,7 @@ public class GameController {
         this.playerNum = playerNum;
         this.userNum = 0;
         this.players = new ArrayList<>();
+        this.playerToUserMap = new HashMap<>();
 
         createPlayers(playerNum);
     }
@@ -74,7 +75,6 @@ public class GameController {
             return "Full";
         }
         // TODO: check if user is already in this game.
-        // need map from user to game and game to user
 
         // find a color for new user in this game
         for (Player player : players) {
@@ -83,10 +83,10 @@ public class GameController {
                 continue;
             }
             playerToUserMap.put(playerColor, user);
+            break;
         }
-        ++userNum;
 
-        // TODO: update game status if full!!
+        ++userNum;
         if (userNum == playerNum) {
             status = GameStatus.INITIALIZING;
         }
@@ -94,6 +94,11 @@ public class GameController {
         return null;
     }
 
+    /**
+     * Kick user out of this game
+     * 
+     * @param user the user that game want to kick off
+     */
     public void kickUserOut(User user) {
         String playerColor = null;
         for (Map.Entry<String, User> entry : playerToUserMap.entrySet()) {
@@ -102,10 +107,21 @@ public class GameController {
                 break;
             }
         }
+        System.out.println("1");
         // find the user and remove it
         if (playerColor != null) {
+            System.out.println("2");
             playerToUserMap.remove(playerColor);
         }
+    }
+
+    /**
+     * Use for test
+     * 
+     * @return
+     */
+    protected HashMap<String, User> getPlayerToUserMap() {
+        return this.playerToUserMap;
     }
 
 }

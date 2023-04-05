@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="735.0" prefWidth="1383.0" style="-fx-background-color: linear-gradient(to right, #282925 0%, #64665d 35%, #9fa295 100%);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team5.client.controller.SignUpController">
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="732.0" fitWidth="550.0">
+               <image>
+                  <Image url="@mordorLoadingscreen.png" />
+               </image>
+            </ImageView>
+         </children></AnchorPane>
+   </left>
+   <right>
+      <AnchorPane prefHeight="735.0" prefWidth="686.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="253.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#onSelect" prefHeight="27.0" prefWidth="139.0" styleClass="createAccountbtn" stylesheets="@buttonsStyle.css" text="Create your Account" textFill="WHITE" translateY="23.0" />
+            <TextField fx:id="userName" layoutX="202.0" layoutY="279.0" prefHeight="30.0" prefWidth="254.0" promptText="Username" styleClass="numbtn" stylesheets="@buttonsStyle.css" />
+            <TextField fx:id="password" layoutX="202.0" layoutY="320.0" prefHeight="30.0" prefWidth="254.0" promptText="Password" styleClass="numbtn" stylesheets="@buttonsStyle.css" />
+            <Text layoutX="166.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create your Account" textAlignment="CENTER" wrappingWidth="313.33673095703125">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+         </children></AnchorPane>
+   </right>
+</BorderPane>

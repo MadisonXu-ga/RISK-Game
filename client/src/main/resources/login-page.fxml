@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="735.0" prefWidth="1383.0" style="-fx-background-color: linear-gradient(to right, #282925 0%, #64665d 35%, #9fa295 100%);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team5.client.controller.SignInController">
+   <left>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="732.0" fitWidth="550.0">
+               <image>
+                  <Image url="@mordorLoadingscreen.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </left>
+   <right>
+      <AnchorPane prefHeight="735.0" prefWidth="686.0" stylesheets="@buttonsStyle.css">
+         <children>
+            <TextField fx:id="userName" layoutX="202.0" layoutY="279.0" prefHeight="30.0" prefWidth="254.0" promptText="Username" styleClass="numbtn" stylesheets="@buttonsStyle.css" />
+            <TextField fx:id="password" layoutX="202.0" layoutY="320.0" prefHeight="30.0" prefWidth="254.0" promptText="Password" styleClass="numbtn" stylesheets="@buttonsStyle.css" />
+            <Text layoutX="260.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign in to Play!" wrappingWidth="167.73675537109375">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Button layoutX="336.0" layoutY="381.0" mnemonicParsing="false" onAction="#onSignUpButton" prefHeight="60.0" prefWidth="120.0" styleClass="signup" stylesheets="@buttonsStyle.css" text="Sign up" textFill="WHITE">
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Button layoutX="202.0" layoutY="377.0" mnemonicParsing="false" onAction="#onSignInButton" prefHeight="60.0" prefWidth="120.0" styleClass="signinbtn" stylesheets="@buttonsStyle.css" text="Log in" textFill="WHITE">
+               <effect>
+                  <Glow />
+               </effect>
+            </Button>
+            <Text fx:id="loginStatus" layoutX="-422.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="281.336669921875" x="600.0" y="100.0" />
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>

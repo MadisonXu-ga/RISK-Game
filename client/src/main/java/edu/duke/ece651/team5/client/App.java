@@ -3,15 +3,55 @@
  */
 package edu.duke.ece651.team5.client;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.IOException;
+import java.net.URL;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
+// public class App {
+//   public static void main(String[] args) {
+//     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+//     Client client = new Client(input, System.out);
+//     client.play();
+//   }
+// }
+public class App extends Application {
 
-public class App {
-  public static void main(String[] args) {
-    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    Client client = new Client(input, System.out);
-    client.play();
+  @Override
+  public void start(Stage stage) throws IOException {
+    String javaVersion = System.getProperty("java.version");
+    String javafxVersion = System.getProperty("javafx.version");
+
+    URL xmlResource = getClass().getResource("/map.fxml");
+    FXMLLoader loader = new FXMLLoader(xmlResource);
+
+    BorderPane bp = loader.load();
+
+    double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+    double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+
+    // Calculate the desired width and height as a percentage of the screen size
+    double sceneWidth = screenWidth * 0.9;
+    double sceneHeight = screenHeight * 0.9;
+
+    System.out.println("w:" + sceneWidth + ", H: " + sceneHeight);
+
+    Scene scene = new Scene(new StackPane(bp), sceneWidth, sceneHeight);
+    stage.setResizable(false);
+    stage.setScene(scene);
+    stage.show();
   }
+
+  public static void main(String[] args) {
+    launch();
+  }
+
 }

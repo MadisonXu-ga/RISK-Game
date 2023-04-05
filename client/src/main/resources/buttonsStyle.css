@@ -1,0 +1,82 @@
+.numbtn {
+    -fx-background-radius: 15; 
+    -fx-background-color: transparent; 
+    -fx-border-radius: 15; 
+    -fx-border-color: black;
+    -fx-text-fill: black
+
+
+}
+
+.signinbtn {
+    -fx-background-radius: 10; 
+    -fx-border-width: 2px;
+    -fx-border-radius: 10; 
+    -fx-border-color: black;
+    -fx-text-fill: black;
+    -fx-background-color: rgba(11,11,181,0.51); 
+    -fx-background-insets: 2;
+    -fx-shape: " M539,241L534,240L532,243L532,249L535,253L529,260L522,260L519,263L521,271L524,273L520,284L517,284L509,292L503,293L501,290L490,290L489,291L488,300L480,299L475,302L478,309L469,313L468,316L466,317L463,324L458,326L462,337L458,340L458,341L460,343L460,353L459,354L463,366L462,366L462,374L464,376L463,385L466,384L469,386L474,396L472,397L471,405L466,408L466,408L468,417L475,421L473,427L479,432L487,427L489,428L491,430L499,428L503,440L510,437L515,440L520,437L522,433L522,433L525,427L535,426L536,420L542,416L548,421L554,415L553,411L562,407L563,400L568,397L574,399L579,394L580,385L581,385L584,385L589,389L598,386L604,387L604,387L605,388L615,387L619,389L622,389L625,397L636,397L637,395L646,394L648,394L655,393L657,387L657,386L662,379L671,376L671,375L679,377L684,367L691,370L692,368L688,359L702,356L701,351L711,344L708,337L710,335L722,337L723,335L731,332L734,324L734,324L736,318L728,311L737,304L725,302L726,295L728,295L733,290L730,283L724,285L721,284L716,284L714,280L703,282L702,291L695,292L690,287L689,286L685,283L682,282L681,282L673,282L671,281L660,285L657,281L647,283L644,273L637,274L635,272L635,268L631,266L629,261L627,260L623,262L619,259L616,261L613,259L611,257L606,256L605,252L598,251L597,251L597,250L590,254L589,254L584,255L584,263L589,266L589,270L586,274L582,273L578,270L576,267L575,266L573,260L573,258L572,254L575,248L573,244L569,244L566,239L564,239L562,237L561,233L556,232L550,238L546,234L544,234L539,241 ";
+
+
+}
+
+
+
+.signinbtn:pressed {
+    -fx-background-radius: 10; 
+    -fx-border-width: 2px;
+    -fx-border-radius: 10; 
+    -fx-border-color: black;
+    -fx-text-fill: black;
+    -fx-background-color: rgba(9,9,121,0.6); 
+    -fx-background-insets: 2
+
+
+
+}
+
+.signup {
+    -fx-background-radius: 10; 
+    -fx-border-width: 2px;
+    -fx-border-radius: 10; 
+    -fx-border-color: black;
+    -fx-text-fill: black;
+    -fx-background-color: rgb(0, 128, 0); 
+    -fx-background-insets: 2;
+    -fx-shape: "m111.25,12.25l10-7,3,1,2,4,4,5,5,1,4,8h3l9,7,1-1,9,6,4-2v1l5,8,2,2h1l4,2,2,4,10,2v1l10,5,1,5,6,3,1,7-8,1-2,6-6,2,6,10-12,3,5,8-12,3,1,9,10-1,3,10-4,5v6h-1v4l10,10-3,5h-6l-5,9h-2l-2,8,4,3,1,4-4,3h0l-5,4,1,6-4,2h-9l-2-1-2-7,5-5h0l3-4v-6l-2-3-5-2h0l-5-1-2,2h-4l-3,8-4-1-4,2-1,2h-1l-4,5-3-1-6,3v2l-3,1-2-1h-5l-6-5v-2l4-3v-3l5-5v-4h-1l-2-6h0l-4-8-4,1,2,7-4,3-2-1-4,2-2-1-3,1-4-3-1-2,3-6-3-4-3-1-2-3-4-3-1-3-1-1h-5l-5,3v4l1,4v5l-5,2-2-1-6-1v1l-7-1-2-3,1-3-1-3-2-1-5-1-2,1-6-1-2-3-1-1-5-5h-1l-2,1-4,6-3,1-6-10,1-1-2-7,5-8-2-2v-11l-1-1,2-6,5-1,4-6-1-3,10-8v-3l6-2-4-12,3-4,1-1-8-10h13l1,1,6-2,6,3,5-3,1-4,10,4,3,7,6-13v-1l3-2-1-9h13v-1l6,1,4-6h3l2-8,2-1,3,1";
+    
+    
+}
+
+.signup:pressed {
+    -fx-background-radius: 10; 
+    -fx-border-width: 2px;
+    -fx-border-radius: 10; 
+    -fx-border-color: black;
+    -fx-text-fill: black;
+    -fx-background-color: rgb(0, 100, 0); 
+    -fx-background-insets: 2
+    
+}
+.createAccountbtn {
+    -fx-background-radius: 10; 
+    -fx-border-width: 2px;
+    -fx-border-radius: 10; 
+    -fx-border-color: black;
+    -fx-text-fill: black;
+    -fx-background-color: rgb(0, 128, 0); 
+    -fx-background-insets: 2; 
+    
+}
+
+.createAccountbtn:pressed {
+    -fx-background-radius: 10; 
+    -fx-border-width: 2px;
+    -fx-border-radius: 10; 
+    -fx-border-color: black;
+    -fx-text-fill: black;
+    -fx-background-color: rgb(0, 100, 0); 
+    -fx-background-insets: 2
+    
+}

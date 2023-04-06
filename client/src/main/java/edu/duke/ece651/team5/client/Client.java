@@ -33,9 +33,11 @@ public class Client {
    * 
    * @param br  the input reader
    * @param out the output printStream
+   * @throws IOException
+   * @throws UnknownHostException
    */
-  public Client(BufferedReader br, PrintStream out) {
-    this("localhost", 57809, br, out);
+  public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
+    this("localhost", 57803, br, out);
   }
 
   /**
@@ -45,13 +47,16 @@ public class Client {
    * @param port the number of port
    * @param br   the input reader
    * @param out  the output printStream
+   * @throws IOException
+   * @throws UnknownHostException
    */
-  public Client(String host, int port, BufferedReader br, PrintStream out) {
+  public Client(String host, int port, BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
     this.host = host;
     this.port = port;
     this.inputReader = br;
     this.out = out;
     this.isLose = false;
+    this.playerConnection = new PlayerConnection(new Socket(host, port));
   }
 
   /**
@@ -62,7 +67,7 @@ public class Client {
    */
   public void createPlayer() throws UnknownHostException, IOException {
     this.playerConnection = new PlayerConnection(new Socket(host, port));
-    this.textPlayer = new TextPlayer(inputReader, out);
+    // this.textPlayer = new TextPlayer(inputReader, out);
   }
 
   /**
@@ -87,6 +92,41 @@ public class Client {
     // set player name
     out.println("\nWe got your player name!\n");
     textPlayer.setPlayer(playerInfo);
+  }
+
+  public String Login(ArrayList<String> usernameAndPassword) throws IOException, ClassNotFoundException {
+
+    String msg = null;
+
+    playerConnection.writeData("Login");
+    playerConnection.writeData(usernameAndPassword);
+    msg = (String) playerConnection.readData();
+
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", "");
+
+    return msg;
+  }
+
+  public void beginNewGame() throws IOException {
+
+    playerConnection.writeData("New game");
+    playerConnection.writeData(3);
+    System.out.println("game created");
+
+  }
+
+  public String SignUp(ArrayList<String> usernameAndPassword) throws IOException, ClassNotFoundException {
+
+    String msg = null;
+
+    playerConnection.writeData("Signup");
+    playerConnection.writeData(usernameAndPassword);
+    msg = (String) playerConnection.readData();
+
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+    return msg;
   }
 
   /**

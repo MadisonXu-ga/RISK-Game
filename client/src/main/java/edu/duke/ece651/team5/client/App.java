@@ -3,9 +3,15 @@
  */
 package edu.duke.ece651.team5.client;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
 
+import edu.duke.ece651.team5.client.controller.MultipleGamesController;
+import edu.duke.ece651.team5.client.controller.SignInController;
+import edu.duke.ece651.team5.client.controller.SignUpController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,13 +31,31 @@ import javafx.stage.Stage;
 // }
 public class App extends Application {
 
+  private static Scene signInScene;
+  private static Stage primaryStage;
+  private static HashMap<String, Scene> loadedScenes;
+
   @Override
   public void start(Stage stage) throws IOException {
+
+    primaryStage = stage;
+
     String javaVersion = System.getProperty("java.version");
     String javafxVersion = System.getProperty("javafx.version");
 
-    URL xmlResource = getClass().getResource("/map.fxml");
+    URL xmlResource = getClass().getResource("/login-page.fxml");
+
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    Client client = new Client(input, System.out);
     FXMLLoader loader = new FXMLLoader(xmlResource);
+
+    HashMap<Class<?>, Object> controllers = new HashMap<>();
+    controllers.put(SignInController.class, new SignInController(client));
+    controllers.put(SignUpController.class, new SignUpController(client));
+    controllers.put(MultipleGamesController.class, new MultipleGamesController(client));
+    loader.setControllerFactory((c) -> {
+      return controllers.get(c);
+    });
 
     BorderPane bp = loader.load();
 
@@ -45,12 +69,30 @@ public class App extends Application {
     System.out.println("w:" + sceneWidth + ", H: " + sceneHeight);
 
     Scene scene = new Scene(new StackPane(bp), sceneWidth, sceneHeight);
+    signInScene = scene;
+
     stage.setResizable(false);
     stage.setScene(scene);
     stage.show();
   }
 
+  public static void setSignInScene() {
+    primaryStage.setScene(signInScene);
+    primaryStage.show();
+  }
+
+  public static void addScenetoMain(String sceneName, Scene scene) {
+
+    loadedScenes.put(sceneName, scene);
+  }
+
+  public static Scene getScenefromMain(String sceneName, Scene scene) {
+
+    return loadedScenes.get(sceneName);
+  }
+
   public static void main(String[] args) {
+
     launch();
   }
 

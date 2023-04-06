@@ -78,7 +78,8 @@ public class SignUpController {
             // if (message.equals("Sign up suceeded")) {
             // System.out.println(message);
             // }
-            App.setSignInScene();
+            App.loadScenefromMain("login-page");
+
         }
     }
 

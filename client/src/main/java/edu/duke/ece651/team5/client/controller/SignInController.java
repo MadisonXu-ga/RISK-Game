@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,6 +70,7 @@ public class SignInController {
             Button signUpBtn = (Button) source;
             Stage signUpWindow = (Stage) signUpBtn.getScene().getWindow();
             Scene scene = new Scene(new StackPane(bp));
+            App.addScenetoMain("multiple-games", scene);
 
             signUpWindow.setScene(scene);
         }
@@ -94,8 +96,9 @@ public class SignInController {
             Button signUpBtn = (Button) source;
             Stage signUpWindow = (Stage) signUpBtn.getScene().getWindow();
             Scene scene = new Scene(new StackPane(bp));
+            App.addScenetoMain("sign-up-page", scene);
 
-            signUpWindow.setScene(scene);
+            App.getPrimaryStage().setScene(scene);
 
         }
 

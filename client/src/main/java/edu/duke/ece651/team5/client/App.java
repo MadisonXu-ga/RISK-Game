@@ -38,6 +38,7 @@ public class App extends Application {
   @Override
   public void start(Stage stage) throws IOException {
 
+    loadedScenes = new HashMap<>();
     primaryStage = stage;
 
     String javaVersion = System.getProperty("java.version");
@@ -70,15 +71,15 @@ public class App extends Application {
 
     Scene scene = new Scene(new StackPane(bp), sceneWidth, sceneHeight);
     signInScene = scene;
+    addScenetoMain("login-page", scene);
 
     stage.setResizable(false);
     stage.setScene(scene);
     stage.show();
   }
 
-  public static void setSignInScene() {
-    primaryStage.setScene(signInScene);
-    primaryStage.show();
+  public static Stage getPrimaryStage() {
+    return primaryStage;
   }
 
   public static void addScenetoMain(String sceneName, Scene scene) {
@@ -86,9 +87,11 @@ public class App extends Application {
     loadedScenes.put(sceneName, scene);
   }
 
-  public static Scene getScenefromMain(String sceneName, Scene scene) {
+  public static void loadScenefromMain(String sceneName) {
 
-    return loadedScenes.get(sceneName);
+    Scene loadedScene = loadedScenes.get(sceneName);
+    primaryStage.setScene(loadedScene);
+    primaryStage.show();
   }
 
   public static void main(String[] args) {

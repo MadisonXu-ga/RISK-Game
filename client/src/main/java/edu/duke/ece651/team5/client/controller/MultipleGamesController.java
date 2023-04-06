@@ -41,6 +41,7 @@ public class MultipleGamesController {
 
     public void onBeginNewGame(ActionEvent ae) throws IOException {
         client.beginNewGame();
+
     }
 
 }

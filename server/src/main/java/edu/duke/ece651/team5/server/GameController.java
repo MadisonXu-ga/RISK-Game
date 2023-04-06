@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Objects;
+
 import edu.duke.ece651.team5.server.MyEnum.*;
 import edu.duke.ece651.team5.shared.*;
 
@@ -98,7 +100,7 @@ public class GameController {
             status = GameStatus.INITIALIZING;
             statusBeforePause = status;
 
-            // TODO: 
+            return "Start";
         }
 
         return null;
@@ -172,17 +174,36 @@ public class GameController {
         return userActiveStatus.get(user);
     }
 
-
-    public String initializeGame(){
+    public String initializeGame(User user) {
         String msg = null;
         // not in initializing step
-        if(this.status != GameStatus.INITIALIZING){
+        if (this.status != GameStatus.INITIALIZING) {
             return "Cannot initialize";
         }
 
-        
+        /**
+         * 
+         */
 
         return msg;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+
+        GameController gameController = (GameController) object;
+        return Objects.equal(id, gameController.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 
 }

@@ -54,7 +54,7 @@ public class GameControllerTest {
 
         assertNull(msg1);
         assertNull(msg2);
-        assertNull(msg3);
+        assertEquals("Start", msg3);
         assertEquals("Full", msg4);
     }
 

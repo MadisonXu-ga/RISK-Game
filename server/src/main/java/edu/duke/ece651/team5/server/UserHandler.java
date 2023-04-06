@@ -86,26 +86,32 @@ public class UserHandler implements Runnable {
      * @throws IOException
      */
     protected void handleLogin() {
+        System.out.println("Dealing login operation...");
         // read info from client
         try {
             ArrayList<String> inputInfo = (ArrayList<String>) playerConnection.readData();
             String inputName = inputInfo.get(0);
             String inputPassword = inputInfo.get(1);
 
+            System.out.println("Receive name: " + inputName + "  password: " + inputPassword);
+
             // check if user exists
             if (!userManager.findUser(inputName)) {
                 playerConnection.writeData("Not exists");
+                System.out.println("User not exists");
                 return;
             }
 
             // authenticate password
             if (!userManager.authenticate(inputName, inputPassword)) {
                 playerConnection.writeData("Not match");
+                System.out.println("Password is wrong");
                 return;
             }
 
             // success
             playerConnection.writeData("Login succeeded");
+            System.out.println("User " + inputName + ": Login succeeded");
             userManager.changeUserStatus(inputName, UserStatus.LOGGED_IN);
 
             currentUser = userManager.getUser(inputName);
@@ -123,21 +129,26 @@ public class UserHandler implements Runnable {
      * Handle sign up operation
      */
     protected void handleSignUp() {
+        System.out.println("Dealing sign up operation...");
         try {
             // read info from client
             ArrayList<String> inputInfo = (ArrayList<String>) playerConnection.readData();
             String inputName = inputInfo.get(0);
             String inputPassword = inputInfo.get(1);
 
+            System.out.println("Receive name: " + inputName + "  password: " + inputPassword);
+
             // check if user exists
             if (userManager.findUser(inputName)) {
                 playerConnection.writeData("User exists");
+                System.out.println("User already existed");
                 return;
             }
 
             // success
             userManager.addUser(inputName, inputPassword);
             playerConnection.writeData("Sign up succeeded");
+            System.out.println("User " + inputName + ": Sign up succeeded");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -148,8 +159,10 @@ public class UserHandler implements Runnable {
      * Handle create new game operation
      */
     protected void handleNewGame() {
+        System.out.println("Dealing new game operation...");
         try {
             int playerNum = (int) playerConnection.readData();
+            System.out.println("New game player num: " + playerNum);
             // create new game
             GameController newGame = new GameController(playerNum);
             // add game to all games
@@ -161,8 +174,10 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Create successfully");
                 userGameMap.addGameToUser(currentUser, newGame);
                 userGameMap.addUserToGame(newGame, currentUser);
+                System.out.println("Created and joined new game successfully!");
             } else {
                 playerConnection.writeData(msg);
+                System.out.println("Join failed");
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -173,40 +188,60 @@ public class UserHandler implements Runnable {
     // TODO: now is user's all games not active.
     // need to think delete game or not to fix this part
     // think i should give number of players to client
-    protected ArrayList<Integer> handleRetrieveActiveGames() {
+    protected void handleRetrieveActiveGames() {
         // TODO: seems like this part only need i return game id to client?
-        ArrayList<Integer> gameIDs = new ArrayList<>();
-        for (GameController game : userGameMap.getUserGames(currentUser)) {
-            gameIDs.add(game.getID());
+        System.out.println("Dealing retrieve active games operation...");
+        try {
+            ArrayList<Integer> gameIDs = new ArrayList<>();
+            for (GameController game : userGameMap.getUserGames(currentUser)) {
+                gameIDs.add(game.getID());
+            }
+            playerConnection.writeData(gameIDs);
+
+            System.out.println("Send active games' ids to user " + currentUser.getUserName());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return gameIDs;
     }
 
     // TODO: have similar problems as above
-    protected ArrayList<Integer> handleGetJoinableGames() {
-        ArrayList<Integer> gameIDs = new ArrayList<>();
-        for (Map.Entry<Integer, GameController> entry : allGames.entrySet()) {
-            if (entry.getValue().getStatus() == GameStatus.WAITING) {
-                gameIDs.add(entry.getKey());
+    protected void handleGetJoinableGames() {
+        System.out.println("Dealing joinable games operation...");
+        try {
+            ArrayList<Integer> gameIDs = new ArrayList<>();
+            for (Map.Entry<Integer, GameController> entry : allGames.entrySet()) {
+                if (entry.getValue().getStatus() == GameStatus.WAITING) {
+                    gameIDs.add(entry.getKey());
+                }
             }
-        }
+            playerConnection.writeData(gameIDs);
 
-        return gameIDs;
+            System.out.println("Send joinable games' ids to user " + currentUser.getUserName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Handle join game operation
      */
     protected void handleJoinGame() {
+        System.out.println("Dealing join game operation...");
         try {
             int gameID = (int) playerConnection.readData();
             GameController gameToJoin = allGames.get(gameID);
             String msg = gameToJoin.joinGame(currentUser);
             // success
-            if (msg == null) {
+            if (msg == null || msg == "Start") {
                 userGameMap.addGameToUser(currentUser, gameToJoin);
                 userGameMap.addUserToGame(gameToJoin, currentUser);
                 playerConnection.writeData("Joined Success");
+                System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
+                if (msg == "Start") {
+                    // TODO: sned map to all clients in this game
+                    // loop -> playerConnection.writeData(map);
+                    System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
+                }
             }
             // fail
             else {
@@ -293,32 +328,35 @@ public class UserHandler implements Runnable {
     protected void handleContinueGame() {
         try {
             int gameID = (int) playerConnection.readData();
-            // TODO:
+            // TODO: change this completely
+            // boolean canContinue = allGames.get(gameID).continueGame(currentUser);
+            // // if all users are active in this game, can continue
+            // if (canContinue) {
+            // broadcastContinueGame(allGames.get(gameID));
+            // }
+            // // else tell this user to pause
+            // else {
+            // clients.get(currentUser).writeData("Pause");
+            // }
+
             boolean canContinue = allGames.get(gameID).continueGame(currentUser);
-            // if all users are active in this game, can continue
-            if (canContinue) {
-                broadcastContinueGame(allGames.get(gameID));
-            }
-            // else tell this user to pause
-            else {
-                clients.get(currentUser).writeData("Pause");
-            }
+
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
-    protected void handleUnitPlacement(){
+    protected void handleUnitPlacement() {
         try {
             int gameID = (int) playerConnection.readData();
+            // TODO:
         } catch (ClassNotFoundException | IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    protected void handleMoveOrder(){
+    protected void handleMoveOrder() {
         try {
             int gameID = (int) playerConnection.readData();
 

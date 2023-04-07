@@ -23,12 +23,17 @@
    <right>
       <AnchorPane prefHeight="735.0" prefWidth="686.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id = "createAccount" layoutX="253.0" layoutY="358.0" mnemonicParsing="false" onAction="#onCreateAccount" prefHeight="27.0" prefWidth="139.0" styleClass="createAccountbtn" stylesheets="@buttonsStyle.css" text="Create your Account" textFill="WHITE" translateY="23.0" />
+            <Button fx:id="createAccount" layoutX="253.0" layoutY="358.0" mnemonicParsing="false" onAction="#onCreateAccount" prefHeight="27.0" prefWidth="139.0" styleClass="createAccountbtn" stylesheets="@buttonsStyle.css" text="Create your Account" textFill="WHITE" translateY="23.0" />
             <TextField fx:id="userName" layoutX="202.0" layoutY="279.0" prefHeight="30.0" prefWidth="254.0" promptText="Username" styleClass="numbtn" stylesheets="@buttonsStyle.css" />
             <TextField fx:id="password" layoutX="202.0" layoutY="320.0" prefHeight="30.0" prefWidth="254.0" promptText="Password" styleClass="numbtn" stylesheets="@buttonsStyle.css" />
             <Text layoutX="166.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create your Account" textAlignment="CENTER" wrappingWidth="313.33673095703125">
                <font>
                   <Font size="24.0" />
+               </font>
+            </Text>
+            <Text fx:id="signUpFeedback" fill="#8c0000" layoutX="192.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="261.83277893066406">
+               <font>
+                  <Font size="18.0" />
                </font>
             </Text>
          </children></AnchorPane>

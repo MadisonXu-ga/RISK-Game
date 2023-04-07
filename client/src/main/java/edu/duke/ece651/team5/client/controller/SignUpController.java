@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SignUpController {
@@ -25,6 +26,8 @@ public class SignUpController {
     public TextField userName;
     @FXML
     public TextField password;
+    @FXML
+    Text signUpFeedback;
 
     // int clickCount = 0;
 
@@ -71,7 +74,7 @@ public class SignUpController {
         System.out.println("userx`: " + user_name + " Password: " +
                 user_password);
 
-        String message = client.SignUp(userAndPassword);
+        String message = client.signUp(userAndPassword);
 
         System.out.println("Message: [" + message + "]");
         if (message.equals("Sign up succeeded")) {
@@ -80,6 +83,8 @@ public class SignUpController {
             // }
             App.loadScenefromMain("login-page");
 
+        } else {
+            signUpFeedback.setText(message);
         }
     }
 

@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.controller.MultipleGamesController;
@@ -34,6 +35,16 @@ public class App extends Application {
   private static Scene signInScene;
   private static Stage primaryStage;
   private static HashMap<String, Scene> loadedScenes;
+  Client classClient;
+
+  public App(Client client) {
+    this.classClient = client;
+  }
+
+  public App() throws UnknownHostException, IOException {
+    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+    this.classClient = new Client(input, System.out);
+  }
 
   @Override
   public void start(Stage stage) throws IOException {
@@ -46,14 +57,12 @@ public class App extends Application {
 
     URL xmlResource = getClass().getResource("/login-page.fxml");
 
-    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    Client client = new Client(input, System.out);
     FXMLLoader loader = new FXMLLoader(xmlResource);
 
     HashMap<Class<?>, Object> controllers = new HashMap<>();
-    controllers.put(SignInController.class, new SignInController(client));
-    controllers.put(SignUpController.class, new SignUpController(client));
-    controllers.put(MultipleGamesController.class, new MultipleGamesController(client));
+    controllers.put(SignInController.class, new SignInController(classClient));
+    controllers.put(SignUpController.class, new SignUpController(classClient));
+    controllers.put(MultipleGamesController.class, new MultipleGamesController(classClient));
     loader.setControllerFactory((c) -> {
       return controllers.get(c);
     });

@@ -24,7 +24,12 @@ public class MultipleGamesController {
     @FXML
     public void initialize() {
         gameButtons = multipleGameButtons.lookupAll(".button").toArray(new Button[0]);
-        System.out.println(gameButtons.length);
+
+        for (int i = 0; i < gameButtons.length; i++) {
+
+            // Set the visibility of the button based on the corresponding boolean value
+            gameButtons[i].setVisible(false);
+        }
     }
 
     public MultipleGamesController(Client client) {

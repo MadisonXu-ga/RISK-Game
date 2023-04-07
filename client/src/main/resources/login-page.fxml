@@ -32,17 +32,22 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Button layoutX="336.0" layoutY="381.0" mnemonicParsing="false" onAction="#onSignUpButton" prefHeight="60.0" prefWidth="120.0" styleClass="signup" stylesheets="@buttonsStyle.css" text="Sign up" textFill="WHITE">
+            <Button fx:id="signupBtn" layoutX="336.0" layoutY="381.0" mnemonicParsing="false" onAction="#onSignUpButton" prefHeight="60.0" prefWidth="120.0" styleClass="signup" stylesheets="@buttonsStyle.css" text="Sign up" textFill="WHITE">
                <effect>
                   <Glow />
                </effect>
             </Button>
-            <Button layoutX="202.0" layoutY="377.0" mnemonicParsing="false" onAction="#onSignInButton" prefHeight="60.0" prefWidth="120.0" styleClass="signinbtn" stylesheets="@buttonsStyle.css" text="Log in" textFill="WHITE">
+            <Button fx:id="loginBtn" layoutX="202.0" layoutY="377.0" mnemonicParsing="false" onAction="#onSignInButton" prefHeight="60.0" prefWidth="120.0" styleClass="signinbtn" stylesheets="@buttonsStyle.css" text="Log in" textFill="WHITE">
                <effect>
                   <Glow />
                </effect>
             </Button>
             <Text fx:id="loginStatus" layoutX="-422.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="281.336669921875" x="600.0" y="100.0" />
+            <Text fx:id="loginFeedback" fill="#8c0000" layoutX="212.0" layoutY="464.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="261.83277893066406">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </right>

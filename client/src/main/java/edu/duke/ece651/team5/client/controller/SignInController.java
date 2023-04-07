@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SignInController {
@@ -25,6 +26,9 @@ public class SignInController {
     public TextField userName;
     @FXML
     public TextField password;
+
+    @FXML
+    public Text loginFeedback;
 
     private Client client;
 
@@ -53,14 +57,16 @@ public class SignInController {
         password.setText("");
 
         System.out.println("userx`: " + user_name + " Password: " + user_password);
-        String message = client.Login(userAndPassword);
+        String message = client.login(userAndPassword);
         if (message.equals("Login succeeded")) {
-            System.out.println(client.Login(userAndPassword));
+            System.out.println(client.login(userAndPassword));
             URL xmlResource = getClass().getResource("/multiple-games.fxml");
             FXMLLoader loader = new FXMLLoader(xmlResource);
 
+            MultipleGamesController multipleGamesController = new MultipleGamesController(client);
             HashMap<Class<?>, Object> controllers = new HashMap<>();
-            controllers.put(MultipleGamesController.class, new MultipleGamesController(client));
+
+            controllers.put(MultipleGamesController.class, multipleGamesController);
             loader.setControllerFactory((c) -> {
                 return controllers.get(c);
             });
@@ -73,6 +79,10 @@ public class SignInController {
             App.addScenetoMain("multiple-games", scene);
 
             signUpWindow.setScene(scene);
+            // multipleGamesController.initialize();
+
+        } else {
+            loginFeedback.setText(message);
         }
     }
 

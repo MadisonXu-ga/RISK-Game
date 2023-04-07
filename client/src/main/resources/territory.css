@@ -7,19 +7,31 @@
 }
 .button:hover {
     -fx-opacity: 0.6;
+    -fx-border-style: dashed;
+    -fx-border-color: black;
+    /* -fx-border-style: dashed; */
+    
 }
 
-.redPlayer {
+.redPlayerbtn {
     -fx-opacity: 0.3;
     -fx-background-color: red;
+    
 }
-/* .redPlayer:pressed {
-    -fx-background-color: transparent;
-} */
+.redPlayerbtn:hover {
+    -fx-opacity: 0.6;
+    -fx-border-width: 2px;
+    
+}
 
-.bluePlayer {
+.bluePlayerbtn {
     -fx-opacity: 0.3;
-    -fx-background-color: blue;
+    -fx-background-color: rgb(72, 72, 227);
+}
+.bluePlayerbtn:hover {
+    -fx-opacity: 0.6;
+    -fx-border-width: 2px;
+    
 }
 /* .bluePlayer:pressed {
     -fx-background-color: transparent;

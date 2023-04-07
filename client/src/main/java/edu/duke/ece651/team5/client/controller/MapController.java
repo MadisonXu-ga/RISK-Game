@@ -21,9 +21,9 @@ public class MapController {
             // Set the visibility of the button based on the corresponding boolean value
             // gameButtons[i].setStyle("-fx-background-color: rgba(0, 0, 255);");
             if (i < 10) {
-                gameButtons[i].getStyleClass().add("redPlayer");
+                gameButtons[i].getStyleClass().add("redPlayerbtn");
             } else {
-                gameButtons[i].getStyleClass().add("bluePlayer");
+                gameButtons[i].getStyleClass().add("bluePlayerbtn");
             }
 
             // makeButtonDarker(gameButtons[i]);

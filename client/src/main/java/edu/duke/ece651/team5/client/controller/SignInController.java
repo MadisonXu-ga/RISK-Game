@@ -35,10 +35,6 @@ public class SignInController {
     @FXML
     SignUpController signUpController;
 
-    // public void initialize(URL location, ResourceBundle resources) {
-    // signUpController.client = client;
-    // }
-
     public SignInController(Client client) {
 
         this.client = client;

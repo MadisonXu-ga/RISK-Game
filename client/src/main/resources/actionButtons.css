@@ -1,0 +1,33 @@
+.button {
+    -fx-background-color: #FE7E7E; /* Set the background color */
+    -fx-text-fill: black; /* Set the text color */
+    -fx-font-size: 16px; /* Set the font size */
+    -fx-font-family: "Lucida Calligraphy", sans-serif; /* Set the font family */
+    -fx-padding: 10px 20px; /* Set the padding */
+    -fx-background-radius: 20px;
+}
+
+.button:hover {
+    -fx-background-color: #fd7171; /* Set the hover background color */
+}
+
+.button:pressed {
+    -fx-background-color: #ff6b6b; /* Set the pressed background color */
+}
+
+.goBackbtn {
+    -fx-background-color: #138F29; /* Set the background color */
+    -fx-text-fill: black; /* Set the text color */
+    -fx-font-size: 16px; /* Set the font size */
+    -fx-font-family: "Lucida Calligraphy", sans-serif; /* Set the font family */
+    -fx-padding: 10px 20px; /* Set the padding */
+    -fx-background-radius: 20px;
+}
+
+.goBackbtn:hover {
+    -fx-background-color: #118025; /* Set the hover background color */
+}
+
+.goBackbtn:pressed {
+    -fx-background-color: #0e6b20; /* Set the pressed background color */
+}

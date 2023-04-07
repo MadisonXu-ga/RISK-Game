@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="735.0" prefWidth="1383.0" style="-fx-background-color: linear-gradient(to right, #282925 0%, #64665d 35%, #9fa295 100%);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team5.client.controller.MapGoBackController">
+   <left>
+      <AnchorPane prefWidth="0.0" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <AnchorPane fx:id="rightSideScreen" prefHeight="735.0" prefWidth="1004.0" stylesheets="@buttonsStyle.css" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="610.0" fitWidth="1251.0" layoutX="211.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@final_map_onlyterrain2.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="Midkemia" layoutX="277.0" layoutY="176.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="260.0" prefWidth="215.0" styleClass="Midkemiabtn" stylesheets="@territory.css" />
+            <Button fx:id="Gondor" layoutX="381.0" layoutY="112.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="202.0" prefWidth="198.0" styleClass="Gondorbtn" stylesheets="@territory.css" />
+            <Button fx:id="Scadrial" layoutX="485.0" layoutY="217.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="219.0" prefWidth="288.0" styleClass="Scadrialbtn" stylesheets="@territory.css" />
+            <Button fx:id="Ironcliff" layoutX="653.0" layoutY="186.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="94.0" prefWidth="199.0" styleClass="Ironcliffbtn" stylesheets="@territory.css" />
+            <Button fx:id="Elantris" layoutX="314.0" layoutY="363.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="134.0" prefWidth="190.0" styleClass="Elantrisbtn" stylesheets="@territory.css" />
+            <Button fx:id="Narnia" layoutX="375.0" layoutY="394.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="178.0" prefWidth="218.0" styleClass="Narniabtn" stylesheets="@territory.css" />
+            <Button fx:id="Roshar" layoutX="551.0" layoutY="363.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="240.0" prefWidth="233.0" styleClass="Rosharbtn" stylesheets="@territory.css" />
+            <Button fx:id="Thalassia" layoutX="722.0" layoutY="475.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="140.0" prefWidth="110.0" styleClass="Thalassiabtn" stylesheets="@territory.css" />
+            <Button fx:id="Hogwarts" layoutX="767.0" layoutY="387.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="124.0" prefWidth="108.0" styleClass="Hogwartsbtn" stylesheets="@territory.css" />
+            <Button fx:id="Mordor" layoutX="713.0" layoutY="310.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="127.0" prefWidth="226.0" styleClass="Mordorbtn" stylesheets="@territory.css" />
+            <Button fx:id="Oz" layoutX="757.0" layoutY="205.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="133.0" prefWidth="143.0" styleClass="Ozbtn" stylesheets="@territory.css" />
+            <Button fx:id="Emberfall" layoutX="879.0" layoutY="203.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="177.0" prefWidth="134.0" styleClass="Emberfallbtn" stylesheets="@territory.css" />
+            <Button fx:id="Celestia" layoutX="989.0" layoutY="191.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="82.0" prefWidth="127.0" styleClass="Celestiabtn" stylesheets="@territory.css" />
+            <Button fx:id="Kaelindor" layoutX="988.0" layoutY="206.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="254.0" prefWidth="207.0" styleClass="Kaelindorbtn" stylesheets="@territory.css" />
+            <Button fx:id="Sylvaria" layoutX="866.0" layoutY="365.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="110.0" prefWidth="152.0" styleClass="Sylvariabtn" stylesheets="@territory.css" />
+            <Button fx:id="Arathia" layoutX="844.0" layoutY="423.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="203.0" prefWidth="278.0" styleClass="Arathiabtn" stylesheets="@territory.css" />
+            <Button fx:id="Eryndor" layoutX="1078.0" layoutY="467.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="117.0" prefWidth="125.0" styleClass="Eryndorbtn" stylesheets="@territory.css" />
+            <Button fx:id="Shadowmire" layoutX="1211.0" layoutY="399.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="175.0" prefWidth="165.0" styleClass="Shadowmirebtn" stylesheets="@territory.css" />
+            <Button fx:id="Eterna" layoutX="1078.0" layoutY="371.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="160.0" prefWidth="203.0" styleClass="Eternabtn" stylesheets="@territory.css" />
+            <Button fx:id="Draconia" layoutX="1121.0" layoutY="182.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="81.0" prefWidth="57.0" styleClass="Draconiabtn" stylesheets="@territory.css" />
+            <Button fx:id="Mythosia" layoutX="1125.0" layoutY="169.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="237.0" prefWidth="181.0" styleClass="Myhtosiabtn" stylesheets="@territory.css" />
+            <Button fx:id="Stormhaven" layoutX="1169.0" layoutY="104.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="134.0" prefWidth="129.0" styleClass="Stormhavenbtn" stylesheets="@territory.css" />
+            <Button fx:id="Verdantia" layoutX="1284.0" layoutY="212.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="109.0" prefWidth="87.0" styleClass="Verdantiabtn" stylesheets="@territory.css" />
+            <Button fx:id="Frosthold" layoutX="1288.0" layoutY="309.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="103.0" prefWidth="83.0" styleClass="Frostholdbtn" stylesheets="@territory.css" />
+            <Button fx:id="submitOrder" layoutX="1253.0" layoutY="617.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Submit order" />
+            <Button fx:id="goBackbtn" layoutX="1250.0" layoutY="676.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" styleClass="goBackbtn" stylesheets="@actionButtons.css" text="Go back" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

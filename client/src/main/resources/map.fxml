@@ -6,16 +6,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="735.0" prefWidth="1383.0" style="-fx-background-color: linear-gradient(to right, #282925 0%, #64665d 35%, #9fa295 100%);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team5.client.controller.SignInController">
+<BorderPane prefHeight="735.0" prefWidth="1383.0" style="-fx-background-color: linear-gradient(to right, #282925 0%, #64665d 35%, #9fa295 100%);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team5.client.controller.MapController">
    <left>
       <AnchorPane prefWidth="0.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <AnchorPane fx:id = "rightSideScreen" prefHeight="735.0" prefWidth="1004.0" stylesheets="@buttonsStyle.css" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="rightSideScreen" prefHeight="735.0" prefWidth="1004.0" stylesheets="@buttonsStyle.css" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="610.0" fitWidth="1251.0" layoutX="211.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../Downloads/final_map_onlyterrain.png" />
+                  <Image url="@final_map_onlyterrain2.png" />
                </image>
             </ImageView>
             <Button fx:id="Midkemia" layoutX="277.0" layoutY="176.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="260.0" prefWidth="215.0" styleClass="Midkemiabtn" stylesheets="@territory.css" />

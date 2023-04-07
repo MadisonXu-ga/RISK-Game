@@ -5,6 +5,25 @@
 .button:pressed {
     -fx-background-color: transparent;
 }
+.button:hover {
+    -fx-opacity: 0.6;
+}
+
+.redPlayer {
+    -fx-opacity: 0.3;
+    -fx-background-color: red;
+}
+/* .redPlayer:pressed {
+    -fx-background-color: transparent;
+} */
+
+.bluePlayer {
+    -fx-opacity: 0.3;
+    -fx-background-color: blue;
+}
+/* .bluePlayer:pressed {
+    -fx-background-color: transparent;
+} */
 
 .createAccountbtn {
     -fx-background-radius: 10; 

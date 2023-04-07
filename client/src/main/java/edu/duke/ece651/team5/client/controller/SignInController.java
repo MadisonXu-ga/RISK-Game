@@ -59,26 +59,7 @@ public class SignInController {
         System.out.println("userx`: " + user_name + " Password: " + user_password);
         String message = client.login(userAndPassword);
         if (message.equals("Login succeeded")) {
-            System.out.println(client.login(userAndPassword));
-            URL xmlResource = getClass().getResource("/multiple-games.fxml");
-            FXMLLoader loader = new FXMLLoader(xmlResource);
-
-            MultipleGamesController multipleGamesController = new MultipleGamesController(client);
-            HashMap<Class<?>, Object> controllers = new HashMap<>();
-
-            controllers.put(MultipleGamesController.class, multipleGamesController);
-            loader.setControllerFactory((c) -> {
-                return controllers.get(c);
-            });
-
-            BorderPane bp = loader.load();
-            Object source = ae.getSource();
-            Button signUpBtn = (Button) source;
-            Stage signUpWindow = (Stage) signUpBtn.getScene().getWindow();
-            Scene scene = new Scene(new StackPane(bp));
-            App.addScenetoMain("multiple-games", scene);
-
-            signUpWindow.setScene(scene);
+            createMultipleGamesPage(userAndPassword);
             // multipleGamesController.initialize();
 
         } else {
@@ -86,31 +67,44 @@ public class SignInController {
         }
     }
 
+    private void createMultipleGamesPage(ArrayList<String> userAndPassword)
+            throws IOException, ClassNotFoundException {
+        System.out.println(client.login(userAndPassword));
+        URL xmlResource = getClass().getResource("/multiple-games.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        MultipleGamesController multipleGamesController = new MultipleGamesController(client);
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+
+        controllers.put(MultipleGamesController.class, multipleGamesController);
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        BorderPane bp = loader.load();
+
+        Scene scene = new Scene(new StackPane(bp));
+        App.addScenetoMain("multiple-games", scene);
+
+        App.getPrimaryStage().setScene(scene);
+    }
+
     public void onSignUpButton(ActionEvent ae) throws IOException {
         System.out.println("sign up was pressed");
 
-        Object source = ae.getSource();
+        URL xmlResource = getClass().getResource("/sign-up-page.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
 
-        if (source instanceof Button) {
-            URL xmlResource = getClass().getResource("/sign-up-page.fxml");
-            FXMLLoader loader = new FXMLLoader(xmlResource);
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+        controllers.put(SignUpController.class, new SignUpController(client));
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
 
-            HashMap<Class<?>, Object> controllers = new HashMap<>();
-            controllers.put(SignUpController.class, new SignUpController(client));
-            loader.setControllerFactory((c) -> {
-                return controllers.get(c);
-            });
+        BorderPane bp = loader.load();
+        Scene scene = new Scene(new StackPane(bp));
 
-            BorderPane bp = loader.load();
-
-            Button signUpBtn = (Button) source;
-            Stage signUpWindow = (Stage) signUpBtn.getScene().getWindow();
-            Scene scene = new Scene(new StackPane(bp));
-            App.addScenetoMain("sign-up-page", scene);
-
-            App.getPrimaryStage().setScene(scene);
-
-        }
+        App.getPrimaryStage().setScene(scene);
 
     }
 

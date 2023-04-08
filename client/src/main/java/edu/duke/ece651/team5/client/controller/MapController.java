@@ -21,19 +21,39 @@ public class MapController extends GoBackController {
             // Set the visibility of the button based on the corresponding boolean value
             // gameButtons[i].setStyle("-fx-background-color: rgba(0, 0, 255);");
             if (i < 10) {
-                gameButtons[i].getStyleClass().add("redPlayerbtn");
+                assignButtonToPlayer(gameButtons[i], "red");
             } else if (i < 17) {
                 gameButtons[i].setDisable(true);
             }
 
             else {
-                gameButtons[i].getStyleClass().add("bluePlayerbtn");
+                assignButtonToPlayer(gameButtons[i], "blue");
             }
 
             // makeButtonDarker(gameButtons[i]);
             System.out.println(i);
         }
 
+    }
+
+    /**
+     * @param button to be disabled (and not clickable). It will be shown as grey
+     */
+    public void disableButton(Button button) {
+        button.setDisable(true);
+
+    }
+
+    /**
+     * you can call this function to show the territory the same color
+     * as the player that owns it
+     * 
+     * @param button
+     */
+    public void assignButtonToPlayer(Button button, String color) {
+
+        String getStyle = color + "Playerbtn";
+        button.getStyleClass().add(getStyle);
     }
 
 }

@@ -51,7 +51,7 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="saveAndExit" layoutX="1292.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
+            <Button fx:id="saveAndExit" layoutX="1292.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
                <font>
                   <Font size="16.0" />
                </font>

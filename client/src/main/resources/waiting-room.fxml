@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
@@ -55,6 +56,11 @@
                </effect>
             </ProgressIndicator>
             <ProgressIndicator layoutX="55.0" layoutY="508.0" minHeight="106.0" minWidth="138.0" prefHeight="106.0" prefWidth="138.0" styleClass="progress" stylesheets="@actionButtons.css" />
+            <Button fx:id="saveAndExit" layoutX="400.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </right>

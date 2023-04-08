@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
 
-
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="735.0" prefWidth="1383.0" styleClass="backgroundColor" stylesheets="@layoutFormatting.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team5.client.controller.MultipleGamesController">
    <children>
       <ImageView fitHeight="735.0" fitWidth="1382.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
@@ -21,12 +20,12 @@
             <Blend />
          </effect>
       </ImageView>
-      <BorderPane prefHeight="735.0" prefWidth="1383.0" stylesheets="@layoutFormatting.css">
+      <BorderPane fx:id="borderPane" prefHeight="735.0" prefWidth="1383.0" stylesheets="@layoutFormatting.css">
          <left>
             <AnchorPane prefWidth="663.0" stylesheets="@layoutFormatting.css" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="beginNewGame" layoutX="210.0" layoutY="600.0" mnemonicParsing="false" onAction="#onBeginNewGame" prefHeight="58.0" prefWidth="300.0" stylesheets="@actionButtons.css" text="Begin new game" />
-                  <Button fx:id="fakeGame" layoutX="527.0" layoutY="124.0" mnemonicParsing="false" onAction="#onNewGame" prefHeight="94.0" prefWidth="170.0" text="Fake New Game" />
+                  <Button fx:id="beginNewGamebtn" layoutX="210.0" layoutY="650.0" mnemonicParsing="false" onAction="#onBeginNewGame" prefHeight="50.0" prefWidth="300.0" stylesheets="@actionButtons.css" text="Begin new game" />
+                  <Button fx:id="fakeGamebtn" layoutX="527.0" layoutY="124.0" mnemonicParsing="false" onAction="#onNewGame" prefHeight="94.0" prefWidth="170.0" text="Fake New Game" />
                </children>
             </AnchorPane>
          </left>
@@ -34,10 +33,13 @@
             <AnchorPane fx:id="multipleGameButtons" prefHeight="735.0" prefWidth="686.0">
                <children>
                   <Text fx:id="loginStatus" layoutX="-422.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="281.336669921875" x="600.0" y="100.0" />
-                  <Button id="game1Btn" fx:id="button1" layoutX="258.0" layoutY="49.0" mnemonicParsing="false" onAction="#onGame1" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game1" />
-                  <Button id="game2Btn" fx:id="button2" layoutX="258.0" layoutY="243.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 2" />
-                  <Button id="game3Btn" fx:id="button3" layoutX="258.0" layoutY="457.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 3" />
-                  <Button id="joinOtherGamesbtn" fx:id="joinOtherGames" layoutX="54.0" layoutY="600.0" mnemonicParsing="false" onAction="#onjoinOtherGames" prefHeight="45.0" prefWidth="300.0" styleClass="secondarybtn" stylesheets="@actionButtons.css" text="join other games" />
+                  <Button id="game1btn" fx:id="game1btn" layoutX="250.0" layoutY="50.0" mnemonicParsing="false" onAction="#onGame1" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 1" />
+                  <Button id="game2btn" fx:id="game2btn" layoutX="250.0" layoutY="150.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 2" />
+                  <Button id="game3btn" fx:id="game3btn" layoutX="250.0" layoutY="250.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 3" />
+                  <Button id="joinOtherGamesbtn" fx:id="joinOtherGamesbtn" layoutX="54.0" layoutY="650.0" mnemonicParsing="false" onAction="#onjoinOtherGames" prefHeight="50.0" prefWidth="300.0" styleClass="secondarybtn" stylesheets="@actionButtons.css" text="join other games" />
+                  <Button id="game1btn" fx:id="game4btn" layoutX="250.0" layoutY="338.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 4" />
+                  <Button id="game2btn" fx:id="game5btn" layoutX="250.0" layoutY="438.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 5" />
+                  <Button id="game3btn" fx:id="game6btn" layoutX="250.0" layoutY="538.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 6" />
                </children>
                <stylesheets>
                   <URL value="@buttonsStyle.css" />

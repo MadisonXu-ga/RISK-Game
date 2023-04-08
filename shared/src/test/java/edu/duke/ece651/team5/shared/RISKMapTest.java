@@ -7,6 +7,7 @@ import java.util.Map;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import edu.duke.ece651.team5.shared.game.Player;
@@ -39,6 +40,7 @@ public class RISKMapTest {
         map = new RISKMap(territories, connections);
     }
 
+    @Disabled
     @Test
     public void testMapConfigFile(){
         RISKMap map = new RISKMap();

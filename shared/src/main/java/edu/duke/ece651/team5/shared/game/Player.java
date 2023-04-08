@@ -11,8 +11,8 @@ public class Player {
     private int currTechnologyLevel;
     private final Map<Resource, Integer> resourceToAmount;
 
-    public Player(String color) {
-        this.name = color;
+    public Player(String playerName) {
+        this.name = playerName;
         this.territories = new ArrayList<>();
         currTechnologyLevel = 0;
         resourceToAmount = new HashMap<>();

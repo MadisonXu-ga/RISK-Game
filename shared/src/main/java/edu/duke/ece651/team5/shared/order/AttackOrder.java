@@ -1,6 +1,7 @@
 package edu.duke.ece651.team5.shared.order;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Map;
 
 import edu.duke.ece651.team5.shared.game.*;
@@ -21,7 +22,12 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
     @Override
     public void execute(RISKMap map) {
         Territory source = map.getTerritoryByName(sourceName);
-        soldierToNumber.forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
+        for (Map.Entry<Soldier, Integer> entry : soldierToNumber.entrySet()) {
+            Soldier soldier = entry.getKey();
+            int number = entry.getValue();
+            source.getSoldierArmy().removeSoldier(soldier, number);
+        }
+        // soldierToNumber.forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
         //todo: function to cost food unit
         
     }

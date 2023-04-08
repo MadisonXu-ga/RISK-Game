@@ -14,11 +14,12 @@ import java.util.stream.Collectors;
 
 public class CombatResolver {
 
+
     public CombatResolver() {
     }
 
 
-    //todo should done in server
+    //todo can move to server
     /**
      * merge attack order offered by same player to attack same destination territory
      * @param attackOrder
@@ -72,12 +73,11 @@ public class CombatResolver {
         }
         AttackOrder defenseOrder = new AttackOrder(fightingTerri.getName(), fightingTerri.getName(),
                 fightingTerri.getSoldierArmy().getAllSoldiers(), fightingTerri.getOwner());
-        defenseOrder.execute(game.getMap());
         fightOrders.add(defenseOrder);
+        
 
         CombatPlayers combatPlayers = new CombatPlayers(fightOrders);
         Set<Player> remainingPlayers = new HashSet<>(combatPlayers.getPlayerToBonusSoldier().keySet());
-        //Iterator<Map.Entry<Player, List<Integer>>> it = combatPlayers.getPlayerToBonusSoldier().entrySet().iterator();
     
         while (remainingPlayers.size() > 1) {
             for (Iterator<Player> it = combatPlayers.getPlayerToBonusSoldier().keySet().iterator(); it.hasNext();) {
@@ -90,10 +90,9 @@ public class CombatResolver {
                 boolean isAttackWin = rollDice(attacker, defender, combatPlayers);
                 Player loserForThisRound = (isAttackWin) ? attacker : defender;
                 // System.out.println("loser: " + loserForThisRound.getSourceName());
-                // loserForThisRound.loseOneUnit();
                 combatPlayers.resolveLosePlayer(loserForThisRound, isAttackWin);
                 if (combatPlayers.isPlayerLose(loserForThisRound)) {
-                    it.remove();
+                    remainingPlayers.remove(loserForThisRound);
                 }
             }
         }

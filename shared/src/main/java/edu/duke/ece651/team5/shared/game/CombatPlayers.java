@@ -19,12 +19,6 @@ public class CombatPlayers {
     
     private Map<Player, List<Integer>> playerToBonusSoldier;
 
-
-    public void setPlayerToBonusSoldier(Map<Player, List<Integer>> playerToBonusSoldier) {
-        this.playerToBonusSoldier = playerToBonusSoldier;
-    }
-
-
     public CombatPlayers(List<AttackOrder> attackOrders){
         this.playerToBonusSoldier = createBonusUnit(attackOrders);
     }
@@ -66,7 +60,6 @@ public class CombatPlayers {
     private List<Integer> addBonusToOrder(AttackOrder order){
         List<Integer> bonusSoldier = new ArrayList<>();
         for(Soldier soldier: order.getSoldierToNumber().keySet()){
-            //todo do bonus need to add original bonus level?
             int bonus = levelToBonus.get(soldier.getLevel().ordinal());
             int numToAdd = order.getSoldierToNumber().get(soldier);
             bonusSoldier.addAll(Collections.nCopies(numToAdd, bonus));

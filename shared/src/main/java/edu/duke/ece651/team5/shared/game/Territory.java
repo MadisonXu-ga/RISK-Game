@@ -14,6 +14,7 @@ public class Territory {
     private Player owner;
     private SoldierArmy soldierArmy;
 
+    //todo where to store them 
     private int foodResource;
     private int techResource;
 
@@ -39,11 +40,13 @@ public class Territory {
         this.soldierArmy = new SoldierArmy();
     }
 
+    //todo where to initiate them
     public void setResources(int food, int tech){
         foodResource = food;
         techResource = tech;
     }
 
+    //todo right now only produce food
     public void produceResource(Resource resource) {
         owner.addResourceFromTerritory(resource, Constants.PRODUCE_FOOD_RESOURCE_PER_TURN);
     }
@@ -80,9 +83,6 @@ public class Territory {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Territory)) {
-            return false;
-        }
         Territory territory = (Territory) o;
         return id == territory.id && Objects.equals(name, territory.name) && Objects.equals(owner, territory.owner) && Objects.equals(soldierArmy, territory.soldierArmy);
     }

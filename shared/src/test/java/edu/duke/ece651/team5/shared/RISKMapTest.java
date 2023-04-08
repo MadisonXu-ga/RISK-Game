@@ -40,6 +40,16 @@ public class RISKMapTest {
     }
 
     @Test
+    public void testMapConfigFile(){
+        RISKMap map = new RISKMap();
+        map.printMap();
+
+        Territory a = map.getTerritoryByName("Ironcliff");
+        Territory b = map.getTerritoryByName("Oz");
+        assertTrue(map.isAdjacent(a, b));
+    }
+
+    @Test
     public void getTerritoryByName() {
         Territory territory1 = map.getTerritoryByName("Territory 1");
         Territory t = new Territory(1, "Territory 1", new Player("Player 1"));

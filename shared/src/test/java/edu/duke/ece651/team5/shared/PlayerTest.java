@@ -3,8 +3,8 @@ package edu.duke.ece651.team5.shared;
 
 import org.junit.jupiter.api.Test;
 
-import edu.duke.ece651.team5.shared.allResource.Resource;
-import edu.duke.ece651.team5.shared.allResource.ResourceType;
+import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.Territory;
 

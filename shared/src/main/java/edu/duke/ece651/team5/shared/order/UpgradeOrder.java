@@ -1,7 +1,7 @@
 package edu.duke.ece651.team5.shared.order;
 
-import edu.duke.ece651.team5.shared.*;
-import edu.duke.ece651.team5.shared.allResource.*;
+import edu.duke.ece651.team5.shared.resource.*;
+import edu.duke.ece651.team5.shared.datastructure.Pair;
 import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.unit.*;
 

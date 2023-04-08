@@ -1,7 +1,7 @@
 package edu.duke.ece651.team5.shared.rulechecker;
 
-import edu.duke.ece651.team5.shared.allResource.Resource;
-import edu.duke.ece651.team5.shared.allResource.ResourceType;
+import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 
 public class ResearchEnoughResourceRuleChecker extends ReserachOrderRuleChecker{

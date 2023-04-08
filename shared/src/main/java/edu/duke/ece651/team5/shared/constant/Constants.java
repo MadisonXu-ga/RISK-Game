@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.constant;
 
 public class Constants {
     public static final int AVAILABLE_UNIT = 50;

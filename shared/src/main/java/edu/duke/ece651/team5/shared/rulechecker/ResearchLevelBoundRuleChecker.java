@@ -1,7 +1,7 @@
 package edu.duke.ece651.team5.shared.rulechecker;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 
-import static edu.duke.ece651.team5.shared.Constants.GAME_MAX_TECHNOLOGY_LEVEL;
+import static edu.duke.ece651.team5.shared.constant.Constants.GAME_MAX_TECHNOLOGY_LEVEL;
 
 public class ResearchLevelBoundRuleChecker extends ReserachOrderRuleChecker{
 

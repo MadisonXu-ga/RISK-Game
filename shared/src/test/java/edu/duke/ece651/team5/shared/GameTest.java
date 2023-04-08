@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.shared.game;
+package edu.duke.ece651.team5.shared;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.duke.ece651.team5.shared.game.Game;
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.RISKMap;
+import edu.duke.ece651.team5.shared.game.Territory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

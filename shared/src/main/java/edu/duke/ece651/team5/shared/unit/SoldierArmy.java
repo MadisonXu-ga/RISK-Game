@@ -2,7 +2,7 @@ package edu.duke.ece651.team5.shared.unit;
 
 import java.util.*;
 
-import static edu.duke.ece651.team5.shared.Constants.DEFAULT_INIT_SOLDIER_NUM;
+import static edu.duke.ece651.team5.shared.constant.Constants.DEFAULT_INIT_SOLDIER_NUM;
 
 public class SoldierArmy {
     private Map<Soldier, Integer> soldiers = new HashMap<>();

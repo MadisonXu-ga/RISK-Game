@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.shared.allResource;
+package edu.duke.ece651.team5.shared.resource;
 
 public class Resource {
     ResourceType type;

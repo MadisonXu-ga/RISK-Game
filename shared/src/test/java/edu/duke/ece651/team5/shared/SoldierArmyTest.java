@@ -8,7 +8,7 @@ import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 
-import static edu.duke.ece651.team5.shared.Constants.DEFAULT_INIT_SOLDIER_NUM;
+import static edu.duke.ece651.team5.shared.constant.Constants.DEFAULT_INIT_SOLDIER_NUM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

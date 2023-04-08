@@ -1,6 +1,6 @@
 package edu.duke.ece651.team5.shared.rulechecker;
 
-import edu.duke.ece651.team5.shared.Pair;
+import edu.duke.ece651.team5.shared.datastructure.Pair;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 import edu.duke.ece651.team5.shared.order.UpgradeOrder;

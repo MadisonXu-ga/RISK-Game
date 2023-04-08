@@ -85,7 +85,7 @@ public class LoginInController {
     private void createMultipleGamesPage(ArrayList<String> userAndPassword)
             throws IOException, ClassNotFoundException {
         System.out.println(client.login(userAndPassword));
-        URL xmlResource = getClass().getResource("/multiple-games.fxml");
+        URL xmlResource = getClass().getResource("/multiple-games2.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         MultipleGamesController multipleGamesController = new MultipleGamesController(client);
@@ -96,7 +96,7 @@ public class LoginInController {
             return controllers.get(c);
         });
 
-        BorderPane bp = loader.load();
+        StackPane bp = loader.load();
 
         Scene scene = new Scene(new StackPane(bp));
         App.addScenetoMain("multiple-games", scene);
@@ -113,6 +113,7 @@ public class LoginInController {
      */
     public void onSignUpButton(ActionEvent ae) throws IOException {
         System.out.println("sign up was pressed");
+        loginFeedback.setText("");
 
         URL xmlResource = getClass().getResource("/sign-up-page.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);

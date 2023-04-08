@@ -21,7 +21,7 @@
             <Button id="game1Btn" fx:id="button1" layoutX="258.0" layoutY="49.0" mnemonicParsing="false" onAction="#onGame1" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game1" />
             <Button id="game2Btn" fx:id="button2" layoutX="258.0" layoutY="243.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 2" />
             <Button id="game3Btn" fx:id="button3" layoutX="258.0" layoutY="457.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 3" />
-            <Button id="joinOtherGamesbtn" fx:id="joinOtherGames" layoutX="54.0" layoutY="600.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" styleClass="secondarybtn" stylesheets="@actionButtons.css" text="join other games" />
+            <Button id="joinOtherGamesbtn" fx:id="joinOtherGames" layoutX="54.0" layoutY="600.0" mnemonicParsing="false" onAction="#onjoinOtherGames" prefHeight="45.0" prefWidth="300.0" styleClass="secondarybtn" stylesheets="@actionButtons.css" text="join other games" />
          </children>
       </AnchorPane>
    </right>

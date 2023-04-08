@@ -1,0 +1,10 @@
+.headerText {
+    -fx-text-fill: black;
+    -fx-font-size: 48px;
+    -fx-font-family: "Great Vibes";
+}
+
+.backgroundColor {
+
+    -fx-background-color: radial-gradient(focus-distance 59%, center 70% 50% , radius 36% , #E6E3DB, #CBC3A8, #C2AF85);
+}

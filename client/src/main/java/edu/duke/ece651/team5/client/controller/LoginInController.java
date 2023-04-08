@@ -20,7 +20,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class SignInController {
+public class LoginInController {
 
     @FXML
     public TextField userName;
@@ -35,7 +35,7 @@ public class SignInController {
     @FXML
     SignUpController signUpController;
 
-    public SignInController(Client client) {
+    public LoginInController(Client client) {
 
         this.client = client;
     }

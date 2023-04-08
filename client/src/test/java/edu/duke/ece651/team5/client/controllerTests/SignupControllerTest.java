@@ -29,7 +29,7 @@ import org.testfx.matcher.control.TextMatchers;
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.client.controller.MultipleGamesController;
-import edu.duke.ece651.team5.client.controller.SignInController;
+import edu.duke.ece651.team5.client.controller.LoginInController;
 import edu.duke.ece651.team5.client.controller.SignUpController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -59,7 +59,7 @@ class SignupControllerTest {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
-        controllers.put(SignInController.class, new SignInController(client));
+        controllers.put(LoginInController.class, new LoginInController(client));
         controllers.put(SignUpController.class, new SignUpController(client));
         loader.setControllerFactory((c) -> {
             return controllers.get(c);

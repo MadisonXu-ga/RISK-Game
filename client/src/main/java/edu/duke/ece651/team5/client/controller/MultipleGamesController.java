@@ -60,7 +60,18 @@ public class MultipleGamesController {
             System.out.println(msg);
             goToWaitingScreen();
         }
-        ;
+
+    }
+
+    public void onjoinOtherGames(ActionEvent ae) throws IOException {
+        // String msg = client.beginNewGame();
+        seeJoinableGames();
+
+        // if (msg.equals("game created")) {
+
+        // System.out.println(msg);
+        // goToWaitingScreen();
+        // }
 
     }
 
@@ -96,8 +107,25 @@ public class MultipleGamesController {
 
         BorderPane bp = loader.load();
         Scene scene = new Scene(new StackPane(bp));
+        App.addScenetoMain("waitin-room", scene);
 
         App.getPrimaryStage().setScene(scene);
     }
 
+    public void seeJoinableGames() throws IOException {
+        URL xmlResource = getClass().getResource("/joining-games.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+        controllers.put(MapGoBackController.class, new MapGoBackController());
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        BorderPane bp = loader.load();
+        Scene scene = new Scene(new StackPane(bp));
+        App.addScenetoMain("waitin-room", scene);
+
+        App.getPrimaryStage().setScene(scene);
+    }
 }

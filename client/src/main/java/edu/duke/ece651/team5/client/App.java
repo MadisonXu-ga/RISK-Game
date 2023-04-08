@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.controller.MultipleGamesController;
-import edu.duke.ece651.team5.client.controller.SignInController;
+import edu.duke.ece651.team5.client.controller.LoginInController;
 import edu.duke.ece651.team5.client.controller.SignUpController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -61,7 +61,7 @@ public class App extends Application {
     FXMLLoader loader = new FXMLLoader(xmlResource);
 
     HashMap<Class<?>, Object> controllers = new HashMap<>();
-    controllers.put(SignInController.class, new SignInController(classClient));
+    controllers.put(LoginInController.class, new LoginInController(classClient));
     controllers.put(SignUpController.class, new SignUpController(classClient));
     controllers.put(MultipleGamesController.class, new MultipleGamesController(classClient));
     loader.setControllerFactory((c) -> {

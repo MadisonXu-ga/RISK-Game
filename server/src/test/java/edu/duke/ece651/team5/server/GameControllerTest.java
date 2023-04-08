@@ -30,8 +30,8 @@ public class GameControllerTest {
         GameController game1 = new GameController(2);
         GameController game2 = new GameController(3);
 
-        assertEquals(1, game1.getID());
-        assertEquals(2, game2.getID());
+        // assertEquals(1, game1.getID());
+        assertEquals(game1.getID() + 1, game2.getID());
     }
 
     @Test

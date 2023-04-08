@@ -78,4 +78,8 @@ public class UserGameMap {
         userToGame.get(user).remove(game);
         gameToUser.get(game).remove(user);
     }
+
+    public boolean checkUserinGame(User user, GameController game) {
+        return getGameUsers(game).contains(user);
+    }
 }

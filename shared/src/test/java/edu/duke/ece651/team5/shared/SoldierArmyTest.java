@@ -81,5 +81,24 @@ public class SoldierArmyTest {
         assertEquals(Collections.singletonMap(soldier, count + DEFAULT_INIT_SOLDIER_NUM), allSoldiers);
     }
 
+
+    @Test
+    public void testUpgradeSoldierAndCountSoldier() {
+        Soldier soldier = new Soldier(SoldierLevel.INFANTRY);
+        int count = 5;
+        army.addSoldier(soldier, count);
+
+        Soldier infantry = new Soldier(SoldierLevel.INFANTRY);
+        int initialCount = army.getSoldierCount(infantry);
+        int upgradeCount = 3;
+        SoldierLevel targetLevel = SoldierLevel.ARTILLERY;
+
+        army.upgradeSoldier(infantry, upgradeCount, targetLevel);
+
+        assertEquals(initialCount - upgradeCount, army.getSoldierCount(infantry));
+        assertEquals(upgradeCount, army.getSoldierCount(new Soldier(targetLevel)));
+        assertEquals(6, army.getTotalCountSolider());
+    }
+
 }
 

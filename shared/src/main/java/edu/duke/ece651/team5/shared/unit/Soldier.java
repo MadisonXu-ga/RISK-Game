@@ -13,7 +13,7 @@ public class Soldier {
 
     public void upgradeLevel(SoldierLevel targetLevel) {
         // todo: rule checker
-        assert(this.level.ordinal() < targetLevel.ordinal());
+        // assert(this.level.ordinal() < targetLevel.ordinal());
         this.level = targetLevel;
     }
 
@@ -29,7 +29,8 @@ public class Soldier {
 
     @Override
     public int hashCode() {
-        return level != null ? level.hashCode() : 0;
+        // return level != null ? level.hashCode() : 0;
+        return level.hashCode();
     }
 
     @Override

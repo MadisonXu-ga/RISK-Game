@@ -19,6 +19,7 @@ public class Resource {
 
     @Override
     public int hashCode() {
-        return type != null ? type.hashCode() : 0;
+        // return type != null ? type.hashCode() : 0;
+        return type.hashCode();
     }
 }

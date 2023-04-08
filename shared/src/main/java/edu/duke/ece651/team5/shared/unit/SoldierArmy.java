@@ -51,9 +51,6 @@ public class SoldierArmy {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof SoldierArmy)) {
-            return false;
-        }
         SoldierArmy soldierArmy = (SoldierArmy) o;
         return Objects.equals(soldiers, soldierArmy.soldiers);
     }

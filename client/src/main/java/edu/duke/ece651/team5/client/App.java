@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.controller.MultipleGamesController;
+import edu.duke.ece651.team5.client.controller.GoBackController;
 import edu.duke.ece651.team5.client.controller.LoginInController;
 import edu.duke.ece651.team5.client.controller.SignUpController;
 import javafx.application.Application;
@@ -41,6 +42,7 @@ public class App extends Application {
   public App(Client client) {
     this.classClient = client;
   }
+
   // regular loading of the page
   public App() throws UnknownHostException, IOException {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -54,16 +56,17 @@ public class App extends Application {
     loadedScenes = new HashMap<>();
     primaryStage = stage;
 
-    // get rid of this later 
+    // get rid of this later
     String javaVersion = System.getProperty("java.version");
     String javafxVersion = System.getProperty("javafx.version");
 
-    // load our login page 
+    // load our login page
     URL xmlResource = getClass().getResource("/login-page.fxml");
     FXMLLoader loader = new FXMLLoader(xmlResource);
     HashMap<Class<?>, Object> controllers = new HashMap<>();
     controllers.put(LoginInController.class, new LoginInController(classClient));
     controllers.put(SignUpController.class, new SignUpController(classClient));
+    controllers.put(GoBackController.class, new GoBackController());
     controllers.put(MultipleGamesController.class, new MultipleGamesController(classClient));
     loader.setControllerFactory((c) -> {
       return controllers.get(c);
@@ -71,7 +74,7 @@ public class App extends Application {
 
     BorderPane bp = loader.load();
 
-    // set our game to be 90% of our screen size 
+    // set our game to be 90% of our screen size
     double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
     double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
 
@@ -91,9 +94,10 @@ public class App extends Application {
     stage.show();
   }
 
-  // this function will be used from the controllers to set new scenes in the same stage
+  // this function will be used from the controllers to set new scenes in the same
+  // stage
   /**
-   * @return primaryStage as a Stage 
+   * @return primaryStage as a Stage
    */
   public static Stage getPrimaryStage() {
     return primaryStage;
@@ -102,7 +106,7 @@ public class App extends Application {
   // add the scenes that we want to keep coming back to here
   /**
    * @param sceneName String name of the scene
-   * @param scene that we want to add 
+   * @param scene     that we want to add
    */
   public static void addScenetoMain(String sceneName, Scene scene) {
 

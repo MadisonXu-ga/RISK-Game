@@ -84,7 +84,7 @@ class SigninControllerTest {
         FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(password));
         robot.clickOn("#loginBtn");
         FxAssert.verifyThat("#beginNewGame", NodeMatchers.isVisible());
-        FxAssert.verifyThat("#joinOtherGames", NodeMatchers.isVisible());
+        FxAssert.verifyThat("#joinOtherGamesbtn", NodeMatchers.isVisible());
     }
 
     @Test

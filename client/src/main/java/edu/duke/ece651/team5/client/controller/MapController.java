@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
-public class MapController {
+public class MapController extends GoBackController {
 
     @FXML
     AnchorPane rightSideScreen;
@@ -22,7 +22,11 @@ public class MapController {
             // gameButtons[i].setStyle("-fx-background-color: rgba(0, 0, 255);");
             if (i < 10) {
                 gameButtons[i].getStyleClass().add("redPlayerbtn");
-            } else {
+            } else if (i < 17) {
+                gameButtons[i].setDisable(true);
+            }
+
+            else {
                 gameButtons[i].getStyleClass().add("bluePlayerbtn");
             }
 

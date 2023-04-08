@@ -25,7 +25,7 @@ public class MultipleGamesController {
     @FXML
     Button joinOtherGames;
 
-    public Button[] gameButtons;
+    private Button[] gameButtons;
     public Client client;
 
     @FXML
@@ -127,5 +127,9 @@ public class MultipleGamesController {
         App.addScenetoMain("waitin-room", scene);
 
         App.getPrimaryStage().setScene(scene);
+    }
+
+    public Button[] getButtons(){
+        return gameButtons;
     }
 }

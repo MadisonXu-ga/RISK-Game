@@ -1,0 +1,25 @@
+Narnia, Elantris, Midkemia, Scadrial, Oz, Roshar, Gondor, Mordor, Hogwarts, Thalassia, Arathia, Eryndor, Sylvaria, Kaelindor, Eterna, Celestia, Frosthold, Shadowmire, Ironcliff, Stormhaven, Mythosia, Draconia, Emberfall, Verdantia
+Arathia: Scadrial, Hogwarts, Eryndor, Kaelindor, Eterna
+Celestia: Kaelindor, Emberfall
+Draconia: Mythosia, Kaelindor, Emberfall
+Elantris: Narnia, Midkemia, Scadrial
+Emberfall: Oz, Mordor, Scadrial, Kaelindor, Celestia
+Eryndor: Arathia, Eterna
+Eterna: Eryndor, Kaelindor, Mythosia, Shadowmire
+Frosthold: Shadowmire, Mythosia, Celestia
+Gondor: Midkemia, Scadrial
+Hogwarts: Thalassia, Roshar, Mordor, Scadrial, Arathia
+Ironcliff: Oz, Scadrial
+Kaelindor: Scadrial, Emberfall, Celestia, Draconia, Mythosia, Eterna, Arathia
+Midkemia: Elantris, Scadrial, Midkemia
+Mordor: Scadrial, Oz, Emberfall, Sylvaria, Hogwarts, Roshar
+Mythosia: Kaelindor, Draconia, Emberfall, Verdantia, Frosthold, Eterna, Shadowmire
+Narnia: Elantris, Midkemia, Roshar
+Oz: Scadrial, Ironcliff, Emberfall, Mordor
+Roshar: Narnia, Scadrial, Mordor, Hogwarts, Thalassia
+Scadrial: Elantris, Midkemia, Gondor, Ironcliff, Oz, Mordor, Roshar, Narnia
+Shadowmire: Frosthold, Eterna, Mythosia
+Stormhaven: Draconia, Mythosia, Verdantia
+Sylvaria: Hogwarts, Mordor, Emberfall, Kaelindor, Arathia
+Thalassia: Hogwarts, Roshar
+Verdantia: Frosthold, Mythosia, Stormhaven

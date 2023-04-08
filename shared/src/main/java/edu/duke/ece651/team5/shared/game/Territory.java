@@ -1,6 +1,10 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.game;
 
 import java.util.Objects;
+
+import edu.duke.ece651.team5.shared.Constants;
+import edu.duke.ece651.team5.shared.allResource.Resource;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 
 
@@ -10,8 +14,10 @@ public class Territory {
     private Player owner;
     private SoldierArmy soldierArmy;
 
+    private int foodResource;
+    private int techResource;
 
-    //todo may need to change owner string to player object
+
 
     public Territory(int id, String name, Player owner, SoldierArmy soldierArmy) {
         this.id = id;
@@ -25,6 +31,17 @@ public class Territory {
         this.name = name;
         this.owner = owner;
         this.soldierArmy = new SoldierArmy();
+    }
+
+    public Territory(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.soldierArmy = new SoldierArmy();
+    }
+
+    public void setResources(int food, int tech){
+        foodResource = food;
+        techResource = tech;
     }
 
     public void produceResource(Resource resource) {

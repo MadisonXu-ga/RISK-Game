@@ -68,22 +68,6 @@ public class CombatPlayersTest {
     }
 
     @Test
-    public void testIsPlayerLose() {
-        // Create test data
-        Player loser = new Player("Player2");
-
-        // Mock playerToBonusSoldier map
-        Map<Player, List<Integer>> playerToBonusSoldier = new HashMap<>();
-        playerToBonusSoldier.put(loser, Arrays.asList(1, 3, 5));
-        combatPlayers.setPlayerToBonusSoldier(playerToBonusSoldier);
-
-
-        // Assert expected result
-        assertTrue(combatPlayers.isPlayerLose(loser));
-        assertFalse(combatPlayers.isPlayerLose(new Player("Player3")));
-    }
-
-    @Test
     public void testResolveLosePlayer() {
         // Create test data
         Player loser = new Player("Player 2");

@@ -39,7 +39,7 @@ public class CombatResolverTest {
     private void setUp(){
         
         List<Player> players = new ArrayList<>(Arrays.asList(player1, player2));
-        RISKMap map = new RISKMap("test_map.txt");
+        RISKMap map = new RISKMap();
         map.printMap();
         game = new Game(players, map);
         territory = map.getTerritoryById(1);

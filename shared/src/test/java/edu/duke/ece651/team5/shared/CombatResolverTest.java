@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.shared.game;
+package edu.duke.ece651.team5.shared;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,6 +12,11 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import edu.duke.ece651.team5.shared.game.CombatResolver;
+import edu.duke.ece651.team5.shared.game.Game;
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.RISKMap;
+import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
@@ -35,6 +40,7 @@ public class CombatResolverTest {
         
         List<Player> players = new ArrayList<>(Arrays.asList(player1, player2));
         RISKMap map = new RISKMap("test_map.txt");
+        map.printMap();
         game = new Game(players, map);
         territory = map.getTerritoryById(1);
         territory.setOwner(player1);

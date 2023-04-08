@@ -67,7 +67,7 @@ public class CombatResolver {
     }
 
     //todo: change fighting way for unit
-    protected void beginFight(Territory fightingTerri, List<AttackOrder> fightOrders, Game game) {
+    public void beginFight(Territory fightingTerri, List<AttackOrder> fightOrders, Game game) {
         if (fightOrders.isEmpty()) {
             return;
         }

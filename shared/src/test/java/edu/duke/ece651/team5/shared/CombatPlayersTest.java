@@ -53,7 +53,6 @@ public class CombatPlayersTest {
     public void testConvertToSoldier() {
         Player winner = new Player("Player 1");
         Map<Soldier, Integer> result = combatPlayers.convertToSoldier(winner);
-
         // Assert expected result
         assertNotNull(result);
         assertEquals(2, result.size());

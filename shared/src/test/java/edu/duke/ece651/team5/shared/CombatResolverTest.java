@@ -37,9 +37,26 @@ public class CombatResolverTest {
 
     @BeforeEach
     private void setUp(){
+        Map<String, Territory> territories = new HashMap<>();
+        territories.put("Territory 1", new Territory(1, "Territory 1"));
+        territories.put("Territory 2", new Territory(2, "Territory 2"));
+        territories.put("Territory 3", new Territory(3, "Territory 3"));
+        territories.put("Territory 4", new Territory(4, "Territory 4"));
+
+        HashMap<Integer, List<RISKMap.Edge>> connections = new HashMap<>();
+        connections.put(1, Arrays.asList(new RISKMap.Edge(1, 2, 5),
+                                         new RISKMap.Edge(1, 4, 1)));
+        connections.put(2, Arrays.asList(new RISKMap.Edge(2, 1, 5),
+                                         new RISKMap.Edge(2, 4, 3)));
+        connections.put(3, Arrays.asList(new RISKMap.Edge(3, 4, 4)));
+        connections.put(4, Arrays.asList(new RISKMap.Edge(4, 1, 1),
+                                         new RISKMap.Edge(4, 2, 3),
+                                         new RISKMap.Edge(4, 3, 4)));
+
+        RISKMap map = new RISKMap(territories, connections);
         
         List<Player> players = new ArrayList<>(Arrays.asList(player1, player2));
-        RISKMap map = new RISKMap();
+        // RISKMap map = new RISKMap("test_map.txt");
         map.printMap();
         game = new Game(players, map);
         territory = map.getTerritoryById(1);

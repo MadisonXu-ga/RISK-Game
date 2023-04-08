@@ -30,11 +30,12 @@ public class MultipleGamesController {
 
     @FXML
     public void initialize() {
-        gameButtons = multipleGameButtons.lookupAll(".button").toArray(new Button[0]);
+        gameButtons = multipleGameButtons.lookupAll(".button.neutralbtn").toArray(new Button[0]);
 
         for (int i = 0; i < gameButtons.length; i++) {
-
+            System.out.println(gameButtons[i].getId());
             // Set the visibility of the button based on the corresponding boolean value
+
             gameButtons[i].setVisible(false);
         }
     }
@@ -52,7 +53,14 @@ public class MultipleGamesController {
     }
 
     public void onBeginNewGame(ActionEvent ae) throws IOException {
-        client.beginNewGame();
+        String msg = client.beginNewGame();
+
+        if (msg.equals("game created")) {
+
+            System.out.println(msg);
+            goToWaitingScreen();
+        }
+        ;
 
     }
 
@@ -74,6 +82,22 @@ public class MultipleGamesController {
 
         App.getPrimaryStage().setScene(scene);
 
+    }
+
+    public void goToWaitingScreen() throws IOException {
+        URL xmlResource = getClass().getResource("/waiting-room.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+        controllers.put(MapGoBackController.class, new MapGoBackController());
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        BorderPane bp = loader.load();
+        Scene scene = new Scene(new StackPane(bp));
+
+        App.getPrimaryStage().setScene(scene);
     }
 
 }

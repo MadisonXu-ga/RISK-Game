@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -47,6 +49,12 @@
                   <Font name="Lucida Calligraphy Italic" size="24.0" />
                </font>
             </Text>
+            <ProgressIndicator blendMode="COLOR_BURN" layoutX="110.0" layoutY="540.0" prefHeight="55.0" prefWidth="95.0" progress="0.47" styleClass="progress" stylesheets="@actionButtons.css">
+               <effect>
+                  <Glow />
+               </effect>
+            </ProgressIndicator>
+            <ProgressIndicator layoutX="55.0" layoutY="508.0" minHeight="106.0" minWidth="138.0" prefHeight="106.0" prefWidth="138.0" styleClass="progress" stylesheets="@actionButtons.css" />
          </children>
       </AnchorPane>
    </right>

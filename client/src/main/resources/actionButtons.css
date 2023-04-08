@@ -1,7 +1,7 @@
 .button {
     -fx-background-color: #FE7E7E; /* Set the background color */
     -fx-text-fill: black; /* Set the text color */
-    -fx-font-size: 16px; /* Set the font size */
+    /* -fx-font-size: 16px;  */
     -fx-font-family: "Lucida Calligraphy", sans-serif; /* Set the font family */
     -fx-padding: 10px 20px; /* Set the padding */
     -fx-background-radius: 20px;
@@ -15,19 +15,67 @@
     -fx-background-color: #ff6b6b; /* Set the pressed background color */
 }
 
-.goBackbtn {
+.secondarybtn {
     -fx-background-color: #138F29; /* Set the background color */
     -fx-text-fill: black; /* Set the text color */
-    -fx-font-size: 16px; /* Set the font size */
+    /* -fx-font-size: 24px; Set the font size */
     -fx-font-family: "Lucida Calligraphy", sans-serif; /* Set the font family */
     -fx-padding: 10px 20px; /* Set the padding */
     -fx-background-radius: 20px;
 }
 
-.goBackbtn:hover {
+.secondarybtn:hover {
     -fx-background-color: #118025; /* Set the hover background color */
 }
 
-.goBackbtn:pressed {
+.secondarybtn:pressed {
     -fx-background-color: #0e6b20; /* Set the pressed background color */
 }
+
+.exitbtn {
+    -fx-background-color: #902326; /* Set the background color */
+    -fx-text-fill: black; /* Set the text color */
+    /* -fx-font-size: 24px; Set the font size */
+    -fx-font-family: "Lucida Calligraphy", sans-serif; /* Set the font family */
+    -fx-padding: 10px 20px; /* Set the padding */
+    -fx-background-radius: 20px;
+}
+
+.exitbtn:hover {
+    -fx-background-color: #901b1f; /* Set the hover background color */
+}
+
+.exitbtn:pressed {
+    -fx-background-color: #8f1317; /* Set the pressed background color */
+}
+
+.neutralbtn {
+    -fx-background-color: #D2B48C; /* Set the background color */
+    -fx-text-fill: black; /* Set the text color */
+    -fx-font-size: 24px; /* Set the font size */
+    -fx-font-family: "Lucida Calligraphy", sans-serif; /* Set the font family */
+    -fx-padding: 10px 20px; /* Set the padding */
+    -fx-background-radius: 20px;
+    -fx-border-color: black;
+    -fx-border-radius: 20px;
+    -fx-background-insets: 1;
+}
+
+.neutralbtn:hover {
+    -fx-background-color: #d4b286; /* Set the hover background color */
+}
+
+.neutralbtn:pressed {
+    -fx-background-color: #d3ab78; /* Set the pressed background color */
+}
+
+.progress {
+    -fx-progress-color: #6CA0DC;
+}
+
+.neutralTxtField {
+    -fx-background-radius: 20px;
+    -fx-border-color: black;
+    -fx-border-radius: 20px;
+}
+

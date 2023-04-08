@@ -37,7 +37,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30450, br, out);
+    this("localhost", 30452, br, out);
   }
 
   /**
@@ -108,11 +108,11 @@ public class Client {
     return msg;
   }
 
-  public void beginNewGame() throws IOException {
+  public String beginNewGame() throws IOException {
 
     playerConnection.writeData("New game");
     playerConnection.writeData(3);
-    System.out.println("game created");
+    return ("game created");
 
   }
 

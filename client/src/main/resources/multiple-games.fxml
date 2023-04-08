@@ -9,9 +9,8 @@
    <left>
       <AnchorPane prefWidth="663.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="beginNewGame" layoutX="258.0" layoutY="219.0" mnemonicParsing="false" onAction="#onBeginNewGame" prefHeight="94.0" prefWidth="170.0" text="Begin new game" />
-            <Button fx:id="joinOtherGames" layoutX="258.0" layoutY="381.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" text="join other games" />
-            <Button fx:id="fakeGame" layoutX="377.0" layoutY="549.0" mnemonicParsing="false" onAction="#onNewGame" prefHeight="94.0" prefWidth="170.0" text="Fake New Game" />
+            <Button fx:id="beginNewGame" layoutX="210.0" layoutY="600.0" mnemonicParsing="false" onAction="#onBeginNewGame" prefHeight="58.0" prefWidth="300.0" stylesheets="@actionButtons.css" text="Begin new game" />
+            <Button fx:id="fakeGame" layoutX="527.0" layoutY="124.0" mnemonicParsing="false" onAction="#onNewGame" prefHeight="94.0" prefWidth="170.0" text="Fake New Game" />
          </children>
       </AnchorPane>
    </left>
@@ -19,9 +18,10 @@
       <AnchorPane fx:id="multipleGameButtons" prefHeight="735.0" prefWidth="686.0" stylesheets="@buttonsStyle.css">
          <children>
             <Text fx:id="loginStatus" layoutX="-422.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="281.336669921875" x="600.0" y="100.0" />
-            <Button fx:id="button1" layoutX="258.0" layoutY="49.0" mnemonicParsing="false" onAction="#onGame1" prefHeight="94.0" prefWidth="170.0" text="Game1" />
-            <Button fx:id="button2" layoutX="258.0" layoutY="243.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" text="Game 2" />
-            <Button fx:id="button3" layoutX="258.0" layoutY="457.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" text="Game 3" />
+            <Button id="game1Btn" fx:id="button1" layoutX="258.0" layoutY="49.0" mnemonicParsing="false" onAction="#onGame1" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game1" />
+            <Button id="game2Btn" fx:id="button2" layoutX="258.0" layoutY="243.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 2" />
+            <Button id="game3Btn" fx:id="button3" layoutX="258.0" layoutY="457.0" mnemonicParsing="false" prefHeight="94.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 3" />
+            <Button id="joinOtherGamesbtn" fx:id="joinOtherGames" layoutX="54.0" layoutY="600.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" styleClass="secondarybtn" stylesheets="@actionButtons.css" text="join other games" />
          </children>
       </AnchorPane>
    </right>

@@ -5,13 +5,15 @@ package edu.duke.ece651.team5.shared;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
-import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
-import edu.duke.ece651.team5.shared.unit.Soldier;
-import edu.duke.ece651.team5.shared.unit.SoldierLevel;
+import edu.duke.ece651.team5.shared.unit.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +22,9 @@ public class AttackOrderTest {
     private AttackOrder attackOrder1;
     private AttackOrder attackOrder2;
     private AttackOrder attackOrder3;
+
+    
+
 
     @BeforeEach
     void setUp() {
@@ -44,5 +49,35 @@ public class AttackOrderTest {
         expectedSoldiers.put(new Soldier(SoldierLevel.CAVALRY), 3);
         expectedSoldiers.put(new Soldier(SoldierLevel.ARTILLERY), 1);
         Assertions.assertEquals(expectedSoldiers, attackOrder1.getSoldierToNumber());
+    }
+
+
+    @Test
+    void testCompareTo() {
+        assertTrue(attackOrder1.compareTo(attackOrder2) == 0);
+    }
+
+    @Test
+    void testExecute() {
+        String sourceName = "Source Territory";
+        String destinationName = "Destination Territory";
+        Map<Soldier, Integer> soldiers = new HashMap<>();
+        soldiers.put(new Soldier(SoldierLevel.INFANTRY), 1);
+        Player player = new Player("Player1");
+
+        AttackOrder attackOrder = new AttackOrder(sourceName, destinationName, soldiers, player);
+
+        Territory sourceTerritory = mock(Territory.class);
+
+        RISKMap map = mock(RISKMap.class);
+        when(map.getTerritoryByName(sourceName)).thenReturn(sourceTerritory);
+
+        SoldierArmy soldierArmy = mock(SoldierArmy.class);
+        when(sourceTerritory.getSoldierArmy()).thenReturn(soldierArmy);
+       
+
+        attackOrder.execute(map);
+        verify(soldierArmy).removeSoldier(any(Soldier.class), anyInt());
+
     }
 }

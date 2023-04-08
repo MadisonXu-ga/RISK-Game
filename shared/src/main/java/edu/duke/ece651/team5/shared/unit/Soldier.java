@@ -32,5 +32,10 @@ public class Soldier {
         return level != null ? level.hashCode() : 0;
     }
 
+    @Override
+    public String toString(){
+        return level.name();
+    }
+
 
 }

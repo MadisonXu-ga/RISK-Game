@@ -8,7 +8,7 @@ public class SoldierArmy {
     private Map<Soldier, Integer> soldiers = new HashMap<>();
 
     public SoldierArmy() {
-        //addSoldier(new Soldier(SoldierLevel.INFANTRY), DEFAULT_INIT_SOLDIER_NUM);
+        addSoldier(new Soldier(SoldierLevel.INFANTRY), DEFAULT_INIT_SOLDIER_NUM);
         // addSoldier(new Soldier(SoldierType.ARTILLERY, 1), DEFAULT_INIT_SOLDIER_NUM);
     }
 

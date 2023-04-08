@@ -1,13 +1,19 @@
 package edu.duke.ece651.team5.server;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
+import edu.duke.ece651.team5.server.MyEnum.GameStatus;
+import edu.duke.ece651.team5.server.MyEnum.UserStatus;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 
 public class UserHandlerTest {
@@ -71,11 +77,34 @@ public class UserHandlerTest {
     }
 
     @Test
-    void testHandleNewGame(){
-        PlayerConnection mockPlayerConnection = mock(PlayerConnection.class);
+    void testHandleNewGame() throws ClassNotFoundException, IOException {
+        HashMap<Integer, GameController> allGames = new HashMap<>();
         UserManager userManager = new UserManager();
-        
+        PlayerConnection mockPlayerConnection = mock(PlayerConnection.class);
+        UserGameMap userGameMap = new UserGameMap();
+        HashMap<User, PlayerConnection> mockClients = mock(HashMap.class);
+
+        UserHandler userHandler = new UserHandler(mockPlayerConnection, userManager, allGames, userGameMap,
+                mockClients);
+
+        ArrayList<String> inputInfo = new ArrayList<>(Arrays.asList("user1", "abc123"));
+        when(mockPlayerConnection.readData()).thenReturn(inputInfo);
+        userHandler.handleSignUp();
+        userHandler.handleLogin();
+
+        when(mockPlayerConnection.readData()).thenReturn(3);
+        userHandler.handleNewGame();
+        verify(mockPlayerConnection).writeData("Create successfully");
+        User user = new User("user1", "abc123");
+
+        GameController userGame = userGameMap.getUserGames(user).get(0);
+        assertNotNull(userGame);
+        assertEquals(user, userGameMap.getGameUsers(userGame).get(0));
+        assertTrue(userGame.getStatus().equals(GameStatus.WAITING));
     }
+
+    @Test
+    void testHandleRetrieveActiveGames(){}
 
     @Test
     void testHandleUserOperation() {

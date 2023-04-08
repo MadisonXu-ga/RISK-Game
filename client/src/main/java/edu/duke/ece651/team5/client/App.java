@@ -37,10 +37,11 @@ public class App extends Application {
   private static HashMap<String, Scene> loadedScenes;
   Client classClient;
 
+  // include to make the code testable by passing a mock client
   public App(Client client) {
     this.classClient = client;
   }
-
+  // regular loading of the page
   public App() throws UnknownHostException, IOException {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     this.classClient = new Client(input, System.out);
@@ -49,17 +50,17 @@ public class App extends Application {
   @Override
   public void start(Stage stage) throws IOException {
 
-    System.out.println("It is printing");
+    // this will be used to save important scenes and main stage thorughout the game
     loadedScenes = new HashMap<>();
     primaryStage = stage;
 
+    // get rid of this later 
     String javaVersion = System.getProperty("java.version");
     String javafxVersion = System.getProperty("javafx.version");
 
+    // load our login page 
     URL xmlResource = getClass().getResource("/login-page.fxml");
-
     FXMLLoader loader = new FXMLLoader(xmlResource);
-
     HashMap<Class<?>, Object> controllers = new HashMap<>();
     controllers.put(LoginInController.class, new LoginInController(classClient));
     controllers.put(SignUpController.class, new SignUpController(classClient));
@@ -70,6 +71,7 @@ public class App extends Application {
 
     BorderPane bp = loader.load();
 
+    // set our game to be 90% of our screen size 
     double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
     double screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
 
@@ -77,26 +79,40 @@ public class App extends Application {
     double sceneWidth = screenWidth * 0.9;
     double sceneHeight = screenHeight * 0.9;
 
+    // included for testing purposes; erase later
     System.out.println("w:" + sceneWidth + ", H: " + sceneHeight);
 
+    // create scene for the game and load the login page
     Scene scene = new Scene(new StackPane(bp), sceneWidth, sceneHeight);
     signInScene = scene;
     addScenetoMain("login-page", scene);
-
     stage.setResizable(false);
     stage.setScene(scene);
     stage.show();
   }
 
+  // this function will be used from the controllers to set new scenes in the same stage
+  /**
+   * @return primaryStage as a Stage 
+   */
   public static Stage getPrimaryStage() {
     return primaryStage;
   }
 
+  // add the scenes that we want to keep coming back to here
+  /**
+   * @param sceneName String name of the scene
+   * @param scene that we want to add 
+   */
   public static void addScenetoMain(String sceneName, Scene scene) {
 
     loadedScenes.put(sceneName, scene);
   }
 
+  // load the screens by passing their names in string format
+  /**
+   * @param sceneName in string format
+   */
   public static void loadScenefromMain(String sceneName) {
 
     Scene loadedScene = loadedScenes.get(sceneName);
@@ -106,7 +122,6 @@ public class App extends Application {
 
   public static void main(String[] args) {
 
-    System.out.println("It is printing");
     launch();
   }
 

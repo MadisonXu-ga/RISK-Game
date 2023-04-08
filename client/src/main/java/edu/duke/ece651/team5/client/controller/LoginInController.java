@@ -26,20 +26,31 @@ public class LoginInController {
     public TextField userName;
     @FXML
     public TextField password;
-
     @FXML
     public Text loginFeedback;
-
-    private Client client;
-
     @FXML
     SignUpController signUpController;
 
+    private Client client;
+
+    
+
+    /**
+     * @param client added for testability and pass a mocked client
+     */
     public LoginInController(Client client) {
 
         this.client = client;
     }
 
+    /**
+     * once we press the sign in button we have two options:
+     * 1) the client does not exist, and a text showing "Not Exists" shows 
+     * 2) the client does exist and the user is able to go to the next loading screen
+     * @param ae action of pressing the signIn button
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     public void onSignInButton(ActionEvent ae) throws ClassNotFoundException, IOException {
         System.out.println("sign in was pressed");
         String user_name = userName.getText().trim();
@@ -63,6 +74,14 @@ public class LoginInController {
         }
     }
 
+    /**
+     * @param userAndPassword passes the user and password to be sent to server and get into the game
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * this function only is called if an existing user and password are passed to server
+     * creates the multiple-games scene and loads it 
+     * adds multiple-games to main, and sets the scene using primaryStage
+     */
     private void createMultipleGamesPage(ArrayList<String> userAndPassword)
             throws IOException, ClassNotFoundException {
         System.out.println(client.login(userAndPassword));
@@ -85,6 +104,13 @@ public class LoginInController {
         App.getPrimaryStage().setScene(scene);
     }
 
+    /**
+     * if the user does not have an account or needs a new one they press Signup
+     * this function takes them to the sign up page 
+     * no need to store sign up in memory since we can always access it from login
+     * @param ae
+     * @throws IOException
+     */
     public void onSignUpButton(ActionEvent ae) throws IOException {
         System.out.println("sign up was pressed");
 

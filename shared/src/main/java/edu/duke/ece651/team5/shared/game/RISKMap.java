@@ -1,5 +1,8 @@
 package edu.duke.ece651.team5.shared.game;
 
+import javax.xml.transform.Source;
+import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 
 import java.io.BufferedReader;
@@ -38,7 +41,8 @@ public class RISKMap {
     public RISKMap(String fileName) {
         territories = new HashMap<>();
         connections = new HashMap<>();
-        InputStream inputStream = this.getClass().getResourceAsStream(fileName);
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
         initMapFromConfigFile(inputStream);
     }
 

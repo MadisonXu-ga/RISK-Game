@@ -9,14 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.duke.ece651.team5.shared.game.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.duke.ece651.team5.shared.game.CombatResolver;
-import edu.duke.ece651.team5.shared.game.Game;
-import edu.duke.ece651.team5.shared.game.Player;
-import edu.duke.ece651.team5.shared.game.RISKMap;
-import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;

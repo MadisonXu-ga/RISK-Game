@@ -11,10 +11,12 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MovePathWithSameOwnerRuleCheckerTest {
     private RISKMap map;
-    private MoveOrder move;
+    private MoveOrder move1;
+    private MoveOrder move2;
 
     @BeforeEach
     public void setUp() {
@@ -36,12 +38,15 @@ public class MovePathWithSameOwnerRuleCheckerTest {
 
         map = new RISKMap(territories, connections);
         Territory territory1 = map.getTerritoryByName("Territory 1");
-        move = new MoveOrder("Territory 1", "Territory 2", null, territory1.getOwner());
+        move1 = new MoveOrder("Territory 1", "Territory 2", null, territory1.getOwner());
+        move2 = new MoveOrder("Territory 1", "Territory 4", null, territory1.getOwner());
     }
     @Test
     void checkMyRule() {
         MovePathWithSameOwnerRuleChecker movePathWithSameOwnerRuleChecker = new MovePathWithSameOwnerRuleChecker(null);
-        assertEquals("There is no such a path from Territory 1 to Territory 2 owned by Player 1", movePathWithSameOwnerRuleChecker.checkOrder(move, map));
+        assertEquals("There is no such a path from Territory 1 to Territory 2 owned by Player 1",
+                movePathWithSameOwnerRuleChecker.checkOrder(move1, map));
+        assertNull(movePathWithSameOwnerRuleChecker.checkOrder(move2, map));
     }
 
 

@@ -25,7 +25,15 @@ class PairTest {
         Pair<Integer, Integer> pair2 = new Pair<>(10, 20);
         assertEquals(pair, pair2);
         Pair<Integer, Integer> pair3 = new Pair<>(10, 10);
+        Pair<Integer, Integer> pair4 = new Pair<>(5, 20);
         assertNotEquals(pair, pair3);
+        assertNotEquals(pair, pair4);
+    }
+
+    @Test
+    void testHashcode() {
+        Pair<Integer, Integer> pairNull = new Pair<>(null, null);
+        assertEquals(0, pairNull.hashCode());
     }
 
 

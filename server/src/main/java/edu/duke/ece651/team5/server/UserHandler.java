@@ -195,7 +195,9 @@ public class UserHandler implements Runnable {
         try {
             ArrayList<Integer> gameIDs = new ArrayList<>();
             for (GameController game : userGameMap.getUserGames(currentUser)) {
-                gameIDs.add(game.getID());
+                if (game.getStatus() != GameStatus.ENDED) {
+                    gameIDs.add(game.getID());
+                }
             }
             playerConnection.writeData(gameIDs);
 
@@ -256,11 +258,11 @@ public class UserHandler implements Runnable {
         }
     }
 
-
-    protected void broadcastStartGame(GameController gameController){
+    // TODO: may change to broadcast map later
+    protected void broadcastStartGame(GameController gameController) {
         /**
-         * TODO: get map and players from
-         * 
+         * TODO: get map and players from gameController
+         * send all the players in this game map
          */
     }
 
@@ -336,20 +338,18 @@ public class UserHandler implements Runnable {
      * Handle continue game operation
      */
     protected void handleContinueGame() {
+        System.out.println("Dealing continue game operation...");
         try {
             int gameID = (int) playerConnection.readData();
-            // TODO: change this completely
-            // boolean canContinue = allGames.get(gameID).continueGame(currentUser);
-            // // if all users are active in this game, can continue
-            // if (canContinue) {
-            // broadcastContinueGame(allGames.get(gameID));
-            // }
-            // // else tell this user to pause
-            // else {
-            // clients.get(currentUser).writeData("Pause");
-            // }
-
-            boolean canContinue = allGames.get(gameID).continueGame(currentUser);
+            GameController gameController = allGames.get(gameID);
+            // send game status to client
+            if (gameController.getStatus() == GameStatus.INITIALIZING) {
+                playerConnection.writeData("Initializing");
+            } else if (gameController.getStatus() == GameStatus.STARTED) {
+                playerConnection.writeData("Started");
+            }
+            // else is wrong.
+            // TODO: send the map maybe
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();

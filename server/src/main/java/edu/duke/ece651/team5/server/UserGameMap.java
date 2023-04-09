@@ -79,6 +79,13 @@ public class UserGameMap {
         gameToUser.get(game).remove(user);
     }
 
+    /**
+     * Check whether this user is in this game
+     * 
+     * @param user the user that you want to check
+     * @param game the game that you want to check
+     * @return true if this user is in this game, false if not
+     */
     public boolean checkUserinGame(User user, GameController game) {
         return getGameUsers(game).contains(user);
     }

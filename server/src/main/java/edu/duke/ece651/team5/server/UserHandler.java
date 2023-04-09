@@ -240,9 +240,9 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Joined Success");
                 System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
                 if (msg == "Start") {
-                    // TODO: sned map to all clients in this game
+                    // TODO: send map to all clients in this game
                     // loop -> playerConnection.writeData(map);
-                    System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
+                    System.out.println("Game " + gameID + " is ready to start!");
                 }
             }
             // fail
@@ -254,6 +254,14 @@ public class UserHandler implements Runnable {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+
+    protected void broadcastStartGame(GameController gameController){
+        /**
+         * TODO: get map and players from
+         * 
+         */
     }
 
     /**

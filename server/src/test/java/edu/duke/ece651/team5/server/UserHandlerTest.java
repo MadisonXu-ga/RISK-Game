@@ -182,6 +182,56 @@ public class UserHandlerTest {
     }
 
     @Test
+    void testHandleJoinGame() throws ClassNotFoundException, IOException {
+        HashMap<Integer, GameController> allGames = new HashMap<>();
+        UserManager userManager = new UserManager();
+        PlayerConnection mockPlayerConnection1 = mock(PlayerConnection.class);
+        PlayerConnection mockPlayerConnection2 = mock(PlayerConnection.class);
+        UserGameMap userGameMap = new UserGameMap();
+        HashMap<User, PlayerConnection> mockClients = mock(HashMap.class);
+
+        // create user handlers
+        UserHandler userHandler1 = new UserHandler(mockPlayerConnection1, userManager, allGames, userGameMap,
+                mockClients);
+
+        UserHandler userHandler2 = new UserHandler(mockPlayerConnection2, userManager, allGames, userGameMap,
+                mockClients);
+
+        // sign up and login
+        ArrayList<String> inputInfo1 = new ArrayList<>(Arrays.asList("user1", "abc123"));
+        when(mockPlayerConnection1.readData()).thenReturn(inputInfo1);
+        userHandler1.handleSignUp();
+        userHandler1.handleLogin();
+
+        ArrayList<String> inputInfo2 = new ArrayList<>(Arrays.asList("user2", "abc123"));
+        when(mockPlayerConnection2.readData()).thenReturn(inputInfo2);
+        userHandler2.handleSignUp();
+        userHandler2.handleLogin();
+
+        // make new games
+        when(mockPlayerConnection1.readData()).thenReturn(3);
+        userHandler1.handleNewGame();
+
+        when(mockPlayerConnection2.readData()).thenReturn(2);
+        userHandler2.handleNewGame();
+
+        // try to join game
+        int gameID2 = userGameMap.getUserGames(new User("user2", "abc123")).get(0).getID();
+        int gameID1 = userGameMap.getUserGames(new User("user1", "abc123")).get(0).getID();
+
+        when(mockPlayerConnection1.readData()).thenReturn(gameID2);
+        userHandler1.handleJoinGame();
+        // TODO: this is start, can verify sending map later
+        verify(mockPlayerConnection1).writeData("Joined Success");
+        assertEquals(GameStatus.INITIALIZING, allGames.get(gameID2).getStatus());
+
+        when(mockPlayerConnection2.readData()).thenReturn(gameID1);
+        userHandler2.handleJoinGame();
+        verify(mockPlayerConnection2).writeData("Joined Success");
+        assertEquals(GameStatus.WAITING, allGames.get(gameID1).getStatus());
+    }
+
+    @Test
     void testHandleUserOperation() {
 
     }

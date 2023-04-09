@@ -7,6 +7,12 @@ public class Resource {
         this.type = type;
     }
 
+
+    public ResourceType getType() {
+        return type;
+    }
+
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -22,4 +28,8 @@ public class Resource {
         // return type != null ? type.hashCode() : 0;
         return type.hashCode();
     }
+
+
+
+
 }

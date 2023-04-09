@@ -8,6 +8,7 @@ import java.util.Map;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 public abstract class BasicOrder implements Order, Serializable {
      // @Serial
@@ -15,13 +16,13 @@ public abstract class BasicOrder implements Order, Serializable {
      protected String sourceName;
      protected String destinationName;
      //todo: change this to soldier army
-     protected Map<Soldier, Integer> soldierToNumber;
+     protected SoldierArmy soldierToNumber;
      protected Player player;
 
-     public BasicOrder(String sourceName, String destinationName, Map<Soldier, Integer> soldiers, Player player) {
+     public BasicOrder(String sourceName, String destinationName, SoldierArmy soldierToNumber, Player player) {
          this.sourceName = sourceName;
          this.destinationName = destinationName;
-         this.soldierToNumber = soldiers;
+         this.soldierToNumber = soldierToNumber;
          this.player = player;
      }
 
@@ -56,11 +57,11 @@ public abstract class BasicOrder implements Order, Serializable {
       * 
       * @return the type
       */
-     public Map<Soldier, Integer> getSoldierToNumber() {
+     public SoldierArmy getSoldierToNumber() {
          return soldierToNumber;
      }
 
-
+     
      /**
       * get playerName
       * @return

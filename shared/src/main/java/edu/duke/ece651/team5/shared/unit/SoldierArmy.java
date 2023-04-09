@@ -12,6 +12,10 @@ public class SoldierArmy {
         // addSoldier(new Soldier(SoldierType.ARTILLERY, 1), DEFAULT_INIT_SOLDIER_NUM);
     }
 
+    public SoldierArmy(Map<Soldier, Integer> soldiers) {
+        this.soldiers = soldiers;
+    }
+
     public void addSoldier(Soldier soldier, int count) {
         soldiers.put(soldier, soldiers.getOrDefault(soldier, 0) + count);
     }

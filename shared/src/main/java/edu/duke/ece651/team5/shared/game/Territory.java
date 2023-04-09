@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import edu.duke.ece651.team5.shared.constant.Constants;
 import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 
@@ -13,11 +14,6 @@ public class Territory {
     private String name;
     private Player owner;
     private SoldierArmy soldierArmy;
-
-    //todo where to store them 
-    private int foodResource;
-    private int techResource;
-
 
 
     public Territory(int id, String name, Player owner, SoldierArmy soldierArmy) {
@@ -40,15 +36,9 @@ public class Territory {
         this.soldierArmy = new SoldierArmy();
     }
 
-    //todo where to initiate them
-    public void setResources(int food, int tech){
-        foodResource = food;
-        techResource = tech;
-    }
-
-    //todo right now only produce food
     public void produceResource(Resource resource) {
-        owner.addResourceFromTerritory(resource, Constants.PRODUCE_FOOD_RESOURCE_PER_TURN);
+        int amount = (resource.getType().equals(ResourceType.FOOD)) ? Constants.PRODUCE_FOOD_RESOURCE_PER_TURN : Constants.PRODUCE_TECH_RESOURCE_PER_TURN;
+        owner.addResourceFromTerritory(resource, amount);
     }
 
     public int getId() {

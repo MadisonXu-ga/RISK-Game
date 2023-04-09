@@ -59,9 +59,9 @@ public class CombatPlayers {
 
     private List<Integer> addBonusToOrder(AttackOrder order){
         List<Integer> bonusSoldier = new ArrayList<>();
-        for(Soldier soldier: order.getSoldierToNumber().keySet()){
+        for(Soldier soldier: order.getSoldierToNumber().getAllSoldiers().keySet()){
             int bonus = levelToBonus.get(soldier.getLevel().ordinal());
-            int numToAdd = order.getSoldierToNumber().get(soldier);
+            int numToAdd = order.getSoldierToNumber().getAllSoldiers().get(soldier);
             bonusSoldier.addAll(Collections.nCopies(numToAdd, bonus));
         }
         bonusSoldier.sort(Collections.reverseOrder());

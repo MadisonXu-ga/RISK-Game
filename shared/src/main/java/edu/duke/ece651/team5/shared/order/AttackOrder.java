@@ -6,12 +6,13 @@ import java.util.Map;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, Serializable{
 
 
-    public AttackOrder(String sourceName, String destinationName, Map<Soldier, Integer> soldiers, Player player) {
-        super(sourceName, destinationName, soldiers, player);
+    public AttackOrder(String sourceName, String destinationName, SoldierArmy soldierToNumber, Player player) {
+        super(sourceName, destinationName, soldierToNumber, player);
     }
 
     @Override
@@ -22,7 +23,7 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
     @Override
     public void execute(RISKMap map) {
         Territory source = map.getTerritoryByName(sourceName);
-        for (Map.Entry<Soldier, Integer> entry : soldierToNumber.entrySet()) {
+        for (Map.Entry<Soldier, Integer> entry : soldierToNumber.getAllSoldiers().entrySet()) {
             Soldier soldier = entry.getKey();
             int number = entry.getValue();
             source.getSoldierArmy().removeSoldier(soldier, number);
@@ -33,9 +34,9 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
     }
 
     public void mergeWith(AttackOrder other) {
-        other.getSoldierToNumber().entrySet().stream()
+        other.getSoldierToNumber().getAllSoldiers().entrySet().stream()
         .filter(entry -> this.getDestinationName().equals(other.getDestinationName()))
-        .forEach(entry -> soldierToNumber.merge(entry.getKey(), entry.getValue(), Integer::sum));
+        .forEach(entry -> soldierToNumber.getAllSoldiers().merge(entry.getKey(), entry.getValue(), Integer::sum));
     }
 
     

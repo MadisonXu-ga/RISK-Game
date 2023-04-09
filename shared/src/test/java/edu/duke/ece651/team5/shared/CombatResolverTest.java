@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 
 public class CombatResolverTest {
@@ -62,10 +63,11 @@ public class CombatResolverTest {
         Map<Soldier, Integer> soldiers1 = new HashMap<>();
         soldiers1.put(new Soldier(SoldierLevel.INFANTRY), 5);
         soldiers1.put(new Soldier(SoldierLevel.CAVALRY), 3);
-        order1 = new AttackOrder("source1", "destination1", soldiers1, new Player("Player 1"));
-        order2 = new AttackOrder("source1", "destination1", soldiers1, new Player("Player 1"));
-        order3 = new AttackOrder("source1", "destination1", soldiers1, new Player("Player 2"));
-        order4 = new AttackOrder("source1", map.getTerritoryById(1).getName(), soldiers1, new Player("Player 2"));
+        SoldierArmy army1 = new SoldierArmy(soldiers1);
+        order1 = new AttackOrder("source1", "destination1", army1, new Player("Player 1"));
+        order2 = new AttackOrder("source1", "destination1", army1, new Player("Player 1"));
+        order3 = new AttackOrder("source1", "destination1", army1, new Player("Player 2"));
+        order4 = new AttackOrder("source1", map.getTerritoryById(1).getName(), army1, new Player("Player 2"));
 
        
     }

@@ -19,6 +19,7 @@ import edu.duke.ece651.team5.shared.game.CombatPlayers;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 
 
@@ -34,16 +35,19 @@ public class CombatPlayersTest {
         Map<Soldier, Integer> soldiers1 = new HashMap<>();
         soldiers1.put(new Soldier(SoldierLevel.INFANTRY), 5);
         soldiers1.put(new Soldier(SoldierLevel.CAVALRY), 3);
-        attackOrder1 = new AttackOrder("source1", "destination1", soldiers1, new Player("Player 1"));
+        SoldierArmy army1 = new SoldierArmy(soldiers1);
+        attackOrder1 = new AttackOrder("source1", "destination1", army1, new Player("Player 1"));
 
         Map<Soldier, Integer> soldiers2 = new HashMap<>();
         soldiers2.put(new Soldier(SoldierLevel.INFANTRY), 1);
         soldiers2.put(new Soldier(SoldierLevel.ARTILLERY), 2);
-        attackOrder2 = new AttackOrder("source2", "destination1", soldiers2, new Player("Player 2"));
+        SoldierArmy army2 = new SoldierArmy(soldiers2);
+        attackOrder2 = new AttackOrder("source2", "destination1", army2, new Player("Player 2"));
 
         Map<Soldier, Integer> soldiers3 = new HashMap<>();
         soldiers3.put(new Soldier(SoldierLevel.INFANTRY), 1);
-        attackOrder3 = new AttackOrder("source3", "destination1", soldiers3, new Player("Player 3"));
+        SoldierArmy army3 = new SoldierArmy(soldiers3);
+        attackOrder3 = new AttackOrder("source3", "destination1", army3, new Player("Player 3"));
     
         List<AttackOrder> attackOrders = Arrays.asList(attackOrder1, attackOrder2, attackOrder3);
         combatPlayers = new CombatPlayers(attackOrders);
@@ -56,7 +60,7 @@ public class CombatPlayersTest {
         // Assert expected result
         assertNotNull(result);
         assertEquals(2, result.size());
-        assertEquals(attackOrder1.getSoldierToNumber(), result);
+        assertEquals(attackOrder1.getSoldierToNumber().getAllSoldiers(), result);
     }
 
 

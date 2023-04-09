@@ -13,11 +13,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CombatResolver {
-
-
+    
     public CombatResolver() {
     }
-
 
     //todo can move to server
     /**
@@ -72,7 +70,7 @@ public class CombatResolver {
             return;
         }
         AttackOrder defenseOrder = new AttackOrder(fightingTerri.getName(), fightingTerri.getName(),
-                fightingTerri.getSoldierArmy().getAllSoldiers(), fightingTerri.getOwner());
+                fightingTerri.getSoldierArmy(), fightingTerri.getOwner());
         fightOrders.add(defenseOrder);
         
 

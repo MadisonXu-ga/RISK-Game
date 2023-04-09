@@ -5,15 +5,15 @@ import java.util.Map;
 
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.*;
-import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.*;
 
 public class MoveOrder extends BasicOrder implements Serializable {
 
     // @Serial
     private static final long serialVersionUID = -5458702819007392881L;
 
-    public MoveOrder(String sourceName, String destinationName, Map<Soldier, Integer> soldiers, Player playerName) {
-        super(sourceName, destinationName, soldiers, playerName);
+    public MoveOrder(String sourceName, String destinationName, SoldierArmy soldierToNumber, Player playerName) {
+        super(sourceName, destinationName, soldierToNumber, playerName);
     }
 
     /**
@@ -25,12 +25,11 @@ public class MoveOrder extends BasicOrder implements Serializable {
     public void execute(RISKMap map) {
         Territory source = map.getTerritoryByName(sourceName);
         Territory destination = map.getTerritoryByName(destinationName);
-        soldierToNumber.forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
-        soldierToNumber.forEach((soldier, number) -> destination.getSoldierArmy().addSoldier(soldier, number));
+        soldierToNumber.getAllSoldiers().forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
+        soldierToNumber.getAllSoldiers().forEach((soldier, number) -> destination.getSoldierArmy().addSoldier(soldier, number));
         // consume resource
         int distance = map.getShortestPathDistance(sourceName, destinationName);
-        // player.consumeResource(new Resource(ResourceType.FOOD),
-        //         C * distance * );
+        //player.consumeResource(new Resource(ResourceType.FOOD), C * distance);
     }
 }
 

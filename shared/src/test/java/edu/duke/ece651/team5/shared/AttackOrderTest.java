@@ -30,14 +30,16 @@ public class AttackOrderTest {
         Map<Soldier, Integer> soldiers1 = new HashMap<>();
         soldiers1.put(new Soldier(SoldierLevel.INFANTRY), 5);
         soldiers1.put(new Soldier(SoldierLevel.CAVALRY), 3);
-        attackOrder1 = new AttackOrder("source1", "destination1", soldiers1, new Player("Player 1"));
+        SoldierArmy army1 = new SoldierArmy(soldiers1);
+        attackOrder1 = new AttackOrder("source1", "destination1", army1, new Player("Player 1"));
 
         Map<Soldier, Integer> soldiers2 = new HashMap<>();
         soldiers2.put(new Soldier(SoldierLevel.INFANTRY), 2);
         soldiers2.put(new Soldier(SoldierLevel.ARTILLERY), 1);
-        attackOrder2 = new AttackOrder("source2", "destination1", soldiers2, new Player("Player 1"));
+        SoldierArmy army2 = new SoldierArmy(soldiers2);
+        attackOrder2 = new AttackOrder("source2", "destination1", army2, new Player("Player 1"));
 
-        attackOrder3 = new AttackOrder("source2", "destination1", soldiers1, new Player("Player 2"));
+        attackOrder3 = new AttackOrder("source2", "destination1", army1, new Player("Player 2"));
     }
 
     @Test
@@ -47,7 +49,7 @@ public class AttackOrderTest {
         expectedSoldiers.put(new Soldier(SoldierLevel.INFANTRY), 7);
         expectedSoldiers.put(new Soldier(SoldierLevel.CAVALRY), 3);
         expectedSoldiers.put(new Soldier(SoldierLevel.ARTILLERY), 1);
-        Assertions.assertEquals(expectedSoldiers, attackOrder1.getSoldierToNumber());
+        Assertions.assertEquals(expectedSoldiers, attackOrder1.getSoldierToNumber().getAllSoldiers());
     }
 
 
@@ -62,9 +64,10 @@ public class AttackOrderTest {
         String destinationName = "Destination Territory";
         Map<Soldier, Integer> soldiers = new HashMap<>();
         soldiers.put(new Soldier(SoldierLevel.INFANTRY), 1);
+        SoldierArmy army = new SoldierArmy(soldiers);
         Player player = new Player("Player1");
 
-        AttackOrder attackOrder = new AttackOrder(sourceName, destinationName, soldiers, player);
+        AttackOrder attackOrder = new AttackOrder(sourceName, destinationName, army, player);
 
         Territory sourceTerritory = mock(Territory.class);
 

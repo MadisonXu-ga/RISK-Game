@@ -3,15 +3,15 @@ package edu.duke.ece651.team5.shared.rulechecker;
 
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 
-public abstract class ReserachOrderRuleChecker{
+public abstract class ResearchOrderRuleChecker{
 
-    private final ReserachOrderRuleChecker next;
+    private final ResearchOrderRuleChecker next;
 
     /**
      * Constructor to chain the rule checkers
      * @param next
      */
-    public ReserachOrderRuleChecker(ReserachOrderRuleChecker next) {
+    public ResearchOrderRuleChecker(ResearchOrderRuleChecker next) {
         this.next = next;
     }
 

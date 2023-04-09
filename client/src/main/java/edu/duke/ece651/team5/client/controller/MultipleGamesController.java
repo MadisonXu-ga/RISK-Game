@@ -15,7 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
-public class MultipleGamesController {
+public class MultipleGamesController extends GoBackController {
 
     @FXML
     AnchorPane multipleGameButtons;
@@ -100,7 +100,7 @@ public class MultipleGamesController {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
-        controllers.put(MapGoBackController.class, new MapGoBackController());
+        controllers.put(GoBackController.class, new GoBackController());
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });
@@ -124,12 +124,12 @@ public class MultipleGamesController {
 
         BorderPane bp = loader.load();
         Scene scene = new Scene(new StackPane(bp));
-        App.addScenetoMain("waitin-room", scene);
+        App.addScenetoMain("waiting-room", scene);
 
         App.getPrimaryStage().setScene(scene);
     }
 
-    public Button[] getButtons(){
+    public Button[] getButtons() {
         return gameButtons;
     }
 }

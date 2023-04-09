@@ -174,6 +174,7 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Create successfully");
                 userGameMap.addGameToUser(currentUser, newGame);
                 userGameMap.addUserToGame(newGame, currentUser);
+                // TODO: send map or send when full? seems when full is better
                 System.out.println("Created and joined new game successfully!");
             } else {
                 playerConnection.writeData(msg);
@@ -194,7 +195,9 @@ public class UserHandler implements Runnable {
         try {
             ArrayList<Integer> gameIDs = new ArrayList<>();
             for (GameController game : userGameMap.getUserGames(currentUser)) {
-                gameIDs.add(game.getID());
+                if (game.getStatus() != GameStatus.ENDED) {
+                    gameIDs.add(game.getID());
+                }
             }
             playerConnection.writeData(gameIDs);
 
@@ -210,7 +213,8 @@ public class UserHandler implements Runnable {
         try {
             ArrayList<Integer> gameIDs = new ArrayList<>();
             for (Map.Entry<Integer, GameController> entry : allGames.entrySet()) {
-                if (entry.getValue().getStatus() == GameStatus.WAITING) {
+                if (entry.getValue().getStatus() == GameStatus.WAITING
+                        && !userGameMap.checkUserinGame(currentUser, entry.getValue())) {
                     gameIDs.add(entry.getKey());
                 }
             }
@@ -238,9 +242,9 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Joined Success");
                 System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
                 if (msg == "Start") {
-                    // TODO: sned map to all clients in this game
+                    // TODO: send map to all clients in this game
                     // loop -> playerConnection.writeData(map);
-                    System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
+                    System.out.println("Game " + gameID + " is ready to start!");
                 }
             }
             // fail
@@ -252,6 +256,14 @@ public class UserHandler implements Runnable {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    // TODO: may change to broadcast map later
+    protected void broadcastStartGame(GameController gameController) {
+        /**
+         * TODO: get map and players from gameController
+         * send all the players in this game map
+         */
     }
 
     /**
@@ -326,20 +338,18 @@ public class UserHandler implements Runnable {
      * Handle continue game operation
      */
     protected void handleContinueGame() {
+        System.out.println("Dealing continue game operation...");
         try {
             int gameID = (int) playerConnection.readData();
-            // TODO: change this completely
-            // boolean canContinue = allGames.get(gameID).continueGame(currentUser);
-            // // if all users are active in this game, can continue
-            // if (canContinue) {
-            // broadcastContinueGame(allGames.get(gameID));
-            // }
-            // // else tell this user to pause
-            // else {
-            // clients.get(currentUser).writeData("Pause");
-            // }
-
-            boolean canContinue = allGames.get(gameID).continueGame(currentUser);
+            GameController gameController = allGames.get(gameID);
+            // send game status to client
+            if (gameController.getStatus() == GameStatus.INITIALIZING) {
+                playerConnection.writeData("Initializing");
+            } else if (gameController.getStatus() == GameStatus.STARTED) {
+                playerConnection.writeData("Started");
+            }
+            // else is wrong.
+            // TODO: send the map maybe
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();

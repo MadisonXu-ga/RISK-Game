@@ -243,8 +243,8 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Joined Success");
                 System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
                 if (msg == "Start") {
-                    // TODO: send map to all clients in this game
-                    // loop -> playerConnection.writeData(map);
+                    // TODO: finished broadcaststartgame and call it
+                    broadcastStartGame(gameToJoin);
                     System.out.println("Game " + gameID + " is ready to start!");
                 }
             }
@@ -288,8 +288,8 @@ public class UserHandler implements Runnable {
                 // if game started, pause game to wait user
                 // TODO: i think for now is to do nothing
                 // else if (game.getStatus() != GameStatus.ENDED) {
-                //     // notify all the active players
-                //     broadcastPauseGame(game);
+                // // notify all the active players
+                // broadcastPauseGame(game);
                 // }
             }
 

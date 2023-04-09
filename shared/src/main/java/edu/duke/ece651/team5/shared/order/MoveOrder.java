@@ -1,11 +1,12 @@
 package edu.duke.ece651.team5.shared.order;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import edu.duke.ece651.team5.shared.game.RISKMap;
+import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.unit.*;
+import edu.duke.ece651.team5.shared.constant.Constants;
 
 public class MoveOrder extends BasicOrder implements Serializable {
 
@@ -29,7 +30,7 @@ public class MoveOrder extends BasicOrder implements Serializable {
         soldierToNumber.getAllSoldiers().forEach((soldier, number) -> destination.getSoldierArmy().addSoldier(soldier, number));
         // consume resource
         int distance = map.getShortestPathDistance(sourceName, destinationName);
-        //player.consumeResource(new Resource(ResourceType.FOOD), C * distance);
+        player.consumeResource(new Resource(ResourceType.FOOD), Constants.C * distance * soldierToNumber.getTotalCountSolider());
     }
 }
 

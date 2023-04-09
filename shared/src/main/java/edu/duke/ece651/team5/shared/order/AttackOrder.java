@@ -7,6 +7,8 @@ import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
+import edu.duke.ece651.team5.shared.resource.*;
+import edu.duke.ece651.team5.shared.constant.Constants;
 
 public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, Serializable{
 
@@ -28,9 +30,8 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
             int number = entry.getValue();
             source.getSoldierArmy().removeSoldier(soldier, number);
         }
-        // soldierToNumber.forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
-        //todo: function to cost food unit
-        
+        int distance = map.getShortestPathDistance(sourceName, destinationName);
+        player.consumeResource(new Resource(ResourceType.FOOD), Constants.C * distance * soldierToNumber.getTotalCountSolider());
     }
 
     public void mergeWith(AttackOrder other) {

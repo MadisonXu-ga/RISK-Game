@@ -3,6 +3,7 @@ package edu.duke.ece651.team5.shared.game;
 import java.util.*;
 
 import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
 
 
 public class Player {
@@ -16,6 +17,8 @@ public class Player {
         this.territories = new ArrayList<>();
         currTechnologyLevel = 0;
         resourceToAmount = new HashMap<>();
+        resourceToAmount.put(new Resource(ResourceType.FOOD), 0);
+        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 0);
     }
 
     public void loseTerritory(Territory t) {
@@ -38,7 +41,7 @@ public class Player {
 
     public void addResourceFromTerritory(Resource resource, int num) {
         resourceToAmount.put(resource,
-                resourceToAmount.getOrDefault(resource, 0) + num);
+                resourceToAmount.get(resource) + num);
     }
 
     public void upgradeTechnologyLevel() {
@@ -55,6 +58,10 @@ public class Player {
 
     public int getCurrTechnologyLevel() {
         return this.currTechnologyLevel;
+    }
+
+    public int setCurrTechnologyLevel(int level) {
+        return this.currTechnologyLevel = level;
     }
 
     public Map<Resource, Integer> getResourceToAmount() {

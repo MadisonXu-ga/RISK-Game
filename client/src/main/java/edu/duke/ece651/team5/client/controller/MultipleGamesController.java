@@ -2,6 +2,7 @@ package edu.duke.ece651.team5.client.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.App;
@@ -33,7 +34,7 @@ public class MultipleGamesController extends GoBackController {
         gameButtons = multipleGameButtons.lookupAll(".button.neutralbtn").toArray(new Button[0]);
 
         for (int i = 0; i < gameButtons.length; i++) {
-            System.out.println(gameButtons[i].getId());
+            // System.out.println(gameButtons[i].getId());
             // Set the visibility of the button based on the corresponding boolean value
 
             gameButtons[i].setVisible(false);
@@ -63,9 +64,10 @@ public class MultipleGamesController extends GoBackController {
 
     }
 
-    public void onjoinOtherGames(ActionEvent ae) throws IOException {
+    public void onjoinOtherGames(ActionEvent ae) throws IOException, ClassNotFoundException {
         // String msg = client.beginNewGame();
-        seeJoinableGames();
+        ArrayList<Integer> gameIDs = client.getJoinableGames();
+        seeJoinableGames(gameIDs);
 
         // if (msg.equals("game created")) {
 
@@ -100,7 +102,7 @@ public class MultipleGamesController extends GoBackController {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
-        // controllers.put(GoBackController.class, new GoBackController());
+        controllers.put(GoBackController.class, new GoBackController());
         controllers.put(MultipleGamesController.class, this);
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
@@ -113,20 +115,25 @@ public class MultipleGamesController extends GoBackController {
         App.getPrimaryStage().setScene(scene);
     }
 
-    public void seeJoinableGames() throws IOException {
+    public void seeJoinableGames(ArrayList<Integer> gameIDs) throws IOException, ClassNotFoundException {
         URL xmlResource = getClass().getResource("/joining-games.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
-        controllers.put(MapGoBackController.class, new MapGoBackController());
+
+        JoinableGamesController joinableGames = new JoinableGamesController();
+        controllers.put(GoBackController.class, new GoBackController());
+        controllers.put(JoinableGamesController.class, joinableGames);
+
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });
 
         BorderPane bp = loader.load();
+
         Scene scene = new Scene(new StackPane(bp));
         App.addScenetoMain("waiting-room", scene);
-
+        joinableGames.showJoinableGames(gameIDs);
         App.getPrimaryStage().setScene(scene);
     }
 

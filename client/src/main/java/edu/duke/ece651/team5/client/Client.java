@@ -37,7 +37,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30457, br, out);
+    this("localhost", 30459, br, out);
   }
 
   /**
@@ -113,6 +113,16 @@ public class Client {
     playerConnection.writeData("New game");
     playerConnection.writeData(3);
     return ("game created");
+
+  }
+
+  public ArrayList<Integer> getJoinableGames() throws IOException, ClassNotFoundException {
+
+    playerConnection.writeData("Get joinable games");
+    @SuppressWarnings("unchecked")
+    ArrayList<Integer> gameIDs = (ArrayList<Integer>) playerConnection.readData();
+
+    return gameIDs;
 
   }
 

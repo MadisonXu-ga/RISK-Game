@@ -102,6 +102,11 @@ public class UserHandler implements Runnable {
                 return;
             }
 
+            // check if user is logged in
+            if (userManager.getUser(inputName).getUserStatus() == UserStatus.LOGGED_IN) {
+                playerConnection.writeData("Already logged in");
+            }
+
             // authenticate password
             if (!userManager.authenticate(inputName, inputPassword)) {
                 playerConnection.writeData("Not match");

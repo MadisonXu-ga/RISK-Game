@@ -80,10 +80,6 @@ public class UserHandler implements Runnable {
 
     /**
      * Handle login operation
-     * 
-     * @return
-     * @throws ClassNotFoundException
-     * @throws IOException
      */
     protected void handleLogin() {
         System.out.println("Dealing login operation...");
@@ -100,6 +96,11 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Not exists");
                 System.out.println("User not exists");
                 return;
+            }
+
+            // check if user is logged in
+            if (userManager.getUser(inputName).getUserStatus() == UserStatus.LOGGED_IN) {
+                playerConnection.writeData("Already logged in");
             }
 
             // authenticate password
@@ -242,8 +243,8 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Joined Success");
                 System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
                 if (msg == "Start") {
-                    // TODO: send map to all clients in this game
-                    // loop -> playerConnection.writeData(map);
+                    // TODO: finished broadcaststartgame and call it
+                    broadcastStartGame(gameToJoin);
                     System.out.println("Game " + gameID + " is ready to start!");
                 }
             }
@@ -282,14 +283,14 @@ public class UserHandler implements Runnable {
             for (GameController game : userGameMap.getUserGames(currentUser)) {
                 // if game not start, kick user out
                 if (game.getStatus() == GameStatus.WAITING) {
-                    // game.kickUserOut(currentUser);
                     gamesNotStarted.add(game);
                 }
                 // if game started, pause game to wait user
-                else if (game.getStatus() != GameStatus.ENDED) {
-                    // notify all the active players
-                    broadcastPauseGame(game);
-                }
+                // TODO: i think for now is to do nothing
+                // else if (game.getStatus() != GameStatus.ENDED) {
+                // // notify all the active players
+                // broadcastPauseGame(game);
+                // }
             }
 
             // deal with games that not started

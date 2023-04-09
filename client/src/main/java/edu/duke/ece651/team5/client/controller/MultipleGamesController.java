@@ -53,14 +53,11 @@ public class MultipleGamesController extends GoBackController {
 
     }
 
-    public void onBeginNewGame(ActionEvent ae) throws IOException {
+    public void onBeginNewGame(ActionEvent ae) throws IOException, ClassNotFoundException {
         String msg = client.beginNewGame();
 
-        if (msg.equals("game created")) {
-
-            System.out.println(msg);
-            goToWaitingScreen();
-        }
+        System.out.println(msg);
+        goToWaitingScreen();
 
     }
 

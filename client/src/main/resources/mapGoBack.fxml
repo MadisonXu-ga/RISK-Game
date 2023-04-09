@@ -43,7 +43,7 @@
             <Button fx:id="Stormhaven" layoutX="1169.0" layoutY="104.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="134.0" prefWidth="129.0" styleClass="Stormhavenbtn" stylesheets="@territory.css" />
             <Button fx:id="Verdantia" layoutX="1284.0" layoutY="212.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="109.0" prefWidth="87.0" styleClass="Verdantiabtn" stylesheets="@territory.css" />
             <Button fx:id="Frosthold" layoutX="1288.0" layoutY="309.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="103.0" prefWidth="83.0" styleClass="Frostholdbtn" stylesheets="@territory.css" />
-            <Button fx:id="submitOrder" layoutX="1252.0" layoutY="600.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Submit order">
+            <Button fx:id="submitOrderbtn" layoutX="1252.0" layoutY="600.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Submit order">
                <font>
                   <Font size="16.0" />
                </font></Button>
@@ -51,7 +51,7 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="saveAndExit" layoutX="1292.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
+            <Button fx:id="saveAndExitbtn" layoutX="1292.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
                <font>
                   <Font size="16.0" />
                </font>

@@ -33,7 +33,12 @@ public class JoinableGamesController {
         for (int i = 0; i < gameIDs.size(); i++) {
 
             gameButtons[i].setVisible(true);
-            gameButtons[i].setText(gameIDs.get(i).toString());
+
+            System.out.println("the size of the gameID array is:" + gameIDs.size());
+
+            if (gameIDs.size() > 0) {
+                gameButtons[i].setText(gameIDs.get(i).toString());
+            }
         }
     }
 

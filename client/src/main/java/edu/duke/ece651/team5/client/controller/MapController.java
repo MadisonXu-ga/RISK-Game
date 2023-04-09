@@ -1,5 +1,7 @@
 package edu.duke.ece651.team5.client.controller;
 
+import java.util.HashMap;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -11,6 +13,7 @@ public class MapController extends GoBackController {
     AnchorPane rightSideScreen;
 
     public Button[] gameButtons;
+    public HashMap<String, Button> buttonsHashmap;
 
     @FXML
     public void initialize() {
@@ -18,6 +21,12 @@ public class MapController extends GoBackController {
 
         for (int i = 0; i < gameButtons.length; i++) {
 
+            // System.out.println(gameButtons[i]);
+            if (!gameButtons[i].getId().contains("btn")) {
+
+                System.out.println(gameButtons[i].getId());
+
+            }
             // Set the visibility of the button based on the corresponding boolean value
             // gameButtons[i].setStyle("-fx-background-color: rgba(0, 0, 255);");
             if (i < 10) {
@@ -31,7 +40,7 @@ public class MapController extends GoBackController {
             }
 
             // makeButtonDarker(gameButtons[i]);
-            System.out.println(i);
+            // System.out.println(i);
         }
 
     }

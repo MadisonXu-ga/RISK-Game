@@ -37,7 +37,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30459, br, out);
+    this("localhost", 30461, br, out);
   }
 
   /**
@@ -108,11 +108,14 @@ public class Client {
     return msg;
   }
 
-  public String beginNewGame() throws IOException {
+  public String beginNewGame() throws IOException, ClassNotFoundException {
 
     playerConnection.writeData("New game");
     playerConnection.writeData(3);
-    return ("game created");
+
+    String msg = (String) playerConnection.readData();
+
+    return msg;
 
   }
 
@@ -120,8 +123,11 @@ public class Client {
 
     playerConnection.writeData("Get joinable games");
     @SuppressWarnings("unchecked")
-    ArrayList<Integer> gameIDs = (ArrayList<Integer>) playerConnection.readData();
 
+    ArrayList<Integer> gameIDs = (ArrayList<Integer>) playerConnection.readData();
+    // String gameIDs = (String) playerConnection.readData();
+
+    // System.out.println("The string from client is [" + gameIDs + "]");
     return gameIDs;
 
   }

@@ -80,10 +80,6 @@ public class UserHandler implements Runnable {
 
     /**
      * Handle login operation
-     * 
-     * @return
-     * @throws ClassNotFoundException
-     * @throws IOException
      */
     protected void handleLogin() {
         System.out.println("Dealing login operation...");
@@ -287,14 +283,14 @@ public class UserHandler implements Runnable {
             for (GameController game : userGameMap.getUserGames(currentUser)) {
                 // if game not start, kick user out
                 if (game.getStatus() == GameStatus.WAITING) {
-                    // game.kickUserOut(currentUser);
                     gamesNotStarted.add(game);
                 }
                 // if game started, pause game to wait user
-                else if (game.getStatus() != GameStatus.ENDED) {
-                    // notify all the active players
-                    broadcastPauseGame(game);
-                }
+                // TODO: i think for now is to do nothing
+                // else if (game.getStatus() != GameStatus.ENDED) {
+                //     // notify all the active players
+                //     broadcastPauseGame(game);
+                // }
             }
 
             // deal with games that not started

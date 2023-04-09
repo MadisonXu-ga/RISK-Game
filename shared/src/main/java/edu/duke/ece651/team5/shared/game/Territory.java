@@ -7,8 +7,6 @@ import edu.duke.ece651.team5.shared.resource.Resource;
 import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
-
-
 public class Territory {
     private int id;
     private String name;

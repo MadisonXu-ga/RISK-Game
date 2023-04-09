@@ -13,8 +13,8 @@ public class MoveOrder extends BasicOrder implements Serializable {
     // @Serial
     private static final long serialVersionUID = -5458702819007392881L;
 
-    public MoveOrder(String sourceName, String destinationName, SoldierArmy soldierToNumber, Player playerName) {
-        super(sourceName, destinationName, soldierToNumber, playerName);
+    public MoveOrder(String sourceName, String destinationName, SoldierArmy soldierToNumber, Player player) {
+        super(sourceName, destinationName, soldierToNumber, player);
     }
 
     /**

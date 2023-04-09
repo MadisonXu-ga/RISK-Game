@@ -17,4 +17,16 @@ class PairTest {
     void getSecond() {
         assertEquals(20, pair.getSecond());
     }
+
+    @Test
+    void testEquals() {
+        assertEquals(pair, pair);
+        assertNotEquals(pair, null);
+        Pair<Integer, Integer> pair2 = new Pair<>(10, 20);
+        assertEquals(pair, pair2);
+        Pair<Integer, Integer> pair3 = new Pair<>(10, 10);
+        assertNotEquals(pair, pair3);
+    }
+
+
 }

@@ -109,10 +109,13 @@ public class MultipleGamesController extends GoBackController {
         System.out.println("fake new game was pressed");
 
         URL xmlResource = getClass().getResource("/mapGoBack2.fxml");
+        // URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
         controllers.put(MapGoBackController.class, new MapGoBackController());
+        // controllers.put(MapChooseActionController.class, new
+        // MapChooseActionController());
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });

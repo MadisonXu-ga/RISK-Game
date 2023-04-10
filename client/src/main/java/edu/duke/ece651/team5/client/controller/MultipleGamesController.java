@@ -118,7 +118,7 @@ public class MultipleGamesController extends GoBackController {
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
 
-        JoinableGamesController joinableGames = new JoinableGamesController();
+        JoinableGamesController joinableGames = new JoinableGamesController(client);
         controllers.put(GoBackController.class, new GoBackController());
         controllers.put(JoinableGamesController.class, joinableGames);
 

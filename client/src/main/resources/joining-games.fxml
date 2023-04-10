@@ -18,7 +18,7 @@
                   <Font name="Lucida Calligraphy Italic" size="48.0" />
                </font>
             </Text>
-            <Button fx:id="Game1" layoutX="200.0" layoutY="200.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game1" />
+            <Button fx:id="Game1" layoutX="200.0" layoutY="200.0" mnemonicParsing="false" onAction="#onJoinGame" prefHeight="40.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game1" />
             <Button fx:id="Game2" layoutX="200.0" layoutY="275.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 2" />
             <Button fx:id="Game3" layoutX="200.0" layoutY="350.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 3" />
             <Button fx:id="Game4" layoutX="200.0" layoutY="432.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game4" />

@@ -1,8 +1,10 @@
 package edu.duke.ece651.team5.client.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.duke.ece651.team5.client.App;
+import edu.duke.ece651.team5.client.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class JoinableGamesController {
 
+    public Client client;
     @FXML
     AnchorPane multipleGameButtons;
     private Button[] gameButtons;
@@ -25,6 +28,10 @@ public class JoinableGamesController {
                 gameButtons[i].setVisible(false);
             }
         }
+    }
+
+    public JoinableGamesController(Client client) {
+        this.client = client;
     }
 
     public void showJoinableGames(ArrayList<Integer> gameIDs) {
@@ -46,6 +53,22 @@ public class JoinableGamesController {
 
         // TODO create the disconnect action with server
         App.loadScenefromMain("multiple-games");
+    }
+
+    public void onJoinGame(ActionEvent ae) throws ClassNotFoundException, IOException {
+
+        Object source = ae.getSource();
+
+        System.out.println("in Join function");
+        if (source instanceof Button) {
+            Button btn = (Button) source;
+            // btn.setText("clicked");
+            System.out.println("button pressed");
+            Integer gameID = Integer.parseInt(btn.getText());
+            String msg = client.joinNewGame(gameID);
+            System.out.println(msg);
+
+        }
     }
 
 }

@@ -4,7 +4,11 @@ package edu.duke.ece651.team5.shared;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static edu.duke.ece651.team5.shared.Constants.DEFAULT_INIT_SOLDIER_NUM;
+import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
+import edu.duke.ece651.team5.shared.unit.SoldierLevel;
+
+import static edu.duke.ece651.team5.shared.constant.Constants.DEFAULT_INIT_SOLDIER_NUM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -75,6 +79,25 @@ public class SoldierArmyTest {
         assertTrue(allSoldiers.containsKey(soldier));
         assertEquals(count + DEFAULT_INIT_SOLDIER_NUM, allSoldiers.get(soldier));
         assertEquals(Collections.singletonMap(soldier, count + DEFAULT_INIT_SOLDIER_NUM), allSoldiers);
+    }
+
+
+    @Test
+    public void testUpgradeSoldierAndCountSoldier() {
+        Soldier soldier = new Soldier(SoldierLevel.INFANTRY);
+        int count = 5;
+        army.addSoldier(soldier, count);
+
+        Soldier infantry = new Soldier(SoldierLevel.INFANTRY);
+        int initialCount = army.getSoldierCount(infantry);
+        int upgradeCount = 3;
+        SoldierLevel targetLevel = SoldierLevel.ARTILLERY;
+
+        army.upgradeSoldier(infantry, upgradeCount, targetLevel);
+
+        assertEquals(initialCount - upgradeCount, army.getSoldierCount(infantry));
+        assertEquals(upgradeCount, army.getSoldierCount(new Soldier(targetLevel)));
+        assertEquals(6, army.getTotalCountSolider());
     }
 
 }

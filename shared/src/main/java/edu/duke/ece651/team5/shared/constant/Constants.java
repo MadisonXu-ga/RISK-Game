@@ -1,4 +1,8 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.constant;
+
+/*
+ * all the constants variables needs for the game are stored here
+ */
 
 public class Constants {
     public static final int AVAILABLE_UNIT = 50;

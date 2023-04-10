@@ -3,6 +3,12 @@ package edu.duke.ece651.team5.shared;
 
 import org.junit.jupiter.api.Test;
 
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.Territory;
+import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
+import edu.duke.ece651.team5.shared.unit.SoldierLevel;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

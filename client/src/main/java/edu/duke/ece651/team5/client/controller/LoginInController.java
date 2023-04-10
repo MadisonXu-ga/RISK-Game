@@ -107,6 +107,7 @@ public class LoginInController {
         App.addControllertoMain("multiple-games", multipleGamesController);
 
         App.getPrimaryStage().setScene(scene);
+
         // multipleGamesController.initialize();
     }
 

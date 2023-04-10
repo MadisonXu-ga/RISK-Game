@@ -103,7 +103,13 @@ public class App extends Application {
     primaryStage.setOnCloseRequest(event -> {
 
       event.consume();
-      logoutGame(primaryStage);
+      logoutGame(getPrimaryStage());
+      try {
+        classClient.logOut();
+      } catch (IOException e) {
+
+        e.printStackTrace();
+      }
     });
   }
 
@@ -154,9 +160,10 @@ public class App extends Application {
     Alert alert = new Alert(AlertType.CONFIRMATION);
     alert.setTitle("Logout");
     alert.setHeaderText("You are about to logout!");
-    alert.setContentText("Do you want to save before exiting?: ");
+    alert.setContentText("Do you want to save before exiting?");
 
     if (alert.showAndWait().get() == ButtonType.OK) {
+
       primaryStage.close();
 
     }

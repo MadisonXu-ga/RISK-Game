@@ -40,20 +40,24 @@ public class UserHandlerTest {
 
                 // success
                 userHandler.handleSignUp();
-                userHandler.handleLogin();
-                verify(mockPlayerConnection).writeData("Login succeeded");
-
-                // already logged in
-                userHandler.handleLogin();
-                verify(mockPlayerConnection).writeData("Already logged in");
 
                 // password is wrong
                 ArrayList<String> inputInfo_wrong = new ArrayList<>();
                 inputInfo_wrong.add("user1");
                 inputInfo_wrong.add("123abc");
                 when(mockPlayerConnection.readData()).thenReturn(inputInfo_wrong);
+
                 userHandler.handleLogin();
                 verify(mockPlayerConnection).writeData("Not match");
+
+                // success
+                when(mockPlayerConnection.readData()).thenReturn(inputInfo);
+                userHandler.handleLogin();
+                verify(mockPlayerConnection).writeData("Login succeeded");
+
+                // already logged in
+                userHandler.handleLogin();
+                verify(mockPlayerConnection).writeData("Already logged in");
         }
 
         @Test

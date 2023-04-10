@@ -52,7 +52,7 @@ public class UserGameMap {
         if (userToGame.containsKey(user)) {
             return userToGame.get(user);
         }
-        return null;
+        return new ArrayList<GameController>();
     }
 
     /**
@@ -65,7 +65,7 @@ public class UserGameMap {
         if (gameToUser.containsKey(game)) {
             return gameToUser.get(game);
         }
-        return null;
+        return new ArrayList<User>();
     }
 
     /**

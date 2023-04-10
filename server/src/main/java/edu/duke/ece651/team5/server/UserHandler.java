@@ -269,6 +269,14 @@ public class UserHandler implements Runnable {
     }
 
     /**
+     * 
+     */
+    protected void handleSaveAndExit(){
+        //
+        //
+    }
+
+    /**
      * Handle log out operation
      */
     protected void handleLogOut() {

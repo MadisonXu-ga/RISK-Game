@@ -1,5 +1,9 @@
 package edu.duke.ece651.team5.shared.constant;
 
+/*
+ * all the constants variables needs for the game are stored here
+ */
+
 public class Constants {
     public static final int AVAILABLE_UNIT = 50;
     public static final int GAME_MAX_TECHNOLOGY_LEVEL = 6;

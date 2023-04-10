@@ -27,8 +27,7 @@ public class CombatResolverTest {
 
     private Territory territory;
     private Game game;
-    private Player player1 = new Player("Player 1");
-    private Player player2 = new Player("Player 2");
+   
     
 
 
@@ -51,7 +50,8 @@ public class CombatResolverTest {
                                          new RISKMap.Edge(4, 3, 4)));
 
         RISKMap map = new RISKMap(territories, connections);
-        
+        Player player1 = new Player("Player 1");
+        Player player2 = new Player("Player 2");
         List<Player> players = new ArrayList<>(Arrays.asList(player1, player2));
         // RISKMap map = new RISKMap("test_map.txt");
         map.printMap();
@@ -59,6 +59,10 @@ public class CombatResolverTest {
         territory = map.getTerritoryById(1);
         territory.setOwner(player1);
         territory.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.CAVALRY), 2);
+        player1.addTerritory(territory);
+
+        map.getTerritoryById(2).setOwner(player1);
+        player1.addTerritory(map.getTerritoryById(2));
 
         Map<Soldier, Integer> soldiers1 = new HashMap<>();
         soldiers1.put(new Soldier(SoldierLevel.INFANTRY), 5);
@@ -77,7 +81,9 @@ public class CombatResolverTest {
     void testBeginFight() {
         List<AttackOrder> attackOrders = new ArrayList<>(Arrays.asList(order4));
         resolver.beginFight(territory, attackOrders, game);
-        assertEquals(player2, territory.getOwner());
+        assertEquals("Player 2", territory.getOwner().getName());
+        assertEquals(1, game.getPlayeryByName("Player 1").getTerritories().size());
+        assertEquals(1, game.getPlayeryByName("Player 2").getTerritories().size());
     }
 
     @Test

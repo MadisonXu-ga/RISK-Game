@@ -12,12 +12,13 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+ //todo can move to server
 public class CombatResolver {
     
     public CombatResolver() {
     }
 
-    //todo can move to server
+   
     /**
      * merge attack order offered by same player to attack same destination territory
      * @param attackOrder
@@ -64,69 +65,98 @@ public class CombatResolver {
         }
     }
 
-    //todo: change fighting way for unit
+    /**
+    * begin fight the the target territory
+    * @param fightingTerri the target territories needs to be fighted
+    * @param fightOrders all the orders that choose to attack this territory
+    * @param game current game is playing on
+    */
     public void beginFight(Territory fightingTerri, List<AttackOrder> fightOrders, Game game) {
         if (fightOrders.isEmpty()) {
             return;
         }
+    
+        // Add defender to the combat process
         AttackOrder defenseOrder = new AttackOrder(fightingTerri.getName(), fightingTerri.getName(),
                 fightingTerri.getSoldierArmy(), fightingTerri.getOwner());
         fightOrders.add(defenseOrder);
-        
-
+    
+        // Create combat players
         CombatPlayers combatPlayers = new CombatPlayers(fightOrders);
-        Set<Player> remainingPlayers = new HashSet<>(combatPlayers.getPlayerToBonusSoldier().keySet());
     
-        while (remainingPlayers.size() > 1) {
-            for (Iterator<Player> it = combatPlayers.getPlayerToBonusSoldier().keySet().iterator(); it.hasNext();) {
-                Player attacker = it.next();
-                if (combatPlayers.isPlayerLose(attacker)) {
-                    it.remove();
-                    continue;
-                }
-                Player defender = getNextOpponent(attacker, remainingPlayers);
-                boolean isAttackWin = rollDice(attacker, defender, combatPlayers);
-                Player loserForThisRound = (isAttackWin) ? attacker : defender;
-                // System.out.println("loser: " + loserForThisRound.getSourceName());
-                combatPlayers.resolveLosePlayer(loserForThisRound, isAttackWin);
-                if (combatPlayers.isPlayerLose(loserForThisRound)) {
-                    remainingPlayers.remove(loserForThisRound);
-                }
+        // Create a list of attackers
+        List<Player> attackers = combatPlayers.getCombatPlayersForThisTurn();
+    
+        // Use counter to keep track of current attacker
+        int currentAttackerIndex = 0;
+        while (attackers.size() > 1) {
+            Player attacker = attackers.get(currentAttackerIndex);
+            System.out.println("Attacker: " + attacker.getName());
+            System.out.println("unit " + combatPlayers.getPlayerToBonusSoldier().get(attacker));
+    
+            Player defender = attackers.get((currentAttackerIndex + 1) % attackers.size());
+            System.out.println("Defender: " + defender.getName());
+            System.out.println("unit " + combatPlayers.getPlayerToBonusSoldier().get(defender));
+    
+    
+            // Roll dice
+            boolean isAttackWin = rollDice(attacker, defender, combatPlayers);
+            System.out.println("Attacker win: " + isAttackWin);
+    
+            // Resolve loser for current round
+            Player loserForThisRound = (isAttackWin) ? defender : attacker;
+            System.out.println("Loser: " + loserForThisRound.getName());
+            combatPlayers.resolveLosePlayer(loserForThisRound, isAttackWin);
+    
+            // Remove loser from the list of attackers
+            if (combatPlayers.isPlayerLose(loserForThisRound)) {
+                attackers.remove(loserForThisRound);
             }
+    
+            // Update counter to next attacker
+            currentAttackerIndex = (currentAttackerIndex + 1) % attackers.size();
         }
-        Player winner = remainingPlayers.iterator().next();
-        System.out.println("winner: " + winner);
-        resolveWinnerForThisRound(winner, fightingTerri, combatPlayers);
+    
+        Player winner = attackers.get(0);
+        System.out.println("Winner: " + winner.getName());
+        resolveWinnerForThisRound(winner, fightingTerri, combatPlayers, game);
     }
     
-    private Player getNextOpponent(Player attacker, Set<Player> remainingPlayers) {
-        Iterator<Player> it = remainingPlayers.iterator();
-        while (it.hasNext()) {
-            Player defender = it.next();
-            if (!defender.equals(attacker)) {
-                return defender;
-            }
-        }
-        return null;
+    
+   /**
+    * remove previous owner and set new owner and remain amount of soldier to the territory
+    * @param winner winner for this turn
+    * @param fightingTerri territory being fight on
+    * @param combatPlayers combatPlayers
+    */
+    protected void resolveWinnerForThisRound(Player winner, Territory fightingTerri, CombatPlayers combatPlayers, Game game) {
+        Territory targetTerri = game.getMap().getTerritoryByName(fightingTerri.getName());
+        Player targetPlayer = game.getPlayeryByName(winner.getName());
+        targetTerri.getOwner().loseTerritory(fightingTerri);
+        targetTerri.setOwner(targetPlayer);
+        System.out.println("new owner: " + fightingTerri.getOwner().getName());
+        targetTerri.getSoldierArmy().setSoldiers(combatPlayers.convertToSoldier(winner));
+        System.out.println("new unit: " + fightingTerri.getSoldierArmy().getAllSoldiers());
+        targetPlayer.addTerritory(fightingTerri);
     }
     
-    //todo change territory player field to Player?
-    protected void resolveWinnerForThisRound(Player winner, Territory fightingTerri, CombatPlayers combatPlayers) {
-        //remove fight territories owner
-        winner.loseTerritory(fightingTerri);
-        fightingTerri.setOwner(winner);
-        System.out.println("new owner: " + fightingTerri.getOwner());
-        fightingTerri.getSoldierArmy().setSoldiers(combatPlayers.convertToSoldier(winner));
-        System.out.println("new unit: " + fightingTerri.getSoldierArmy());
-        winner.addTerritory(fightingTerri);
-    }
-    
+    /**
+     * helper method to roll dice
+     * @param attacker attack player
+     * @param defender defend player
+     * @param combatPlayers combatPlayers
+     * @return true if attacker win else false
+     */
     protected boolean rollDice(Player attacker, Player defender, CombatPlayers combatPlayers) {
         Random rand = new Random(42);
         List<Integer> attackerSoldiers = combatPlayers.getPlayerToBonusSoldier().get(attacker);
         List<Integer> defenderSoldiers = combatPlayers.getPlayerToBonusSoldier().get(defender);
+        System.out.println("attack unit w bonus : " + attackerSoldiers.get(0));
         int attackRes = rand.nextInt(20) + attackerSoldiers.get(0);
+        System.out.println("attack dice result : " + attackRes);
+        System.out.println("defense unit w bonus : " +  defenderSoldiers.get(defenderSoldiers.size() - 1));
         int defenseRes = rand.nextInt(20) + defenderSoldiers.get(defenderSoldiers.size() - 1);
+        System.out.println("defense dice result : " + defenseRes);
         return attackRes > defenseRes;
     }
 

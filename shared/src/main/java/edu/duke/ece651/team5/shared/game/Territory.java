@@ -7,12 +7,26 @@ import edu.duke.ece651.team5.shared.resource.Resource;
 import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
+/**
+ * This class handle all the functionality of Territory
+ */
 public class Territory {
+    //id to represent territory in connections
     private int id;
+    //territory name
     private String name;
+    //owner of territory
     private Player owner;
+    //store all the soldiers
     private SoldierArmy soldierArmy;
 
+    /**
+     * only used for test case
+     * @param id assigned id
+     * @param name territory name
+     * @param owner owner of 
+     * @param soldierArmy
+     */
     public Territory(int id, String name, Player owner, SoldierArmy soldierArmy) {
         this.id = id;
         this.name = name;
@@ -20,6 +34,12 @@ public class Territory {
         this.soldierArmy = soldierArmy;
     }
 
+    /**
+     * designed for test case
+     * @param id
+     * @param name
+     * @param owner
+     */
     public Territory(int id, String name, Player owner) {
         this.id = id;
         this.name = name;
@@ -27,6 +47,11 @@ public class Territory {
         this.soldierArmy = new SoldierArmy();
     }
 
+    /**
+     * constructor 
+     * @param id assigned id
+     * @param name territory name
+     */
     public Territory(int id, String name) {
         this.id = id;
         this.name = name;
@@ -43,10 +68,18 @@ public class Territory {
     }
 
 
+    /**
+     * getter for territory id
+     * @return
+     */
     public int getId() {
         return this.id;
     }
 
+    /**
+     * setter for territory id
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }

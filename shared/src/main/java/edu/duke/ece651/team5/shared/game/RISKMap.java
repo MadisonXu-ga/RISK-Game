@@ -10,6 +10,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * this class handle functionality of a map
+ */
+
 public class RISKMap {
     private Map<String, Territory> territories;
 

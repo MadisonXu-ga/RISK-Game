@@ -50,8 +50,8 @@ public class UserGameMapTest {
         UserGameMap userGameMap = new UserGameMap();
         User mockUser = mock(User.class);
         GameController mockGame = mock(GameController.class);
-        assertNull(userGameMap.getUserGames(mockUser));
-        assertNull(userGameMap.getGameUsers(mockGame));
+        assertEquals(0, userGameMap.getUserGames(mockUser).size());
+        assertEquals(0, userGameMap.getGameUsers(mockGame).size());
         userGameMap.addGameToUser(mockUser, mockGame);
         userGameMap.addUserToGame(mockGame, mockUser);
         assertNotNull(userGameMap.getUserGames(mockUser));

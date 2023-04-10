@@ -7,11 +7,12 @@ public class MovePathWithSameOwnerRuleChecker extends OrderRuleChecker{
     public MovePathWithSameOwnerRuleChecker(OrderRuleChecker next) {
         super(next);
     }
+
     /**
-     * Override this method for each check rules
+     * To check there is a path from src to dest
+     * all owned by the player issued this order
      *
      * @param order  the order that should be checked
-     * @param player the player that issues this order
      * @param map    the map
      * @return error message if it does not meet the rule, null if it does
      */

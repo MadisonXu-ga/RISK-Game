@@ -20,6 +20,10 @@ public class ResearchOrder implements Order {
         return player;
     }
 
+    /**
+     * excecute the research order
+     * @param map the map
+     */
     @Override
     public void execute(RISKMap map) {
         int currTechnologyLevel = this.player.getCurrTechnologyLevel();

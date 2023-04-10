@@ -12,7 +12,7 @@ public abstract class OrderRuleChecker {
 
     /**
      * Constructor to chain the rule checkers
-     * @param next
+     * @param next next rule checker to be checked
      */
     public OrderRuleChecker(OrderRuleChecker next) {
         this.next = next;
@@ -21,7 +21,6 @@ public abstract class OrderRuleChecker {
     /**
      * Override this method for each check rules
      * @param order the order that should be checked
-     * @param player the player that issues this order
      * @param map the map
      * @return error message if it does not meet the rule, null if it does
      */

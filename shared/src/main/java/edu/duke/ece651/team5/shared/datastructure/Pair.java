@@ -2,6 +2,11 @@ package edu.duke.ece651.team5.shared.datastructure;
 
 import java.util.Objects;
 
+/**
+ * data structure to hold to object together
+ * @param <T> the type of the first element
+ * @param <U> the type of the second element
+ */
 public class Pair<T, U> {
     private final T first;
     private final U second;
@@ -11,10 +16,18 @@ public class Pair<T, U> {
         this.second = second;
     }
 
+    /**
+     * Getter for first element in pair
+     * @return first element
+     */
     public T getFirst() {
         return first;
     }
 
+    /**
+     * Getter for second element in pair
+     * @return second element
+     */
     public U getSecond() {
         return second;
     }

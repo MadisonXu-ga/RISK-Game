@@ -15,8 +15,9 @@ public class RISKMap {
 
     private HashMap<Integer, List<Edge>> connections;
 
-    // todo players field
-
+    /**
+     * Inner class to represent an edge
+     */
     public static class Edge {
         private int from;
         private int to;
@@ -31,12 +32,16 @@ public class RISKMap {
         }
     }
 
+    /**
+     * default constructor
+     */
     public RISKMap() {
         this("map_config.txt");
     }
 
     /**
-     * @param fileName string
+     * Constructor to initialize the map from a config file
+     * @param fileName file name of the config file
      */
     public RISKMap(String fileName) {
         territories = new HashMap<>();
@@ -46,6 +51,10 @@ public class RISKMap {
         initMapFromConfigFile(inputStream);
     }
 
+    /**
+     * Helper function to initialize the map
+     * @param inputStream input stream indicates where to read from
+     */
     private void initMapFromConfigFile(InputStream inputStream) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -73,6 +82,11 @@ public class RISKMap {
         }
     }
 
+    /**
+     * Helper function to add an edge
+     * @param name a territory name
+     * @param names names all the neighbours' name of this territory
+     */
     private void addConnection(String name, List<String> names) {
         List<Edge> edgeInfo = new ArrayList<>();
         Territory t = getTerritoryByName(name);
@@ -85,10 +99,21 @@ public class RISKMap {
         connections.put(from_id, edgeInfo);
     }
 
+    /**
+     * Get a certain territory by its name
+     * @param name the name of the territory
+     * @return the territory with this name
+     */
+
     public Territory getTerritoryByName(String name) {
         return territories.get(name);
     }
 
+    /**
+     * Get a certain territory by its id
+     * @param id the name of the territory
+     * @return the territory with this id
+     */
     public Territory getTerritoryById(int id) {
         return territories.values()
                 .stream()
@@ -97,11 +122,24 @@ public class RISKMap {
                 .orElse(null);
     }
 
+    /**
+     * Constructor with all params
+     * usually should not call this unless it is a test
+     * @param territories map from territory name to territory object
+     * @param connections the connections between them
+     */
     public RISKMap(Map<String, Territory> territories,
             HashMap<Integer, List<Edge>> connections) {
         this.territories = territories;
         this.connections = connections;
     }
+
+    /**
+     * To tell if two territories are adjacent
+     * @param srcTerri one territory
+     * @param destTerry the other
+     * @return true of they are adjacent, otherwise false
+     */
 
     public boolean isAdjacent(Territory srcTerri, Territory destTerry) {
         int srcId = srcTerri.getId();
@@ -109,6 +147,12 @@ public class RISKMap {
         return connections.get(srcId).stream().anyMatch(edge -> edge.to == destId);
     }
 
+    /**
+     * Get the shortest distance between two territories owned by the same player
+     * @param sourceName name of the source territory
+     * @param destName name of the dest territory
+     * @return the distance between them, if there is no such a path return Integer.MAX_VALUE
+     */
     public int getShortestPathDistance(String sourceName, String destName) {
         Territory source = getTerritoryByName(sourceName);
         Territory dest = getTerritoryByName(destName);
@@ -149,6 +193,9 @@ public class RISKMap {
         return distances.get(dest);
     }
 
+    /**
+     * for debugging
+     */
     public void printMap() {
         for (Map.Entry<String, Territory> terri : territories.entrySet()) {
             System.out.println(terri.getKey());

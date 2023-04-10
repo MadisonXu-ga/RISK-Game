@@ -13,7 +13,6 @@ public abstract class BasicOrder implements Order, Serializable {
      private static final long serialVersionUID = 1847314966415949919L;
      protected String sourceName;
      protected String destinationName;
-     //todo: change this to soldier army
      protected SoldierArmy soldierToNumber;
      protected Player player;
 

@@ -10,9 +10,9 @@ public class AttackOwnershipRuleChecker extends OrderRuleChecker{
 }
 
 /**
- *  Check if the order meets the rule that src and dest must belong to the same player
+ *  Check if the order meets the rule that src must belong to the player issued this order
+ *  and dest must not
  * @param order move order
- * @param player the owner of both territories
  * @param map the map
  * @return error message if it does not meet, null if it does
  */

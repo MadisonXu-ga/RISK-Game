@@ -17,11 +17,20 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
         super(sourceName, destinationName, soldierToNumber, player);
     }
 
+    /**
+     * compare two attack order according to the player name
+     * @param other the object to be compared.
+     * @return > 0 if this is greater, = 0 if equals, < 0 if smaller
+     */
     @Override
     public int compareTo(AttackOrder other) {
         return player.getName().compareTo(other.player.getName());
     }
 
+    /**
+     * executed the move order
+     * @param map the map
+     */
     @Override
     public void execute(RISKMap map) {
         Territory source = map.getTerritoryByName(sourceName);
@@ -34,6 +43,10 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
         player.consumeResource(new Resource(ResourceType.FOOD), Constants.C * distance * soldierToNumber.getTotalCountSolider());
     }
 
+    /**
+     * merge two attack orders together to become one force
+     * @param other the other attack order which should be merged with
+     */
     public void mergeWith(AttackOrder other) {
         other.getSoldierToNumber().getAllSoldiers().entrySet().stream()
         .filter(entry -> this.getDestinationName().equals(other.getDestinationName()))

@@ -271,7 +271,7 @@ public class UserHandler implements Runnable {
     /**
      * 
      */
-    protected void handleSaveAndExit(){
+    protected void handleSaveAndExit() {
         //
         //
     }
@@ -307,6 +307,9 @@ public class UserHandler implements Runnable {
                 game.kickUserOut(currentUser);
                 userGameMap.deleteMap(currentUser, game);
             }
+
+            // set current user to null
+            currentUser = null;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -371,6 +374,21 @@ public class UserHandler implements Runnable {
         try {
             int gameID = (int) playerConnection.readData();
             // TODO:
+            boolean isValid = false;
+            HashMap<String, Integer> uPs;
+            // TODO: seems i do not need to make it as a loop!!
+            // do {
+                uPs = (HashMap<String, Integer>) playerConnection.readData();
+                // 1. checker: check placement number (maybe need to check owner but most on client side)
+                // isValid = unitValidRuleChecker.checkUnitValid(riskMap, uPs); (make chaneges to this)
+            // } while (!isValid);
+
+            // 2. if valid, need to place them
+            // GameController game = allGames.get(gameID);
+            // String msg = game.initializeGame(currentUser);
+
+            // 3. send to client whether it is valid (string maybe)
+
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package edu.duke.ece651.team5.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,6 +73,26 @@ public class GameController {
         return this.players;
     }
 
+    protected void assignTerritories(int numPlayer) {
+        ArrayList<String> terriName = new ArrayList<>(Arrays.asList(
+                "Narnia", "Elantris", "Midkemia", "Scadrial", "Oz", "Roshar",
+                "Gondor", "Mordor", "Hogwarts", "Thalassia", "Arathia",
+                "Eryndor", "Sylvaria", "Kaelindor", "Eterna", "Celestia",
+                "Frosthold", "Shadowmire", "Ironcliff", "Stormhaven",
+                "Mythosia", "Draconia", "Emberfall", "Verdantia"));
+
+        int numTerritories = terriName.size();
+
+        // TODO: loop to assign
+        // for (int i = 0; i < numTerritories; ++i) {
+        // Player p = riskMap.getPlayerByName(playerNames.get(i % numPlayers));
+        // String territoryName = terriName.get(i);
+        // Territory territory = riskMap.getTerritoryByName(territoryName);
+        // p.addTerritory(territory);
+        // territory.setOwner(p);
+        // }
+    }
+
     /**
      * User try to join Game
      * 
@@ -97,8 +118,12 @@ public class GameController {
 
         ++userNum;
         if (userNum == playerNum) {
+            // TODO: not necessary but can make it as an seperate funciton
             status = GameStatus.INITIALIZING;
             statusBeforePause = status;
+
+            assignTerritories(playerNum);
+            // TODO: another function to resource production. but in what number?
 
             return "Start";
         }
@@ -174,18 +199,35 @@ public class GameController {
         return userActiveStatus.get(user);
     }
 
-    public String initializeGame(User user) {
+    /**
+     * For each user to initialize their game
+     * 
+     * @param user
+     * @return
+     */
+    public String initializeGame(User user, HashMap<String, Integer> unitPlacements) {
         String msg = null;
         // not in initializing step
         if (this.status != GameStatus.INITIALIZING) {
             return "Cannot initialize";
         }
 
-        /**
-         * 
-         */
+        resolveUnitPlacement(unitPlacements);
 
         return msg;
+    }
+
+    // TODO: change this to match the newest
+    protected void resolveUnitPlacement(HashMap<String, Integer> unitPlacements) {
+        // for (Map.Entry<String, Integer> entry : unitPlacements.entrySet()) {
+        //     String name = entry.getKey();
+        //     System.out.println("num: name");
+        //     int unitNum = entry.getValue();
+        //     Territory terr = riskMap.getTerritoryByName(name);
+        //     System.out.println("inital unitNum: " + terr.getUnitNum(UnitType.SOLDIER));
+        //     terr.updateUnitCount(UnitType.SOLDIER, false, unitNum);
+        //     System.out.println("Get updated: " + terr.getUnitNum(UnitType.SOLDIER));
+        // }
     }
 
     @Override

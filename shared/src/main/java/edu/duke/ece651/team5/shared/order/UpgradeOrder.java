@@ -15,11 +15,19 @@ import java.util.Map;
 public class UpgradeOrder implements Order {
     public final static ArrayList<Integer> researchConsumeCost =
             new ArrayList<>(Arrays.asList(0, 3, 11, 30, 55, 90, 140));
+    // the territory name of the territory where is upgrade is about to happen
     String territoryName;
-    // soldier -> int / target level
+    // (solider, how many of this soldier) -> target level
     protected Map<Pair<Soldier, Integer>, SoldierLevel> soldierToUpgrade;
+    // the player issued this order
     Player player;
 
+    /**
+     * constructor
+     * @param territoryName  the territory name of the territory where is upgrade is about to happen
+     * @param soldierToUpgrade soldiers to be upgrade (solider, how many of this soldier) -> target level
+     * @param player  the player issued this order
+     */
     public UpgradeOrder(String territoryName,
                         Map<Pair<Soldier, Integer>, SoldierLevel> soldierToUpgrade,
                         Player player) {
@@ -28,17 +36,28 @@ public class UpgradeOrder implements Order {
         this.player = player;
     }
 
+    /**
+     * Getter for the player
+     * @return the player issued this order
+     */
     public Player getPlayer(){
         return player;
     }
 
+    /**
+     * Getter for the solider to be upgraded
+     * @return the solider to be upgraded
+     */
     public Map<Pair<Soldier, Integer>, SoldierLevel> getSoldierToUpgrade(){
         return soldierToUpgrade;
     }
 
+    /**
+     * the actual execute the upgrade order
+     * @param map the map
+     */
     @Override
     public void execute(RISKMap map) {
-        // todo: check enough resource
         Territory territory = map.getTerritoryByName(territoryName);
         soldierToUpgrade.entrySet().stream()
                 .forEach(entry -> {

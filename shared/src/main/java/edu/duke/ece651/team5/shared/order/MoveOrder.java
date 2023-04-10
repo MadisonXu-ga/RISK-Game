@@ -13,13 +13,20 @@ public class MoveOrder extends BasicOrder implements Serializable {
     // @Serial
     private static final long serialVersionUID = -5458702819007392881L;
 
+    /**
+     * constructor for all params
+     * @param sourceName name of the source territory
+     * @param destinationName name of the dest territory
+     * @param soldierToNumber soldier army to be manipulated on
+     * @param player the player who issued this order
+     */
     public MoveOrder(String sourceName, String destinationName, SoldierArmy soldierToNumber, Player player) {
         super(sourceName, destinationName, soldierToNumber, player);
     }
 
     /**
      * The actual updates if an order is executed
-     * move #number unit from source to dest
+     * move the entire soldier army from source to dest
      * @param map the map
      */
     @Override

@@ -12,8 +12,6 @@ public class Soldier {
     }
 
     public void upgradeLevel(SoldierLevel targetLevel) {
-        // todo: rule checker
-        // assert(this.level.ordinal() < targetLevel.ordinal());
         this.level = targetLevel;
     }
 

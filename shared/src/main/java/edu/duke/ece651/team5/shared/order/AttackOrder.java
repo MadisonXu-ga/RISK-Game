@@ -11,8 +11,13 @@ import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.constant.Constants;
 
 public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, Serializable{
-
-
+    /**
+     * constructor for all params
+     * @param sourceName name of the source territory
+     * @param destinationName name of the dest territory
+     * @param soldierToNumber soldier army to be manipulated on
+     * @param player the player who issued this order
+     */
     public AttackOrder(String sourceName, String destinationName, SoldierArmy soldierToNumber, Player player) {
         super(sourceName, destinationName, soldierToNumber, player);
     }
@@ -29,6 +34,7 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
 
     /**
      * executed the move order
+     * using the soldier army in src to attack dest
      * @param map the map
      */
     @Override
@@ -52,12 +58,5 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
         .filter(entry -> this.getDestinationName().equals(other.getDestinationName()))
         .forEach(entry -> soldierToNumber.getAllSoldiers().merge(entry.getKey(), entry.getValue(), Integer::sum));
     }
-
-    
-
-
-
-
-    
     
 }

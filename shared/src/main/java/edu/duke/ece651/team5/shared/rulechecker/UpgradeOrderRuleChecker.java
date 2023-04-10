@@ -7,7 +7,7 @@ public abstract class UpgradeOrderRuleChecker {
 
     /**
      * Constructor to chain the rule checkers
-     * @param next
+     * @param next the next order to be checked
      */
     public UpgradeOrderRuleChecker(UpgradeOrderRuleChecker next) {
         this.next = next;
@@ -15,9 +15,7 @@ public abstract class UpgradeOrderRuleChecker {
 
     /**
      * Override this method for each check rules
-     * @param order the order that should be checked
-     * @param player the player that issues this order
-     * @param map the map
+     * @param upgradeOrder the order that should be checked
      * @return error message if it does not meet the rule, null if it does
      */
     protected abstract String checkMyRule(UpgradeOrder upgradeOrder);

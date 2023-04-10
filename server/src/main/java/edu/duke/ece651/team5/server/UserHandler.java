@@ -271,7 +271,7 @@ public class UserHandler implements Runnable {
     /**
      * 
      */
-    protected void handleSaveAndExit(){
+    protected void handleSaveAndExit() {
         //
         //
     }
@@ -308,6 +308,7 @@ public class UserHandler implements Runnable {
                 userGameMap.deleteMap(currentUser, game);
             }
 
+            currentUser = null;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

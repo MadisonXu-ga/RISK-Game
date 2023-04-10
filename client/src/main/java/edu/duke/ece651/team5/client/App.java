@@ -6,6 +6,7 @@ package edu.duke.ece651.team5.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ModuleLayer.Controller;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -36,6 +37,8 @@ public class App extends Application {
   private static Scene signInScene;
   private static Stage primaryStage;
   private static HashMap<String, Scene> loadedScenes;
+  private static HashMap<String, Object> loadedControllers;
+
   Client classClient;
 
   // include to make the code testable by passing a mock client
@@ -54,6 +57,7 @@ public class App extends Application {
 
     // this will be used to save important scenes and main stage thorughout the game
     loadedScenes = new HashMap<>();
+    loadedControllers = new HashMap<>();
     primaryStage = stage;
 
     // get rid of this later
@@ -113,6 +117,11 @@ public class App extends Application {
     loadedScenes.put(sceneName, scene);
   }
 
+  public static void addControllertoMain(String controllerName, Object controller) {
+
+    loadedControllers.put(controllerName, controller);
+  }
+
   // load the screens by passing their names in string format
   /**
    * @param sceneName in string format
@@ -122,6 +131,12 @@ public class App extends Application {
     Scene loadedScene = loadedScenes.get(sceneName);
     primaryStage.setScene(loadedScene);
     primaryStage.show();
+  }
+
+  public static Object loadController(String sceneName) {
+
+    Object loadedContoller = loadedControllers.get(sceneName);
+    return loadedContoller;
   }
 
   public static void main(String[] args) {

@@ -18,7 +18,7 @@ public class JoinableGamesController {
     private Button[] gameButtons;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws ClassNotFoundException, IOException {
         gameButtons = multipleGameButtons.lookupAll(".button").toArray(new Button[0]);
 
         for (int i = 0; i < gameButtons.length; i++) {
@@ -28,6 +28,7 @@ public class JoinableGamesController {
                 gameButtons[i].setVisible(false);
             }
         }
+
     }
 
     public JoinableGamesController(Client client) {
@@ -49,9 +50,10 @@ public class JoinableGamesController {
         }
     }
 
-    public void onsaveAndExit(ActionEvent ae) {
+    public void onsaveAndExit(ActionEvent ae) throws ClassNotFoundException, IOException {
 
         // TODO create the disconnect action with server
+
         App.loadScenefromMain("multiple-games");
     }
 
@@ -66,6 +68,12 @@ public class JoinableGamesController {
             System.out.println("button pressed");
             Integer gameID = Integer.parseInt(btn.getText());
             String msg = client.joinNewGame(gameID);
+
+            if (msg.equals("Joined Success")) {
+                MultipleGamesController multipleGamesController = (MultipleGamesController) App
+                        .loadController("multiple-games");
+                multipleGamesController.refresh();
+            }
             System.out.println(msg);
 
         }

@@ -33,8 +33,6 @@ public class LoginInController {
 
     private Client client;
 
-    
-
     /**
      * @param client added for testability and pass a mocked client
      */
@@ -45,8 +43,10 @@ public class LoginInController {
 
     /**
      * once we press the sign in button we have two options:
-     * 1) the client does not exist, and a text showing "Not Exists" shows 
-     * 2) the client does exist and the user is able to go to the next loading screen
+     * 1) the client does not exist, and a text showing "Not Exists" shows
+     * 2) the client does exist and the user is able to go to the next loading
+     * screen
+     * 
      * @param ae action of pressing the signIn button
      * @throws ClassNotFoundException
      * @throws IOException
@@ -67,7 +67,7 @@ public class LoginInController {
         String message = client.login(userAndPassword);
         if (message.equals("Login succeeded")) {
             createMultipleGamesPage(userAndPassword);
-            // multipleGamesController.initialize();
+            // multipleGamesController.initializeButtons();
 
         } else {
             loginFeedback.setText(message);
@@ -75,12 +75,15 @@ public class LoginInController {
     }
 
     /**
-     * @param userAndPassword passes the user and password to be sent to server and get into the game
+     * @param userAndPassword passes the user and password to be sent to server and
+     *                        get into the game
      * @throws IOException
      * @throws ClassNotFoundException
-     * this function only is called if an existing user and password are passed to server
-     * creates the multiple-games scene and loads it 
-     * adds multiple-games to main, and sets the scene using primaryStage
+     *                                this function only is called if an existing
+     *                                user and password are passed to server
+     *                                creates the multiple-games scene and loads it
+     *                                adds multiple-games to main, and sets the
+     *                                scene using primaryStage
      */
     private void createMultipleGamesPage(ArrayList<String> userAndPassword)
             throws IOException, ClassNotFoundException {
@@ -89,6 +92,7 @@ public class LoginInController {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         MultipleGamesController multipleGamesController = new MultipleGamesController(client);
+
         HashMap<Class<?>, Object> controllers = new HashMap<>();
 
         controllers.put(MultipleGamesController.class, multipleGamesController);
@@ -100,14 +104,17 @@ public class LoginInController {
 
         Scene scene = new Scene(new StackPane(bp));
         App.addScenetoMain("multiple-games", scene);
+        App.addControllertoMain("multiple-games", multipleGamesController);
 
         App.getPrimaryStage().setScene(scene);
+        // multipleGamesController.initialize();
     }
 
     /**
      * if the user does not have an account or needs a new one they press Signup
-     * this function takes them to the sign up page 
+     * this function takes them to the sign up page
      * no need to store sign up in memory since we can always access it from login
+     * 
      * @param ae
      * @throws IOException
      */

@@ -108,7 +108,7 @@ public class MultipleGamesController extends GoBackController {
 
         System.out.println("fake new game was pressed");
 
-        URL xmlResource = getClass().getResource("/mapGoBack.fxml");
+        URL xmlResource = getClass().getResource("/mapGoBack2.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
@@ -117,7 +117,7 @@ public class MultipleGamesController extends GoBackController {
             return controllers.get(c);
         });
 
-        BorderPane bp = loader.load();
+        StackPane bp = loader.load();
         Scene scene = new Scene(new StackPane(bp));
 
         App.getPrimaryStage().setScene(scene);

@@ -24,7 +24,7 @@ public class MapController extends GoBackController {
             // System.out.println(gameButtons[i]);
             if (!gameButtons[i].getId().contains("btn")) {
 
-                System.out.println(gameButtons[i].getId());
+                System.out.println("territory " + i + ": " + gameButtons[i].getId());
 
             }
             // Set the visibility of the button based on the corresponding boolean value

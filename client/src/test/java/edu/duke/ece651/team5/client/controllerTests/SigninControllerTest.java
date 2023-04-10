@@ -26,6 +26,7 @@ import org.testfx.matcher.control.TextMatchers;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.client.controller.MultipleGamesController;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Text;
@@ -48,47 +49,66 @@ class SigninControllerTest {
     }
 
     @Test
-    void testSignInButton(FxRobot robot) throws ClassNotFoundException, IOException {
-
-        when(client.login(any(ArrayList.class))).thenReturn("Not exists");
-        FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
-        FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
-        FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText(""));
-
-        String userNameStr = "coolUserName";
-        String password = "intelligentPassword";
-        robot.clickOn("#userName").write(userNameStr);
-        robot.clickOn("#password").write(password);
-        FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(userNameStr));
-        FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(password));
-        robot.clickOn("#loginBtn");
-        FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
-        FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
-        FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText("Not exists"));
+    public void srtfnv() {
 
     }
 
     @Test
-    void testSignInButton_success(FxRobot robot) throws ClassNotFoundException, IOException {
+    void testSignInButton(FxRobot robot) throws ClassNotFoundException,
+    IOException {
 
-        when(client.login(any(ArrayList.class))).thenReturn("Login succeeded");
-        FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
-        FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
-        FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText(""));
+    when(client.login(any(ArrayList.class))).thenReturn("Not exists");
+    FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
+    FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
+    FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText(""));
 
-        String userNameStr = "coolUserName";
-        String password = "intelligentPassword";
-        robot.clickOn("#userName").write(userNameStr);
-        robot.clickOn("#password").write(password);
-        FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(userNameStr));
-        FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(password));
-        robot.clickOn("#loginBtn");
-        FxAssert.verifyThat("#beginNewGame", NodeMatchers.isVisible());
-        FxAssert.verifyThat("#joinOtherGamesbtn", NodeMatchers.isVisible());
+    String userNameStr = "coolUserName";
+    String password = "intelligentPassword";
+    robot.clickOn("#userName").write(userNameStr);
+    robot.clickOn("#password").write(password);
+    FxAssert.verifyThat("#userName",
+    TextInputControlMatchers.hasText(userNameStr));
+    FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(password));
+    robot.clickOn("#loginBtn");
+    FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
+    FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
+    FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText("Not exists"));
+
     }
 
     @Test
-    void testSignUpBtn(FxRobot robot) throws ClassNotFoundException, IOException, TimeoutException {
+    void testSignInButton_success(FxRobot robot) throws ClassNotFoundException,
+    IOException {
+
+    when(client.login(any(ArrayList.class))).thenReturn("Login succeeded");
+    FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
+    FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
+    FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText(""));
+
+    String userNameStr = "coolUserName";
+    String password = "intelligentPassword";
+    robot.clickOn("#userName").write(userNameStr);
+    robot.clickOn("#password").write(password);
+    FxAssert.verifyThat("#userName",
+    TextInputControlMatchers.hasText(userNameStr));
+    FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(password));
+    robot.clickOn("#loginBtn");
+    FxAssert.verifyThat("#beginNewGamebtn", NodeMatchers.isVisible());
+    FxAssert.verifyThat("#joinOtherGamesbtn", NodeMatchers.isVisible());
+
+    MultipleGamesController multipleGamesController = (MultipleGamesController) App
+                        .loadController("multiple-games");
+                multipleGamesController.refresh();
+    Button[] buttons = multipleGamesController.getButtons();
+    robot.clickOn("#beginNewGamebtn");
+    buttons = multipleGamesController.getButtons();
+    robot.clickOn("#saveAndExit");
+    buttons = multipleGamesController.getButtons();
+    }
+
+    @Test
+    void testSignUpBtn(FxRobot robot) throws ClassNotFoundException, IOException,
+            TimeoutException {
 
         robot.clickOn("#signupBtn");
         FxAssert.verifyThat("#createAccount", NodeMatchers.isVisible());

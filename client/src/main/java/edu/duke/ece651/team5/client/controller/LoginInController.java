@@ -31,7 +31,7 @@ public class LoginInController {
     @FXML
     SignUpController signUpController;
 
-    private Client client;
+    public Client client;
 
     /**
      * @param client added for testability and pass a mocked client

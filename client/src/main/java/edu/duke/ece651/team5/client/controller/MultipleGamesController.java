@@ -18,17 +18,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
-public class MultipleGamesController extends GoBackController {
+public class MultipleGamesController {
 
     @FXML
-    AnchorPane multipleGameButtons;
+    public AnchorPane multipleGameButtons;
 
     @FXML
-    Button beginNewGame;
+    public Button beginNewGame;
     @FXML
     Button joinOtherGames;
 
-    private Button[] gameButtons;
+    public Button[] gameButtons;
     public Client client;
 
     @FXML
@@ -41,15 +41,29 @@ public class MultipleGamesController extends GoBackController {
 
             gameButtons[i].setVisible(false);
         }
+        System.out.println("This is executing for buttons:" + gameButtons.length);
+
+    }
+
+    public void onSaveAndExit(ActionEvent ae) throws ClassNotFoundException, IOException {
+
+        // TODO create the disconnect action with server
+        App.loadScenefromMain("multiple-games");
+        MultipleGamesController multipleGamesController = (MultipleGamesController) App
+                .loadController("multiple-games");
+        multipleGamesController.refresh();
 
     }
 
     public void refresh() throws ClassNotFoundException, IOException {
 
         ArrayList<Integer> gameIDs = client.getGamesStarted();
+        // System.out.println(gameButtons);
+        System.out.println("This is executing for size:" + gameIDs.size() + " " + gameIDs);
+        System.out.println("This is executing for buttons:" + this.gameButtons.length);
 
-        System.out.println("This is executing for size:" + gameIDs);
         for (int i = 0; i < gameIDs.size(); i++) {
+            // System.out.println(gameButtons[i].getText());
             gameButtons[i].setVisible(true);
             gameButtons[i].setText(gameIDs.get(i).toString());
         }
@@ -121,7 +135,7 @@ public class MultipleGamesController extends GoBackController {
         HashMap<Class<?>, Object> controllers = new HashMap<>();
         controllers.put(GoBackController.class, new GoBackController());
         controllers.put(JoinableGamesController.class, new JoinableGamesController(client));
-        controllers.put(MultipleGamesController.class, this);
+        controllers.put(MultipleGamesController.class, new MultipleGamesController(client));
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });

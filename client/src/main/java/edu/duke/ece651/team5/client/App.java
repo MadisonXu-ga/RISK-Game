@@ -34,12 +34,12 @@ import javafx.stage.Stage;
 // }
 public class App extends Application {
 
-  private static Scene signInScene;
-  private static Stage primaryStage;
-  private static HashMap<String, Scene> loadedScenes;
-  private static HashMap<String, Object> loadedControllers;
+  public static Scene signInScene;
+  public static Stage primaryStage;
+  public static HashMap<String, Scene> loadedScenes;
+  public static HashMap<String, Object> loadedControllers;
 
-  Client classClient;
+  public Client classClient;
 
   // include to make the code testable by passing a mock client
   public App(Client client) {

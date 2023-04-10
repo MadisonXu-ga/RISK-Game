@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="735.0" prefWidth="1383.0" styleClass="backgroundColor" stylesheets="@layoutFormatting.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.duke.ece651.team5.client.controller.MultipleGamesController">
@@ -40,6 +41,11 @@
                   <Button id="game1btn" fx:id="game4btn" layoutX="250.0" layoutY="338.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 4" />
                   <Button id="game2btn" fx:id="game5btn" layoutX="250.0" layoutY="438.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 5" />
                   <Button id="game3btn" fx:id="game6btn" layoutX="250.0" layoutY="538.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 6" />
+                  <Button fx:id="Logout" layoutX="507.0" layoutY="28.0" mnemonicParsing="false" onAction="#onLogOut" prefHeight="42.0" prefWidth="125.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Log out">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
                </children>
                <stylesheets>
                   <URL value="@buttonsStyle.css" />

@@ -94,6 +94,12 @@ public class MultipleGamesController extends GoBackController {
 
     }
 
+    public void onLogOut() throws IOException {
+
+        client.logOut();
+        App.loadScenefromMain("login-page");
+    }
+
     public void goToWaitingScreen() throws IOException {
         URL xmlResource = getClass().getResource("/waiting-room.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);

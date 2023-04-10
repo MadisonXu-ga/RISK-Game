@@ -37,7 +37,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30463, br, out);
+    this("localhost", 30464, br, out);
   }
 
   /**
@@ -152,6 +152,12 @@ public class Client {
     msg = msg.trim(); // removes leading and trailing whitespace
     msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
     return msg;
+  }
+
+  public void logOut() throws IOException {
+
+    playerConnection.writeData("Log out");
+
   }
 
   /**

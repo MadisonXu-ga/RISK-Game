@@ -18,7 +18,10 @@ import edu.duke.ece651.team5.client.controller.SignUpController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -96,6 +99,12 @@ public class App extends Application {
     stage.setResizable(false);
     stage.setScene(scene);
     stage.show();
+
+    primaryStage.setOnCloseRequest(event -> {
+
+      event.consume();
+      logoutGame(primaryStage);
+    });
   }
 
   // this function will be used from the controllers to set new scenes in the same
@@ -131,12 +140,26 @@ public class App extends Application {
     Scene loadedScene = loadedScenes.get(sceneName);
     primaryStage.setScene(loadedScene);
     primaryStage.show();
+
   }
 
   public static Object loadController(String sceneName) {
 
     Object loadedContoller = loadedControllers.get(sceneName);
     return loadedContoller;
+  }
+
+  public static void logoutGame(Stage stage) {
+
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Logout");
+    alert.setHeaderText("You are about to logout!");
+    alert.setContentText("Do you want to save before exiting?: ");
+
+    if (alert.showAndWait().get() == ButtonType.OK) {
+      primaryStage.close();
+
+    }
   }
 
   public static void main(String[] args) {

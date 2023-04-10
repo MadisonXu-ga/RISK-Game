@@ -18,7 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
-public class MultipleGamesController {
+public class MultipleGamesController extends GoBackController {
 
     @FXML
     public AnchorPane multipleGameButtons;
@@ -45,15 +45,17 @@ public class MultipleGamesController {
 
     }
 
-    public void onSaveAndExit(ActionEvent ae) throws ClassNotFoundException, IOException {
+    // public void onSaveAndExit(ActionEvent ae) throws ClassNotFoundException,
+    // IOException {
 
-        // TODO create the disconnect action with server
-        App.loadScenefromMain("multiple-games");
-        MultipleGamesController multipleGamesController = (MultipleGamesController) App
-                .loadController("multiple-games");
-        multipleGamesController.refresh();
+    // // TODO create the disconnect action with server
+    // App.loadScenefromMain("multiple-games");
+    // MultipleGamesController multipleGamesController = (MultipleGamesController)
+    // App
+    // .loadController("multiple-games");
+    // multipleGamesController.refresh();
 
-    }
+    // }
 
     public void refresh() throws ClassNotFoundException, IOException {
 
@@ -133,7 +135,7 @@ public class MultipleGamesController {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
-        controllers.put(GoBackController.class, new GoBackController());
+        // controllers.put(GoBackController.class, new GoBackController());
         controllers.put(JoinableGamesController.class, new JoinableGamesController(client));
         controllers.put(MultipleGamesController.class, new MultipleGamesController(client));
         loader.setControllerFactory((c) -> {

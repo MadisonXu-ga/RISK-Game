@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
-public class JoinableGamesController {
+public class JoinableGamesController extends GoBackController {
 
     public Client client;
     @FXML
@@ -50,12 +50,13 @@ public class JoinableGamesController {
         }
     }
 
-    public void onsaveAndExit(ActionEvent ae) throws ClassNotFoundException, IOException {
+    // public void onsaveAndExit(ActionEvent ae) throws ClassNotFoundException,
+    // IOException {
 
-        // TODO create the disconnect action with server
+    // // TODO create the disconnect action with server
 
-        App.loadScenefromMain("multiple-games");
-    }
+    // App.loadScenefromMain("multiple-games");
+    // }
 
     public void onJoinGame(ActionEvent ae) throws ClassNotFoundException, IOException {
 

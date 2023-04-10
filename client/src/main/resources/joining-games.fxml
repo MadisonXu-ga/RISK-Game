@@ -24,7 +24,7 @@
             <Button fx:id="Game4" layoutX="200.0" layoutY="432.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game4" />
             <Button fx:id="Game5" layoutX="200.0" layoutY="507.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 5" />
             <Button fx:id="Game6" layoutX="200.0" layoutY="582.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 6" />
-            <Button fx:id="saveAndExit" layoutX="370.0" layoutY="30.0" mnemonicParsing="false" onAction="#onsaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
+            <Button fx:id="saveAndExit" layoutX="370.0" layoutY="30.0" mnemonicParsing="false" onAction="#onSaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
                <font>
                   <Font size="16.0" />
                </font>

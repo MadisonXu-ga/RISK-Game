@@ -18,8 +18,6 @@ public abstract class ResearchOrderRuleChecker{
     /**
      * Override this method for each check rules
      * @param order the order that should be checked
-     * @param player the player that issues this order
-     * @param map the map
      * @return error message if it does not meet the rule, null if it does
      */
     protected abstract String checkMyRule(ResearchOrder order);

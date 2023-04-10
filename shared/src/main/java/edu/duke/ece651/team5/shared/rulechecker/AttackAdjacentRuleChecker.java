@@ -5,6 +5,10 @@ import edu.duke.ece651.team5.shared.order.BasicOrder;
 import edu.duke.ece651.team5.shared.game.*;
 
 public class AttackAdjacentRuleChecker extends OrderRuleChecker {
+    /**
+     * Constructor to chain the rule checkers
+     * @param next next rule checker to be checked
+     */
     public AttackAdjacentRuleChecker(OrderRuleChecker next) {
         super(next);
     }

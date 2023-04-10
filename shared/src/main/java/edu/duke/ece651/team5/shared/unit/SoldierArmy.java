@@ -1,15 +1,18 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.unit;
 
 import java.util.*;
 
-import static edu.duke.ece651.team5.shared.Constants.DEFAULT_INIT_SOLDIER_NUM;
+import static edu.duke.ece651.team5.shared.constant.Constants.DEFAULT_INIT_SOLDIER_NUM;
 
 public class SoldierArmy {
     private Map<Soldier, Integer> soldiers = new HashMap<>();
-
     public SoldierArmy() {
         addSoldier(new Soldier(SoldierLevel.INFANTRY), DEFAULT_INIT_SOLDIER_NUM);
         // addSoldier(new Soldier(SoldierType.ARTILLERY, 1), DEFAULT_INIT_SOLDIER_NUM);
+    }
+
+    public SoldierArmy(Map<Soldier, Integer> soldiers) {
+        this.soldiers = soldiers;
     }
 
     public void addSoldier(Soldier soldier, int count) {
@@ -44,16 +47,13 @@ public class SoldierArmy {
     }
 
     public Map<Soldier, Integer> getAllSoldiers() {
-        return Collections.unmodifiableMap(soldiers);
+        return soldiers;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof SoldierArmy)) {
-            return false;
-        }
         SoldierArmy soldierArmy = (SoldierArmy) o;
         return Objects.equals(soldiers, soldierArmy.soldiers);
     }

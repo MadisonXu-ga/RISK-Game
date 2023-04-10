@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 
+import edu.duke.ece651.team5.shared.game.RISKMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.Territory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +37,16 @@ public class RISKMapTest {
                                          new RISKMap.Edge(4, 3, 4)));
 
         map = new RISKMap(territories, connections);
+    }
+
+    @Test
+    public void testMapConfigFile(){
+        RISKMap map = new RISKMap();
+        map.printMap();
+
+        Territory a = map.getTerritoryByName("Ironcliff");
+        Territory b = map.getTerritoryByName("Oz");
+        assertTrue(map.isAdjacent(a, b));
     }
 
     @Test

@@ -1,0 +1,5 @@
+Narnia, Elantris, Midkemia, Scadrial
+Elantris: Narnia, Midkemia, Scadrial
+Midkemia: Elantris, Scadrial, Midkemia
+Narnia: Elantris, Midkemia
+Scadrial: Elantris, Midkemia, Narnia

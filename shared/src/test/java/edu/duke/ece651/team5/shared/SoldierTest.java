@@ -2,6 +2,9 @@ package edu.duke.ece651.team5.shared;
 
 import org.junit.jupiter.api.Test;
 
+import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierLevel;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SoldierTest {
@@ -13,12 +16,16 @@ public class SoldierTest {
         Soldier soldier3 = new Soldier(SoldierLevel.ARTILLERY);
 
         // test equals method
+        assertTrue(soldier1.equals(soldier1));
         assertTrue(soldier1.equals(soldier2));
         assertFalse(soldier1.equals(soldier3));
+        assertFalse(soldier1.equals(3));
 
         // test hashCode method
         assertEquals(soldier1.hashCode(), soldier2.hashCode());
         assertNotEquals(soldier1.hashCode(), soldier3.hashCode());
+
+        assertEquals("INFANTRY", soldier1.toString());
     }
 
     @Test
@@ -34,5 +41,6 @@ public class SoldierTest {
         soldier.upgradeLevel(SoldierLevel.ARTILLERY);
         assertEquals(SoldierLevel.ARTILLERY, soldier.getLevel());
     }
+
 }
 

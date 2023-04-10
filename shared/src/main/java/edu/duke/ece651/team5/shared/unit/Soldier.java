@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.shared;
+package edu.duke.ece651.team5.shared.unit;
 
 public class Soldier {
     private SoldierLevel level;
@@ -12,8 +12,6 @@ public class Soldier {
     }
 
     public void upgradeLevel(SoldierLevel targetLevel) {
-        // todo: rule checker
-        assert(this.level.ordinal() < targetLevel.ordinal());
         this.level = targetLevel;
     }
 
@@ -29,7 +27,13 @@ public class Soldier {
 
     @Override
     public int hashCode() {
-        return level != null ? level.hashCode() : 0;
+        // return level != null ? level.hashCode() : 0;
+        return level.hashCode();
+    }
+
+    @Override
+    public String toString(){
+        return level.name();
     }
 
 

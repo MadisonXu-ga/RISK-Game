@@ -105,7 +105,7 @@ public class LoginInController {
         Scene scene = new Scene(new StackPane(bp));
         App.addScenetoMain("multiple-games", scene);
         App.addControllertoMain("multiple-games", multipleGamesController);
-
+        multipleGamesController.refresh();
         App.getPrimaryStage().setScene(scene);
 
         // multipleGamesController.initialize();

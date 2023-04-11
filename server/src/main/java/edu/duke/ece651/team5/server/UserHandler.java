@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.duke.ece651.team5.shared.Game;
+import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 import edu.duke.ece651.team5.server.MyEnum.*;
 
@@ -244,7 +244,6 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Joined Success");
                 System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
                 if (msg == "Start") {
-                    // TODO: finished broadcaststartgame and call it
                     broadcastStartGame(gameToJoin);
                     System.out.println("Game " + gameID + " is ready to start!");
                 }
@@ -260,20 +259,20 @@ public class UserHandler implements Runnable {
         }
     }
 
-    // TODO: may change to broadcast map later
-    protected void broadcastStartGame(GameController gameController) {
-        /**
-         * TODO: get map and players from gameController
-         * send all the players in this game map
-         */
-    }
-
     /**
+     * Send game to all players in this game
      * 
+     * @param gameController
      */
-    protected void handleSaveAndExit() {
-        //
-        //
+    protected void broadcastStartGame(GameController gameController) {
+        Game game = gameController.getGame();
+        for (User user : userGameMap.getGameUsers(gameController)) {
+            try {
+                clients.get(user).writeData(game);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -373,35 +372,47 @@ public class UserHandler implements Runnable {
     protected void handleUnitPlacement() {
         try {
             int gameID = (int) playerConnection.readData();
-            // TODO:
-            boolean isValid = false;
-            HashMap<String, Integer> uPs;
-            // TODO: seems i do not need to make it as a loop!!
-            // do {
-                uPs = (HashMap<String, Integer>) playerConnection.readData();
-                // 1. checker: check placement number (maybe need to check owner but most on client side)
-                // isValid = unitValidRuleChecker.checkUnitValid(riskMap, uPs); (make chaneges to this)
-            // } while (!isValid);
+            GameController gameController = allGames.get(gameID);
 
+            UnitValidRuleChecker unitValidRuleChecker = new UnitValidRuleChecker();
+            boolean isValid = false;
+
+            HashMap<String, Integer> uPs;
+            uPs = (HashMap<String, Integer>) playerConnection.readData();
+            // 1. checker: check placement number (maybe need to check owner but most on
+            // client side)
+            isValid = unitValidRuleChecker.checkUnitValid(gameController.getGame().getMap(), uPs);
+
+            if (!isValid) {
+                playerConnection.writeData("Unit number invalid");
+                return;
+            }
             // 2. if valid, need to place them
-            // GameController game = allGames.get(gameID);
-            // String msg = game.initializeGame(currentUser);
+            String msg = gameController.initializeGame(currentUser, uPs);
 
             // 3. send to client whether it is valid (string maybe)
+            playerConnection.writeData(msg);
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    protected void handleMoveOrder() {
+    protected void handleOrders() {
         try {
             int gameID = (int) playerConnection.readData();
+
+            // 1. resolve move
+
+            // 2. resolve attack
+
+            // 3. resolve research
+
+            // 4. resolve upgrade
 
         } catch (ClassNotFoundException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
 }

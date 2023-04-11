@@ -157,7 +157,7 @@ public class RISKMap {
      * @param destName name of the dest territory
      * @return the distance between them, if there is no such a path return Integer.MAX_VALUE
      */
-    public int getShortestPathDistance(String sourceName, String destName) {
+    public int getShortestPathDistance(String sourceName, String destName, boolean hasSameOwner) {
         Territory source = getTerritoryByName(sourceName);
         Territory dest = getTerritoryByName(destName);
 

@@ -1,14 +1,9 @@
 package edu.duke.ece651.team5.shared;
 
-import edu.duke.ece651.team5.shared.datastructure.Pair;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
-import edu.duke.ece651.team5.shared.order.MoveOrder;
-import edu.duke.ece651.team5.shared.order.UpgradeOrder;
-import edu.duke.ece651.team5.shared.resource.Resource;
-import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.rulechecker.AttackAdjacentRuleChecker;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;

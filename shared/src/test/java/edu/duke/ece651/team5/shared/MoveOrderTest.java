@@ -3,7 +3,6 @@ package edu.duke.ece651.team5.shared;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.Territory;
-import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
@@ -55,7 +54,6 @@ public class MoveOrderTest {
         move.execute(map);
         assertEquals(1, territory1.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
         assertEquals(4, territory4.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
-
     }
 
 }

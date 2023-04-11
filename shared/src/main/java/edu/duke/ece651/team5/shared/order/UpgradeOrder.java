@@ -13,7 +13,7 @@ import java.util.Map;
  * For a certain territory
  */
 public class UpgradeOrder implements Order {
-    public final static ArrayList<Integer> researchConsumeCost =
+    public final static ArrayList<Integer> upgradeConsumeCost =
             new ArrayList<>(Arrays.asList(0, 3, 11, 30, 55, 90, 140));
     // the territory name of the territory where is upgrade is about to happen
     String territoryName;
@@ -68,7 +68,7 @@ public class UpgradeOrder implements Order {
                     territory.getSoldierArmy().upgradeSoldier(soldier, count, targetLevel);
                     territory.getOwner().consumeResource(
                             new Resource(ResourceType.TECHNOLOGY),
-                            researchConsumeCost.get(targetLevel.ordinal() - currLevel.ordinal() * count)
+                            upgradeConsumeCost.get(targetLevel.ordinal() - currLevel.ordinal()) * count
                     );
                 });
     }

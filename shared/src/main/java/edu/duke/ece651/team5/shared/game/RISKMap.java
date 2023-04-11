@@ -4,7 +4,7 @@ import javax.xml.transform.Source;
 import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.*;
-
+import java.util.stream.Collectors;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +33,10 @@ public class RISKMap {
             this.from = from;
             this.to = to;
             this.distance = distance;
+        }
+
+        public int getTo(){
+            return to;
         }
     }
 
@@ -127,6 +131,21 @@ public class RISKMap {
     }
 
     /**
+     * get list of neighbors territory for a given territoryId
+     * @param targetTerritoryId target Territory to find neighbors
+     * @param getAllNeighbors true to get all neighbors, false to only get territories not owned by player
+     * @param player player who own the target territory
+     * @return a list of territories who are neighbors of the target territory
+     */
+    public List<Territory> getNeighbors(int targetTerritoryId, boolean getAllNeighbors, Player player){
+        return connections.get(targetTerritoryId).stream()
+        .map(Edge::getTo)
+        .map(this::getTerritoryById)
+        .filter(t -> getAllNeighbors || !t.getOwner().equals(player))
+        .collect(Collectors.toList());
+    }
+
+    /**
      * Constructor with all params
      * usually should not call this unless it is a test
      * @param territories map from territory name to territory object
@@ -157,7 +176,7 @@ public class RISKMap {
      * @param destName name of the dest territory
      * @return the distance between them, if there is no such a path return Integer.MAX_VALUE
      */
-    public int getShortestPathDistance(String sourceName, String destName, boolean hasSameOwner) {
+    public int getShortestPathDistance(String sourceName, String destName) {
         Territory source = getTerritoryByName(sourceName);
         Territory dest = getTerritoryByName(destName);
 

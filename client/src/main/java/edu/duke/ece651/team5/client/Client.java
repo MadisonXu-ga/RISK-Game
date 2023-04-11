@@ -44,7 +44,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30480, br, out);
+    this("localhost", 30482, br, out);
   }
 
   /**
@@ -74,7 +74,7 @@ public class Client {
    */
   public void createPlayer() throws UnknownHostException, IOException {
     this.playerConnection = new PlayerConnection(new Socket(host, port));
-    // this.textPlayer = new TextPlayer(inputReader, out);
+    this.textPlayer = new TextPlayer(inputReader, out);
   }
 
   /**

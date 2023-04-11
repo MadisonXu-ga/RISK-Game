@@ -15,62 +15,69 @@
    <children>
       <BorderPane prefHeight="735.0" prefWidth="1383.0" style="-fx-background-color: linear-gradient(to right, #282925 0%, #64665d 35%, #9fa295 100%);">
          <right>
-            <AnchorPane fx:id="rightSideScreen" BorderPane.alignment="CENTER">
+            <AnchorPane fx:id="rightSideScreen" prefHeight="735.0" prefWidth="1383.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="610.0" fitWidth="1251.0" pickOnBounds="true" preserveRatio="true" translateY="50.0">
+                  <ImageView fitHeight="610.0" fitWidth="1251.0" pickOnBounds="true" preserveRatio="true" translateX="125.0" translateY="50.0">
                      <image>
                         <Image url="@final_map_onlyterrain2.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="Midkemia" layoutX="66.0" layoutY="111.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="260.0" prefWidth="215.0" styleClass="Midkemiabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Gondor" layoutX="170.0" layoutY="47.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="202.0" prefWidth="198.0" styleClass="Gondorbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Scadrial" layoutX="274.0" layoutY="152.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="219.0" prefWidth="288.0" styleClass="Scadrialbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Ironcliff" layoutX="442.0" layoutY="121.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="94.0" prefWidth="199.0" styleClass="Ironcliffbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Elantris" layoutX="103.0" layoutY="298.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="134.0" prefWidth="190.0" styleClass="Elantrisbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Narnia" layoutX="164.0" layoutY="329.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="178.0" prefWidth="218.0" styleClass="Narniabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Roshar" layoutX="340.0" layoutY="298.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="240.0" prefWidth="233.0" styleClass="Rosharbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Thalassia" layoutX="511.0" layoutY="410.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="140.0" prefWidth="110.0" styleClass="Thalassiabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Hogwarts" layoutX="556.0" layoutY="322.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="124.0" prefWidth="108.0" styleClass="Hogwartsbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Mordor" layoutX="502.0" layoutY="245.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="127.0" prefWidth="226.0" styleClass="Mordorbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Oz" layoutX="546.0" layoutY="140.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="133.0" prefWidth="143.0" styleClass="Ozbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Emberfall" layoutX="668.0" layoutY="138.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="177.0" prefWidth="134.0" styleClass="Emberfallbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Celestia" layoutX="778.0" layoutY="126.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="82.0" prefWidth="127.0" styleClass="Celestiabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Kaelindor" layoutX="777.0" layoutY="141.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="254.0" prefWidth="207.0" styleClass="Kaelindorbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Sylvaria" layoutX="655.0" layoutY="300.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="110.0" prefWidth="152.0" styleClass="Sylvariabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Arathia" layoutX="633.0" layoutY="358.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="203.0" prefWidth="278.0" styleClass="Arathiabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Eryndor" layoutX="867.0" layoutY="402.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="117.0" prefWidth="125.0" styleClass="Eryndorbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Shadowmire" layoutX="1000.0" layoutY="334.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="175.0" prefWidth="165.0" styleClass="Shadowmirebtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Eterna" layoutX="867.0" layoutY="306.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="160.0" prefWidth="203.0" styleClass="Eternabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Draconia" layoutX="910.0" layoutY="117.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="81.0" prefWidth="57.0" styleClass="Draconiabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Mythosia" layoutX="914.0" layoutY="104.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="237.0" prefWidth="181.0" styleClass="Myhtosiabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Stormhaven" layoutX="958.0" layoutY="39.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="134.0" prefWidth="129.0" styleClass="Stormhavenbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Verdantia" layoutX="1073.0" layoutY="147.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="109.0" prefWidth="87.0" styleClass="Verdantiabtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="Frosthold" layoutX="1077.0" layoutY="244.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="103.0" prefWidth="83.0" styleClass="Frostholdbtn" stylesheets="@territory.css" translateY="50.0" />
-                  <Button fx:id="saveAndExitbtn" layoutX="1070.0" layoutY="17.0" mnemonicParsing="false" onAction="#onSaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
+                  <Button fx:id="Midkemia" layoutX="66.0" layoutY="111.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="260.0" prefWidth="215.0" styleClass="Midkemiabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Gondor" layoutX="170.0" layoutY="47.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="202.0" prefWidth="198.0" styleClass="Gondorbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Scadrial" layoutX="274.0" layoutY="152.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="219.0" prefWidth="288.0" styleClass="Scadrialbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Ironcliff" layoutX="442.0" layoutY="121.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="94.0" prefWidth="199.0" styleClass="Ironcliffbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Elantris" layoutX="103.0" layoutY="298.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="134.0" prefWidth="190.0" styleClass="Elantrisbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Narnia" layoutX="164.0" layoutY="329.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="178.0" prefWidth="218.0" styleClass="Narniabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Roshar" layoutX="340.0" layoutY="298.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="240.0" prefWidth="233.0" styleClass="Rosharbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Thalassia" layoutX="511.0" layoutY="410.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="140.0" prefWidth="110.0" styleClass="Thalassiabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Hogwarts" layoutX="556.0" layoutY="322.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" pickOnBounds="false" prefHeight="124.0" prefWidth="108.0" styleClass="Hogwartsbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Mordor" layoutX="502.0" layoutY="245.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="127.0" prefWidth="226.0" styleClass="Mordorbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Oz" layoutX="546.0" layoutY="140.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="133.0" prefWidth="143.0" styleClass="Ozbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Emberfall" layoutX="668.0" layoutY="138.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="177.0" prefWidth="134.0" styleClass="Emberfallbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Celestia" layoutX="778.0" layoutY="126.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="82.0" prefWidth="127.0" styleClass="Celestiabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Kaelindor" layoutX="777.0" layoutY="141.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="254.0" prefWidth="207.0" styleClass="Kaelindorbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Sylvaria" layoutX="655.0" layoutY="300.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="110.0" prefWidth="152.0" styleClass="Sylvariabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Arathia" layoutX="633.0" layoutY="358.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="203.0" prefWidth="278.0" styleClass="Arathiabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Eryndor" layoutX="867.0" layoutY="402.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="117.0" prefWidth="125.0" styleClass="Eryndorbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Shadowmire" layoutX="1000.0" layoutY="334.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="175.0" prefWidth="165.0" styleClass="Shadowmirebtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Eterna" layoutX="867.0" layoutY="306.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="160.0" prefWidth="203.0" styleClass="Eternabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Draconia" layoutX="910.0" layoutY="117.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="81.0" prefWidth="57.0" styleClass="Draconiabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Mythosia" layoutX="914.0" layoutY="104.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="237.0" prefWidth="181.0" styleClass="Myhtosiabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Stormhaven" layoutX="958.0" layoutY="39.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="134.0" prefWidth="129.0" styleClass="Stormhavenbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Verdantia" layoutX="1073.0" layoutY="147.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="109.0" prefWidth="87.0" styleClass="Verdantiabtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="Frosthold" layoutX="1077.0" layoutY="244.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="103.0" prefWidth="83.0" styleClass="Frostholdbtn" stylesheets="@territory.css" translateX="125.0" translateY="50.0" />
+                  <Button fx:id="saveAndExitbtn" layoutX="1070.0" layoutY="17.0" mnemonicParsing="false" onAction="#onSaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit" translateX="125.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="goBackbtn" layoutX="1070.0" layoutY="665.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" styleClass="secondarybtn" stylesheets="@actionButtons.css" text="Go back">
+                  <Button fx:id="goBackbtn" layoutX="1070.0" layoutY="665.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" styleClass="secondarybtn" stylesheets="@actionButtons.css" text="Go back" translateX="125.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="submitOrderbtn" layoutX="1070.0" layoutY="600.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Submit order">
+                  <Button fx:id="submitOrderbtn" layoutX="1070.0" layoutY="600.0" mnemonicParsing="false" onAction="#onSubmitMove" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Submit order" translateX="125.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <ComboBox fx:id="unitsComboBox" layoutX="189.0" layoutY="652.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" />
-                  <TextField layoutX="126.0" layoutY="651.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-                  <Text layoutX="366.0" layoutY="475.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="from " wrappingWidth="104.0032958984375" y="200.0">
+                  <ComboBox fx:id="unitsComboBox" layoutX="189.0" layoutY="652.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" translateX="125.0" />
+                  <TextField layoutX="126.0" layoutY="651.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" translateX="125.0" />
+                  <Text layoutX="366.0" layoutY="475.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="from " translateX="125.0" wrappingWidth="104.0032958984375" y="200.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>
                   </Text>
-                  <Text layoutX="558.0" layoutY="476.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="to" wrappingWidth="104.0032958984375" y="200.0">
+                  <Text layoutX="611.0" layoutY="475.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="to" translateX="125.0" wrappingWidth="104.0032958984375" y="200.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
+                     </font>
+                  </Text>
+                  <ComboBox fx:id="sourceTerritorybtn" layoutX="442.0" layoutY="652.0" onAction="#onSourceTerritorySelection" prefWidth="150.0" promptText="source territory" translateX="125.0" />
+                  <ComboBox fx:id="destTerritorybtn" layoutX="660.0" layoutY="653.0" onAction="#onDestTerritorySelection" prefWidth="150.0" promptText="destination territory" translateX="125.0" />
+                  <Text layoutX="24.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="445.6033172607422" y="40.0">
+                     <font>
+                        <Font name="Lucida Calligraphy Italic" size="36.0" />
                      </font>
                   </Text>
                </children>

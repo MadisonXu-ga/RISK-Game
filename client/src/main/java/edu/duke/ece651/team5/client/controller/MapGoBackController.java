@@ -3,6 +3,8 @@ package edu.duke.ece651.team5.client.controller;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
@@ -22,6 +24,10 @@ import javafx.stage.Popup;
 
 public class MapGoBackController extends MapController {
 
+    public MapGoBackController(Client client) {
+        super(client);
+    }
+
     @FXML
     Button goBackbtn;
 
@@ -29,10 +35,18 @@ public class MapGoBackController extends MapController {
     ComboBox<SoldierLevel> unitsComboBox;
 
     @FXML
+    ComboBox<String> sourceTerritorybtn;
+
+    @FXML
+    ComboBox<String> destTerritorybtn;
+
+    @FXML
     public void initialize() {
         super.initialize();
         ObservableList<SoldierLevel> options = FXCollections.observableArrayList(SoldierLevel.values());
         unitsComboBox.setItems(options);
+        onSourceTerritorySelection();
+        onDestTerritorySelection();
 
     }
 
@@ -41,6 +55,31 @@ public class MapGoBackController extends MapController {
         SoldierLevel selectedLevel = unitsComboBox.getValue();
         System.out.println("Selected Soldier Level: " + selectedLevel);
 
+    }
+
+    public void onSourceTerritorySelection() {
+
+        ObservableList<String> sourceOptions = FXCollections.observableArrayList(list);
+        sourceTerritorybtn.setItems(sourceOptions);
+        // ObservableList<String> destOptions = FXCollections.observableArrayList(list);
+        // destTerritorybtn.setItems(destOptions);
+
+    }
+
+    public void onDestTerritorySelection() {
+
+        ObservableList<String> destOptions = FXCollections.observableArrayList(list);
+        destTerritorybtn.setItems(destOptions);
+
+    }
+
+    public void onSubmitMove() {
+
+        String sourceTerritory = sourceTerritorybtn.getValue();
+        sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
+        String destTerritorry = destTerritorybtn.getValue();
+        destTerritorybtn.setValue(destTerritorybtn.getId());
+        System.out.println("you are trying to move from: " + sourceTerritory + " to " + destTerritorry);
     }
 
 }

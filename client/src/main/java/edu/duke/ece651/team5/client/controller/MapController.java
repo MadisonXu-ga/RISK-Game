@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import edu.duke.ece651.team5.client.Client;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
@@ -21,10 +22,19 @@ public class MapController extends GoBackController {
     @FXML
     AnchorPane rightSideScreen;
 
+    public Client client;
+
     public Button[] gameButtons;
     public HashMap<String, Button> buttonsHashmap;
 
-    public ArrayList<String> list = new ArrayList<>(Arrays.asList("Narnia", "Oz", "Eterna"));
+    public ArrayList<String> list = new ArrayList<>(
+            Arrays.asList("Narnia", "Elantris", "Gondor", "Mordor", "Hogwarts",
+                    "Thalassia", "Arathia", "Eryndor", "Sylvaria", "Kaelindor", "Emberfall", "Verdantia"));
+
+    public MapController(Client client) {
+
+        this.client = client;
+    }
 
     @FXML
     public void initialize() {
@@ -122,7 +132,7 @@ public class MapController extends GoBackController {
 
         // Add some content to the popup's pane
         LocalTime time = LocalTime.now();
-        Label label = new Label(btn.getId() + "\n\n" + time);
+        Label label = new Label(btn.getId() + "\n\n" + "here");
         label.setFont(Font.font(18));
         label.setLayoutX(0);
         label.setLayoutY(0);
@@ -134,9 +144,15 @@ public class MapController extends GoBackController {
         // popup.show(btn.getScene().getWindow(), event.getScreenX(),
         // event.getScreenY());
         Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-        double x = boundsInScene.getMinX() + boundsInScene.getWidth();
-        double y = boundsInScene.getMinY() + boundsInScene.getHeight() / 2;
+        // double x = boundsInScene.getMinX() + boundsInScene.getWidth();
+        // double y = boundsInScene.getMinY() + boundsInScene.getHeight() / 2;
+        double x = btn.localToScene(btn.getBoundsInLocal()).getMinX();
+        double y = btn.localToScene(btn.getBoundsInLocal()).getMinY();
+        // x += 50;
+        // x += btn.getScene().getX() + btn.getScene().getWindow().getX();
+        // y += btn.getScene().getY() + btn.getScene().getWindow().getY();
         popup.show(btn.getScene().getWindow(), x, y);
+
         btn.setOnMouseExited(mouseEvent -> popup.hide());
     }
 

@@ -113,7 +113,7 @@ public class MultipleGamesController extends GoBackController {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
-        controllers.put(MapGoBackController.class, new MapGoBackController());
+        controllers.put(MapGoBackController.class, new MapGoBackController(client));
         // controllers.put(MapChooseActionController.class, new
         // MapChooseActionController());
         loader.setControllerFactory((c) -> {

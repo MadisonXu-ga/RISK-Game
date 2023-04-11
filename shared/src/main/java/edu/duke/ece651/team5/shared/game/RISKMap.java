@@ -198,8 +198,8 @@ public class RISKMap {
                 for (Edge edge : edges) {
                     int neighbourId = edge.to;
                     Territory neighbor = getTerritoryById(neighbourId);
-                    if (!source.getOwner().equals(neighbor.getOwner())
-                            || !dest.getOwner().equals(neighbor.getOwner())) {
+                    if (hasSameOwner && (!source.getOwner().equals(neighbor.getOwner())
+                            || !dest.getOwner().equals(neighbor.getOwner()))) {
                         continue; // skip neighbors with different owners
                     }
                     int newDist = distances.get(current) + edge.distance;

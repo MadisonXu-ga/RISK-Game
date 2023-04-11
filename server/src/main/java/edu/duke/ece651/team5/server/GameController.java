@@ -258,32 +258,59 @@ public class GameController {
     }
 
     
-    // public boolean receiveActionFromUser(User user, Action action){
-    //     Player player = userToPlayerMap.get(user);
-    //     playerActions.put(player, action);
+    public boolean receiveActionFromUser(User user, Action action){
+        Player player = userToPlayerMap.get(user);
+        playerActions.put(player, action);
 
-    //     // TODO: check
+        // TODO: check
 
-    // }
+    }
 
-    // /*
-    //  * Check whether move orders are valid.
-    //  */
-    // protected String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
-    //         UnitValidRuleChecker moveActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
-    //     String message = null;
-    //     for (MoveOrder mo : mos) {
-    //         message = moveActionChecker.checkOrder(mo,
-    //                 this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
-    //         if (message != null) {
-    //             revertTerrUnitChanges(oldTerriUnitNum);
-    //             return message;
-    //         }
+    protected String checkActions(Action action) {
+        ArrayList<MoveOrder> mos = action.getMoveOrders();
+        ArrayList<AttackOrder> aos = action.getAttackOrders();
+        ResearchOrder ro = action.getResearchOrder();
+        ArrayList<UpgradeOrder> uo = action.getUpgradeOrders();
 
-    //         mo.execute(this.gameController.getRiskMap());
-    //     }
-    //     return message;
-    // }
+        OrderRuleChecker moveActionChecker = new MoveOwnershipRuleChecker(
+                (new MovePathWithSameOwnerRuleChecker(null)));
+
+        OrderRuleChecker attackActionChecker = new 
+
+        UnitValidRuleChecker actionUnitChecker = new UnitValidRuleChecker();
+
+        HashMap<String, Integer> oldTerriUnitNum = getTerrUnitNum();
+
+        // check move actions valid
+        String message = checkMoveValid(mos, moveActionChecker, actionUnitChecker, oldTerriUnitNum);
+        if (message != null) {
+            return message;
+        }
+
+        // check attack actions valid
+        message = checkAttackValid(aos, attackActionChecker, actionUnitChecker, oldTerriUnitNum);
+
+        return message;
+    }
+
+    /*
+     * Check whether move orders are valid.
+     */
+    protected String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
+            UnitValidRuleChecker moveActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
+        String message = null;
+        for (MoveOrder mo : mos) {
+            message = moveActionChecker.checkOrder(mo,
+                    this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
+            if (message != null) {
+                revertTerrUnitChanges(oldTerriUnitNum);
+                return message;
+            }
+
+            mo.execute(this.gameController.getRiskMap());
+        }
+        return message;
+    }
 
     protected void tryResolveAllOrders(){
         

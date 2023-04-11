@@ -54,21 +54,21 @@ public class ResourceConsumeCalculatorTest {
     @Test
     void computeFoodConsumeForMove() {
         SoldierArmy soldierArmy = territory1.getSoldierArmy();
-        soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 3);  // total 4
+        soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 3);  // total 3
         SoldierArmy toMove = new SoldierArmy();
-        toMove.addSoldier(new Soldier(SoldierLevel.INFANTRY), 2);  // total 3
+        toMove.addSoldier(new Soldier(SoldierLevel.INFANTRY), 2);  // total 2
         MoveOrder move = new MoveOrder("Territory 1", "Territory 4", toMove, territory1.getOwner());
-        assertEquals(15, ResourceConsumeCalculator.computeFoodConsumeForMove(move, map));
+        assertEquals(10, ResourceConsumeCalculator.computeFoodConsumeForMove(move, map));
     }
 
     @Test
     void computeFoodConsumeForAttack() {
         SoldierArmy soldierArmy = territory1.getSoldierArmy();
-        soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 3);  // total 4
+        soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 3);  // total 3
         SoldierArmy toAttack = new SoldierArmy();
-        toAttack.addSoldier(new Soldier(SoldierLevel.INFANTRY), 2);  // total 3
+        toAttack.addSoldier(new Soldier(SoldierLevel.INFANTRY), 2);  // total 2
         AttackOrder attack = new AttackOrder("Territory 1", "Territory 2", toAttack, territory1.getOwner());
-        assertEquals(60, ResourceConsumeCalculator.computeFoodConsumeForAttack(attack, map));
+        assertEquals(40, ResourceConsumeCalculator.computeFoodConsumeForAttack(attack, map));
     }
 
     @Test

@@ -24,7 +24,7 @@ public class UpgradeEnoughResourceRuleChecker extends UpgradeOrderRuleChecker{
     protected String checkMyRule(UpgradeOrder upgradeOrder) {
         int need = upgradeOrder.getSoldierToUpgrade().entrySet().stream()
         .mapToInt(entry ->
-            UpgradeOrder.researchConsumeCost
+            UpgradeOrder.upgradeConsumeCost
             .get(entry.getValue().ordinal() - entry.getKey().getFirst().getLevel().ordinal()))
         .sum();
 

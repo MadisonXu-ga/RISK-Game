@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.shared;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -68,27 +69,38 @@ public class RISKMapTest {
     @Test
     public void testGetShortestPathDistance() {
         int expectedDistance = 1;
-        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 4");
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 4", true);
         assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
     public void testGetShortestPathDistanceNoPath() {
         int expectedDistance = Integer.MAX_VALUE;
-        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 2");
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 2", true);
         assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
     public void testGetShortestPathDistanceSameTerritory() {
         int expectedDistance = 0;
-        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 1");
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 1", true);
         assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
     public void testGetShortestPathDistanceInvalidTerritory() {
-        assertThrows(NullPointerException.class, () -> map.getShortestPathDistance("Territory 1", "Territory 5"));
+        assertThrows(NullPointerException.class, () -> map.getShortestPathDistance("Territory 1", "Territory 5", true));
+    }
+
+    @Test
+    public void testGetNeighbors(){
+        List<Territory> res1 = new ArrayList<>(Arrays.asList(map.getTerritoryById(2), map.getTerritoryById(4)));
+        List<Territory> neighbors1 = map.getNeighbors(1, true, new Player("Player 1"));
+        assertEquals(res1, neighbors1);
+
+        List<Territory> res2 = new ArrayList<>(Arrays.asList(map.getTerritoryById(2)));
+        List<Territory> neighbors2 = map.getNeighbors(1, false, new Player("Player 1"));
+        assertEquals(res2, neighbors2);
     }
 }
 

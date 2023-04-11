@@ -12,7 +12,7 @@ import java.util.Arrays;
  * using research order to upgrade its current technical level
  */
 public class ResearchOrder implements Order {
-    public final ArrayList<Integer> researchConsumeCost =
+    public static final ArrayList<Integer> researchConsumeCost =
             new ArrayList<>(Arrays.asList(20, 40, 80, 160, 320));
 
     // the player who issued this order

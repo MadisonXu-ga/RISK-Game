@@ -12,25 +12,26 @@ public class Game {
 
     /**
      * Constructor of the game, initialized by a list of players and the map
+     * 
      * @param players players in the game
-     * @param map the map in the game
+     * @param map     the map in the game
      */
     public Game(List<Player> players, RISKMap map) {
         this.players = players;
         this.map = map;
     }
 
-    public Player getPlayerByName(String name){
+    public Player getPlayerByName(String name) {
         return players
-        .stream()
-        .filter(player -> player.getName().equals(name))
-        .findFirst()
-        .orElse(null);
+                .stream()
+                .filter(player -> player.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
-
 
     /**
      * Getter for the players
+     * 
      * @return a list of player
      */
     public List<Player> getPlayers() {
@@ -39,6 +40,7 @@ public class Game {
 
     /**
      * Getter for the map
+     * 
      * @return the map
      */
     public RISKMap getMap() {
@@ -47,14 +49,15 @@ public class Game {
 
     /**
      * get player by its name
+     * 
      * @param name the name of the player
      * @return the player
      */
-    public Player getPlayeryByName(String name){
+    public Player getPlayeryByName(String name) {
         return players.stream()
-                    .filter(t -> t.getName().equals(name))
-                    .findFirst()
-                    .orElse(null);
+                .filter(t -> t.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
-    
+
 }

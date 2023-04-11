@@ -48,9 +48,9 @@ public class UpgradeOrderTest {
         int resourceCount = player.getResourceCount(new Resource(ResourceType.TECHNOLOGY));
         Territory t = map.getTerritoryByName("Territory 1");
         SoldierArmy soldierArmy = t.getSoldierArmy();
-        assertEquals(16, resourceCount);
+        assertEquals(5, resourceCount);
 
-        assertEquals(1, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+        assertEquals(0, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
         assertEquals(1, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.CAVALRY)));
         assertEquals(2, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.ARTILLERY)));
 

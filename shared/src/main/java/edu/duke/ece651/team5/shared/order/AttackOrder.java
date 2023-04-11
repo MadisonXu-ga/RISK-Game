@@ -45,7 +45,7 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
             int number = entry.getValue();
             source.getSoldierArmy().removeSoldier(soldier, number);
         }
-        int distance = map.getShortestPathDistance(sourceName, destinationName);
+        int distance = map.getShortestPathDistance(sourceName, destinationName, false);
         player.consumeResource(new Resource(ResourceType.FOOD), Constants.C * distance * soldierToNumber.getTotalCountSolider());
     }
 

@@ -30,7 +30,7 @@ public class ResourceConsumeCalculator {
         String destinationName = moveOrder.getDestinationName();
         SoldierArmy soldierToNumber = moveOrder.getSoldierToNumber();
         int totalNumberOfSoldier = soldierToNumber.getTotalCountSolider();
-        int distance = map.getShortestPathDistance(sourceName, destinationName);
+        int distance = map.getShortestPathDistance(sourceName, destinationName, true);
         return C * distance * totalNumberOfSoldier;
     }
 
@@ -45,7 +45,7 @@ public class ResourceConsumeCalculator {
         String destinationName = attackOrder.getDestinationName();
         SoldierArmy soldierToNumber = attackOrder.getSoldierToNumber();
         int totalNumberOfSoldier = soldierToNumber.getTotalCountSolider();
-        int distance = map.getShortestPathDistance(sourceName, destinationName);
+        int distance = map.getShortestPathDistance(sourceName, destinationName, true);
         System.out.println(distance);
         return C * distance * totalNumberOfSoldier;
     }

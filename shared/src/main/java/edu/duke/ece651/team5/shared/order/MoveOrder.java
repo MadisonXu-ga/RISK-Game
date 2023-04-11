@@ -36,7 +36,7 @@ public class MoveOrder extends BasicOrder implements Serializable {
         soldierToNumber.getAllSoldiers().forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
         soldierToNumber.getAllSoldiers().forEach((soldier, number) -> destination.getSoldierArmy().addSoldier(soldier, number));
         // consume resource
-        int distance = map.getShortestPathDistance(sourceName, destinationName);
+        int distance = map.getShortestPathDistance(sourceName, destinationName, true);
         player.consumeResource(new Resource(ResourceType.FOOD), Constants.C * distance * soldierToNumber.getTotalCountSolider());
     }
 }

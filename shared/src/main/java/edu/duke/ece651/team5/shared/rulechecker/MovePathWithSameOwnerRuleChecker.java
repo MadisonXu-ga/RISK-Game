@@ -20,7 +20,7 @@ public class MovePathWithSameOwnerRuleChecker extends OrderRuleChecker{
     protected String checkMyRule(BasicOrder order, RISKMap map) {
         String destinationName = order.getDestinationName();
         String sourceName = order.getSourceName();
-        if (map.getShortestPathDistance(sourceName, destinationName) == Integer.MAX_VALUE) {
+        if (map.getShortestPathDistance(sourceName, destinationName, true) == Integer.MAX_VALUE) {
             return "There is no such a path from " +
                     sourceName + " to " + destinationName +
                     " owned by " + order.getPlayer().getName();

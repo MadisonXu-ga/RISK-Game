@@ -1,6 +1,8 @@
 package edu.duke.ece651.team5.client.controller;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.fxml.FXML;
@@ -22,34 +24,73 @@ public class MapController extends GoBackController {
     public Button[] gameButtons;
     public HashMap<String, Button> buttonsHashmap;
 
+    public ArrayList<String> list = new ArrayList<>(Arrays.asList("Narnia", "Oz", "Eterna"));
+
     @FXML
     public void initialize() {
         gameButtons = rightSideScreen.lookupAll(".button:@territory.css").toArray(new Button[0]);
 
-        for (int i = 0; i < gameButtons.length; i++) {
-
-            // System.out.println(gameButtons[i]);
-            if (!gameButtons[i].getId().contains("btn")) {
-
-                System.out.println("territory " + i + ": " + gameButtons[i].getId());
-
+        for (String element : list) {
+            Button matchingButton = getMatchingGameButton(element);
+            if (matchingButton != null) {
+                assignButtonToPlayer(matchingButton, "red");
+                // matchingButton.setStyle("-fx-background-color: red;");
             }
-            // Set the visibility of the button based on the corresponding boolean value
-            // gameButtons[i].setStyle("-fx-background-color: rgba(0, 0, 255);");
-            if (i < 10) {
-                assignButtonToPlayer(gameButtons[i], "red");
-            } else if (i < 17) {
-                gameButtons[i].setDisable(true);
-            }
-
-            else {
-                assignButtonToPlayer(gameButtons[i], "blue");
-            }
-
-            // makeButtonDarker(gameButtons[i]);
-            // System.out.println(i);
         }
+        // for (int i = 0; i < gameButtons.length; i++) {
 
+        // // System.out.println(gameButtons[i]);
+        // if (!gameButtons[i].getId().contains("btn")) {
+
+        // System.out.println("territory " + i + ": " + gameButtons[i].getId());
+
+        // }
+        // // Set the visibility of the button based on the corresponding boolean value
+        // // gameButtons[i].setStyle("-fx-background-color: rgba(0, 0, 255);");
+        // if (i < 10) {
+        // assignButtonToPlayer(gameButtons[i], "red");
+        // } else if (i < 17) {
+        // gameButtons[i].setDisable(true);
+        // }
+
+        // else {
+        // assignButtonToPlayer(gameButtons[i], "blue");
+        // }
+
+        // // makeButtonDarker(gameButtons[i]);
+
+        // }
+        System.out.println("Found the territories: " + checkListAgainstGameButtons());
+
+    }
+
+    public ArrayList<String> checkListAgainstGameButtons() {
+        boolean allFound = true;
+        ArrayList<String> foundTerri = new ArrayList<>();
+        for (String element : list) {
+            boolean found = false;
+            for (Button button : gameButtons) {
+                if (button.getId().equals(element)) {
+                    found = true;
+                    foundTerri.add(element);
+                    break;
+                }
+            }
+            if (!found) {
+                allFound = false;
+                return (new ArrayList<>());
+            }
+        }
+        return foundTerri;
+    }
+
+    public Button getMatchingGameButton(String element) {
+        for (Button button : gameButtons) {
+            if (button.getId().equals(element)) {
+                return button;
+            }
+        }
+        return null;
     }
 
     /**

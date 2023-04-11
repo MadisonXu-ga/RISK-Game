@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.duke.ece651.team5.shared.game.*;
+import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 import edu.duke.ece651.team5.server.MyEnum.*;
 
@@ -197,7 +198,8 @@ public class UserHandler implements Runnable {
         try {
             ArrayList<Integer> gameIDs = new ArrayList<>();
             for (GameController game : userGameMap.getUserGames(currentUser)) {
-                if (game.getStatus() != GameStatus.ENDED) {
+                if (game.getStatus() != GameStatus.ENDED && (game.getUserActiveStatus(currentUser) == null
+                        || game.getUserActiveStatus(currentUser) == true)) {
                     gameIDs.add(game.getID());
                 }
             }
@@ -361,7 +363,8 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Started");
             }
             // else is wrong.
-            // TODO: send the map maybe
+
+            playerConnection.writeData(gameController.getGame());
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -401,18 +404,58 @@ public class UserHandler implements Runnable {
     protected void handleOrders() {
         try {
             int gameID = (int) playerConnection.readData();
+            GameController gameController = allGames.get(gameID);
+            Action action = (Action) playerConnection.readData();
+            String msg = gameController.receiveActionFromUser(currentUser, action);
+            // action invalid
+            if (msg != null) {
+                playerConnection.writeData(msg);
+            }
 
-            // 1. resolve move
+            // tell success
+            playerConnection.writeData("Order succeeded");
 
-            // 2. resolve attack
+            boolean receiveAll = gameController.tryResolveAllOrders();
+            if (receiveAll) {
+                // send map to all active users in this game
+                for (User user : userGameMap.getGameUsers(gameController)) {
+                    Boolean userActiveStatus = gameController.getUserActiveStatus(user);
+                    if (user.getUserStatus() == UserStatus.LOGGED_IN
+                            && (userActiveStatus == null || userActiveStatus == false)) {
+                        clients.get(user).writeData(gameController.getGame());
+                    }
+                }
 
-            // 3. resolve research
+                // check game win or not
+                String winName = gameController.checkGameWin();
+                // if win, send winner name and end this game
+                if (winName != null) {
+                    playerConnection.writeData(winName);
+                    return;
+                }
 
-            // 4. resolve upgrade
+                // no one win until now
+                playerConnection.writeData("No winner");
+
+                // check user lose or not
+                // lost
+                if (gameController.checkUserLose(currentUser)) {
+                    playerConnection.writeData("You lost");
+                    String lostChoice = (String) playerConnection.readData();
+                    if (lostChoice.equals("Disconnect")) {
+                        gameController.setUserActiveStatus(currentUser, false);
+                    } else if (lostChoice.equals("Display")) {
+                        gameController.setUserActiveStatus(currentUser, null);
+                    }
+                    return;
+                }
+
+                playerConnection.writeData("Not lost");
+            }
 
         } catch (ClassNotFoundException | IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+
 }

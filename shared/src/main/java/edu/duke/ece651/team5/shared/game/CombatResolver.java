@@ -57,7 +57,7 @@ public class CombatResolver {
      * begin fight process for each territories being attacked
      * @param attackOrderByTerris HashMap<String, ArrayList<AttackOrder>>
      */
-    public void resolveAttackOrder(HashMap<String, ArrayList<AttackOrder>> attackOrderByTerris, Game game) {
+    public void resolveAttackOrder(Map<String, List<AttackOrder>> attackOrderByTerris, Game game) {
         System.out.println("============resolve attack order================");
         for (String terriName : attackOrderByTerris.keySet()) {
             System.out.println(terriName + "============begin fight================");

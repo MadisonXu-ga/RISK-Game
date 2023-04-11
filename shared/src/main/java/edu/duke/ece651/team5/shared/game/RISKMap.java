@@ -4,7 +4,7 @@ import javax.xml.transform.Source;
 import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.*;
-
+import java.util.stream.Collectors;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +33,10 @@ public class RISKMap {
             this.from = from;
             this.to = to;
             this.distance = distance;
+        }
+
+        public int getTo(){
+            return to;
         }
     }
 
@@ -124,6 +128,21 @@ public class RISKMap {
                 .filter(territory -> territory.getId() == id)
                 .findFirst()
                 .orElse(null);
+    }
+
+    /**
+     * get list of neighbors territory for a given territoryId
+     * @param targetTerritoryId target Territory to find neighbors
+     * @param getAllNeighbors true to get all neighbors, false to only get territories not owned by player
+     * @param player player who own the target territory
+     * @return a list of territories who are neighbors of the target territory
+     */
+    public List<Territory> getNeighbors(int targetTerritoryId, boolean getAllNeighbors, Player player){
+        return connections.get(targetTerritoryId).stream()
+        .map(Edge::getTo)
+        .map(this::getTerritoryById)
+        .filter(t -> getAllNeighbors || !t.getOwner().equals(player))
+        .collect(Collectors.toList());
     }
 
     /**

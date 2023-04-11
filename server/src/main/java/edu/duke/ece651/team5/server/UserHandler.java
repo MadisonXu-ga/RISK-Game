@@ -42,7 +42,7 @@ public class UserHandler implements Runnable {
         this.operationHandlers.put("Get joinable games", this::handleGetJoinableGames);
         this.operationHandlers.put("Join game", this::handleJoinGame);
         this.operationHandlers.put("Log out", this::handleLogOut);
-
+        this.operationHandlers.put("Place unit", this::handleUnitPlacement);
     }
 
     @Override

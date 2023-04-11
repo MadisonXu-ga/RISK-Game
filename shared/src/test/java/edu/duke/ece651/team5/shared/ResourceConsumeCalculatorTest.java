@@ -1,16 +1,18 @@
 package edu.duke.ece651.team5.shared;
 
+import edu.duke.ece651.team5.shared.datastructure.Pair;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
+import edu.duke.ece651.team5.shared.order.ResearchOrder;
+import edu.duke.ece651.team5.shared.order.UpgradeOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -25,6 +27,7 @@ public class ResourceConsumeCalculatorTest {
     Territory territory1;
     Territory territory4;
     Territory territory2;
+    Player player;
     @BeforeEach
     public void setUp() {
         Map<String, Territory> territories = new HashMap<>();
@@ -46,6 +49,7 @@ public class ResourceConsumeCalculatorTest {
         territory1 = map.getTerritoryByName("Territory 1");
         territory2 = map.getTerritoryByName("Territory 2");
         territory4 = map.getTerritoryByName("Territory 4");
+        player = territory1.getOwner();
     }
     @Test
     void computeFoodConsumeForMove() {
@@ -58,21 +62,30 @@ public class ResourceConsumeCalculatorTest {
     }
 
     @Test
-    @Disabled
     void computeFoodConsumeForAttack() {
         SoldierArmy soldierArmy = territory1.getSoldierArmy();
         soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 3);  // total 4
         SoldierArmy toAttack = new SoldierArmy();
         toAttack.addSoldier(new Soldier(SoldierLevel.INFANTRY), 2);  // total 3
         AttackOrder attack = new AttackOrder("Territory 1", "Territory 2", toAttack, territory1.getOwner());
-        assertEquals(15, ResourceConsumeCalculator.computeFoodConsumeForAttack(attack, map));
+        assertEquals(60, ResourceConsumeCalculator.computeFoodConsumeForAttack(attack, map));
     }
 
     @Test
     void computeTechConsumeForResearch() {
+        ResearchOrder research = new ResearchOrder(player);
+        assertEquals(20, ResourceConsumeCalculator.computeTechConsumeForResearch(research));
     }
 
     @Test
     void computeTechConsumeForUpgrade() {
+        SoldierArmy soldierArmy = territory1.getSoldierArmy();
+        soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 3); // total 4
+        Map<Pair<Soldier, Integer>, SoldierLevel> soldierToUpgrade = new HashMap<>();
+        soldierToUpgrade.put(new Pair<>(new Soldier(SoldierLevel.INFANTRY), 1), SoldierLevel.CAVALRY);
+        soldierToUpgrade.put(new Pair<>(new Soldier(SoldierLevel.INFANTRY), 2) ,SoldierLevel.ARTILLERY);
+        player = territory1.getOwner();
+        UpgradeOrder upgrade = new UpgradeOrder("Territory 1", soldierToUpgrade, player);
+        assertEquals(25, ResourceConsumeCalculator.computeTechConsumeForUpgrade(upgrade));
     }
 }

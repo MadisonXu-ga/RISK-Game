@@ -9,9 +9,6 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
-import edu.duke.ece651.team5.shared.Player;
-import edu.duke.ece651.team5.shared.RISKMap;
-import edu.duke.ece651.team5.shared.Territory;
 
 public class PlayerStatusCheckerTest {
     // TODO: change this to match new map part

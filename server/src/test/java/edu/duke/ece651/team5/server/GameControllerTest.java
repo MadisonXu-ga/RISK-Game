@@ -7,11 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
 import edu.duke.ece651.team5.server.MyEnum.GameStatus;
-import edu.duke.ece651.team5.shared.Player;
+import edu.duke.ece651.team5.shared.game.*;
 
 public class GameControllerTest {
     @Test
@@ -138,5 +139,45 @@ public class GameControllerTest {
         assertFalse(gameController.getUserActiveStatus(user3));
         gameController.continueGame(user3);
         assertTrue(gameController.getUserActiveStatus(user3));
+    }
+
+    @Test
+    void testAssignTerritories() {
+        GameController game = new GameController(3);
+        game.assignTerritories(3);
+        ArrayList<Territory> greenTerritories = (ArrayList<Territory>) game.getGame().getPlayeryByName("Green")
+                .getTerritories();
+        ArrayList<Territory> blueTerritories = (ArrayList<Territory>) game.getGame().getPlayeryByName("Blue")
+                .getTerritories();
+        ArrayList<Territory> redTerritories = (ArrayList<Territory>) game.getGame().getPlayeryByName("Red")
+                .getTerritories();
+
+        ArrayList<Integer> greenTerriIDs = new ArrayList<>();
+        for (int i = 0; i < greenTerritories.size(); ++i) {
+            greenTerriIDs.add(greenTerritories.get(i).getId());
+        }
+
+        ArrayList<Integer> blueTerriIDs = new ArrayList<>();
+        for (int i = 0; i < blueTerritories.size(); ++i) {
+            blueTerriIDs.add(blueTerritories.get(i).getId());
+        }
+
+        ArrayList<Integer> redTerriIDs = new ArrayList<>();
+        for (int i = 0; i < redTerritories.size(); ++i) {
+            redTerriIDs.add(redTerritories.get(i).getId());
+        }
+
+        ArrayList<Integer> greenExpected = new ArrayList<>(
+                Arrays.asList(0, 3, 6, 9, 12, 15, 18, 21));
+
+        ArrayList<Integer> blueExpected = new ArrayList<>(
+                Arrays.asList(1, 4, 7, 10, 13, 16, 19, 22));
+
+        ArrayList<Integer> redExpected = new ArrayList<>(
+                Arrays.asList(2, 5, 8, 11, 14, 17, 20, 23));
+
+        assertEquals(greenExpected, greenTerriIDs);
+        assertEquals(blueExpected, blueTerriIDs);
+        assertEquals(redExpected, redTerriIDs);
     }
 }

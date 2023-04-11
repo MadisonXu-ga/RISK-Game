@@ -1,13 +1,23 @@
 package edu.duke.ece651.team5.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.base.Objects;
 
 import edu.duke.ece651.team5.server.MyEnum.*;
-import edu.duke.ece651.team5.shared.*;
+
+import edu.duke.ece651.team5.shared.game.*;
+import edu.duke.ece651.team5.shared.Action;
+import edu.duke.ece651.team5.shared.constant.*;
+import edu.duke.ece651.team5.shared.datastructure.*;
+import edu.duke.ece651.team5.shared.order.*;
+import edu.duke.ece651.team5.shared.resource.*;
+import edu.duke.ece651.team5.shared.rulechecker.*;
+import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 
 /**
  * Control one game
@@ -23,7 +33,9 @@ public class GameController {
     private int userNum;
 
     private ArrayList<Player> players;
-    private HashMap<String, User> playerToUserMap;
+    private HashMap<String, User> playerToUserMap; // TODO: maybe deleted
+    private HashMap<User, Player> userToPlayerMap;
+    private HashMap<Player, Action> playerActions;
     private HashMap<User, Boolean> userActiveStatus;
 
     // private HashMap<String, >
@@ -38,9 +50,12 @@ public class GameController {
         this.userNum = 0;
         this.players = new ArrayList<>();
         this.playerToUserMap = new HashMap<>();
+        this.userToPlayerMap = new HashMap<>();
         this.userActiveStatus = new HashMap<>();
-
+        // create players
         createPlayers(playerNum);
+        // create game
+        this.game = new Game(players, new RISKMap());
     }
 
     public int getID() {
@@ -49,6 +64,10 @@ public class GameController {
 
     public GameStatus getStatus() {
         return status;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     /**
@@ -73,6 +92,30 @@ public class GameController {
     }
 
     /**
+     * Assign territories to players accroding to palyer num
+     * 
+     * @param numPlayer the number of players in this game
+     */
+    protected void assignTerritories(int numPlayer) {
+        ArrayList<String> terriName = new ArrayList<>(Arrays.asList(
+                "Narnia", "Elantris", "Midkemia", "Scadrial", "Oz", "Roshar",
+                "Gondor", "Mordor", "Hogwarts", "Thalassia", "Arathia",
+                "Eryndor", "Sylvaria", "Kaelindor", "Eterna", "Celestia",
+                "Frosthold", "Shadowmire", "Ironcliff", "Stormhaven",
+                "Mythosia", "Draconia", "Emberfall", "Verdantia"));
+
+        int numTerritories = terriName.size();
+
+        for (int i = 0; i < numTerritories; ++i) {
+            Player player = players.get(i % numPlayer);
+            String territoryName = terriName.get(i);
+            Territory territory = game.getMap().getTerritoryByName(territoryName);
+            player.addTerritory(territory);
+            territory.setOwner(player);
+        }
+    }
+
+    /**
      * User try to join Game
      * 
      * @param user
@@ -91,18 +134,23 @@ public class GameController {
                 continue;
             }
             playerToUserMap.put(playerColor, user);
+            userToPlayerMap.put(user, player);
             userActiveStatus.put(user, true);
             break;
         }
 
         ++userNum;
+
+        return tryStartGame();
+    }
+
+    protected String tryStartGame() {
         if (userNum == playerNum) {
             status = GameStatus.INITIALIZING;
             statusBeforePause = status;
-
+            assignTerritories(playerNum);
             return "Start";
         }
-
         return null;
     }
 
@@ -122,6 +170,7 @@ public class GameController {
         // find the user and remove it
         if (playerColor != null) {
             playerToUserMap.remove(playerColor);
+            userToPlayerMap.remove(user);
             userActiveStatus.remove(user);
         }
     }
@@ -174,19 +223,44 @@ public class GameController {
         return userActiveStatus.get(user);
     }
 
-    public String initializeGame(User user) {
-        String msg = null;
+    /**
+     * For each user to initialize their game
+     * 
+     * @param user
+     * @return
+     */
+    public String initializeGame(User user, HashMap<String, Integer> unitPlacements) {
+        String msg = "Placement success";
         // not in initializing step
         if (this.status != GameStatus.INITIALIZING) {
             return "Cannot initialize";
         }
 
-        /**
-         * 
-         */
+        resolveUnitPlacement(unitPlacements);
 
         return msg;
     }
+
+    /**
+     * Resolve the placement of units
+     * 
+     * @param unitPlacements unit number to be placed in each territory
+     */
+    protected void resolveUnitPlacement(HashMap<String, Integer> unitPlacements) {
+        for (Map.Entry<String, Integer> entry : unitPlacements.entrySet()) {
+            String name = entry.getKey();
+            int unitNum = entry.getValue();
+            Territory terr = game.getMap().getTerritoryByName(name);
+            terr.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), unitNum);
+        }
+    }
+
+    
+    public void receiveActionFromUser(User user, Action action){
+        // //
+    }
+
+    
 
     @Override
     public boolean equals(Object object) {

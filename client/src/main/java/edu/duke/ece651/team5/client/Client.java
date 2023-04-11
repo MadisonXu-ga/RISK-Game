@@ -7,6 +7,13 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.shared.*;
+import edu.duke.ece651.team5.shared.game.*;
+import edu.duke.ece651.team5.shared.Action;
+import edu.duke.ece651.team5.shared.constant.*;
+import edu.duke.ece651.team5.shared.datastructure.*;
+import edu.duke.ece651.team5.shared.order.*;
+import edu.duke.ece651.team5.shared.resource.*;
+import edu.duke.ece651.team5.shared.rulechecker.*;
 
 /**
  * Client is responsible to handle socket connection with server and to interact
@@ -206,29 +213,29 @@ public class Client {
    * @throws IOException            if any IO failure
    * @throws ClassNotFoundException if unknown host failure
    */
-  public void playOneTurn() throws IOException, ClassNotFoundException {
-    if (isLose) {
-      out.println("\n------Spectator Mode------\n");
-      textPlayer.displayMap(recvGame());
-      return;
-    }
-    out.println("\nNow it's time to play the game!\n");
-    boolean complete = false;
-    Game game = recvGame();
-    do {
-      // gather actions(orders) from textPlayer
-      Action actions = textPlayer.playOneTurn(game);
-      out.println("\nWe got all your orders, sending your orders...\n");
-      // send info to server
-      playerConnection.writeData(actions);
-      // receive approval or not from server
-      complete = isValidFromServer();
-      String errMsg = (String) playerConnection.readData();
-      System.out.println("why receive string: " + errMsg);
-      // display result accordingly
-      textPlayer.printCommitResult(complete, errMsg);
-    } while (!complete);
-  }
+  // public void playOneTurn() throws IOException, ClassNotFoundException {
+  // if (isLose) {
+  // out.println("\n------Spectator Mode------\n");
+  // textPlayer.displayMap(recvGame());
+  // return;
+  // }
+  // out.println("\nNow it's time to play the game!\n");
+  // boolean complete = false;
+  // Game game = recvGame();
+  // do {
+  // // gather actions(orders) from textPlayer
+  // Action actions = textPlayer.playOneTurn(game);
+  // out.println("\nWe got all your orders, sending your orders...\n");
+  // // send info to server
+  // playerConnection.writeData(actions);
+  // // receive approval or not from server
+  // complete = isValidFromServer();
+  // String errMsg = (String) playerConnection.readData();
+  // System.out.println("why receive string: " + errMsg);
+  // // display result accordingly
+  // textPlayer.printCommitResult(complete, errMsg);
+  // } while (!complete);
+  // }
 
   /**
    * receive each turn's result from server, if there's winner display the message
@@ -240,35 +247,37 @@ public class Client {
    * @throws IOException            if any IO failure
    * @throws ClassNotFoundException if unknown host failure
    */
-  @SuppressWarnings("unchecked")
-  public String checkResult() throws IOException, ClassNotFoundException {
-    // receive current turn's result
-    // add attackResult and print the attack result
-    ArrayList<AttackOrder> attackResult = (isLose) ? null : (ArrayList<AttackOrder>) playerConnection.readData();
-    textPlayer.printAttackResult(attackResult);
-    // receive current turn's result
-    HashMap<String, Boolean> result = (HashMap<String, Boolean>) playerConnection.readData();
-    // check if there's a winner
-    out.println("\nNow let's check the result of this round...\n");
-    String msg = textPlayer.checkWinner(result);
-    // if no winner
-    if (msg.isEmpty() && !isLose) {
-      // check if current player lose
-      String res = textPlayer.checkIfILose(result);
-      // if lose and user choose to exit, return message to close the game
-      if (res.equals("Disconnect")) {
-        msg = res;
-      }
-      // send response to server
-      if (!res.isEmpty()) {
-        isLose = true;
-        playerConnection.writeData(res);
-      } else {
-        out.println("No winner for this round, let's start a new one!");
-      }
-    }
-    return msg;
-  }
+  // @SuppressWarnings("unchecked")
+  // public String checkResult() throws IOException, ClassNotFoundException {
+  // // receive current turn's result
+  // // add attackResult and print the attack result
+  // ArrayList<AttackOrder> attackResult = (isLose) ? null :
+  // (ArrayList<AttackOrder>) playerConnection.readData();
+  // textPlayer.printAttackResult(attackResult);
+  // // receive current turn's result
+  // HashMap<String, Boolean> result = (HashMap<String, Boolean>)
+  // playerConnection.readData();
+  // // check if there's a winner
+  // out.println("\nNow let's check the result of this round...\n");
+  // String msg = textPlayer.checkWinner(result);
+  // // if no winner
+  // if (msg.isEmpty() && !isLose) {
+  // // check if current player lose
+  // String res = textPlayer.checkIfILose(result);
+  // // if lose and user choose to exit, return message to close the game
+  // if (res.equals("Disconnect")) {
+  // msg = res;
+  // }
+  // // send response to server
+  // if (!res.isEmpty()) {
+  // isLose = true;
+  // playerConnection.writeData(res);
+  // } else {
+  // out.println("No winner for this round, let's start a new one!");
+  // }
+  // }
+  // return msg;
+  // }
 
   /**
    * handle playing game control
@@ -280,8 +289,8 @@ public class Client {
       handlePlacement();
       String winner = "";
       while (winner.isEmpty()) {
-        playOneTurn();
-        winner = checkResult();
+        // playOneTurn();
+        // winner = checkResult();
       }
       out.println("\nSee you next time!\n");
       playerConnection.close();

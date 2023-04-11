@@ -8,6 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.duke.ece651.team5.shared.*;
+import edu.duke.ece651.team5.shared.game.*;
+import edu.duke.ece651.team5.shared.Action;
+import edu.duke.ece651.team5.shared.constant.*;
+import edu.duke.ece651.team5.shared.datastructure.*;
+import edu.duke.ece651.team5.shared.order.*;
+import edu.duke.ece651.team5.shared.resource.*;
+import edu.duke.ece651.team5.shared.rulechecker.*;
 
 //todo change AttackOrder type to AttackOrder(now Integer)
 /*
@@ -122,63 +129,65 @@ public class TextPlayer {
    * @return a Action objects contains all the orders user want to place for
    *         current turn
    */
-  public Action playOneTurn(Game game) {
-    displayMap(game);
-    String instruction = "What would you like to do?\n" + "(M)ove\n" + "(A)ttack\n" + "(D)one\n";
-    boolean commit = false;
-    // todo change type
-    ArrayList<AttackOrder> attackOrders = new ArrayList<>();
-    ArrayList<MoveOrder> moveOrders = new ArrayList<>();
-    while (!commit) {
-      try {
-        // read user input and do type check
-        String type = readUserInput(instruction);
-        typeCheck(type);
-        if (type.equalsIgnoreCase("D") || type.equalsIgnoreCase("done")) {
-          commit = true;
-        } else {
-          // create new Order
-          tryCreateNewOrder(type, attackOrders, moveOrders, game.getMap());
-        }
-      } catch (Exception e) {
-        out.println("Input is invalid. Please try again");
-      }
-    }
-    return new Action(attackOrders, moveOrders);
-  }
+  // public Action playOneTurn(Game game) {
+  // displayMap(game);
+  // String instruction = "What would you like to do?\n" + "(M)ove\n" +
+  // "(A)ttack\n" + "(D)one\n";
+  // boolean commit = false;
+  // // todo change type
+  // ArrayList<AttackOrder> attackOrders = new ArrayList<>();
+  // ArrayList<MoveOrder> moveOrders = new ArrayList<>();
+  // while (!commit) {
+  // try {
+  // // read user input and do type check
+  // String type = readUserInput(instruction);
+  // typeCheck(type);
+  // if (type.equalsIgnoreCase("D") || type.equalsIgnoreCase("done")) {
+  // commit = true;
+  // } else {
+  // // create new Order
+  // tryCreateNewOrder(type, attackOrders, moveOrders, game.getMap());
+  // }
+  // } catch (Exception e) {
+  // out.println("Input is invalid. Please try again");
+  // }
+  // }
+  // return new Action(attackOrders, moveOrders);
+  // }
 
-  private void tryCreateNewOrder(String type, ArrayList<AttackOrder> attackOrders, ArrayList<MoveOrder> moveOrders,
-      RISKMap currMap) {
-    String instruction = "Please enter your unit number of units to "
-        + type + ", the source territory, and the destination territory.\n"
-        + "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n";
-    try {
-      String input = readUserInput(instruction);
-      ArrayList<String> inputs = parseUserInput(input);
-      int numUnit = Integer.parseInt(inputs.get(0));
-      // get Territory info
-      String srcTerri = currMap.getTerritoryByName(inputs.get(1)).getName();
-      String desTerri = currMap.getTerritoryByName(inputs.get(2)).getName();
-      if (type.toUpperCase().charAt(0) == 'M') {
-        // create new move order
-        // todo change soldier type accordingly
-        Map<Soldier, Integer> soldiers = new HashMap<>();
-        MoveOrder order = new MoveOrder(srcTerri, desTerri, soldiers, player);
-        // do rule check
-        moveOrders.add(order);
-        return;
-      } else {
-        // create new attack order
-        Map<Soldier, Integer> soldiers = new HashMap<>();
-        AttackOrder order = new AttackOrder(srcTerri, desTerri, soldiers, player);
-        // add order to attackOrders
-        attackOrders.add(order);
-        return;
-      }
-    } catch (Exception e) {
-      out.println("Not a valid input, please try again");
-    }
-  }
+  // private void tryCreateNewOrder(String type, ArrayList<AttackOrder>
+  // attackOrders, ArrayList<MoveOrder> moveOrders,
+  // RISKMap currMap) {
+  // String instruction = "Please enter your unit number of units to "
+  // + type + ", the source territory, and the destination territory.\n"
+  // + "Please separate them by dash(-). For example: 3-TerritoryA-TerritoryB\n";
+  // try {
+  // String input = readUserInput(instruction);
+  // ArrayList<String> inputs = parseUserInput(input);
+  // int numUnit = Integer.parseInt(inputs.get(0));
+  // // get Territory info
+  // String srcTerri = currMap.getTerritoryByName(inputs.get(1)).getName();
+  // String desTerri = currMap.getTerritoryByName(inputs.get(2)).getName();
+  // if (type.toUpperCase().charAt(0) == 'M') {
+  // // create new move order
+  // // todo change soldier type accordingly
+  // Map<Soldier, Integer> soldiers = new HashMap<>();
+  // MoveOrder order = new MoveOrder(srcTerri, desTerri, soldiers, player);
+  // // do rule check
+  // moveOrders.add(order);
+  // return;
+  // } else {
+  // // create new attack order
+  // Map<Soldier, Integer> soldiers = new HashMap<>();
+  // AttackOrder order = new AttackOrder(srcTerri, desTerri, soldiers, player);
+  // // add order to attackOrders
+  // attackOrders.add(order);
+  // return;
+  // }
+  // } catch (Exception e) {
+  // out.println("Not a valid input, please try again");
+  // }
+  // }
 
   /**
    * check if in current round, if any player wins the game
@@ -234,19 +243,21 @@ public class TextPlayer {
     }
   }
 
-  public void printAttackResult(ArrayList<AttackOrder> attRes) {
-    if (attRes == null) {
-      // out.println("att res null");
-      return;
-    }
-    for (AttackOrder order : attRes) {
-      if (order.getSoldierToNumber().size() == 0) {
-        out.println("Your attack order to attack Territory " + order.getDestinationName() + " was lose in last round.");
-      } else {
-        out.println("Congratulations! You successfully own the Territory " + order.getDestinationName());
-      }
-    }
-  }
+  // public void printAttackResult(ArrayList<AttackOrder> attRes) {
+  // if (attRes == null) {
+  // // out.println("att res null");
+  // return;
+  // }
+  // for (AttackOrder order : attRes) {
+  // if (order.getSoldierToNumber().size() == 0) {
+  // out.println("Your attack order to attack Territory " +
+  // order.getDestinationName() + " was lose in last round.");
+  // } else {
+  // out.println("Congratulations! You successfully own the Territory " +
+  // order.getDestinationName());
+  // }
+  // }
+  // }
 
   /**
    * display map info to player

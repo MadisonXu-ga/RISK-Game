@@ -43,7 +43,7 @@ public class MapController extends GoBackController {
         for (String element : list) {
             Button matchingButton = getMatchingGameButton(element);
             if (matchingButton != null) {
-                assignButtonToPlayer(matchingButton, "red");
+                assignButtonToPlayer(matchingButton, "blue");
                 // matchingButton.setStyle("-fx-background-color: red;");
             }
         }

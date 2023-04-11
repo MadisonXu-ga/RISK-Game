@@ -8,10 +8,20 @@ import edu.duke.ece651.team5.shared.unit.*;
 
 public class SoldierNumberChecker extends OrderRuleChecker{
 
+    /**
+     * Constructor to chain the rule checkers
+     * @param next
+     */
     public SoldierNumberChecker(OrderRuleChecker next) {
         super(next);
     }
 
+    /**
+     *  Check if the target territory has enough soldier number
+     * @param order order
+     * @param map the map
+     * @return error message if it does not meet, null if it does
+     */
     @Override
     protected String checkMyRule(BasicOrder order, RISKMap map) {
         SoldierArmy targetArmy = order.getSoldierToNumber();

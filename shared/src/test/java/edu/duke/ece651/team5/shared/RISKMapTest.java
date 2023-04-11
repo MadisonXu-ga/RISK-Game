@@ -69,27 +69,27 @@ public class RISKMapTest {
     @Test
     public void testGetShortestPathDistance() {
         int expectedDistance = 1;
-        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 4");
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 4", true);
         assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
     public void testGetShortestPathDistanceNoPath() {
         int expectedDistance = Integer.MAX_VALUE;
-        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 2");
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 2", true);
         assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
     public void testGetShortestPathDistanceSameTerritory() {
         int expectedDistance = 0;
-        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 1");
+        int actualDistance = map.getShortestPathDistance("Territory 1", "Territory 1", true);
         assertEquals(expectedDistance, actualDistance);
     }
 
     @Test
     public void testGetShortestPathDistanceInvalidTerritory() {
-        assertThrows(NullPointerException.class, () -> map.getShortestPathDistance("Territory 1", "Territory 5"));
+        assertThrows(NullPointerException.class, () -> map.getShortestPathDistance("Territory 1", "Territory 5", true));
     }
 
     @Test

@@ -10,14 +10,13 @@ import com.google.common.base.Objects;
 import edu.duke.ece651.team5.server.MyEnum.*;
 
 import edu.duke.ece651.team5.shared.game.*;
-import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.constant.*;
 import edu.duke.ece651.team5.shared.datastructure.*;
 import edu.duke.ece651.team5.shared.order.*;
 import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.rulechecker.*;
-import edu.duke.ece651.team5.shared.unit.Soldier;
-import edu.duke.ece651.team5.shared.unit.SoldierLevel;
+import edu.duke.ece651.team5.shared.unit.*;
+import edu.duke.ece651.team5.shared.Action;
 
 /**
  * Control one game
@@ -35,8 +34,9 @@ public class GameController {
     private ArrayList<Player> players;
     private HashMap<String, User> playerToUserMap; // TODO: maybe deleted
     private HashMap<User, Player> userToPlayerMap;
-    private HashMap<Player, Action> playerActions;
     private HashMap<User, Boolean> userActiveStatus;
+
+    private HashMap<Player, Action> playerActions;
 
     // private HashMap<String, >
 
@@ -52,6 +52,8 @@ public class GameController {
         this.playerToUserMap = new HashMap<>();
         this.userToPlayerMap = new HashMap<>();
         this.userActiveStatus = new HashMap<>();
+
+        this.playerActions = new HashMap<>();
         // create players
         createPlayers(playerNum);
         // create game
@@ -256,8 +258,35 @@ public class GameController {
     }
 
     
-    public void receiveActionFromUser(User user, Action action){
-        // //
+    // public boolean receiveActionFromUser(User user, Action action){
+    //     Player player = userToPlayerMap.get(user);
+    //     playerActions.put(player, action);
+
+    //     // TODO: check
+
+    // }
+
+    // /*
+    //  * Check whether move orders are valid.
+    //  */
+    // protected String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
+    //         UnitValidRuleChecker moveActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
+    //     String message = null;
+    //     for (MoveOrder mo : mos) {
+    //         message = moveActionChecker.checkOrder(mo,
+    //                 this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
+    //         if (message != null) {
+    //             revertTerrUnitChanges(oldTerriUnitNum);
+    //             return message;
+    //         }
+
+    //         mo.execute(this.gameController.getRiskMap());
+    //     }
+    //     return message;
+    // }
+
+    protected void tryResolveAllOrders(){
+        
     }
 
     

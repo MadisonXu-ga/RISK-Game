@@ -133,10 +133,10 @@ public class JoinableGamesController extends GoBackController {
                 String color = client.receiveColor();
                 goToWaitingScreen(color);
                 Game game = client.getGame();
+                client.getGameConfirmation();
                 goToPlacement(game);
 
-                goToPlacement(game);
-                multipleGamesController.refresh();
+                // multipleGamesController.refresh();
 
                 // Game game = client.getGame();
 
@@ -155,7 +155,7 @@ public class JoinableGamesController extends GoBackController {
 
         MultipleGamesController multipleGamesController = new MultipleGamesController(client);
         // controllers.put(GoBackController.class, new GoBackController());
-        controllers.put(MapPlacementTerritory.class, new MapPlacementTerritory(client));
+        controllers.put(MapPlacementTerritory.class, new MapPlacementTerritory(client, game));
         controllers.put(MultipleGamesController.class, multipleGamesController);
         loader.setControllerFactory((c) -> {
             return controllers.get(c);

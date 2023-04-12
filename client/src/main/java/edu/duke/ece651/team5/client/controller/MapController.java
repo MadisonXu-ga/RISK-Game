@@ -40,13 +40,15 @@ public class MapController extends GoBackController {
     public void initialize() {
         gameButtons = rightSideScreen.lookupAll(".button:@territory.css").toArray(new Button[0]);
 
-        for (String element : list) {
-            Button matchingButton = getMatchingGameButton(element);
-            if (matchingButton != null) {
-                assignButtonToPlayer(matchingButton, "blue");
-                // matchingButton.setStyle("-fx-background-color: red;");
-            }
-        }
+        // for (String element : list) {
+        // Button matchingButton = getMatchingGameButton(element);
+        // if (matchingButton != null) {
+        // // System.out.println("color: [" + client.getColor() + "]");
+        // assignButtonToPlayer(matchingButton, client.getColor());
+        // // matchingButton.setStyle("-fx-background-color: red;");
+        // }
+        // }
+
         // for (int i = 0; i < gameButtons.length; i++) {
 
         // // System.out.println(gameButtons[i]);

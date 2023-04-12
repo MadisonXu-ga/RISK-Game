@@ -189,6 +189,17 @@ public class Client {
 
   }
 
+  public String getGameConfirmation() throws IOException, ClassNotFoundException {
+
+    String msg = null;
+
+    msg = (String) playerConnection.readData();
+
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+    return msg;
+  }
+
   public String signUp(ArrayList<String> usernameAndPassword) throws IOException, ClassNotFoundException {
 
     String msg = null;

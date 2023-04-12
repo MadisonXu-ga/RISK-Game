@@ -13,22 +13,32 @@
     
 }
 
-.redPlayerbtn {
+.RedPlayerbtn {
     -fx-opacity: 0.3;
     -fx-background-color: red;
     
 }
-.redPlayerbtn:hover {
+.RedPlayerbtn:hover {
     -fx-opacity: 0.6;
     -fx-border-width: 2px;
     
 }
 
-.bluePlayerbtn {
+.BluePlayerbtn {
     -fx-opacity: 0.3;
     -fx-background-color: rgb(72, 72, 227);
 }
-.bluePlayerbtn:hover {
+.BluePlayerbtn:hover {
+    -fx-opacity: 0.6;
+    -fx-border-width: 2px;
+    
+}
+
+.GreenPlayerbtn {
+    -fx-opacity: 0.3;
+    -fx-background-color: rgb(40, 205, 90);
+}
+.GreenPlayerbtn:hover {
     -fx-opacity: 0.6;
     -fx-border-width: 2px;
     

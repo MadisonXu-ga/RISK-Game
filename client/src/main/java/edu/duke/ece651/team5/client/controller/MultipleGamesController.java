@@ -177,9 +177,9 @@ public class MultipleGamesController extends GoBackController {
             try {
                 // client.getGame();
                 Game game = client.getGame();
-                System.out.println("before");
+                client.getGameConfirmation();
                 goToPlacement(game);
-                System.out.println("before");
+
             } catch (ClassNotFoundException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -196,7 +196,7 @@ public class MultipleGamesController extends GoBackController {
 
         MultipleGamesController multipleGamesController = new MultipleGamesController(client);
         // controllers.put(GoBackController.class, new GoBackController());
-        controllers.put(MapPlacementTerritory.class, new MapPlacementTerritory(client));
+        controllers.put(MapPlacementTerritory.class, new MapPlacementTerritory(client, game));
         controllers.put(MultipleGamesController.class, multipleGamesController);
         loader.setControllerFactory((c) -> {
             return controllers.get(c);

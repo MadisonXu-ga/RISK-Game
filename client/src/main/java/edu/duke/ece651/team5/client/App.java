@@ -105,7 +105,7 @@ public class App extends Application {
       event.consume();
       logoutGame(getPrimaryStage());
       try {
-        classClient.logOut();
+        classClient.logOutfromX();
       } catch (IOException e) {
 
         e.printStackTrace();

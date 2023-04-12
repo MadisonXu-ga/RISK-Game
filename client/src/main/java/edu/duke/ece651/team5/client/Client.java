@@ -44,7 +44,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30486, br, out);
+    this("localhost", 30488, br, out);
   }
 
   /**
@@ -166,6 +166,13 @@ public class Client {
     playerConnection.writeData("Log out");
     playerConnection.close();
     this.playerConnection = new PlayerConnection(new Socket(host, port));
+
+  }
+
+  public void logOutfromX() throws IOException {
+
+    playerConnection.writeData("Log out");
+    playerConnection.close();
 
   }
 

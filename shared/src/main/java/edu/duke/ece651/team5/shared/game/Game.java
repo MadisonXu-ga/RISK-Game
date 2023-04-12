@@ -10,6 +10,7 @@ import java.util.List;
 public class Game implements Serializable {
     private List<Player> players;
     private RISKMap map;
+    private String gameID;
 
     /**
      * Constructor of the game, initialized by a list of players and the map
@@ -20,6 +21,11 @@ public class Game implements Serializable {
     public Game(List<Player> players, RISKMap map) {
         this.players = players;
         this.map = map;
+        this.gameID = null;
+    }
+
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
     }
 
     public Player getPlayerByName(String name) {

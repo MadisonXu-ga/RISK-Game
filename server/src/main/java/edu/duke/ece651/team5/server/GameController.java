@@ -31,6 +31,7 @@ public class GameController {
     private Game game;
     private int playerNum;
     private int userNum;
+    private int initialNum;
 
     private ArrayList<Player> players;
     private HashMap<String, User> playerToUserMap; // TODO: maybe deleted
@@ -50,6 +51,7 @@ public class GameController {
         this.statusBeforePause = status;
         this.playerNum = playerNum;
         this.userNum = 0;
+        this.initialNum = 0;
         this.players = new ArrayList<>();
         this.playerToUserMap = new HashMap<>();
         this.userToPlayerMap = new HashMap<>();
@@ -242,13 +244,19 @@ public class GameController {
      * @return
      */
     public synchronized String initializeGame(User user, HashMap<String, Integer> unitPlacements) {
-        String msg = "Placement success";
+        String msg = "Placement succeeded";
         // not in initializing step
         if (this.status != GameStatus.INITIALIZING) {
             return "Cannot initialize";
         }
 
         resolveUnitPlacement(unitPlacements);
+        ++initialNum;
+
+        if(initialNum==playerNum){
+            this.status = GameStatus.STARTED;
+            return "Placement finished";
+        }
 
         return msg;
     }

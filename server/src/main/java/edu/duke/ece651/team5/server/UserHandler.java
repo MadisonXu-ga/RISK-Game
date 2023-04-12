@@ -44,6 +44,7 @@ public class UserHandler implements Runnable {
         this.operationHandlers.put("Join game", this::handleJoinGame);
         this.operationHandlers.put("Log out", this::handleLogOut);
         this.operationHandlers.put("Place unit", this::handleUnitPlacement);
+        this.operationHandlers.put("Order", this::handleOrders);
     }
 
     @Override
@@ -246,7 +247,7 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Joined Success");
                 System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
                 if (msg == "Start") {
-                    broadcastStartGame(gameToJoin);
+                    broadcastGame(gameToJoin);
                     System.out.println("Game " + gameID + " is ready to start!");
                 }
             }
@@ -262,15 +263,19 @@ public class UserHandler implements Runnable {
     }
 
     /**
-     * Send game to all players in this game
+     * Send game to all active players in this game
      * 
      * @param gameController
      */
-    protected void broadcastStartGame(GameController gameController) {
+    protected void broadcastGame(GameController gameController) {
         Game game = gameController.getGame();
         for (User user : userGameMap.getGameUsers(gameController)) {
             try {
-                clients.get(user).writeData(game);
+                Boolean userActiveStatus = gameController.getUserActiveStatus(user);
+                if (user.getUserStatus() == UserStatus.LOGGED_IN
+                        && (userActiveStatus == true)) {
+                    clients.get(user).writeData(game);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -394,6 +399,13 @@ public class UserHandler implements Runnable {
             String msg = gameController.initializeGame(currentUser, uPs);
 
             // 3. send to client whether it is valid (string maybe)
+            // success and finished
+            if (msg.equals("Placement finished")) {
+                playerConnection.writeData("Placement succeeded");
+                broadcastGame(gameController);
+                return;
+            }
+            // success but not finished
             playerConnection.writeData(msg);
 
         } catch (ClassNotFoundException | IOException e) {
@@ -421,7 +433,7 @@ public class UserHandler implements Runnable {
                 for (User user : userGameMap.getGameUsers(gameController)) {
                     Boolean userActiveStatus = gameController.getUserActiveStatus(user);
                     if (user.getUserStatus() == UserStatus.LOGGED_IN
-                            && (userActiveStatus == null || userActiveStatus == false)) {
+                            && (userActiveStatus == null || userActiveStatus == true)) {
                         clients.get(user).writeData(gameController.getGame());
                     }
                 }

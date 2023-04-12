@@ -130,6 +130,10 @@ public class RISKMap {
                 .orElse(null);
     }
 
+    public Map<String, Territory> getAllTerritories(){
+        return territories;
+    }
+
     /**
      * get list of neighbors territory for a given territoryId
      * @param targetTerritoryId target Territory to find neighbors

@@ -2,6 +2,7 @@ package edu.duke.ece651.team5.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -143,7 +144,7 @@ public class UserHandlerTest {
                 userHandler.handleRetrieveActiveGames();
 
                 ArgumentCaptor<ArrayList<Integer>> captor = ArgumentCaptor.forClass(ArrayList.class);
-                verify(mockPlayerConnection, times(6)).writeData(captor.capture());
+                verify(mockPlayerConnection, times(12)).writeData(captor.capture());
 
                 ArrayList<Integer> gameIDs = captor.getValue();
                 assertEquals(3, gameIDs.size());
@@ -182,12 +183,12 @@ public class UserHandlerTest {
 
                 userHandler1.handleGetJoinableGames();
                 ArgumentCaptor<ArrayList<Integer>> captor1 = ArgumentCaptor.forClass(ArrayList.class);
-                verify(mockPlayerConnection1, times(4)).writeData(captor1.capture());
+                verify(mockPlayerConnection1, times(6)).writeData(captor1.capture());
                 assertEquals(1, captor1.getValue().size());
 
                 userHandler2.handleGetJoinableGames();
                 ArgumentCaptor<ArrayList<Integer>> captor2 = ArgumentCaptor.forClass(ArrayList.class);
-                verify(mockPlayerConnection2, times(4)).writeData(captor2.capture());
+                verify(mockPlayerConnection2, times(6)).writeData(captor2.capture());
                 assertEquals(1, captor2.getValue().size());
         }
 
@@ -198,14 +199,14 @@ public class UserHandlerTest {
                 PlayerConnection mockPlayerConnection1 = mock(PlayerConnection.class);
                 PlayerConnection mockPlayerConnection2 = mock(PlayerConnection.class);
                 UserGameMap userGameMap = new UserGameMap();
-                HashMap<User, PlayerConnection> mockClients = mock(HashMap.class);
+                HashMap<User, PlayerConnection> clients = new HashMap<>();
 
                 // create user handlers
                 UserHandler userHandler1 = new UserHandler(mockPlayerConnection1, userManager, allGames, userGameMap,
-                                mockClients);
+                                clients);
 
                 UserHandler userHandler2 = new UserHandler(mockPlayerConnection2, userManager, allGames, userGameMap,
-                                mockClients);
+                                clients);
 
                 // sign up and login
                 ArrayList<String> inputInfo1 = new ArrayList<>(Arrays.asList("user1", "abc123"));
@@ -239,6 +240,30 @@ public class UserHandlerTest {
                 userHandler2.handleJoinGame();
                 verify(mockPlayerConnection2).writeData("Joined Success");
                 assertEquals(GameStatus.WAITING, allGames.get(gameID1).getStatus());
+        }
+
+        @Test
+        void testHandleLogOut() throws ClassNotFoundException, IOException {
+                HashMap<Integer, GameController> allGames = new HashMap<>();
+                UserManager userManager = new UserManager();
+                PlayerConnection mockPlayerConnection1 = mock(PlayerConnection.class);
+                PlayerConnection mockPlayerConnection2 = mock(PlayerConnection.class);
+                UserGameMap userGameMap = new UserGameMap();
+                HashMap<User, PlayerConnection> clients = new HashMap<>();
+
+                UserHandler userHandler1 = new UserHandler(mockPlayerConnection1, userManager, allGames, userGameMap,
+                                clients);
+                ArrayList<String> inputInfo1 = new ArrayList<>(Arrays.asList("user1", "abc123"));
+                when(mockPlayerConnection1.readData()).thenReturn(inputInfo1);
+                userHandler1.handleSignUp();
+                userHandler1.handleLogin();
+
+                when(mockPlayerConnection1.readData()).thenReturn(3);
+                userHandler1.handleNewGame();
+
+                userHandler1.handleLogOut();
+                
+                assertNull(userHandler1.getCurrentUser());
         }
 
         @Test

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.duke.ece651.team5.shared.game.*;
+import edu.duke.ece651.team5.shared.resource.*;
+import edu.duke.ece651.team5.shared.unit.*;
 import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 import edu.duke.ece651.team5.server.MyEnum.*;
@@ -15,7 +17,6 @@ public class UserHandler implements Runnable {
     private PlayerConnection playerConnection;
     private UserManager userManager;
     private HashMap<String, Runnable> operationHandlers;
-    // private ArrayList<GameController> allGames;
     private HashMap<Integer, GameController> allGames;
     private User currentUser;
     private UserGameMap userGameMap;
@@ -178,8 +179,9 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Create successfully");
                 userGameMap.addGameToUser(currentUser, newGame);
                 userGameMap.addUserToGame(newGame, currentUser);
-                // TODO: send map or send when full? seems when full is better
                 playerConnection.writeData(newGame.getUserColor(currentUser));
+                // send game id
+                playerConnection.writeData(newGame.getID());
                 System.out.println("Created and joined new game successfully!");
             } else {
                 playerConnection.writeData(msg);
@@ -295,22 +297,15 @@ public class UserHandler implements Runnable {
 
             clients.remove(currentUser);
 
-            // tell other users in this user's active games
+            // deal with games that not started
             ArrayList<GameController> gamesNotStarted = new ArrayList<>();
             for (GameController game : userGameMap.getUserGames(currentUser)) {
                 // if game not start, kick user out
                 if (game.getStatus() == GameStatus.WAITING) {
                     gamesNotStarted.add(game);
                 }
-                // if game started, pause game to wait user
-                // TODO: i think for now is to do nothing
-                // else if (game.getStatus() != GameStatus.ENDED) {
-                // // notify all the active players
-                // broadcastPauseGame(game);
-                // }
             }
-
-            // deal with games that not started
+            
             for (GameController game : gamesNotStarted) {
                 game.kickUserOut(currentUser);
                 userGameMap.deleteMap(currentUser, game);
@@ -326,33 +321,12 @@ public class UserHandler implements Runnable {
     }
 
     /**
-     * Send message to active users in active games to pause game
+     * Mainly for test
      * 
-     * @param game the game to pause
-     * @throws IOException
+     * @return current user
      */
-    protected void broadcastPauseGame(GameController game) throws IOException {
-        // send pause to every active user in the game
-        for (User user : userGameMap.getGameUsers(game)) {
-            if (user.getUserStatus() == UserStatus.LOGGED_IN && game.getUserActiveStatus(user)) {
-                clients.get(user).writeData("Pause");
-                // pause reason (userid)
-            }
-        }
-    }
-
-    /**
-     * Send message to active users(actually all) in active games to continue game
-     * 
-     * @param game the game to continue
-     * @throws IOException
-     */
-    protected void broadcastContinueGame(GameController game) throws IOException {
-        for (User user : userGameMap.getGameUsers(game)) {
-            if (user.getUserStatus() == UserStatus.LOGGED_IN && game.getUserActiveStatus(user)) {
-                clients.get(user).writeData("Continue");
-            }
-        }
+    protected User getCurrentUser() {
+        return currentUser;
     }
 
     /**
@@ -421,9 +395,10 @@ public class UserHandler implements Runnable {
             GameController gameController = allGames.get(gameID);
             Action action = (Action) playerConnection.readData();
             String msg = gameController.receiveActionFromUser(currentUser, action);
-            // action invalid
+            // action invalid, just return
             if (msg != null) {
                 playerConnection.writeData(msg);
+                return;
             }
 
             // tell success
@@ -431,7 +406,13 @@ public class UserHandler implements Runnable {
 
             boolean receiveAll = gameController.tryResolveAllOrders();
             if (receiveAll) {
-                // TODO: update unit and resource
+                // update unit and resource
+                Map<String, Territory> territories = gameController.getGame().getMap().getAllTerritories();
+                for (Territory territory : territories.values()) {
+                    territory.produceResource(new Resource(ResourceType.FOOD));
+                    territory.produceResource(new Resource(ResourceType.TECHNOLOGY));
+                    territory.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), 1);
+                }
 
                 // send map to all active users in this game
                 for (User user : userGameMap.getGameUsers(gameController)) {
@@ -443,10 +424,10 @@ public class UserHandler implements Runnable {
                 }
 
                 // check game win or not
-                String winName = gameController.checkGameWin();
+                String winerName = gameController.checkGameWin();
                 // if win, send winner name and end this game
-                if (winName != null) {
-                    playerConnection.writeData(winName);
+                if (winerName != null) {
+                    playerConnection.writeData(winerName);
                     return;
                 }
 

@@ -27,6 +27,7 @@ public class TextPlayer {
 
   private final BufferedReader inputReader;
   private final PrintStream out;
+  private Integer currentGameID;
 
   /**
    * constructor to call with
@@ -37,6 +38,7 @@ public class TextPlayer {
   public TextPlayer(BufferedReader br, PrintStream out) {
     this.inputReader = br;
     this.out = out;
+
   }
 
   /**

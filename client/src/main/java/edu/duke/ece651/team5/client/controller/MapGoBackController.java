@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Popup;
 
 public class MapGoBackController extends MapController {
@@ -80,6 +81,10 @@ public class MapGoBackController extends MapController {
         String destTerritorry = destTerritorybtn.getValue();
         destTerritorybtn.setValue(destTerritorybtn.getId());
         System.out.println("you are trying to move from: " + sourceTerritory + " to " + destTerritorry);
+    }
+
+    public void onsubmitPlacement() {
+
     }
 
 }

@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.shared.game.Game;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -164,11 +165,56 @@ public class MultipleGamesController extends GoBackController {
 
         String color = client.receiveColor();
         multipleGamesController.setName(color);
+        client.setColor(color);
+        // App.getPrimaryStage().setScene(scene);
         App.getPrimaryStage().setScene(scene);
 
-        // Game game = client.getGame();
-        System.out.println("we received a game!");
+        // App.getPrimaryStage().setOnShown(event -> {
+        // System.out.println("waiting for a game");
 
+        // // try {
+        // // Game game = client.getGame();
+        // // } catch (ClassNotFoundException | IOException e) {
+        // // // TODO Auto-generated catch block
+        // // e.printStackTrace();
+        // // }
+        // System.out.println("we received a game!");
+        // });
+        Platform.runLater(() -> {
+            // code to be executed after the scene is set
+            try {
+                Game game = client.getGame();
+                goToPlacement(game);
+            } catch (ClassNotFoundException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    public void goToPlacement(Game game) throws IOException, ClassNotFoundException {
+        URL xmlResource = getClass().getResource("/mapPlacement.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+
+        MultipleGamesController multipleGamesController = new MultipleGamesController(client);
+        // controllers.put(GoBackController.class, new GoBackController());
+        controllers.put(MapPlacementTerritory.class, new MapPlacementTerritory(client));
+        controllers.put(MultipleGamesController.class, multipleGamesController);
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        BorderPane bp = loader.load();
+
+        Scene scene = new Scene(new StackPane(bp));
+        // App.addScenetoMain("pl", scene);
+
+        App.getPrimaryStage().setScene(scene);
+        // Game game = client.getGame();
+        // System.out.println("we received a game!");
     }
 
     public void seeJoinableGames(ArrayList<Integer> gameIDs) throws IOException, ClassNotFoundException {

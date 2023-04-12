@@ -26,6 +26,7 @@ public class Client {
   // connection to handle socket and object streams
   protected PlayerConnection playerConnection;
 
+  private String color;
   // input and output
   private final BufferedReader inputReader;
   private final PrintStream out;
@@ -44,7 +45,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30488, br, out);
+    this("localhost", 30489, br, out);
   }
 
   /**
@@ -64,6 +65,7 @@ public class Client {
     this.out = out;
     this.isLose = false;
     this.playerConnection = new PlayerConnection(new Socket(host, port));
+    this.color = null;
   }
 
   /**
@@ -75,6 +77,14 @@ public class Client {
   public void createPlayer() throws UnknownHostException, IOException {
     this.playerConnection = new PlayerConnection(new Socket(host, port));
     this.textPlayer = new TextPlayer(inputReader, out);
+  }
+
+  public void setColor(String color) {
+    this.color = color;
+  }
+
+  public String getColor() {
+    return color;
   }
 
   /**

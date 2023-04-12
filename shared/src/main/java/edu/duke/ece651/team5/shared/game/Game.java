@@ -1,12 +1,13 @@
 package edu.duke.ece651.team5.shared.game;
 
+import java.io.Serializable;
 import java.util.List;
 
 /*
  * This class handle a list of players and a map for the game
  */
 
-public class Game {
+public class Game implements Serializable {
     private List<Player> players;
     private RISKMap map;
 

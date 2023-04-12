@@ -148,6 +148,19 @@ public class Client {
     return msg;
   }
 
+  public Game getGame() throws ClassNotFoundException, IOException {
+
+    System.out.println("waiting for a game in server");
+
+    // String status = playerConnection.write("give status");
+    // String status = playerConnection.write(gameID);
+    // String status = playerConnection.read(gameID);
+
+    Game game = (Game) playerConnection.readData();
+    return game;
+
+  }
+
   public String signUp(ArrayList<String> usernameAndPassword) throws IOException, ClassNotFoundException {
 
     String msg = null;

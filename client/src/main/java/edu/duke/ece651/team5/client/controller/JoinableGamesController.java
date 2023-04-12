@@ -1,14 +1,21 @@
 package edu.duke.ece651.team5.client.controller;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.shared.game.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 public class JoinableGamesController extends GoBackController {
 
@@ -50,6 +57,27 @@ public class JoinableGamesController extends GoBackController {
         }
     }
 
+    public void goToWaitingScreen() throws IOException, ClassNotFoundException {
+        URL xmlResource = getClass().getResource("/waiting-room.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+        // controllers.put(GoBackController.class, new GoBackController());
+        controllers.put(JoinableGamesController.class, new JoinableGamesController(client));
+        controllers.put(MultipleGamesController.class, new MultipleGamesController(client));
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        BorderPane bp = loader.load();
+        Scene scene = new Scene(new StackPane(bp));
+        App.addScenetoMain("waitin-room", scene);
+
+        App.getPrimaryStage().setScene(scene);
+        // Game game = client.getGame();
+        System.out.println("we received a game!");
+    }
+
     // public void onsaveAndExit(ActionEvent ae) throws ClassNotFoundException,
     // IOException {
 
@@ -74,6 +102,10 @@ public class JoinableGamesController extends GoBackController {
                 MultipleGamesController multipleGamesController = (MultipleGamesController) App
                         .loadController("multiple-games");
                 multipleGamesController.refresh();
+                goToWaitingScreen();
+                // Game game = client.getGame();
+
+                System.out.println("we received a game!" + gameID);
             }
             System.out.println(msg);
 

@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.shared.game.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -133,7 +134,7 @@ public class MultipleGamesController extends GoBackController {
         App.loadScenefromMain("login-page");
     }
 
-    public void goToWaitingScreen() throws IOException {
+    public void goToWaitingScreen() throws IOException, ClassNotFoundException {
         URL xmlResource = getClass().getResource("/waiting-room.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
@@ -150,6 +151,8 @@ public class MultipleGamesController extends GoBackController {
         App.addScenetoMain("waitin-room", scene);
 
         App.getPrimaryStage().setScene(scene);
+        // Game game = client.getGame();
+        System.out.println("we received a game!");
     }
 
     public void seeJoinableGames(ArrayList<Integer> gameIDs) throws IOException, ClassNotFoundException {

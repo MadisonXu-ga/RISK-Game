@@ -1,8 +1,11 @@
 package edu.duke.ece651.team5.client.controller;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.shared.constant.Constants;
 import edu.duke.ece651.team5.shared.game.Game;
@@ -13,7 +16,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
@@ -21,7 +26,9 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 public class MapPlacementTerritory extends MapController {
@@ -54,15 +61,7 @@ public class MapPlacementTerritory extends MapController {
         System.out.println("Avaialable: " + availableUnits);
         availableUnitTxt.setText(availableUnits.toString());
 
-        for (Territory territory : game.getPlayerByName(client.getColor()).getTerritories()) {
-            ownedTerritories.add(territory);
-            Button matchingButton = getMatchingGameButton(territory.getName());
-            if (matchingButton != null) {
-                // System.out.println("color: [" + client.getColor() + "]");
-                assignButtonToPlayer(matchingButton, client.getColor());
-                // matchingButton.setStyle("-fx-background-color: red;");
-            }
-        }
+        colorTerritoriesbyOwner();
         int terrIdx = 0;
         for (Node node : rightSideScreen.getChildren()) {
 
@@ -70,8 +69,8 @@ public class MapPlacementTerritory extends MapController {
 
                 Spinner<Integer> textField = (Spinner<Integer>) node;
                 Integer amountTerritories = game.getPlayerByName(client.getColor()).getTerritories().size();
-                SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,
-                        availableUnits - amountTerritories,
+                SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,
+                        availableUnits - amountTerritories - 1,
                         0);
                 textField.setValueFactory(valueFactory);
                 if (terrIdx <= ownedTerritories.size()) {
@@ -109,7 +108,19 @@ public class MapPlacementTerritory extends MapController {
                 .println("textFields size: " + territoryFields.size() + ", textp[] size: " + territoryNamesText.size());
     }
 
-    public void onsubmitPlacement() {
+    private void colorTerritoriesbyOwner() {
+        for (Territory territory : game.getPlayerByName(client.getColor()).getTerritories()) {
+            ownedTerritories.add(territory);
+            Button matchingButton = getMatchingGameButton(territory.getName());
+            if (matchingButton != null) {
+                // System.out.println("color: [" + client.getColor() + "]");
+                assignButtonToPlayer(matchingButton, client.getColor());
+                // matchingButton.setStyle("-fx-background-color: red;");
+            }
+        }
+    }
+
+    public void onsubmitPlacement() throws IOException {
 
         HashMap<String, Integer> placementOrders = new HashMap<>();
 
@@ -131,6 +142,8 @@ public class MapPlacementTerritory extends MapController {
         if (sum == 50) {
 
             unitsPlacedText.setText("");
+            resetFields();
+            goToPlacingActionsScreen();
 
         }
 
@@ -159,4 +172,25 @@ public class MapPlacementTerritory extends MapController {
 
     }
 
+    public void goToPlacingActionsScreen() throws IOException {
+
+        URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+
+        MultipleGamesController multipleGamesController = new MultipleGamesController(client);
+        controllers.put(MapChooseActionController.class, new MapChooseActionController(client, game));
+        controllers.put(MultipleGamesController.class, multipleGamesController);
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        StackPane bp = loader.load();
+
+        Scene scene = new Scene(new StackPane(bp));
+        // App.addScenetoMain("pl", scene);
+
+        App.getPrimaryStage().setScene(scene);
+    }
 }

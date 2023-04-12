@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.shared.game;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import edu.duke.ece651.team5.shared.constant.Constants;
@@ -10,7 +11,7 @@ import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 /**
  * This class handle all the functionality of Territory
  */
-public class Territory {
+public class Territory implements Serializable {
     //id to represent territory in connections
     private int id;
     //territory name

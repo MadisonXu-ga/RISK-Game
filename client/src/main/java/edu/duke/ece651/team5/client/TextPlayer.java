@@ -264,10 +264,10 @@ public class TextPlayer {
    * 
    * @param currMap the current map client received from server
    */
-  void displayMap(Game game) {
-    MapTextView view = new MapTextView(game);
-    out.println(view.displayMap());
-  }
+  // void displayMap(Game game) {
+  // MapTextView view = new MapTextView(game);
+  // out.println(view.displayMap());
+  // }
 
   /**
    * helper method to parse number from user input, it will also check formate and
@@ -345,6 +345,30 @@ public class TextPlayer {
     res.add(input.substring(firstParse + 1, secondParse));
     res.add(input.substring(secondParse + 1));
     return res;
+  }
+
+  public String checkMoveOrder(MoveOrder moveOrder, RISKMap map) {
+    OrderRuleChecker moveRuleChecker = new MoveOwnershipRuleChecker(
+        new MovePathWithSameOwnerRuleChecker(new MoveResourceChecker(new SoldierNumberChecker(null))));
+    return moveRuleChecker.checkOrder(moveOrder, map);
+  }
+
+  public String checkAttackOrder(AttackOrder attackOrder, RISKMap map) {
+    OrderRuleChecker attackRuleChecker = new AttackAdjacentRuleChecker(
+        new AttackOwnershipRuleChecker(new AttackResourceChecker(new SoldierNumberChecker(null))));
+    return attackRuleChecker.checkOrder(attackOrder, map);
+  }
+
+  public String checkResourceOrder(ResearchOrder ResearchOrder) {
+    ResearchOrderRuleChecker ruleChecker = new ResearchLevelBoundRuleChecker(
+        new ResearchEnoughResourceRuleChecker(null));
+    return ruleChecker.checkOrder(ResearchOrder);
+  }
+
+  public String checkUpgradeOrder(UpgradeOrder upgradeOrder) {
+    UpgradeOrderRuleChecker ruleChecker = new UpgradeBackwardRuleChecker(
+        new UpgradeEnoughResourceRuleChecker(new UpgradeLevelBoundRuleChecker(null)));
+    return ruleChecker.checkOrder(upgradeOrder);
   }
 
 }

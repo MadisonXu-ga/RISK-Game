@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -33,6 +34,9 @@ public class MultipleGamesController extends GoBackController {
 
     @FXML
     Text player1;
+
+    @FXML
+    TextField amountPlayers;
 
     public Button[] gameButtons;
     public Client client;
@@ -96,10 +100,21 @@ public class MultipleGamesController extends GoBackController {
     }
 
     public void onBeginNewGame(ActionEvent ae) throws IOException, ClassNotFoundException {
-        String msg = client.beginNewGame();
+        String playerAmountStr = amountPlayers.getText();
+        Integer playeramount;
+        try {
+            playeramount = Integer.parseInt(playerAmountStr);
+        } catch (NumberFormatException e) {
+            playeramount = null;
+        }
+        amountPlayers.setText("");
+        if (playeramount != null && playeramount > 0 && playeramount <= 4) {
 
-        System.out.println(msg);
-        goToWaitingScreen();
+            String msg = client.beginNewGame(playeramount);
+            goToWaitingScreen();
+        }
+
+        // System.out.println(msg);
 
     }
 

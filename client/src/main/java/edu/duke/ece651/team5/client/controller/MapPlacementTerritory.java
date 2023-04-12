@@ -87,6 +87,11 @@ public class MapPlacementTerritory extends MapController {
 
     public void onsubmitPlacement() {
 
+        for (TextField text : territoryFields) {
+
+            text.setText("");
+        }
+
     }
 
 }

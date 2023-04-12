@@ -143,10 +143,10 @@ public class Client {
     return color;
   }
 
-  public String beginNewGame() throws IOException, ClassNotFoundException {
+  public String beginNewGame(Integer playerAmount) throws IOException, ClassNotFoundException {
 
     playerConnection.writeData("New game");
-    playerConnection.writeData(3);
+    playerConnection.writeData(playerAmount);
 
     String msg = (String) playerConnection.readData();
 

@@ -43,6 +43,16 @@
     -fx-border-width: 2px;
     
 }
+
+.YellowPlayerbtn {
+    -fx-opacity: 0.3;
+    -fx-background-color: rgb(193, 178, 19);
+}
+.YellowPlayerbtn:hover {
+    -fx-opacity: 0.6;
+    -fx-border-width: 2px;
+    
+}
 /* .bluePlayer:pressed {
     -fx-background-color: transparent;
 } */

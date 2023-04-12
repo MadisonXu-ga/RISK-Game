@@ -38,6 +38,7 @@ public class MapController extends GoBackController {
 
     @FXML
     public void initialize() {
+
         gameButtons = rightSideScreen.lookupAll(".button:@territory.css").toArray(new Button[0]);
 
         // for (String element : list) {

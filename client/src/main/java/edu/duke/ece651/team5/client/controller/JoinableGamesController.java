@@ -133,7 +133,7 @@ public class JoinableGamesController extends GoBackController {
                 String color = client.receiveColor();
                 goToWaitingScreen(color);
                 Game game = client.getGame();
-                game.setGameID(gameID.toString());
+                game.setGameID(gameID);
                 client.getGameConfirmation();
                 goToPlacement(game);
 

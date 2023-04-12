@@ -37,7 +37,7 @@
                   <Font name="Lucida Calligraphy Italic" size="36.0" />
                </font>
             </Text>
-            <Button fx:id="moveOrderbtn" layoutX="14.0" layoutY="258.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Move order">
+            <Button fx:id="moveOrderbtn" layoutX="14.0" layoutY="258.0" mnemonicParsing="false" onAction="#onMoveAction" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Move order">
                <font>
                   <Font size="16.0" />
                </font>

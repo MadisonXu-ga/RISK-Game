@@ -27,6 +27,7 @@ public class MapController extends GoBackController {
 
     public Client client;
     public Game game;
+    protected ArrayList<Territory> ownedTerritories;
 
     public Button[] gameButtons;
     public HashMap<String, Button> buttonsHashmap;
@@ -84,7 +85,8 @@ public class MapController extends GoBackController {
         // // makeButtonDarker(gameButtons[i]);
 
         // }
-        System.out.println("Found the territories: " + checkListAgainstGameButtons());
+        // System.out.println("Found the territories: " +
+        // checkListAgainstGameButtons());
 
     }
 
@@ -186,8 +188,20 @@ public class MapController extends GoBackController {
     // }
     // }
     protected void colorTerritoriesbyOwner() {
+        showTerritoryColors(true);
+    }
+
+    protected void showTerritoryColors(boolean showAll) {
+
         if (game != null) {
             for (Player playerx : game.getPlayers()) {
+                System.out.println("Client color: [" + client.getColor() + "], and player name: ["
+                        + playerx.getName() + "]");
+                if (showAll == false && !(client.getColor().equals(playerx.getName()))) {
+                    System.out.println("Client color: [" + client.getColor() + "], and player name: ["
+                            + playerx.getName() + "]");
+                    continue;
+                }
                 for (Territory territory : playerx.getTerritories()) {
 
                     Button matchingButton = getMatchingGameButton(territory.getName());
@@ -198,6 +212,20 @@ public class MapController extends GoBackController {
                     }
                 }
             }
+        }
+    }
+
+    protected void colorTerritoriesYouOwn() {
+        ownedTerritories = new ArrayList<>();
+        for (Territory territory : game.getPlayerByName(client.getColor()).getTerritories()) {
+            ownedTerritories.add(territory);
+            Button matchingButton = getMatchingGameButton(territory.getName());
+            if (matchingButton != null) {
+                // System.out.println("color: [" + client.getColor() + "]");
+                assignButtonToPlayer(matchingButton, client.getColor());
+                // matchingButton.setStyle("-fx-background-color: red;");
+            }
+
         }
     }
 

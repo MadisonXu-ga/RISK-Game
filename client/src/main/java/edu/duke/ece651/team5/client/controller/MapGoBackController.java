@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
@@ -25,8 +26,20 @@ import javafx.stage.Popup;
 
 public class MapGoBackController extends MapController {
 
+    public boolean showAll;
+
     public MapGoBackController(Client client) {
         super(client);
+        this.showAll = true;
+    }
+
+    public MapGoBackController(Client client, Game game) {
+        super(client, game);
+        this.showAll = true;
+    }
+
+    public MapGoBackController(Client client, Game game, boolean showAll) {
+        super(client, game);
     }
 
     @FXML
@@ -48,6 +61,7 @@ public class MapGoBackController extends MapController {
         unitsComboBox.setItems(options);
         onSourceTerritorySelection();
         onDestTerritorySelection();
+        showTerritoryColors(showAll);
 
     }
 

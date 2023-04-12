@@ -33,7 +33,6 @@ import javafx.scene.text.Text;
 
 public class MapPlacementTerritory extends MapController {
 
-    private Game game;
     private Integer availableUnits;
     @FXML
     Text availableUnitTxt;
@@ -41,14 +40,12 @@ public class MapPlacementTerritory extends MapController {
     Text unitsPlacedText;
 
     public MapPlacementTerritory(Client client, Game game) {
-        super(client);
-        this.game = game;
+        super(client, game);
 
     }
 
     public ArrayList<Text> territoryNamesText;
     public ArrayList<Spinner<Integer>> territoryFields;
-    public ArrayList<Territory> ownedTerritories;
 
     @FXML
     public void initialize() {
@@ -106,18 +103,6 @@ public class MapPlacementTerritory extends MapController {
 
         System.out
                 .println("textFields size: " + territoryFields.size() + ", textp[] size: " + territoryNamesText.size());
-    }
-
-    private void colorTerritoriesYouOwn() {
-        for (Territory territory : game.getPlayerByName(client.getColor()).getTerritories()) {
-            ownedTerritories.add(territory);
-            Button matchingButton = getMatchingGameButton(territory.getName());
-            if (matchingButton != null) {
-                // System.out.println("color: [" + client.getColor() + "]");
-                assignButtonToPlayer(matchingButton, client.getColor());
-                // matchingButton.setStyle("-fx-background-color: red;");
-            }
-        }
     }
 
     public void onsubmitPlacement() throws IOException {

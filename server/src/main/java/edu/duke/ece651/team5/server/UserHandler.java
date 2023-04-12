@@ -179,6 +179,7 @@ public class UserHandler implements Runnable {
                 userGameMap.addGameToUser(currentUser, newGame);
                 userGameMap.addUserToGame(newGame, currentUser);
                 // TODO: send map or send when full? seems when full is better
+                playerConnection.writeData(newGame.getUserColor(currentUser));
                 System.out.println("Created and joined new game successfully!");
             } else {
                 playerConnection.writeData(msg);
@@ -245,6 +246,7 @@ public class UserHandler implements Runnable {
                 userGameMap.addGameToUser(currentUser, gameToJoin);
                 userGameMap.addUserToGame(gameToJoin, currentUser);
                 playerConnection.writeData("Joined Success");
+                playerConnection.writeData(gameToJoin.getUserColor(currentUser));
                 System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
                 if (msg == "Start") {
                     broadcastGame(gameToJoin);

@@ -80,6 +80,10 @@ public class GameController {
         return game;
     }
 
+    public String getUserColor(User user){
+        return userToPlayerMap.get(user).getName();
+    }
+
     /**
      * Create default players according to player num
      * 

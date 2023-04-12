@@ -1,6 +1,7 @@
 package edu.duke.ece651.team5.client.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.shared.game.Game;
@@ -50,7 +51,7 @@ public class MapPlacementTerritory extends MapController {
 
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
-                if (terrIdx < ownedTerritories.size()) {
+                if (terrIdx <= ownedTerritories.size()) {
                     territoryFields.add(textField);
                 }
                 if (terrIdx > ownedTerritories.size()) {
@@ -65,7 +66,7 @@ public class MapPlacementTerritory extends MapController {
                     // territoryText.setVisible(false);
                     if (terrIdx < ownedTerritories.size()) {
                         territoryNamesText.add(territoryText);
-                        territoryText.setText(ownedTerritories.get(terrIdx).getName() + ":");
+                        territoryText.setText(ownedTerritories.get(terrIdx).getName());
                     }
                     // System.out.println(terrIdx + "size: " + ownedTerritories.size());
 
@@ -87,11 +88,38 @@ public class MapPlacementTerritory extends MapController {
 
     public void onsubmitPlacement() {
 
-        for (TextField text : territoryFields) {
+        HashMap<String, Integer> placementOrders = new HashMap<>();
 
-            text.setText("");
+        for (int i = 0; i < territoryFields.size(); i++) {
+
+            String territoString = territoryNamesText.get(i).getText();
+            Integer unitsAmount;
+            try {
+                unitsAmount = Integer.parseInt(territoryFields.get(i).getText());
+
+            } catch (NumberFormatException e) {
+                unitsAmount = null;
+                break;
+            }
+            if (unitsAmount >= 0) {
+                placementOrders.put(territoString, unitsAmount);
+            }
         }
 
+        resetFields();
+
+        if (territoryFields.size() == placementOrders.size()) {
+            System.out.println(placementOrders);
+            System.out.println(placementOrders.size());
+        }
+    }
+
+    public void resetFields() {
+
+        for (TextField field : territoryFields) {
+            field.setText("");
+
+        }
     }
 
 }

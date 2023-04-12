@@ -429,6 +429,8 @@ public class UserHandler implements Runnable {
 
             boolean receiveAll = gameController.tryResolveAllOrders();
             if (receiveAll) {
+                // TODO: update unit and resource
+
                 // send map to all active users in this game
                 for (User user : userGameMap.getGameUsers(gameController)) {
                     Boolean userActiveStatus = gameController.getUserActiveStatus(user);

@@ -45,7 +45,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30490, br, out);
+    this("localhost", 30491, br, out);
   }
 
   /**
@@ -198,6 +198,18 @@ public class Client {
     msg = msg.trim(); // removes leading and trailing whitespace
     msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
     return msg;
+  }
+
+  public Integer getGameID() throws IOException, ClassNotFoundException {
+
+    Integer gameID = null;
+
+    gameID = (Integer) playerConnection.readData();
+
+    // gameID = gameID.trim(); // removes leading and trailing whitespace
+    // gameID = gameID.replaceAll("\\r|\\n", ""); // removes carriage return and
+    // newline characters
+    return gameID;
   }
 
   public String signUp(ArrayList<String> usernameAndPassword) throws IOException, ClassNotFoundException {

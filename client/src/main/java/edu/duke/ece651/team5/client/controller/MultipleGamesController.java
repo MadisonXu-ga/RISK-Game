@@ -180,9 +180,11 @@ public class MultipleGamesController extends GoBackController {
 
         String color = client.receiveColor();
         multipleGamesController.setName(color);
+
         client.setColor(color);
         // App.getPrimaryStage().setScene(scene);
         App.getPrimaryStage().setScene(scene);
+        Integer gameID = client.getGameID();
 
         // App.getPrimaryStage().setOnShown(event -> {
         // System.out.println("waiting for a game");
@@ -193,6 +195,7 @@ public class MultipleGamesController extends GoBackController {
                 // client.getGame();
                 Game game = client.getGame();
                 client.getGameConfirmation();
+                game.setGameID(gameID.toString());
                 goToPlacement(game);
 
             } catch (ClassNotFoundException | IOException e) {

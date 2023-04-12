@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
@@ -24,6 +26,7 @@ public class JoinableGamesController extends GoBackController {
     @FXML
     AnchorPane multipleGameButtons;
     private Button[] gameButtons;
+    private Game game;
 
     @FXML
     public void initialize() throws ClassNotFoundException, IOException {
@@ -83,20 +86,22 @@ public class JoinableGamesController extends GoBackController {
         // Game game = client.getGame();
 
         // Game game = client.getGame();
+
+        // Platform.runLater(() -> {
+        // // code to be executed after the scene is set
+        // try {
+        // Game game = client.getGame();
         // goToPlacement(game);
+        // } catch (ClassNotFoundException | IOException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+        // });
 
-        Platform.runLater(() -> {
-            // code to be executed after the scene is set
-            try {
-                Game game = client.getGame();
-                goToPlacement(game);
-            } catch (ClassNotFoundException | IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        });
+        // if (client.confirmGame().equals("Game sent")) {
 
-        // goToPlacement();
+        // goToPlacement(game);
+        // }
 
     }
 
@@ -127,6 +132,10 @@ public class JoinableGamesController extends GoBackController {
 
                 String color = client.receiveColor();
                 goToWaitingScreen(color);
+                Game game = client.getGame();
+                goToPlacement(game);
+
+                goToPlacement(game);
                 multipleGamesController.refresh();
 
                 // Game game = client.getGame();

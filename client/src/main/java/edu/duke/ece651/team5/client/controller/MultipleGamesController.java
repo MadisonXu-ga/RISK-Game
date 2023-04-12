@@ -172,19 +172,14 @@ public class MultipleGamesController extends GoBackController {
         // App.getPrimaryStage().setOnShown(event -> {
         // System.out.println("waiting for a game");
 
-        // // try {
-        // // Game game = client.getGame();
-        // // } catch (ClassNotFoundException | IOException e) {
-        // // // TODO Auto-generated catch block
-        // // e.printStackTrace();
-        // // }
-        // System.out.println("we received a game!");
-        // });
         Platform.runLater(() -> {
             // code to be executed after the scene is set
             try {
+                // client.getGame();
                 Game game = client.getGame();
+                System.out.println("before");
                 goToPlacement(game);
+                System.out.println("before");
             } catch (ClassNotFoundException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

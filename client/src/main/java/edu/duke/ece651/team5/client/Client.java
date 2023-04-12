@@ -45,7 +45,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30489, br, out);
+    this("localhost", 30490, br, out);
   }
 
   /**
@@ -109,6 +109,18 @@ public class Client {
     // set player name
     out.println("\nWe got your player name!\n");
     textPlayer.setPlayer(playerInfo);
+  }
+
+  public String confirmGame() throws IOException, ClassNotFoundException {
+
+    String msg = null;
+
+    msg = (String) playerConnection.readData();
+
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", "");
+
+    return msg;
   }
 
   public String login(ArrayList<String> usernameAndPassword) throws IOException, ClassNotFoundException {

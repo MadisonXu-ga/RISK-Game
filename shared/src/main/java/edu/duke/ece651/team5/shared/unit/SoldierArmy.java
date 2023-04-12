@@ -1,12 +1,13 @@
 package edu.duke.ece651.team5.shared.unit;
 
+import java.io.Serializable;
 import java.util.*;
 
 
 /**
  * This class handle all the soldiers in an army setting
  */
-public class SoldierArmy {
+public class SoldierArmy implements Serializable {
     //store all the soldires with key of soldier in different level, and value of corresponding soldier number
     private Map<Soldier, Integer> soldiers;
 

@@ -1,9 +1,11 @@
 package edu.duke.ece651.team5.shared.unit;
 
+import java.io.Serializable;
+
 /**
  * Soldier class handle the level of soldier
  */
-public class Soldier {
+public class Soldier implements Serializable {
 
     private SoldierLevel level;
 

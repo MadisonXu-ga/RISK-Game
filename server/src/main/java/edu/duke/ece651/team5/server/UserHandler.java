@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.duke.ece651.team5.shared.game.*;
+import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 import edu.duke.ece651.team5.server.MyEnum.*;
 
@@ -43,6 +44,7 @@ public class UserHandler implements Runnable {
         this.operationHandlers.put("Join game", this::handleJoinGame);
         this.operationHandlers.put("Log out", this::handleLogOut);
         this.operationHandlers.put("Place unit", this::handleUnitPlacement);
+        this.operationHandlers.put("Order", this::handleOrders);
     }
 
     @Override
@@ -177,6 +179,7 @@ public class UserHandler implements Runnable {
                 userGameMap.addGameToUser(currentUser, newGame);
                 userGameMap.addUserToGame(newGame, currentUser);
                 // TODO: send map or send when full? seems when full is better
+                playerConnection.writeData(newGame.getUserColor(currentUser));
                 System.out.println("Created and joined new game successfully!");
             } else {
                 playerConnection.writeData(msg);
@@ -197,7 +200,8 @@ public class UserHandler implements Runnable {
         try {
             ArrayList<Integer> gameIDs = new ArrayList<>();
             for (GameController game : userGameMap.getUserGames(currentUser)) {
-                if (game.getStatus() != GameStatus.ENDED) {
+                if (game.getStatus() != GameStatus.ENDED && (game.getUserActiveStatus(currentUser) == null
+                        || game.getUserActiveStatus(currentUser) == true)) {
                     gameIDs.add(game.getID());
                 }
             }
@@ -242,9 +246,10 @@ public class UserHandler implements Runnable {
                 userGameMap.addGameToUser(currentUser, gameToJoin);
                 userGameMap.addUserToGame(gameToJoin, currentUser);
                 playerConnection.writeData("Joined Success");
+                playerConnection.writeData(gameToJoin.getUserColor(currentUser));
                 System.out.println("User " + currentUser.getUserName() + " joined game " + gameID);
                 if (msg == "Start") {
-                    broadcastStartGame(gameToJoin);
+                    broadcastGame(gameToJoin);
                     System.out.println("Game " + gameID + " is ready to start!");
                 }
             }
@@ -260,15 +265,19 @@ public class UserHandler implements Runnable {
     }
 
     /**
-     * Send game to all players in this game
+     * Send game to all active players in this game
      * 
      * @param gameController
      */
-    protected void broadcastStartGame(GameController gameController) {
+    protected void broadcastGame(GameController gameController) {
         Game game = gameController.getGame();
         for (User user : userGameMap.getGameUsers(gameController)) {
             try {
-                clients.get(user).writeData(game);
+                Boolean userActiveStatus = gameController.getUserActiveStatus(user);
+                if (user.getUserStatus() == UserStatus.LOGGED_IN
+                        && (userActiveStatus == true)) {
+                    clients.get(user).writeData(game);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -361,7 +370,8 @@ public class UserHandler implements Runnable {
                 playerConnection.writeData("Started");
             }
             // else is wrong.
-            // TODO: send the map maybe
+
+            playerConnection.writeData(gameController.getGame());
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -391,6 +401,13 @@ public class UserHandler implements Runnable {
             String msg = gameController.initializeGame(currentUser, uPs);
 
             // 3. send to client whether it is valid (string maybe)
+            // success and finished
+            if (msg.equals("Placement finished")) {
+                playerConnection.writeData("Placement succeeded");
+                broadcastGame(gameController);
+                return;
+            }
+            // success but not finished
             playerConnection.writeData(msg);
 
         } catch (ClassNotFoundException | IOException e) {
@@ -401,18 +418,60 @@ public class UserHandler implements Runnable {
     protected void handleOrders() {
         try {
             int gameID = (int) playerConnection.readData();
+            GameController gameController = allGames.get(gameID);
+            Action action = (Action) playerConnection.readData();
+            String msg = gameController.receiveActionFromUser(currentUser, action);
+            // action invalid
+            if (msg != null) {
+                playerConnection.writeData(msg);
+            }
 
-            // 1. resolve move
+            // tell success
+            playerConnection.writeData("Order succeeded");
 
-            // 2. resolve attack
+            boolean receiveAll = gameController.tryResolveAllOrders();
+            if (receiveAll) {
+                // TODO: update unit and resource
 
-            // 3. resolve research
+                // send map to all active users in this game
+                for (User user : userGameMap.getGameUsers(gameController)) {
+                    Boolean userActiveStatus = gameController.getUserActiveStatus(user);
+                    if (user.getUserStatus() == UserStatus.LOGGED_IN
+                            && (userActiveStatus == null || userActiveStatus == true)) {
+                        clients.get(user).writeData(gameController.getGame());
+                    }
+                }
 
-            // 4. resolve upgrade
+                // check game win or not
+                String winName = gameController.checkGameWin();
+                // if win, send winner name and end this game
+                if (winName != null) {
+                    playerConnection.writeData(winName);
+                    return;
+                }
+
+                // no one win until now
+                playerConnection.writeData("No winner");
+
+                // check user lose or not
+                // lost
+                if (gameController.checkUserLose(currentUser)) {
+                    playerConnection.writeData("You lost");
+                    String lostChoice = (String) playerConnection.readData();
+                    if (lostChoice.equals("Disconnect")) {
+                        gameController.setUserActiveStatus(currentUser, false);
+                    } else if (lostChoice.equals("Display")) {
+                        gameController.setUserActiveStatus(currentUser, null);
+                    }
+                    return;
+                }
+
+                playerConnection.writeData("Not lost");
+            }
 
         } catch (ClassNotFoundException | IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
+
 }

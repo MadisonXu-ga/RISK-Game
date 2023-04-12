@@ -3,6 +3,7 @@ package edu.duke.ece651.team5.server;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Objects;
@@ -30,15 +31,17 @@ public class GameController {
     private Game game;
     private int playerNum;
     private int userNum;
+    private int initialNum;
 
     private ArrayList<Player> players;
     private HashMap<String, User> playerToUserMap; // TODO: maybe deleted
     private HashMap<User, Player> userToPlayerMap;
+
     private HashMap<User, Boolean> userActiveStatus;
 
     private HashMap<Player, Action> playerActions;
 
-    // private HashMap<String, >
+    private HashMap<Player, Boolean> playerWinLoseStatus;
 
     public GameController(int playerNum) {
         this.id = nextId;
@@ -48,12 +51,17 @@ public class GameController {
         this.statusBeforePause = status;
         this.playerNum = playerNum;
         this.userNum = 0;
+        this.initialNum = 0;
         this.players = new ArrayList<>();
         this.playerToUserMap = new HashMap<>();
         this.userToPlayerMap = new HashMap<>();
+
         this.userActiveStatus = new HashMap<>();
 
         this.playerActions = new HashMap<>();
+
+        this.playerWinLoseStatus = new HashMap<>();
+
         // create players
         createPlayers(playerNum);
         // create game
@@ -70,6 +78,10 @@ public class GameController {
 
     public Game getGame() {
         return game;
+    }
+
+    public String getUserColor(User user){
+        return userToPlayerMap.get(user).getName();
     }
 
     /**
@@ -146,7 +158,7 @@ public class GameController {
         return tryStartGame();
     }
 
-    protected String tryStartGame() {
+    protected synchronized String tryStartGame() {
         if (userNum == playerNum) {
             status = GameStatus.INITIALIZING;
             statusBeforePause = status;
@@ -161,7 +173,7 @@ public class GameController {
      * 
      * @param user the user that game want to kick off
      */
-    public void kickUserOut(User user) {
+    public synchronized void kickUserOut(User user) {
         String playerColor = null;
         for (Map.Entry<String, User> entry : playerToUserMap.entrySet()) {
             if (entry.getValue().equals(user)) {
@@ -221,8 +233,12 @@ public class GameController {
      * @param user the user you want to check
      * @return true if active, false if not
      */
-    public boolean getUserActiveStatus(User user) {
+    public Boolean getUserActiveStatus(User user) {
         return userActiveStatus.get(user);
+    }
+
+    public void setUserActiveStatus(User user, Boolean newStatus){
+        userActiveStatus.put(user, newStatus);
     }
 
     /**
@@ -231,14 +247,20 @@ public class GameController {
      * @param user
      * @return
      */
-    public String initializeGame(User user, HashMap<String, Integer> unitPlacements) {
-        String msg = "Placement success";
+    public synchronized String initializeGame(User user, HashMap<String, Integer> unitPlacements) {
+        String msg = "Placement succeeded";
         // not in initializing step
         if (this.status != GameStatus.INITIALIZING) {
             return "Cannot initialize";
         }
 
         resolveUnitPlacement(unitPlacements);
+        ++initialNum;
+
+        if(initialNum==playerNum){
+            this.status = GameStatus.STARTED;
+            return "Placement finished";
+        }
 
         return msg;
     }
@@ -257,39 +279,246 @@ public class GameController {
         }
     }
 
-    
-    // public boolean receiveActionFromUser(User user, Action action){
-    //     Player player = userToPlayerMap.get(user);
-    //     playerActions.put(player, action);
+    /**
+     * Receive action from user
+     * 
+     * @param user
+     * @param action
+     * @return
+     */
+    public synchronized String receiveActionFromUser(User user, Action action) {
+        // check valid
+        String message = checkActions(action);
+        if (message != null) {
+            return message;
+        }
 
-    //     // TODO: check
+        // if valid, add to player actions
+        Player player = userToPlayerMap.get(user);
+        playerActions.put(player, action);
 
-    // }
-
-    // /*
-    //  * Check whether move orders are valid.
-    //  */
-    // protected String checkMoveValid(ArrayList<MoveOrder> mos, OrderRuleChecker moveActionChecker,
-    //         UnitValidRuleChecker moveActionUnitChecker, HashMap<String, Integer> oldTerriUnitNum) {
-    //     String message = null;
-    //     for (MoveOrder mo : mos) {
-    //         message = moveActionChecker.checkOrder(mo,
-    //                 this.gameController.getRiskMap().getPlayerByName(playerName), this.gameController.getRiskMap());
-    //         if (message != null) {
-    //             revertTerrUnitChanges(oldTerriUnitNum);
-    //             return message;
-    //         }
-
-    //         mo.execute(this.gameController.getRiskMap());
-    //     }
-    //     return message;
-    // }
-
-    protected void tryResolveAllOrders(){
-        
+        return null;
+        // return "Order succeeded";
     }
 
-    
+    /**
+     * Check if every player in this game submited orders
+     * 
+     * @param playerActions
+     * @return
+     */
+    public synchronized boolean tryResolveAllOrders() {
+        int activeUserNum = 0;
+        for (Boolean isActive : userActiveStatus.values()) {
+            if (isActive != null && isActive == true) {
+                ++activeUserNum;
+            }
+        }
+        // not all players submitted yet, cannot resolve
+        if (playerActions.size() != activeUserNum) {
+            return false;
+        }
+
+        // move
+        tryResolveAllMoveOrders(playerActions, game.getMap());
+        // attack
+        tryResolveAllAttackOrders(playerActions, game);
+        // upgrade
+        tryResolveAllUpgradeOrder(playerActions, game.getMap());
+
+        // resolve research last to ensure not affect others
+        tryResolveAllResearchOrder(playerActions, game.getMap());
+
+        // clear action to be ready for next time
+        playerActions.clear();
+
+        return true;
+    }
+
+    protected void tryResolveAllMoveOrders(HashMap<Player, Action> playerActions, RISKMap map) {
+        ArrayList<MoveOrder> allMoveOrders = new ArrayList<>();
+        for (Action action : playerActions.values()) {
+            allMoveOrders.addAll(action.getMoveOrders());
+        }
+
+        for (MoveOrder moveOrder : allMoveOrders) {
+            moveOrder.execute(map);
+        }
+    }
+
+    protected void tryResolveAllAttackOrders(HashMap<Player, Action> playerActions, Game game) {
+        CombatResolver combatResolver = new CombatResolver();
+        ArrayList<AttackOrder> allAttackOrders = new ArrayList<>();
+
+        // merge attackorders for each player first, then all them to allAttackOrders
+        for (Map.Entry<Player, Action> entry : playerActions.entrySet()) {
+            List<AttackOrder> playerMergeOrders = combatResolver
+                    .mergeOrderByTerriForOnePlayer(entry.getValue().getAttackOrders());
+            allAttackOrders.addAll(playerMergeOrders);
+        }
+
+        // execute first
+        for (AttackOrder attackOrder : allAttackOrders) {
+            attackOrder.execute(game.getMap());
+        }
+
+        // then combat
+        Map<String, List<AttackOrder>> attackOrderByTerris = combatResolver.mergeOrderByTerritory(allAttackOrders);
+        combatResolver.resolveAttackOrder(attackOrderByTerris, game);
+    }
+
+    protected void tryResolveAllResearchOrder(HashMap<Player, Action> playerActions, RISKMap map) {
+        for (Action action : playerActions.values()) {
+            if (action.getResearchOrder() != null) {
+                action.getResearchOrder().execute(map);
+            }
+        }
+    }
+
+    protected void tryResolveAllUpgradeOrder(HashMap<Player, Action> playerActions, RISKMap map) {
+        ArrayList<UpgradeOrder> allUpgradeOrders = new ArrayList<>();
+        for (Action action : playerActions.values()) {
+            allUpgradeOrders.addAll(action.getUpgradeOrders());
+        }
+
+        for (UpgradeOrder upgradeOrder : allUpgradeOrders) {
+            upgradeOrder.execute(map);
+        }
+    }
+
+    // TODO: move all of these to a new file
+    protected String checkActions(Action action) {
+        ArrayList<MoveOrder> moveOrders = action.getMoveOrders();
+        ArrayList<AttackOrder> attackOrders = action.getAttackOrders();
+        ResearchOrder researchOrder = action.getResearchOrder();
+        ArrayList<UpgradeOrder> upgradeOrders = action.getUpgradeOrders();
+
+        // TODO: make them as private fields of gamecontroller maybe
+        OrderRuleChecker moveOrderChecker = new MoveOwnershipRuleChecker(
+                new MovePathWithSameOwnerRuleChecker(new MoveResourceChecker(null)));
+        OrderRuleChecker attackOrderChecker = new AttackOwnershipRuleChecker(
+                new AttackAdjacentRuleChecker(new AttackResourceChecker(null)));
+        ResearchOrderRuleChecker researchOrderRuleChecker = new ResearchEnoughResourceRuleChecker(
+                new ResearchLevelBoundRuleChecker(null));
+        UpgradeOrderRuleChecker upgradeOrderRuleChecker = new UpgradeEnoughResourceRuleChecker(
+                new UpgradeLevelBoundRuleChecker(new UpgradeBackwardRuleChecker(null)));
+
+        // check move orders valid
+        String message = checkMoveValid(moveOrders, moveOrderChecker);
+        if (message != null) {
+            return message;
+        }
+
+        // check attack orders valid
+        message = checkAttackValid(attackOrders, attackOrderChecker);
+        if (message != null) {
+            return message;
+        }
+
+        // check research order valid
+        message = checkResearchValid(researchOrder, researchOrderRuleChecker);
+        if (message != null) {
+            return message;
+        }
+
+        // check upgrade orders valid
+        message = checkUpgradeValid(upgradeOrders, upgradeOrderRuleChecker);
+
+        return message;
+    }
+
+    /**
+     * Check whether move orders are valid.
+     * 
+     * @param moveOrders
+     * @param moveOrderChecker
+     * @return
+     */
+    protected String checkMoveValid(ArrayList<MoveOrder> moveOrders, OrderRuleChecker moveOrderChecker) {
+        String message = null;
+        for (MoveOrder moveOrder : moveOrders) {
+            message = moveOrderChecker.checkOrder(moveOrder, game.getMap());
+            if (message != null) {
+                return message;
+            }
+        }
+        return message;
+    }
+
+    /**
+     * Check whether attack orders are valid.
+     * 
+     * @param attackOrders
+     * @param attOrderRuleChecker
+     * @return
+     */
+    protected String checkAttackValid(ArrayList<AttackOrder> attackOrders, OrderRuleChecker attackOrderRuleChecker) {
+        String message = null;
+        for (AttackOrder attackOrder : attackOrders) {
+            message = attackOrderRuleChecker.checkOrder(attackOrder, game.getMap());
+            if (message != null) {
+                return message;
+            }
+        }
+        return message;
+    }
+
+    protected String checkResearchValid(ResearchOrder researchOrder,
+            ResearchOrderRuleChecker researchOrderRuleChecker) {
+        String message = null;
+        if (researchOrder != null) {
+            message = researchOrderRuleChecker.checkOrder(researchOrder);
+        }
+        return message;
+    }
+
+    protected String checkUpgradeValid(ArrayList<UpgradeOrder> upgradeOrders,
+            UpgradeOrderRuleChecker upgradeOrderRuleChecker) {
+        String message = null;
+        for (UpgradeOrder upgradeOrder : upgradeOrders) {
+            message = upgradeOrderRuleChecker.checkOrder(upgradeOrder);
+            if (message != null) {
+                return message;
+            }
+        }
+        return message;
+    }
+
+    public synchronized String checkGameWin() {
+        //
+        HashMap<String, Boolean> playerStatus = getPlayerWinLoseStatus(players);
+        for (String name : playerStatus.keySet()) {
+            // there is a winner
+            if (playerStatus.get(name) != null && playerStatus.get(name) == true) {
+                status = GameStatus.ENDED;
+                return name;
+            }
+        }
+        return null;
+    }
+
+    public synchronized boolean checkUserLose(User user){
+        HashMap<String, Boolean> playerStatus = getPlayerWinLoseStatus(players);
+        Player player = userToPlayerMap.get(user);
+        if(playerStatus.get(player.getName())==null){
+            return false;
+        }
+        return true;
+    }
+
+    protected HashMap<String, Boolean> getPlayerWinLoseStatus(ArrayList<Player> players){
+        HashMap<String, Boolean> playerStatus = new HashMap<>();
+        for (Player player : players) {
+            if (player.getTerritories().size() == 0) {
+                playerStatus.put(player.getName(), false);
+            } else if (player.getTerritories().size() == 24) {
+                playerStatus.put(player.getName(), true);
+            } else {
+                playerStatus.put(player.getName(), null);
+            }
+        }
+        return playerStatus;
+    }
 
     @Override
     public boolean equals(Object object) {

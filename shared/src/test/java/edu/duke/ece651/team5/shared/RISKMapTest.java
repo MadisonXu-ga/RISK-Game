@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.shared;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -101,6 +102,11 @@ public class RISKMapTest {
         List<Territory> res2 = new ArrayList<>(Arrays.asList(map.getTerritoryById(2)));
         List<Territory> neighbors2 = map.getNeighbors(1, false, new Player("Player 1"));
         assertEquals(res2, neighbors2);
+    }
+
+    @Test
+    public void testGetDeepCopy() throws IOException, ClassNotFoundException {
+        RISKMap deepCopy = map.getDeepCopy();
     }
 }
 

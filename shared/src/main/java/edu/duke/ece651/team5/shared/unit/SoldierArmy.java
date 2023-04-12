@@ -1,10 +1,11 @@
 package edu.duke.ece651.team5.shared.unit;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static edu.duke.ece651.team5.shared.constant.Constants.DEFAULT_INIT_SOLDIER_NUM;
 
-public class SoldierArmy {
+public class SoldierArmy implements Serializable {
     private Map<Soldier, Integer> soldiers = new HashMap<>();
     public SoldierArmy() {
         addSoldier(new Soldier(SoldierLevel.INFANTRY), DEFAULT_INIT_SOLDIER_NUM);

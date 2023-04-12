@@ -115,6 +115,12 @@ public class Client {
     return msg;
   }
 
+  public String receiveColor() throws ClassNotFoundException, IOException {
+
+    String color = (String) playerConnection.readData();
+    return color;
+  }
+
   public String beginNewGame() throws IOException, ClassNotFoundException {
 
     playerConnection.writeData("New game");

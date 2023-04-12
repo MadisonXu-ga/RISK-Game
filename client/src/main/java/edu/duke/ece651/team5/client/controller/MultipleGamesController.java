@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 public class MultipleGamesController extends GoBackController {
 
@@ -28,6 +29,9 @@ public class MultipleGamesController extends GoBackController {
     public Button beginNewGame;
     @FXML
     Button joinOtherGames;
+
+    @FXML
+    Text player1;
 
     public Button[] gameButtons;
     public Client client;
@@ -57,6 +61,12 @@ public class MultipleGamesController extends GoBackController {
     // multipleGamesController.refresh();
 
     // }
+
+    public void setName(String color) {
+
+        player1.setText("You are color:" + color);
+
+    }
 
     public void refresh() throws ClassNotFoundException, IOException {
 
@@ -138,21 +148,27 @@ public class MultipleGamesController extends GoBackController {
         URL xmlResource = getClass().getResource("/waiting-room.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
+        MultipleGamesController multipleGamesController = new MultipleGamesController(client);
         HashMap<Class<?>, Object> controllers = new HashMap<>();
         // controllers.put(GoBackController.class, new GoBackController());
         controllers.put(JoinableGamesController.class, new JoinableGamesController(client));
-        controllers.put(MultipleGamesController.class, new MultipleGamesController(client));
+        controllers.put(MultipleGamesController.class, multipleGamesController);
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });
 
         BorderPane bp = loader.load();
+
         Scene scene = new Scene(new StackPane(bp));
         App.addScenetoMain("waitin-room", scene);
 
+        String color = client.receiveColor();
+        multipleGamesController.setName(color);
         App.getPrimaryStage().setScene(scene);
+
         // Game game = client.getGame();
         System.out.println("we received a game!");
+
     }
 
     public void seeJoinableGames(ArrayList<Integer> gameIDs) throws IOException, ClassNotFoundException {

@@ -57,19 +57,23 @@ public class JoinableGamesController extends GoBackController {
         }
     }
 
-    public void goToWaitingScreen() throws IOException, ClassNotFoundException {
+    public void goToWaitingScreen(String color) throws IOException, ClassNotFoundException {
         URL xmlResource = getClass().getResource("/waiting-room.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
+
+        MultipleGamesController multipleGamesController = new MultipleGamesController(client);
         // controllers.put(GoBackController.class, new GoBackController());
         controllers.put(JoinableGamesController.class, new JoinableGamesController(client));
-        controllers.put(MultipleGamesController.class, new MultipleGamesController(client));
+        controllers.put(MultipleGamesController.class, multipleGamesController);
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
         });
 
         BorderPane bp = loader.load();
+        multipleGamesController.setName(color);
+
         Scene scene = new Scene(new StackPane(bp));
         App.addScenetoMain("waitin-room", scene);
 
@@ -99,10 +103,14 @@ public class JoinableGamesController extends GoBackController {
             String msg = client.joinNewGame(gameID);
 
             if (msg.equals("Joined Success")) {
+
                 MultipleGamesController multipleGamesController = (MultipleGamesController) App
                         .loadController("multiple-games");
+
+                String color = client.receiveColor();
+                goToWaitingScreen(color);
                 multipleGamesController.refresh();
-                goToWaitingScreen();
+
                 // Game game = client.getGame();
 
                 System.out.println("we received a game!" + gameID);

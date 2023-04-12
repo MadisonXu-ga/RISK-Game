@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.shared.game.Game;
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.Territory;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
@@ -23,6 +26,7 @@ public class MapController extends GoBackController {
     AnchorPane rightSideScreen;
 
     public Client client;
+    public Game game;
 
     public Button[] gameButtons;
     public HashMap<String, Button> buttonsHashmap;
@@ -34,6 +38,13 @@ public class MapController extends GoBackController {
     public MapController(Client client) {
 
         this.client = client;
+        this.game = null;
+    }
+
+    public MapController(Client client, Game game) {
+
+        this.client = client;
+        this.game = game;
     }
 
     @FXML
@@ -157,6 +168,37 @@ public class MapController extends GoBackController {
         popup.show(btn.getScene().getWindow(), x, y);
 
         btn.setOnMouseExited(mouseEvent -> popup.hide());
+    }
+
+    // protected void colorTerritoriesbyOwner() {
+    // if (game != null) {
+    // for (Player playerx : game.getPlayers()) {
+    // for (Territory territory : playerx.getTerritories()) {
+
+    // Button matchingButton = getMatchingGameButton(territory.getName());
+    // if (matchingButton != null) {
+    // // System.out.println("color: [" + client.getColor() + "]");
+    // assignButtonToPlayer(matchingButton, playerx.getName());
+    // // matchingButton.setStyle("-fx-background-color: red;");
+    // }
+    // }
+    // }
+    // }
+    // }
+    protected void colorTerritoriesbyOwner() {
+        if (game != null) {
+            for (Player playerx : game.getPlayers()) {
+                for (Territory territory : playerx.getTerritories()) {
+
+                    Button matchingButton = getMatchingGameButton(territory.getName());
+                    if (matchingButton != null) {
+                        // System.out.println("color: [" + client.getColor() + "]");
+                        assignButtonToPlayer(matchingButton, playerx.getName());
+                        // matchingButton.setStyle("-fx-background-color: red;");
+                    }
+                }
+            }
+        }
     }
 
 }

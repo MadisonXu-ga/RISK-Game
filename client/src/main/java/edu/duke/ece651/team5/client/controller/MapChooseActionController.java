@@ -19,11 +19,11 @@ import javafx.scene.control.ComboBox;
 
 public class MapChooseActionController extends MapController {
 
-    Game game;
+    // Game game;
 
     public MapChooseActionController(Client client, Game game) {
-        super(client);
-        this.game = game;
+        super(client, game);
+        // this.game = game;
     }
 
     ArrayList<AttackOrder> attackOrders;
@@ -38,21 +38,6 @@ public class MapChooseActionController extends MapController {
     public void initialize() {
         super.initialize();
         colorTerritoriesbyOwner();
-    }
-
-    private void colorTerritoriesbyOwner() {
-
-        for (Player playerx : game.getPlayers()) {
-            for (Territory territory : playerx.getTerritories()) {
-
-                Button matchingButton = getMatchingGameButton(territory.getName());
-                if (matchingButton != null) {
-                    // System.out.println("color: [" + client.getColor() + "]");
-                    assignButtonToPlayer(matchingButton, playerx.getName());
-                    // matchingButton.setStyle("-fx-background-color: red;");
-                }
-            }
-        }
     }
 
     // public void onSubmitMove() {

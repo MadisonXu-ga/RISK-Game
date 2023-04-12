@@ -61,7 +61,7 @@ public class MapPlacementTerritory extends MapController {
         System.out.println("Avaialable: " + availableUnits);
         availableUnitTxt.setText(availableUnits.toString());
 
-        colorTerritoriesbyOwner();
+        colorTerritoriesYouOwn();
         int terrIdx = 0;
         for (Node node : rightSideScreen.getChildren()) {
 
@@ -70,7 +70,7 @@ public class MapPlacementTerritory extends MapController {
                 Spinner<Integer> textField = (Spinner<Integer>) node;
                 Integer amountTerritories = game.getPlayerByName(client.getColor()).getTerritories().size();
                 SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1,
-                        availableUnits - amountTerritories - 1,
+                        availableUnits - amountTerritories + 1,
                         0);
                 textField.setValueFactory(valueFactory);
                 if (terrIdx <= ownedTerritories.size()) {
@@ -108,7 +108,7 @@ public class MapPlacementTerritory extends MapController {
                 .println("textFields size: " + territoryFields.size() + ", textp[] size: " + territoryNamesText.size());
     }
 
-    private void colorTerritoriesbyOwner() {
+    private void colorTerritoriesYouOwn() {
         for (Territory territory : game.getPlayerByName(client.getColor()).getTerritories()) {
             ownedTerritories.add(territory);
             Button matchingButton = getMatchingGameButton(territory.getName());

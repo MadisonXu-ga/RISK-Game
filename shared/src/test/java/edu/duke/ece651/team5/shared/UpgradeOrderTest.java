@@ -50,7 +50,7 @@ public class UpgradeOrderTest {
         SoldierArmy soldierArmy = t.getSoldierArmy();
         assertEquals(5, resourceCount);
 
-        assertEquals(1, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+        assertEquals(0, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
         assertEquals(1, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.CAVALRY)));
         assertEquals(2, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.ARTILLERY)));
 

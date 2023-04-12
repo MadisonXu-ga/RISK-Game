@@ -42,9 +42,9 @@ public class MoveOrderTest {
         territory1 = map.getTerritoryByName("Territory 1");
         territory4 = map.getTerritoryByName("Territory 4");
         SoldierArmy soldierArmy = territory1.getSoldierArmy();
-        soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 3);  // total 4
+        soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 3);  // total 3
         SoldierArmy toMove = new SoldierArmy();
-        toMove.addSoldier(new Soldier(SoldierLevel.INFANTRY), 2);  // total 3
+        toMove.addSoldier(new Soldier(SoldierLevel.INFANTRY), 2);  // total 2
 
         move = new MoveOrder("Territory 1", "Territory 4", toMove, territory1.getOwner());
     }
@@ -53,7 +53,7 @@ public class MoveOrderTest {
     public void execute() {
         move.execute(map);
         assertEquals(1, territory1.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
-        assertEquals(4, territory4.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+        assertEquals(2, territory4.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
     }
 
 }

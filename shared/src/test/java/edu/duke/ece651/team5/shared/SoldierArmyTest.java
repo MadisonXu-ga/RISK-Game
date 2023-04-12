@@ -11,6 +11,7 @@ import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 import static edu.duke.ece651.team5.shared.constant.Constants.DEFAULT_INIT_SOLDIER_NUM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
@@ -33,7 +34,7 @@ public class SoldierArmyTest {
         int count = 5;
         army.addSoldier(soldier, count);
 
-        assertEquals(count + DEFAULT_INIT_SOLDIER_NUM, army.getSoldierCount(soldier));
+        assertEquals(count, army.getSoldierCount(soldier));
     }
 
     @Test
@@ -43,10 +44,10 @@ public class SoldierArmyTest {
         army.addSoldier(soldier, count);
 
         army.removeSoldier(soldier, 3);
-        assertEquals(count + DEFAULT_INIT_SOLDIER_NUM - 3, army.getSoldierCount(soldier));
+        assertEquals(count - 3, army.getSoldierCount(soldier));
 
-        army.removeSoldier(soldier, 5);
-        assertFalse(army.getAllSoldiers().containsKey(soldier));
+        assertThrows(IllegalArgumentException.class, ()->army.removeSoldier(soldier, 5));
+        
     }
 
     @Test
@@ -77,8 +78,11 @@ public class SoldierArmyTest {
         Map<Soldier, Integer> allSoldiers = army.getAllSoldiers();
 
         assertTrue(allSoldiers.containsKey(soldier));
-        assertEquals(count + DEFAULT_INIT_SOLDIER_NUM, allSoldiers.get(soldier));
-        assertEquals(Collections.singletonMap(soldier, count + DEFAULT_INIT_SOLDIER_NUM), allSoldiers);
+        assertEquals(count, allSoldiers.get(soldier));
+
+        SoldierArmy expected = new SoldierArmy();
+        expected.addSoldier(soldier, 5);
+        assertEquals(expected.getAllSoldiers(), allSoldiers);
     }
 
 
@@ -97,7 +101,7 @@ public class SoldierArmyTest {
 
         assertEquals(initialCount - upgradeCount, army.getSoldierCount(infantry));
         assertEquals(upgradeCount, army.getSoldierCount(new Soldier(targetLevel)));
-        assertEquals(6, army.getTotalCountSolider());
+        assertEquals(5, army.getTotalCountSolider());
     }
 
 }

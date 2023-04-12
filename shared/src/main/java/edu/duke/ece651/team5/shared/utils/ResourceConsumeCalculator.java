@@ -34,7 +34,7 @@ public class ResourceConsumeCalculator {
     }
 
     /**
-     * To compute the food consume for move order
+     * To compute the food consume for attack order
      * @param attackOrder attack order
      * @param map the map
      * @return the food consume

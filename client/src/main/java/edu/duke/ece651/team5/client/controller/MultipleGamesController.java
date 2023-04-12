@@ -195,6 +195,12 @@ public class MultipleGamesController extends GoBackController {
                 // client.getGame();
                 Game game = client.getGame();
                 client.getGameConfirmation();
+                // App.loadScenefromMain("multiple-games");
+                // MultipleGamesController multipleGamesController = (MultipleGamesController)
+                // App
+                // .loadController("multiple-games");
+                // multipleGamesController.refresh();
+
                 game.setGameID(gameID.toString());
                 goToPlacement(game);
 

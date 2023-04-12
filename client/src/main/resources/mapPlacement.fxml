@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -65,78 +65,93 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Text layoutX="30.0" layoutY="180.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Text fx:id="unitsPlacedText" fill="RED" layoutX="723.0" layoutY="94.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="432.8032684326172">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="94.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="avaialable units:" wrappingWidth="272.00328063964844">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="24.0" />
+               </font>
+            </Text>
+            <Text fx:id="availableUnitTxt" layoutX="630.0" layoutY="94.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="60.00328063964844">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="24.0" />
+               </font>
+            </Text>
+            <Text layoutX="30.0" layoutY="209.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="176.0" layoutY="161.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="31.0" layoutY="221.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner layoutX="175.0" layoutY="189.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="239.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="177.0" layoutY="202.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="31.0" layoutY="264.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner layoutX="175.0" layoutY="219.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="272.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="177.0" layoutY="245.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="32.0" layoutY="305.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="252.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="302.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="178.0" layoutY="286.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="32.0" layoutY="341.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="282.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="333.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="178.0" layoutY="322.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="33.0" layoutY="382.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="313.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="363.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="179.0" layoutY="363.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="33.0" layoutY="425.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="343.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="396.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="179.0" layoutY="406.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="34.0" layoutY="466.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="376.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="426.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="180.0" layoutY="447.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="34.0" layoutY="507.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="406.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="458.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="180.0" layoutY="488.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="35.0" layoutY="548.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="438.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="488.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="181.0" layoutY="529.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="35.0" layoutY="591.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="468.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="521.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="181.0" layoutY="572.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
-            <Text layoutX="36.0" layoutY="632.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
+            <Spinner editable="true" layoutX="175.0" layoutY="501.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Text layoutX="30.0" layoutY="551.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <TextField layoutX="182.0" layoutY="613.0" prefHeight="21.0" prefWidth="44.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Spinner editable="true" layoutX="175.0" layoutY="531.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
          </children>
       </AnchorPane>
    </bottom>

@@ -4,21 +4,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.shared.constant.Constants;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class MapPlacementTerritory extends MapController {
 
     private Game game;
+    private Integer availableUnits;
+    @FXML
+    Text availableUnitTxt;
+    @FXML
+    Text unitsPlacedText;
 
     public MapPlacementTerritory(Client client, Game game) {
         super(client);
@@ -27,15 +40,19 @@ public class MapPlacementTerritory extends MapController {
     }
 
     public ArrayList<Text> territoryNamesText;
-    public ArrayList<TextField> territoryFields;
+    public ArrayList<Spinner<Integer>> territoryFields;
     public ArrayList<Territory> ownedTerritories;
 
     @FXML
     public void initialize() {
         super.initialize();
+
         territoryNamesText = new ArrayList<>();
         territoryFields = new ArrayList<>();
         ownedTerritories = new ArrayList<>();
+        availableUnits = Constants.AVAILABLE_UNIT;
+        System.out.println("Avaialable: " + availableUnits);
+        availableUnitTxt.setText(availableUnits.toString());
 
         for (Territory territory : game.getPlayerByName(client.getColor()).getTerritories()) {
             ownedTerritories.add(territory);
@@ -49,8 +66,14 @@ public class MapPlacementTerritory extends MapController {
         int terrIdx = 0;
         for (Node node : rightSideScreen.getChildren()) {
 
-            if (node instanceof TextField) {
-                TextField textField = (TextField) node;
+            if (node instanceof Spinner) {
+
+                Spinner<Integer> textField = (Spinner<Integer>) node;
+                Integer amountTerritories = game.getPlayerByName(client.getColor()).getTerritories().size();
+                SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,
+                        availableUnits - amountTerritories,
+                        0);
+                textField.setValueFactory(valueFactory);
                 if (terrIdx <= ownedTerritories.size()) {
                     territoryFields.add(textField);
                 }
@@ -90,23 +113,26 @@ public class MapPlacementTerritory extends MapController {
 
         HashMap<String, Integer> placementOrders = new HashMap<>();
 
+        Integer sum = addFields();
         for (int i = 0; i < territoryFields.size(); i++) {
 
             String territoString = territoryNamesText.get(i).getText();
-            Integer unitsAmount;
-            try {
-                unitsAmount = Integer.parseInt(territoryFields.get(i).getText());
+            Integer unitsAmount = territoryFields.get(i).getValue();
 
-            } catch (NumberFormatException e) {
-                unitsAmount = null;
-                break;
-            }
-            if (unitsAmount >= 0) {
+            if (unitsAmount > 0) {
                 placementOrders.put(territoString, unitsAmount);
             }
         }
+        if (sum != 50) {
+            // System.out.println("The sum is: " + sum);
+            unitsPlacedText.setText("the amount of units adds up to " + sum.toString() + ". Use 50");
+        }
 
-        resetFields();
+        if (sum == 50) {
+
+            unitsPlacedText.setText("");
+
+        }
 
         if (territoryFields.size() == placementOrders.size()) {
             System.out.println(placementOrders);
@@ -116,10 +142,21 @@ public class MapPlacementTerritory extends MapController {
 
     public void resetFields() {
 
-        for (TextField field : territoryFields) {
-            field.setText("");
+        for (Spinner<Integer> field : territoryFields) {
+            field.getValueFactory().setValue(0);
 
         }
+    }
+
+    public Integer addFields() {
+        Integer sum = 0;
+        for (Spinner<Integer> field : territoryFields) {
+
+            sum += field.getValue();
+        }
+
+        return sum;
+
     }
 
 }

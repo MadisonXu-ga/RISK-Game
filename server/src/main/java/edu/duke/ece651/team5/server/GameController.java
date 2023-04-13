@@ -324,9 +324,11 @@ public class GameController {
         }
 
         ActionResolver actionResolver = new ActionResolver();
+        // resolve 
         actionResolver.tryResolveAllMoveOrders(playerActions, game.getMap());
         actionResolver.tryResolveAllAttackOrders(playerActions, game);
         actionResolver.tryResolveAllUpgradeOrder(playerActions, game.getMap());
+        
         // resolve research last to ensure not affect others
         actionResolver.tryResolveAllResearchOrder(playerActions, game.getMap());
 

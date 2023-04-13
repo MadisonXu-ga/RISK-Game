@@ -2,11 +2,11 @@ package edu.duke.ece651.team5.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.duke.ece651.team5.shared.Action;
-import edu.duke.ece651.team5.shared.game.CombatResolver;
-import edu.duke.ece651.team5.shared.game.RISKMap;
+import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.order.*;
 import edu.duke.ece651.team5.shared.rulechecker.*;
 
@@ -16,6 +16,7 @@ public class ActionChecker {
     private ResearchOrderRuleChecker researchOrderRuleChecker;
     private UpgradeOrderRuleChecker upgradeOrderRuleChecker;
     private RISKMap deepCopyMap;
+    private HashMap<Player, Player> playerToDeepCopyPlayer;
 
     public ActionChecker(RISKMap map) throws ClassNotFoundException, IOException{
         this.moveOrderChecker = new MoveOwnershipRuleChecker(
@@ -28,9 +29,10 @@ public class ActionChecker {
             new UpgradeLevelBoundRuleChecker(new UpgradeBackwardRuleChecker(null)));
 
         this.deepCopyMap = map.getDeepCopy();
+        this.playerToDeepCopyPlayer = new HashMap<>();
     }
 
-    public String checkActions(Action action) {
+    public String checkActions(Action action) throws ClassNotFoundException, IOException {
         ArrayList<MoveOrder> moveOrders = action.getMoveOrders();
         ArrayList<AttackOrder> attackOrders = action.getAttackOrders();
         ResearchOrder researchOrder = action.getResearchOrder();
@@ -48,14 +50,14 @@ public class ActionChecker {
             return message;
         }
 
-        // check research order valid
-        message = checkResearchValid(researchOrder, researchOrderRuleChecker);
+        // check upgrade orders valid
+        message = checkUpgradeValid(upgradeOrders, upgradeOrderRuleChecker, deepCopyMap);
         if (message != null) {
             return message;
         }
 
-        // check upgrade orders valid
-        message = checkUpgradeValid(upgradeOrders, upgradeOrderRuleChecker, deepCopyMap);
+        // check research order valid
+        message = checkResearchValid(researchOrder, researchOrderRuleChecker);
 
         return message;
     }
@@ -66,16 +68,22 @@ public class ActionChecker {
      * @param moveOrders
      * @param moveOrderChecker
      * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
-    public String checkMoveValid(ArrayList<MoveOrder> moveOrders, OrderRuleChecker moveOrderChecker, RISKMap map) {
+    public String checkMoveValid(ArrayList<MoveOrder> moveOrders, OrderRuleChecker moveOrderChecker, RISKMap map) throws ClassNotFoundException, IOException {
         String message = null;
         for (MoveOrder moveOrder : moveOrders) {
             message = moveOrderChecker.checkOrder(moveOrder, map);
             if (message != null) {
                 return message;
             }
-            // TODO: need deep copy for player
-            // moveOrder.execute(map);
+            // make deep copy of player
+            Player targetRealPlayer = moveOrder.getPlayer();
+            if(!playerToDeepCopyPlayer.containsKey(targetRealPlayer)){
+                playerToDeepCopyPlayer.put(targetRealPlayer, targetRealPlayer.getDeepCopy());
+            }
+            moveOrder.execute(map, playerToDeepCopyPlayer.get(targetRealPlayer));
         }
         return message;
     }
@@ -86,8 +94,10 @@ public class ActionChecker {
      * @param attackOrders
      * @param attOrderRuleChecker
      * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
-    public String checkAttackValid(ArrayList<AttackOrder> attackOrders, OrderRuleChecker attackOrderRuleChecker, RISKMap map) {
+    public String checkAttackValid(ArrayList<AttackOrder> attackOrders, OrderRuleChecker attackOrderRuleChecker, RISKMap map) throws ClassNotFoundException, IOException {
         String message = null;
         
         for (AttackOrder attackOrder : attackOrders) {
@@ -96,7 +106,11 @@ public class ActionChecker {
                 return message;
             }
             // TODO: need deep copy for player
-            // attackOrder.execute(map);
+            Player targetRealPlayer = attackOrder.getPlayer();
+            if(!playerToDeepCopyPlayer.containsKey(targetRealPlayer)){
+                playerToDeepCopyPlayer.put(targetRealPlayer, targetRealPlayer.getDeepCopy());
+            }
+            attackOrder.execute(map, playerToDeepCopyPlayer.get(targetRealPlayer));
         }
         return message;
     }
@@ -111,7 +125,7 @@ public class ActionChecker {
     }
 
     public String checkUpgradeValid(ArrayList<UpgradeOrder> upgradeOrders,
-            UpgradeOrderRuleChecker upgradeOrderRuleChecker, RISKMap map) {
+            UpgradeOrderRuleChecker upgradeOrderRuleChecker, RISKMap map) throws ClassNotFoundException, IOException {
         String message = null;
         for (UpgradeOrder upgradeOrder : upgradeOrders) {
             message = upgradeOrderRuleChecker.checkOrder(upgradeOrder);
@@ -119,7 +133,11 @@ public class ActionChecker {
                 return message;
             }
             // TODO: need deep copy for player
-            // upgradeOrder.execute(map);
+            Player targetRealPlayer = upgradeOrder.getPlayer();
+            if(!playerToDeepCopyPlayer.containsKey(targetRealPlayer)){
+                playerToDeepCopyPlayer.put(targetRealPlayer, targetRealPlayer.getDeepCopy());
+            }
+            upgradeOrder.execute(map, playerToDeepCopyPlayer.get(targetRealPlayer));
         }
         return message;
     }

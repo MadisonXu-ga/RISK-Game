@@ -51,4 +51,11 @@ public class ResearchOrder implements Order, Serializable {
                 researchConsumeCost.get(currTechnologyLevel));
         this.game.getPlayer(player).upgradeTechnologyLevel();
     }
+
+    public void execute(RISKMap map, Player targetPlayer) {
+        int currTechnologyLevel = targetPlayer.getCurrTechnologyLevel();
+        targetPlayer.consumeResource(new Resource(ResourceType.TECHNOLOGY),
+                researchConsumeCost.get(currTechnologyLevel));
+        targetPlayer.upgradeTechnologyLevel();
+    }
 }

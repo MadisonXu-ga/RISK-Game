@@ -412,6 +412,8 @@ public class UserHandler implements Runnable {
             // tell success
             playerConnection.writeData("Order succeeded");
 
+            // TODO: one way is to resolve bothe null and true user's action, but need
+            // client to submit automatically an empty action
             boolean receiveAll = gameController.tryResolveAllOrders();
             System.out.println("Resolved user " + currentUser.getUserName() + " orders");
             if (receiveAll) {
@@ -462,32 +464,6 @@ public class UserHandler implements Runnable {
                         }
                     }
                 }
-
-                // // check game win or not
-                // String winerName = gameController.checkGameWin();
-                // // if win, send winner name and end this game
-                // if (winerName != null) {
-                // playerConnection.writeData(winerName);
-                // return;
-                // }
-
-                // // no one win until now
-                // playerConnection.writeData("No winner");
-
-                // // check user lose or not
-                // // lost
-                // if (gameController.checkUserLose(currentUser)) {
-                // playerConnection.writeData("You lost");
-                // String lostChoice = (String) playerConnection.readData();
-                // if (lostChoice.equals("Disconnect")) {
-                // gameController.setUserActiveStatus(currentUser, false);
-                // } else if (lostChoice.equals("Display")) {
-                // gameController.setUserActiveStatus(currentUser, null);
-                // }
-                // return;
-                // }
-
-                // playerConnection.writeData("Not lost");
             }
 
         } catch (ClassNotFoundException | IOException e) {

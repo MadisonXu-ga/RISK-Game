@@ -318,7 +318,7 @@ public class GameController {
     public synchronized boolean tryResolveAllOrders() {
         int activeUserNum = 0;
         for (Boolean isActive : userActiveStatus.values()) {
-            if (isActive != null && isActive == true) {
+            if (isActive == null || isActive == true) {
                 ++activeUserNum;
             }
         }
@@ -328,9 +328,11 @@ public class GameController {
         }
 
         ActionResolver actionResolver = new ActionResolver();
+        // resolve 
         actionResolver.tryResolveAllMoveOrders(playerActions, game.getMap());
         actionResolver.tryResolveAllAttackOrders(playerActions, game);
         actionResolver.tryResolveAllUpgradeOrder(playerActions, game.getMap());
+        
         // resolve research last to ensure not affect others
         actionResolver.tryResolveAllResearchOrder(playerActions, game.getMap());
 
@@ -340,8 +342,10 @@ public class GameController {
         return true;
     }
 
-    // TODO: move all of these to a new file
-
+    /**
+     * 
+     * @return
+     */
     public synchronized String checkGameWin() {
         //
         HashMap<String, Boolean> playerStatus = getPlayerWinLoseStatus(players);

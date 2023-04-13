@@ -2,6 +2,7 @@ package edu.duke.ece651.team5.shared.game;
 
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,7 +125,7 @@ public class CombatResolver {
     }
     
     
-   /**
+    /**
     * remove previous owner and set new owner and remain amount of soldier to the territory
     * @param winner winner for this turn
     * @param fightingTerri territory being fight on
@@ -137,8 +138,9 @@ public class CombatResolver {
         targetTerri.setOwner(targetPlayer);
         System.out.println("new owner: " + fightingTerri.getOwner().getName());
         Map<Soldier, Integer> res = combatPlayers.convertToSoldier(winner);
+        targetTerri.setSoldierArmy(new SoldierArmy());
         for(Soldier soldier: res.keySet()){
-            targetTerri.getSoldierArmy().addSoldier(soldier, res.get(soldier));;
+            targetTerri.getSoldierArmy().addSoldier(soldier, res.get(soldier));
         }
         System.out.println("new unit: " + fightingTerri.getSoldierArmy().getAllSoldiers());
         targetPlayer.addTerritory(fightingTerri);

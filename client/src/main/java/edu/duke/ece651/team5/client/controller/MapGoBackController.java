@@ -117,7 +117,7 @@ public class MapGoBackController extends MapController {
                 .getResourceCount(new Resource(ResourceType.TECHNOLOGY));
         techAmnt.setText(techAmntInt.toString());
         Integer foodAmntInt = game.getPlayerByName(client.getColor())
-                .getResourceCount(new Resource(ResourceType.TECHNOLOGY));
+                .getResourceCount(new Resource(ResourceType.FOOD));
         foodAmnt.setText(foodAmntInt.toString());
 
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,

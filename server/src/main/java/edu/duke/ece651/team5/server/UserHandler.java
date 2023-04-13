@@ -414,17 +414,32 @@ public class UserHandler implements Runnable {
 
             // TODO: one way is to resolve bothe null and true user's action, but need
             // client to submit automatically an empty action
+            System.out.println("User color: " + gameController.getUserColor(currentUser)
+                    + " Before resolve player food resource: "
+                    + gameController.mapUserToPlayer(currentUser).getResourceCount(new Resource(ResourceType.FOOD)));
             boolean receiveAll = gameController.tryResolveAllOrders();
+            System.out.println("User color: " + gameController.getUserColor(currentUser)
+                    + "After resolve player food resource: "
+                    + gameController.mapUserToPlayer(currentUser).getResourceCount(new Resource(ResourceType.FOOD)));
+
             System.out.println("Resolved user " + currentUser.getUserName() + " orders");
             if (receiveAll) {
                 System.out.println("Received all players' ations");
                 // update unit and resource
                 Map<String, Territory> territories = gameController.getGame().getMap().getAllTerritories();
+                System.out.println("Last User color: " + gameController.getUserColor(currentUser)
+                        + " Before territory produce food resource: "
+                        + gameController.mapUserToPlayer(currentUser)
+                                .getResourceCount(new Resource(ResourceType.FOOD)));
                 for (Territory territory : territories.values()) {
                     territory.produceResource(new Resource(ResourceType.FOOD));
                     territory.produceResource(new Resource(ResourceType.TECHNOLOGY));
                     territory.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), 1);
                 }
+                System.out.println("Last User color: " + gameController.getUserColor(currentUser)
+                        + " After territory produce food resource: "
+                        + gameController.mapUserToPlayer(currentUser)
+                                .getResourceCount(new Resource(ResourceType.FOOD)));
 
                 // send map to all active users in this game
                 for (User user : userGameMap.getGameUsers(gameController)) {

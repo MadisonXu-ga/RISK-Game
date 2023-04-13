@@ -45,7 +45,7 @@ public class ActionResolver {
     public void tryResolveAllResearchOrder(HashMap<Player, Action> playerActions, RISKMap map) {
         System.out.println("tryResolveAllResearchOrder");
         for (Action action : playerActions.values()) {
-            System.out.println("Iterate Action: ");
+            System.out.println("Iterate ready to resolve research: ");
             if (action.getResearchOrder() != null) {
                 System.out.println("Research order is not null!!");
                 action.getResearchOrder().execute(map);

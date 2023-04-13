@@ -85,6 +85,10 @@ public class GameController {
         return userToPlayerMap.get(user).getName();
     }
 
+    public Player mapUserToPlayer(User user) {
+        return userToPlayerMap.get(user);
+    }
+
     /**
      * Create default players according to player num
      * 
@@ -328,11 +332,11 @@ public class GameController {
         }
 
         ActionResolver actionResolver = new ActionResolver();
-        // resolve 
+        // resolve
         actionResolver.tryResolveAllMoveOrders(playerActions, game.getMap());
         actionResolver.tryResolveAllAttackOrders(playerActions, game);
         actionResolver.tryResolveAllUpgradeOrder(playerActions, game.getMap());
-        
+
         // resolve research last to ensure not affect others
         actionResolver.tryResolveAllResearchOrder(playerActions, game.getMap());
 

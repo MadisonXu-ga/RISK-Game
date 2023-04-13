@@ -83,7 +83,7 @@ public class MapChooseActionController extends MapController {
                 .getResourceCount(new Resource(ResourceType.TECHNOLOGY));
         techAmnt.setText(techAmntInt.toString());
         Integer foodAmntInt = game.getPlayerByName(client.getColor())
-                .getResourceCount(new Resource(ResourceType.TECHNOLOGY));
+                .getResourceCount(new Resource(ResourceType.FOOD));
         foodAmnt.setText(foodAmntInt.toString());
 
     }
@@ -234,16 +234,25 @@ public class MapChooseActionController extends MapController {
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
+        System.out.println("Action results:" + ActionResults);
 
         if (!ActionResults.equals("Order succeeded")) {
             attackOrders = new ArrayList<>();
             moveOrders = new ArrayList<>();
             upgradeOrders = new ArrayList<>();
             researchOrder = null;
+
         }
 
         else {
+            Integer food1 = game.getPlayerByName(client.getColor())
+                    .getResourceCount(new Resource(ResourceType.FOOD));
+            System.out.println("Food before: " + food1.toString());
             game = client.updatedGameAfterTurn();
+            Integer food2 = game.getPlayerByName(client.getColor())
+                    .getResourceCount(new Resource(ResourceType.FOOD));
+            System.out.println("Food after: " + food2.toString());
+
             client.checkWin();
             client.checkLost();
             initialize();

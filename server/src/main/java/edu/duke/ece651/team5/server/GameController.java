@@ -288,7 +288,8 @@ public class GameController {
      */
     public synchronized String receiveActionFromUser(User user, Action action) {
         // check valid
-        String message = checkActions(action);
+        ActionChecker actionChecker = new ActionChecker();
+        String message = actionChecker.checkActions(action, game.getMap());
         if (message != null) {
             return message;
         }
@@ -298,7 +299,6 @@ public class GameController {
         playerActions.put(player, action);
 
         return null;
-        // return "Order succeeded";
     }
 
     /**
@@ -319,15 +319,12 @@ public class GameController {
             return false;
         }
 
-        // move
-        tryResolveAllMoveOrders(playerActions, game.getMap());
-        // attack
-        tryResolveAllAttackOrders(playerActions, game);
-        // upgrade
-        tryResolveAllUpgradeOrder(playerActions, game.getMap());
-
+        ActionResolver actionResolver = new ActionResolver();
+        actionResolver.tryResolveAllMoveOrders(playerActions, game.getMap());
+        actionResolver.tryResolveAllAttackOrders(playerActions, game);
+        actionResolver.tryResolveAllUpgradeOrder(playerActions, game.getMap());
         // resolve research last to ensure not affect others
-        tryResolveAllResearchOrder(playerActions, game.getMap());
+        actionResolver.tryResolveAllResearchOrder(playerActions, game.getMap());
 
         // clear action to be ready for next time
         playerActions.clear();
@@ -335,154 +332,8 @@ public class GameController {
         return true;
     }
 
-    protected void tryResolveAllMoveOrders(HashMap<Player, Action> playerActions, RISKMap map) {
-        ArrayList<MoveOrder> allMoveOrders = new ArrayList<>();
-        for (Action action : playerActions.values()) {
-            allMoveOrders.addAll(action.getMoveOrders());
-        }
-
-        for (MoveOrder moveOrder : allMoveOrders) {
-            moveOrder.execute(map);
-        }
-    }
-
-    protected void tryResolveAllAttackOrders(HashMap<Player, Action> playerActions, Game game) {
-        CombatResolver combatResolver = new CombatResolver();
-        ArrayList<AttackOrder> allAttackOrders = new ArrayList<>();
-
-        // merge attackorders for each player first, then all them to allAttackOrders
-        for (Map.Entry<Player, Action> entry : playerActions.entrySet()) {
-            List<AttackOrder> playerMergeOrders = combatResolver
-                    .mergeOrderByTerriForOnePlayer(entry.getValue().getAttackOrders());
-            allAttackOrders.addAll(playerMergeOrders);
-        }
-
-        // execute first
-        for (AttackOrder attackOrder : allAttackOrders) {
-            attackOrder.execute(game.getMap());
-        }
-
-        // then combat
-        Map<String, List<AttackOrder>> attackOrderByTerris = combatResolver.mergeOrderByTerritory(allAttackOrders);
-        combatResolver.resolveAttackOrder(attackOrderByTerris, game);
-    }
-
-    protected void tryResolveAllResearchOrder(HashMap<Player, Action> playerActions, RISKMap map) {
-        for (Action action : playerActions.values()) {
-            if (action.getResearchOrder() != null) {
-                action.getResearchOrder().execute(map);
-            }
-        }
-    }
-
-    protected void tryResolveAllUpgradeOrder(HashMap<Player, Action> playerActions, RISKMap map) {
-        ArrayList<UpgradeOrder> allUpgradeOrders = new ArrayList<>();
-        for (Action action : playerActions.values()) {
-            allUpgradeOrders.addAll(action.getUpgradeOrders());
-        }
-
-        for (UpgradeOrder upgradeOrder : allUpgradeOrders) {
-            upgradeOrder.execute(map);
-        }
-    }
-
     // TODO: move all of these to a new file
-    protected String checkActions(Action action) {
-        ArrayList<MoveOrder> moveOrders = action.getMoveOrders();
-        ArrayList<AttackOrder> attackOrders = action.getAttackOrders();
-        ResearchOrder researchOrder = action.getResearchOrder();
-        ArrayList<UpgradeOrder> upgradeOrders = action.getUpgradeOrders();
-
-        // TODO: make them as private fields of gamecontroller maybe
-        OrderRuleChecker moveOrderChecker = new MoveOwnershipRuleChecker(
-                new MovePathWithSameOwnerRuleChecker(new MoveResourceChecker(null)));
-        OrderRuleChecker attackOrderChecker = new AttackOwnershipRuleChecker(
-                new AttackAdjacentRuleChecker(new AttackResourceChecker(null)));
-        ResearchOrderRuleChecker researchOrderRuleChecker = new ResearchEnoughResourceRuleChecker(
-                new ResearchLevelBoundRuleChecker(null));
-        UpgradeOrderRuleChecker upgradeOrderRuleChecker = new UpgradeEnoughResourceRuleChecker(
-                new UpgradeLevelBoundRuleChecker(new UpgradeBackwardRuleChecker(null)));
-
-        // check move orders valid
-        String message = checkMoveValid(moveOrders, moveOrderChecker);
-        if (message != null) {
-            return message;
-        }
-
-        // check attack orders valid
-        message = checkAttackValid(attackOrders, attackOrderChecker);
-        if (message != null) {
-            return message;
-        }
-
-        // check research order valid
-        message = checkResearchValid(researchOrder, researchOrderRuleChecker);
-        if (message != null) {
-            return message;
-        }
-
-        // check upgrade orders valid
-        message = checkUpgradeValid(upgradeOrders, upgradeOrderRuleChecker);
-
-        return message;
-    }
-
-    /**
-     * Check whether move orders are valid.
-     * 
-     * @param moveOrders
-     * @param moveOrderChecker
-     * @return
-     */
-    protected String checkMoveValid(ArrayList<MoveOrder> moveOrders, OrderRuleChecker moveOrderChecker) {
-        String message = null;
-        for (MoveOrder moveOrder : moveOrders) {
-            message = moveOrderChecker.checkOrder(moveOrder, game.getMap());
-            if (message != null) {
-                return message;
-            }
-        }
-        return message;
-    }
-
-    /**
-     * Check whether attack orders are valid.
-     * 
-     * @param attackOrders
-     * @param attOrderRuleChecker
-     * @return
-     */
-    protected String checkAttackValid(ArrayList<AttackOrder> attackOrders, OrderRuleChecker attackOrderRuleChecker) {
-        String message = null;
-        for (AttackOrder attackOrder : attackOrders) {
-            message = attackOrderRuleChecker.checkOrder(attackOrder, game.getMap());
-            if (message != null) {
-                return message;
-            }
-        }
-        return message;
-    }
-
-    protected String checkResearchValid(ResearchOrder researchOrder,
-            ResearchOrderRuleChecker researchOrderRuleChecker) {
-        String message = null;
-        if (researchOrder != null) {
-            message = researchOrderRuleChecker.checkOrder(researchOrder);
-        }
-        return message;
-    }
-
-    protected String checkUpgradeValid(ArrayList<UpgradeOrder> upgradeOrders,
-            UpgradeOrderRuleChecker upgradeOrderRuleChecker) {
-        String message = null;
-        for (UpgradeOrder upgradeOrder : upgradeOrders) {
-            message = upgradeOrderRuleChecker.checkOrder(upgradeOrder);
-            if (message != null) {
-                return message;
-            }
-        }
-        return message;
-    }
+    
 
     public synchronized String checkGameWin() {
         //

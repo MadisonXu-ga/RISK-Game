@@ -2,17 +2,22 @@ package edu.duke.ece651.team5.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
 import edu.duke.ece651.team5.server.MyEnum.GameStatus;
+import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.game.*;
+import edu.duke.ece651.team5.shared.order.*;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 public class GameControllerTest {
     @Test
@@ -179,5 +184,66 @@ public class GameControllerTest {
         assertEquals(greenExpected, greenTerriIDs);
         assertEquals(blueExpected, blueTerriIDs);
         assertEquals(redExpected, redTerriIDs);
+    }
+
+    @Test
+    void testInitializeGame(){
+        GameController game = new GameController(3);
+        game.assignTerritories(3);
+        User mockUser1 = mock(User.class);
+        User mockUser2 = mock(User.class);
+        User mockUser3 = mock(User.class);
+
+        HashMap<String, Integer> unitPlacements1 = new HashMap<>();
+        unitPlacements1.put("Narnia", 5);
+        unitPlacements1.put("Scadrial", 6);
+        unitPlacements1.put("Gondor", 7);
+
+        HashMap<String, Integer> unitPlacements2 = new HashMap<>();
+        unitPlacements1.put("Elantris", 5);
+        unitPlacements1.put("Oz", 6);
+        unitPlacements1.put("Mordor", 7);
+
+        HashMap<String, Integer> unitPlacements3 = new HashMap<>();
+        unitPlacements1.put("Midkemia", 5);
+        unitPlacements1.put("Roshar", 6);
+        unitPlacements1.put("Hogwarts", 7);
+
+        String error1 = game.initializeGame(mockUser1, unitPlacements1);
+        assertEquals("Cannot initialize", error1);
+
+        game.joinGame(mockUser1);
+        game.joinGame(mockUser2);
+        game.joinGame(mockUser3);
+
+        String success1 = game.initializeGame(mockUser1, unitPlacements1);
+        assertEquals("Placement succeeded", success1);
+        String success2 = game.initializeGame(mockUser2, unitPlacements2);
+        assertEquals("Placement succeeded", success2);
+        String success3 = game.initializeGame(mockUser3, unitPlacements3);
+        assertEquals("Placement finished", success3);
+    }
+
+    @Test
+    void testReceiveActionFromUser(){
+        GameController game = new GameController(3);
+        User mockUser1 = mock(User.class);
+        User mockUser2 = mock(User.class);
+        User mockUser3 = mock(User.class);
+
+        game.joinGame(mockUser1);
+        game.joinGame(mockUser2);
+        game.joinGame(mockUser3);
+
+        Action action1 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        String correctMsg = game.receiveActionFromUser(mockUser1, action1);
+        assertNull(correctMsg);
+
+        MoveOrder moveOrder = new MoveOrder("Narnia", "Elantris", new SoldierArmy(), new Player("Green"));
+        ArrayList<MoveOrder> moveOrders = new ArrayList<>();
+        moveOrders.add(moveOrder);
+        Action action2 = new Action(new ArrayList<>(), moveOrders, null, new ArrayList<>());
+        String errorMsg = game.receiveActionFromUser(mockUser2, action2);
+        assertNotNull(errorMsg);
     }
 }

@@ -42,6 +42,8 @@ public class UserTest {
         assertTrue(user1.equals(user1));
         assertTrue(user1.equals(user3));
         assertFalse(user1.equals(user2));
+        assertFalse(user1.equals(null));
+        assertFalse(user1.equals("Test"));
     }
 
     @Test
@@ -49,5 +51,8 @@ public class UserTest {
         User user1 = new User("user1", "abc123");
         User user2 = new User("user1", "abc");
         assertEquals(user1.hashCode(), user2.hashCode());
+
+        User userNull = new User(null, null);
+        assertEquals(userNull.hashCode(), 0);
     }
 }

@@ -366,8 +366,9 @@ public class UserHandler implements Runnable {
             uPs = (HashMap<String, Integer>) playerConnection.readData();
             // 1. checker: check placement number (maybe need to check owner but most on
             // client side)
-            isValid = unitValidRuleChecker.checkUnitValid(gameController.getGame().getMap(), uPs);
-
+            // TODO: change this later
+            // isValid = unitValidRuleChecker.checkUnitValid(gameController.getGame().getMap(), uPs);
+            isValid = true;
             if (!isValid) {
                 playerConnection.writeData("Unit number invalid");
                 return;

@@ -247,7 +247,7 @@ public class UserHandlerTest {
                 HashMap<Integer, GameController> allGames = new HashMap<>();
                 UserManager userManager = new UserManager();
                 PlayerConnection mockPlayerConnection1 = mock(PlayerConnection.class);
-                PlayerConnection mockPlayerConnection2 = mock(PlayerConnection.class);
+                // PlayerConnection mockPlayerConnection2 = mock(PlayerConnection.class);
                 UserGameMap userGameMap = new UserGameMap();
                 HashMap<User, PlayerConnection> clients = new HashMap<>();
 
@@ -262,9 +262,59 @@ public class UserHandlerTest {
                 userHandler1.handleNewGame();
 
                 userHandler1.handleLogOut();
-                
+
                 assertNull(userHandler1.getCurrentUser());
         }
+
+        @Test
+        void testHandleContinueGame() throws ClassNotFoundException, IOException {
+                HashMap<Integer, GameController> allGames = new HashMap<>();
+                UserManager userManager = new UserManager();
+                PlayerConnection mockPlayerConnection1 = mock(PlayerConnection.class);
+                PlayerConnection mockPlayerConnection2 = mock(PlayerConnection.class);
+                UserGameMap userGameMap = new UserGameMap();
+                HashMap<User, PlayerConnection> clients = new HashMap<>();
+
+                UserHandler userHandler1 = new UserHandler(mockPlayerConnection1, userManager, allGames, userGameMap,
+                                clients);
+                UserHandler userHandler2 = new UserHandler(mockPlayerConnection2, userManager, allGames, userGameMap,
+                                clients);
+
+                ArrayList<String> inputInfo1 = new ArrayList<>(Arrays.asList("user1", "abc123"));
+                when(mockPlayerConnection1.readData()).thenReturn(inputInfo1);
+                userHandler1.handleSignUp();
+                userHandler1.handleLogin();
+
+                ArrayList<String> inputInfo2 = new ArrayList<>(Arrays.asList("user2", "abc123"));
+                when(mockPlayerConnection2.readData()).thenReturn(inputInfo2);
+                userHandler2.handleSignUp();
+                userHandler2.handleLogin();
+
+                when(mockPlayerConnection1.readData()).thenReturn(2);
+                userHandler1.handleNewGame();
+
+                when(mockPlayerConnection2.readData()).thenReturn(2);
+                userHandler2.handleNewGame();
+
+                int gameID2 = userGameMap.getUserGames(new User("user2", "abc123")).get(0).getID();
+                int gameID1 = userGameMap.getUserGames(new User("user1", "abc123")).get(0).getID();
+
+                when(mockPlayerConnection1.readData()).thenReturn(gameID2);
+                userHandler1.handleJoinGame();
+
+                when(mockPlayerConnection2.readData()).thenReturn(gameID1);
+                userHandler2.handleJoinGame();
+
+                // TODO: make up this after testing placement (Started)
+
+                when(mockPlayerConnection1.readData()).thenReturn(gameID1);
+                userHandler1.handleContinueGame();
+                verify(mockPlayerConnection1).writeData("Initializing");
+                // verify(mockPlayerConnection1).writeData(allGames.get(gameID1));
+        }
+
+        @Test
+        void testHandleUnitPlacement(){}
 
         @Test
         void testHandleUserOperation() {

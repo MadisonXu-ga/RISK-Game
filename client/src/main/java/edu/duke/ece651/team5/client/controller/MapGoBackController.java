@@ -163,6 +163,36 @@ public class MapGoBackController extends MapController {
         // mapChooseActionController.moveOrders.size());
     }
 
+    public void onSubmitAttack() {
+
+        String sourceTerritory = sourceTerritorybtn.getValue();
+        sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
+        String destTerritorry = destTerritorybtn.getValue();
+        destTerritorybtn.setValue(destTerritorybtn.getId());
+        System.out.println("you are trying to move from: " + sourceTerritory + " to " + destTerritorry);
+
+        int numberUnits = numberUnitsSpinner.getValue();
+        SoldierArmy soldierArmy = new SoldierArmy();
+        soldierArmy.addSoldier(new Soldier(unitsComboBox.getValue()), numberUnits);
+        Player player = game.getPlayerByName(client.getColor());
+
+        if (sourceTerritory != sourceTerritorybtn.getId() && destTerritorry != destTerritorybtn.getValue()
+                && soldierArmy != null) {
+            // code to execute if all variables are not null
+            MoveOrder moveOrder = new MoveOrder(sourceTerritory, destTerritorry, soldierArmy, player);
+            mapChooseActionController.moveOrders.add(moveOrder);
+            actionMessage.setText("");
+        } else {
+            sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
+            destTerritorybtn.setValue(destTerritorybtn.getId());
+            unitsComboBox.setValue(null);
+            numberUnitsSpinner.getValueFactory().setValue(0);
+            actionMessage.setText("Invalid action move. Try again!");
+
+        }
+
+    }
+
     public ArrayList<String> setList(List<Territory> territories) {
 
         ArrayList<String> listToReturn = new ArrayList<>();

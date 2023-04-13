@@ -314,7 +314,7 @@ public class GameController {
     public synchronized boolean tryResolveAllOrders() {
         int activeUserNum = 0;
         for (Boolean isActive : userActiveStatus.values()) {
-            if (isActive != null && isActive == true) {
+            if (isActive == null || isActive == true) {
                 ++activeUserNum;
             }
         }
@@ -338,8 +338,10 @@ public class GameController {
         return true;
     }
 
-    // TODO: move all of these to a new file
-
+    /**
+     * 
+     * @return
+     */
     public synchronized String checkGameWin() {
         //
         HashMap<String, Boolean> playerStatus = getPlayerWinLoseStatus(players);

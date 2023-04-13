@@ -39,6 +39,9 @@ public class MapPlacementTerritory extends MapController {
     @FXML
     Text unitsPlacedText;
 
+    @FXML
+    Text playerNametxt;
+
     public MapPlacementTerritory(Client client, Game game) {
         super(client, game);
 
@@ -57,6 +60,7 @@ public class MapPlacementTerritory extends MapController {
         availableUnits = Constants.AVAILABLE_UNIT;
         // System.out.println("Avaialable: " + availableUnits);
         availableUnitTxt.setText(availableUnits.toString());
+        playerNametxt.setText("Name: " + client.getColor());
 
         colorTerritoriesYouOwn();
         int terrIdx = 0;

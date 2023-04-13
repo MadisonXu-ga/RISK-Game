@@ -81,11 +81,31 @@
                   <Font name="Lucida Calligraphy Italic" size="12.0" />
                </font>
             </Text>
-            <Button fx:id="upgradebtn" layoutX="14.0" layoutY="423.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Upgrade">
+            <Button fx:id="upgradebtn" layoutX="14.0" layoutY="423.0" mnemonicParsing="false" onAction="#onUpgradeAction" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Upgrade">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
+            <Text layoutX="560.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available food: " wrappingWidth="218.4033660888672" y="40.0">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="24.0" />
+               </font>
+            </Text>
+            <Text layoutX="545.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available money: " wrappingWidth="252.8033905029297" y="40.0">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="24.0" />
+               </font>
+            </Text>
+            <Text fx:id="foodAmnt" layoutX="783.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="218.4033660888672" y="40.0">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="24.0" />
+               </font>
+            </Text>
+            <Text fx:id="techAmnt" layoutX="785.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="252.8033905029297" y="40.0">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="24.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>

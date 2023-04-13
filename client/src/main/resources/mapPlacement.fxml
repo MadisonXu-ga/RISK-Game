@@ -45,7 +45,7 @@
             <Button fx:id="Stormhaven" layoutX="1169.0" layoutY="104.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="134.0" prefWidth="129.0" styleClass="Stormhavenbtn" stylesheets="@territory.css" />
             <Button fx:id="Verdantia" layoutX="1284.0" layoutY="212.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="109.0" prefWidth="87.0" styleClass="Verdantiabtn" stylesheets="@territory.css" />
             <Button fx:id="Frosthold" layoutX="1288.0" layoutY="309.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="103.0" prefWidth="83.0" styleClass="Frostholdbtn" stylesheets="@territory.css" />
-            <Text layoutX="30.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="321.6033172607422">
+            <Text fx:id="playerNametxt" layoutX="30.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="321.6033172607422">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="36.0" />
                </font>

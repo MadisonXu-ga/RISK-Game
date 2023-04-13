@@ -16,6 +16,8 @@ import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 import edu.duke.ece651.team5.shared.order.UpgradeOrder;
+import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
 import javafx.collections.FXCollections;
@@ -60,6 +62,12 @@ public class MapChooseActionController extends MapController {
     ResourceConsumeCalculator calculator;
 
     @FXML
+    Text techAmnt;
+
+    @FXML
+    Text foodAmnt;
+
+    @FXML
     public void initialize() {
         super.initialize();
         // colorTerritoriesbyOwner();
@@ -71,6 +79,12 @@ public class MapChooseActionController extends MapController {
         upgradeOrders = new ArrayList<>();
 
         calculator = new ResourceConsumeCalculator();
+        Integer techAmntInt = game.getPlayerByName(client.getColor())
+                .getResourceCount(new Resource(ResourceType.TECHNOLOGY));
+        techAmnt.setText(techAmntInt.toString());
+        Integer foodAmntInt = game.getPlayerByName(client.getColor())
+                .getResourceCount(new Resource(ResourceType.TECHNOLOGY));
+        foodAmnt.setText(foodAmntInt.toString());
 
     }
 
@@ -166,6 +180,43 @@ public class MapChooseActionController extends MapController {
             // User clicked Cancel, do nothing or handle accordingly
             // ...
         }
+    }
+
+    public void onUpgradeAction() throws IOException {
+        URL xmlResource = getClass().getResource("/upgrade-units.fxml");
+        // URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+        MapGoBackController mapGoBackController = new MapGoBackController(client, game, false, this);
+        controllers.put(MapGoBackController.class, mapGoBackController);
+        // controllers.put(MapChooseActionController.class, new
+        // MapChooseActionController());
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        StackPane bp = loader.load();
+
+        Scene scene = new Scene(new StackPane(bp));
+
+        List<Territory> ownTerritory = game.getPlayerByName(client.getColor()).getTerritories();
+
+        List<Territory> enemyTerritory = new ArrayList<>();
+
+        for (Territory territory : ownTerritory) {
+
+            enemyTerritory.addAll(game.getMap().getNeighbors(territory.getId(), false,
+                    game.getPlayerByName(client.getColor())));
+
+        }
+        ArrayList<String> ownTerritoriesStr = mapGoBackController.setList(ownTerritory);
+        ArrayList<String> enemyTerritoriesStr = mapGoBackController.setList(enemyTerritory);
+
+        // App.getPrimaryStage().setScene(scene);
+        mapGoBackController.refresh(ownTerritoriesStr, enemyTerritoriesStr, client.getColor(), client.getColor());
+        System.out.println(ownTerritoriesStr);
+        App.getPrimaryStage().setScene(scene);
     }
 
     public void onDone() throws ClassNotFoundException, IOException {

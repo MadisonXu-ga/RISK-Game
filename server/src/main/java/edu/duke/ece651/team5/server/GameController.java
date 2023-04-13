@@ -289,7 +289,8 @@ public class GameController {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public synchronized String receiveActionFromUser(User user, Action action) throws ClassNotFoundException, IOException {
+    public synchronized String receiveActionFromUser(User user, Action action)
+            throws ClassNotFoundException, IOException {
         // check valid
         ActionChecker actionChecker = new ActionChecker(game.getMap());
         String message = actionChecker.checkActions(action);
@@ -353,7 +354,7 @@ public class GameController {
     public synchronized boolean checkUserLose(User user) {
         HashMap<String, Boolean> playerStatus = getPlayerWinLoseStatus(players);
         Player player = userToPlayerMap.get(user);
-        if (playerStatus.get(player.getName()) == null) {
+        if (playerStatus.get(player.getName()) == null || playerStatus.get(player.getName()) == true) {
             return false;
         }
         return true;

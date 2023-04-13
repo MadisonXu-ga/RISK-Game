@@ -305,7 +305,7 @@ public class UserHandler implements Runnable {
                     gamesNotStarted.add(game);
                 }
             }
-            
+
             for (GameController game : gamesNotStarted) {
                 game.kickUserOut(currentUser);
                 userGameMap.deleteMap(currentUser, game);
@@ -366,7 +366,8 @@ public class UserHandler implements Runnable {
             // 1. checker: check placement number (maybe need to check owner but most on
             // client side)
             // TODO: change this later
-            // isValid = unitValidRuleChecker.checkUnitValid(gameController.getGame().getMap(), uPs);
+            // isValid =
+            // unitValidRuleChecker.checkUnitValid(gameController.getGame().getMap(), uPs);
             isValid = true;
             if (!isValid) {
                 playerConnection.writeData("Unit number invalid");
@@ -420,35 +421,64 @@ public class UserHandler implements Runnable {
                     Boolean userActiveStatus = gameController.getUserActiveStatus(user);
                     if (user.getUserStatus() == UserStatus.LOGGED_IN
                             && (userActiveStatus == null || userActiveStatus == true)) {
-                        clients.get(user).writeData(gameController.getGame());
+                        // send map
+                        PlayerConnection playerConnectionNow = clients.get(user);
+                        // clients.get(user).writeData(gameController.getGame());
+                        playerConnectionNow.writeData(gameController.getGame());
+
+                        // check game win or not
+                        String winerName = gameController.checkGameWin();
+                        // if win, send winner name and end this game
+                        if (winerName != null) {
+                            playerConnectionNow.writeData(winerName);
+                            return;
+                        }
+
+                        // no one win until now
+                        playerConnectionNow.writeData("No winner");
+
+                        // check user lose or not
+                        // lost
+                        if (gameController.checkUserLose(user)) {
+                            playerConnectionNow.writeData("You lost");
+                            String lostChoice = (String) playerConnectionNow.readData();
+                            if (lostChoice.equals("Disconnect")) {
+                                gameController.setUserActiveStatus(user, false);
+                            } else if (lostChoice.equals("Display")) {
+                                gameController.setUserActiveStatus(user, null);
+                            }
+                            return;
+                        }
+
+                        playerConnectionNow.writeData("Not lost");
                     }
                 }
 
-                // check game win or not
-                String winerName = gameController.checkGameWin();
-                // if win, send winner name and end this game
-                if (winerName != null) {
-                    playerConnection.writeData(winerName);
-                    return;
-                }
+                // // check game win or not
+                // String winerName = gameController.checkGameWin();
+                // // if win, send winner name and end this game
+                // if (winerName != null) {
+                // playerConnection.writeData(winerName);
+                // return;
+                // }
 
-                // no one win until now
-                playerConnection.writeData("No winner");
+                // // no one win until now
+                // playerConnection.writeData("No winner");
 
-                // check user lose or not
-                // lost
-                if (gameController.checkUserLose(currentUser)) {
-                    playerConnection.writeData("You lost");
-                    String lostChoice = (String) playerConnection.readData();
-                    if (lostChoice.equals("Disconnect")) {
-                        gameController.setUserActiveStatus(currentUser, false);
-                    } else if (lostChoice.equals("Display")) {
-                        gameController.setUserActiveStatus(currentUser, null);
-                    }
-                    return;
-                }
+                // // check user lose or not
+                // // lost
+                // if (gameController.checkUserLose(currentUser)) {
+                // playerConnection.writeData("You lost");
+                // String lostChoice = (String) playerConnection.readData();
+                // if (lostChoice.equals("Disconnect")) {
+                // gameController.setUserActiveStatus(currentUser, false);
+                // } else if (lostChoice.equals("Display")) {
+                // gameController.setUserActiveStatus(currentUser, null);
+                // }
+                // return;
+                // }
 
-                playerConnection.writeData("Not lost");
+                // playerConnection.writeData("Not lost");
             }
 
         } catch (ClassNotFoundException | IOException e) {

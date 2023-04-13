@@ -187,7 +187,7 @@ public class MapController extends GoBackController {
         // x += 50;
         // x += btn.getScene().getX() + btn.getScene().getWindow().getX();
         // y += btn.getScene().getY() + btn.getScene().getWindow().getY();
-        popup.show(btn.getScene().getWindow(), x, y);
+        popup.show(btn.getScene().getWindow(), x - 50, y);
 
         btn.setOnMouseExited(mouseEvent -> popup.hide());
     }

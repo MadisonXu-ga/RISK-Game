@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -289,11 +290,14 @@ public class GameController {
      * @param user
      * @param action
      * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
-    public synchronized String receiveActionFromUser(User user, Action action) {
+    public synchronized String receiveActionFromUser(User user, Action action)
+            throws ClassNotFoundException, IOException {
         // check valid
-        ActionChecker actionChecker = new ActionChecker();
-        String message = actionChecker.checkActions(action, game.getMap());
+        ActionChecker actionChecker = new ActionChecker(game.getMap());
+        String message = actionChecker.checkActions(action);
         if (message != null) {
             return message;
         }
@@ -354,7 +358,7 @@ public class GameController {
     public synchronized boolean checkUserLose(User user) {
         HashMap<String, Boolean> playerStatus = getPlayerWinLoseStatus(players);
         Player player = userToPlayerMap.get(user);
-        if (playerStatus.get(player.getName()) == null) {
+        if (playerStatus.get(player.getName()) == null || playerStatus.get(player.getName()) == true) {
             return false;
         }
         return true;

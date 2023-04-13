@@ -2,14 +2,18 @@ package edu.duke.ece651.team5.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -77,6 +81,7 @@ public class GameControllerTest {
 
         assertTrue(gameController.getPlayerToUserMap().containsKey("Blue"));
         gameController.kickUserOut(user2);
+        gameController.kickUserOut(mock(User.class));
         assertFalse(gameController.getPlayerToUserMap().containsKey("Blue"));
     }
 
@@ -187,7 +192,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void testInitializeGame(){
+    void testInitializeGame() {
         GameController game = new GameController(3);
         game.assignTerritories(3);
         User mockUser1 = mock(User.class);
@@ -225,7 +230,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void testReceiveActionFromUser(){
+    void testReceiveActionFromUser() throws ClassNotFoundException, IOException {
         GameController game = new GameController(3);
         User mockUser1 = mock(User.class);
         User mockUser2 = mock(User.class);
@@ -245,5 +250,109 @@ public class GameControllerTest {
         Action action2 = new Action(new ArrayList<>(), moveOrders, null, new ArrayList<>());
         String errorMsg = game.receiveActionFromUser(mockUser2, action2);
         assertNotNull(errorMsg);
+    }
+
+    @Test
+    void testTryResolveAllOrders() throws ClassNotFoundException, IOException {
+        GameController game = new GameController(3);
+        User mockUser1 = mock(User.class);
+        User mockUser2 = mock(User.class);
+        User mockUser3 = mock(User.class);
+
+        game.joinGame(mockUser1);
+        game.joinGame(mockUser2);
+        game.joinGame(mockUser3);
+
+        Action action1 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Action action2 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Action action3 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+
+        game.receiveActionFromUser(mockUser1, action1);
+        assertFalse(game.tryResolveAllOrders());
+        game.receiveActionFromUser(mockUser2, action2);
+        assertFalse(game.tryResolveAllOrders());
+        game.receiveActionFromUser(mockUser3, action3);
+        assertTrue(game.tryResolveAllOrders());
+
+        game.receiveActionFromUser(mockUser3, action3);
+        assertFalse(game.tryResolveAllOrders());
+    }
+
+    @Test
+    void testCheckGameWinAndUserLose() throws ClassNotFoundException, IOException {
+        GameController game = new GameController(3);
+        User mockUser1 = mock(User.class);
+        User mockUser2 = mock(User.class);
+        User mockUser3 = mock(User.class);
+
+        game.joinGame(mockUser1);
+        game.joinGame(mockUser2);
+        game.joinGame(mockUser3);
+
+        // let user1 lose
+        List<Territory> user1Terri = new ArrayList<>(game.getPlayers().get(0).getTerritories());
+        for (Territory territory : user1Terri) {
+            game.getPlayers().get(0).loseTerritory(territory);
+            game.getPlayers().get(2).addTerritory(territory);
+        }
+        assertNull(game.checkGameWin());
+        assertTrue(game.checkUserLose(mockUser1));
+        assertFalse(game.checkUserLose(mockUser2));
+        assertFalse(game.checkUserLose(mockUser3));
+        game.setUserActiveStatus(mockUser1, null);
+
+        Action action2 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Action action3 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        
+        game.receiveActionFromUser(mockUser2, action2);
+        assertFalse(game.tryResolveAllOrders());
+        game.receiveActionFromUser(mockUser3, action3);
+        assertTrue(game.tryResolveAllOrders());
+        game.setUserActiveStatus(mockUser2, false);
+
+        // let user2 lose
+        List<Territory> user2Terri = new ArrayList<>(game.getPlayers().get(1).getTerritories());
+        for (Territory territory : user2Terri) {
+            game.getPlayers().get(1).loseTerritory(territory);
+            game.getPlayers().get(2).addTerritory(territory);
+        }
+        assertTrue(game.checkUserLose(mockUser2));
+        assertFalse(game.checkUserLose(mockUser3));
+
+        game.receiveActionFromUser(mockUser3, action3);
+        assertTrue(game.tryResolveAllOrders());
+
+        assertEquals("Red", game.checkGameWin());
+    }
+
+    @Test
+    void testEquals() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+        GameController gameController1 = new GameController(2);
+        GameController gameController2 = new GameController(2);
+
+        // Use reflection to set the id field of gameController1 and gameController2 to
+        // the same value
+        Field idField = GameController.class.getDeclaredField("id");
+        idField.setAccessible(true);
+        int id = 42; // set desired id value
+        idField.setInt(gameController1, id);
+        idField.setInt(gameController2, id);
+
+        // Test when two objects are equal
+        assertTrue(gameController1.equals(gameController2));
+
+        // Test when two objects are not equal
+        GameController gameController3 = new GameController(2);
+        GameController gameController4 = new GameController(2);
+
+        // Use reflection to set the id field of gameController3 and gameController4 to
+        // different values
+        idField.setInt(gameController3, 1);
+        idField.setInt(gameController4, 2);
+
+        assertFalse(gameController3.equals(gameController4));
+
+        assertFalse(gameController1.equals("Test"));
+        assertFalse(gameController1.equals(null));
     }
 }

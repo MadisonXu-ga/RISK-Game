@@ -55,4 +55,18 @@ public class UpgradeOrderTest {
         assertEquals(2, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.ARTILLERY)));
 
     }
+
+    @Test
+    public void testExecute2() {
+        upgradeOrder.execute(map, player);
+        int resourceCount = player.getResourceCount(new Resource(ResourceType.TECHNOLOGY));
+        Territory t = map.getTerritoryByName("Territory 1");
+        SoldierArmy soldierArmy = t.getSoldierArmy();
+        assertEquals(5, resourceCount);
+
+        assertEquals(0, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+        assertEquals(1, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.CAVALRY)));
+        assertEquals(2, soldierArmy.getSoldierCount(new Soldier(SoldierLevel.ARTILLERY)));
+
+    }
 }

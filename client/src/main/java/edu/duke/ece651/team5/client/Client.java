@@ -27,6 +27,7 @@ public class Client {
   protected PlayerConnection playerConnection;
 
   private String color;
+  private Integer currentGameID;
   // input and output
   private final BufferedReader inputReader;
   private final PrintStream out;
@@ -66,6 +67,7 @@ public class Client {
     this.isLose = false;
     this.playerConnection = new PlayerConnection(new Socket(host, port));
     this.color = null;
+    this.currentGameID = null;
   }
 
   /**
@@ -81,6 +83,14 @@ public class Client {
 
   public void setColor(String color) {
     this.color = color;
+  }
+
+  public void setGameID(Integer currentGameID) {
+    this.currentGameID = currentGameID;
+  }
+
+  public Integer getCurrentGameID() {
+    return currentGameID;
   }
 
   public String getColor() {
@@ -169,6 +179,7 @@ public class Client {
 
   public String joinNewGame(Integer gameID) throws IOException, ClassNotFoundException {
 
+    System.out.println("Sending game ID:" + gameID);
     playerConnection.writeData("Join game");
     playerConnection.writeData(gameID);
     String msg = (String) playerConnection.readData();
@@ -206,6 +217,8 @@ public class Client {
 
     gameID = (Integer) playerConnection.readData();
 
+    System.out.println("From server, when I create a game I receive:" + gameID);
+
     // gameID = gameID.trim(); // removes leading and trailing whitespace
     // gameID = gameID.replaceAll("\\r|\\n", ""); // removes carriage return and
     // newline characters
@@ -242,7 +255,7 @@ public class Client {
 
   public String sendPlacementOrder(Integer gameID, HashMap<String, Integer> placementOrders)
       throws IOException, ClassNotFoundException {
-
+    System.out.println("Sending game ID:" + gameID);
     playerConnection.writeData("Place unit");
     playerConnection.writeData(gameID);
     playerConnection.writeData(placementOrders);
@@ -254,8 +267,30 @@ public class Client {
 
   }
 
+  public Game recvUpdatedGame() throws ClassNotFoundException, IOException {
+
+    Game updatedGame = (Game) playerConnection.readData();
+
+    return updatedGame;
+
+  }
+
+  public String sendOrder(Integer gameID, Action turnActions) throws IOException, ClassNotFoundException {
+
+    System.out.println("Sending game ID from sending the order:" + gameID);
+    playerConnection.writeData("Order");
+    playerConnection.writeData(gameID);
+    playerConnection.writeData(turnActions);
+    String msg = (String) playerConnection.readData();
+
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+    return msg;
+  }
+
   public String sendGameID(Integer gameID) throws ClassNotFoundException, IOException {
 
+    System.out.println("Sending game ID:" + gameID);
     playerConnection.writeData(gameID);
     String msg = (String) playerConnection.readData();
 

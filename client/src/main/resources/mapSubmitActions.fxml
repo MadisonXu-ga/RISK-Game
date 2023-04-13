@@ -27,7 +27,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="donebtn" layoutX="14.0" layoutY="425.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Done">
+            <Button fx:id="donebtn" layoutX="14.0" layoutY="425.0" mnemonicParsing="false" onAction="#onDone" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Done">
                <font>
                   <Font size="16.0" />
                </font>

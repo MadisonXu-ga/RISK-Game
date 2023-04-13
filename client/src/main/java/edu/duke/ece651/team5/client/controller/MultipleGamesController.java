@@ -197,6 +197,8 @@ public class MultipleGamesController extends GoBackController {
                 client.getGameConfirmation();
 
                 game.setGameID(gameID);
+                client.setGameID(gameID);
+                System.out.println("from the one that creates the game: " + client.getCurrentGameID());
                 goToPlacement(game);
 
             } catch (ClassNotFoundException | IOException e) {

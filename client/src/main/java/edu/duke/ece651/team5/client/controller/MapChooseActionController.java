@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.Territory;
@@ -67,6 +68,15 @@ public class MapChooseActionController extends MapController {
         Scene scene = new Scene(new StackPane(bp));
 
         App.getPrimaryStage().setScene(scene);
+    }
+
+    public void onDone() throws ClassNotFoundException, IOException {
+
+        Action emptyAction = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+
+        System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
+        String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
+        System.out.println(ActionResults);
     }
 
 }

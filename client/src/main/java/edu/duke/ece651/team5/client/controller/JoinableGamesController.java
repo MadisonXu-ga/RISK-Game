@@ -123,6 +123,8 @@ public class JoinableGamesController extends GoBackController {
             // btn.setText("clicked");
             System.out.println("button pressed");
             Integer gameID = Integer.parseInt(btn.getText());
+            client.setGameID(gameID);
+            System.out.println("from the one that joins the game: " + client.getCurrentGameID());
             String msg = client.joinNewGame(gameID);
 
             if (msg.equals("Joined Success")) {

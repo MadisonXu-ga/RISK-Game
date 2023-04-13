@@ -128,12 +128,12 @@ public class MapPlacementTerritory extends MapController {
 
             // client.sendPlacementPrompt();
             String placementResult = client.sendPlacementOrder(game.getGameID(), placementOrders);
-
+            Game updatedGame = client.recvUpdatedGame();
             System.out.println(placementResult);
 
             unitsPlacedText.setText("");
             resetFields();
-            goToPlacingActionsScreen();
+            goToPlacingActionsScreen(updatedGame);
 
         }
 
@@ -172,15 +172,16 @@ public class MapPlacementTerritory extends MapController {
 
     // }
 
-    public void goToPlacingActionsScreen() throws IOException {
+    public void goToPlacingActionsScreen(Game updatedGame) throws IOException {
 
         URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
 
+        System.out.println("just before going to placing actions" + client.getCurrentGameID());
         MultipleGamesController multipleGamesController = new MultipleGamesController(client);
-        controllers.put(MapChooseActionController.class, new MapChooseActionController(client, game));
+        controllers.put(MapChooseActionController.class, new MapChooseActionController(client, updatedGame));
         controllers.put(MultipleGamesController.class, multipleGamesController);
         loader.setControllerFactory((c) -> {
             return controllers.get(c);

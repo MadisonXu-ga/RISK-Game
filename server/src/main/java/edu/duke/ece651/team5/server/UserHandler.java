@@ -306,7 +306,7 @@ public class UserHandler implements Runnable {
                     gamesNotStarted.add(game);
                 }
             }
-            
+
             for (GameController game : gamesNotStarted) {
                 game.kickUserOut(currentUser);
                 userGameMap.deleteMap(currentUser, game);
@@ -367,7 +367,8 @@ public class UserHandler implements Runnable {
             // 1. checker: check placement number (maybe need to check owner but most on
             // client side)
             // TODO: change this later
-            // isValid = unitValidRuleChecker.checkUnitValid(gameController.getGame().getMap(), uPs);
+            // isValid =
+            // unitValidRuleChecker.checkUnitValid(gameController.getGame().getMap(), uPs);
             isValid = true;
             if (!isValid) {
                 playerConnection.writeData("Unit number invalid");
@@ -392,22 +393,29 @@ public class UserHandler implements Runnable {
     }
 
     protected void handleOrders() {
+        System.out.println("Dealing with handling orders...");
         try {
             int gameID = (int) playerConnection.readData();
+            System.out.println("Receive gameID " + gameID);
             GameController gameController = allGames.get(gameID);
             Action action = (Action) playerConnection.readData();
             String msg = gameController.receiveActionFromUser(currentUser, action);
+            System.out.println("Receive action from user " + currentUser.getUserName());
             // action invalid, just return
             if (msg != null) {
                 playerConnection.writeData(msg);
+                System.out.println("Action invalid");
                 return;
             }
+            System.out.println("Action valid");
 
             // tell success
             playerConnection.writeData("Order succeeded");
 
             boolean receiveAll = gameController.tryResolveAllOrders();
+            System.out.println("Resolved user " + currentUser.getUserName() + " orders");
             if (receiveAll) {
+                System.out.println("Received all players' ations");
                 // update unit and resource
                 Map<String, Territory> territories = gameController.getGame().getMap().getAllTerritories();
                 for (Territory territory : territories.values()) {
@@ -424,6 +432,7 @@ public class UserHandler implements Runnable {
                         clients.get(user).writeData(gameController.getGame());
                     }
                 }
+                System.out.println("Sent map to all players");
 
                 // check game win or not
                 String winerName = gameController.checkGameWin();

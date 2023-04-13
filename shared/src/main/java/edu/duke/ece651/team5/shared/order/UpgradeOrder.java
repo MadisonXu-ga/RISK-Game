@@ -16,11 +16,11 @@ public class UpgradeOrder implements Order {
     public final static ArrayList<Integer> upgradeConsumeCost =
             new ArrayList<>(Arrays.asList(0, 3, 11, 30, 55, 90, 140));
     // the territory name of the territory where is upgrade is about to happen
-    String territoryName;
+   private String territoryName;
     // (solider, how many of this soldier) -> target level
     protected Map<Pair<Soldier, Integer>, SoldierLevel> soldierToUpgrade;
     // the player issued this order
-    Player player;
+    private Player player;
 
     /**
      * constructor
@@ -67,6 +67,22 @@ public class UpgradeOrder implements Order {
                     SoldierLevel targetLevel = entry.getValue();
                     territory.getSoldierArmy().upgradeSoldier(soldier, count, targetLevel);
                     territory.getOwner().consumeResource(
+                            new Resource(ResourceType.TECHNOLOGY),
+                            upgradeConsumeCost.get(targetLevel.ordinal() - currLevel.ordinal()) * count
+                    );
+                });
+    }
+
+    public void execute(RISKMap map, Player targetPlayer) {
+        Territory territory = map.getTerritoryByName(territoryName);
+        soldierToUpgrade.entrySet().stream()
+                .forEach(entry -> {
+                    Soldier soldier = entry.getKey().getFirst();
+                    int count = entry.getKey().getSecond();
+                    SoldierLevel currLevel = soldier.getLevel();
+                    SoldierLevel targetLevel = entry.getValue();
+                    territory.getSoldierArmy().upgradeSoldier(soldier, count, targetLevel);
+                    targetPlayer.consumeResource(
                             new Resource(ResourceType.TECHNOLOGY),
                             upgradeConsumeCost.get(targetLevel.ordinal() - currLevel.ordinal()) * count
                     );

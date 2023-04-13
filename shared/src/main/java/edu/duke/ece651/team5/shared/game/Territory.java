@@ -125,6 +125,10 @@ public class Territory implements Serializable {
         return this.soldierArmy;
     }
 
+    public void setSoldierArmy(SoldierArmy soldierArmy){
+        this.soldierArmy = soldierArmy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == this)

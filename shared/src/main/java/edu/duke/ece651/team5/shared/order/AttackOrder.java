@@ -58,5 +58,17 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
         .filter(entry -> this.getDestinationName().equals(other.getDestinationName()))
         .forEach(entry -> soldierToNumber.getAllSoldiers().merge(entry.getKey(), entry.getValue(), Integer::sum));
     }
+
+
+    public void execute(RISKMap map, Player targetPlayer) {
+        Territory source = map.getTerritoryByName(sourceName);
+        for (Map.Entry<Soldier, Integer> entry : soldierToNumber.getAllSoldiers().entrySet()) {
+            Soldier soldier = entry.getKey();
+            int number = entry.getValue();
+            source.getSoldierArmy().removeSoldier(soldier, number);
+        }
+        int distance = map.getShortestPathDistance(sourceName, destinationName, false);
+        targetPlayer.consumeResource(new Resource(ResourceType.FOOD), Constants.C * distance * soldierToNumber.getTotalCountSolider());
+    }
     
 }

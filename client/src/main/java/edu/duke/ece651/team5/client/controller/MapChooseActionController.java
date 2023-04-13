@@ -174,12 +174,12 @@ public class MapChooseActionController extends MapController {
 
         // Check if the user clicked the "OK" button
         if (confirmButton == ButtonType.OK) {
-            // User clicked OK, proceed with the action
-            // ...
-        } else {
-            // User clicked Cancel, do nothing or handle accordingly
-            // ...
+            researchOrder = new ResearchOrder(game.getPlayerByName(client.getColor()), game);
         }
+        // else {
+        // // User clicked Cancel, do nothing or handle accordingly
+        // // ...
+        // }
     }
 
     public void onDone() throws ClassNotFoundException, IOException {

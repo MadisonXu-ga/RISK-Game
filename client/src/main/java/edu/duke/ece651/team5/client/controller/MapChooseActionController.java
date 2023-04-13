@@ -60,6 +60,7 @@ public class MapChooseActionController extends MapController {
         attackOrders = new ArrayList<>();
         moveOrders = new ArrayList<>();
         upgradeOrders = new ArrayList<>();
+
     }
 
     public void onMoveAction() throws IOException {
@@ -92,11 +93,26 @@ public class MapChooseActionController extends MapController {
 
     public void onDone() throws ClassNotFoundException, IOException {
 
-        Action emptyAction = new Action(new ArrayList<>(), moveOrders, null, new ArrayList<>());
+        Action emptyAction = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
-        System.out.println("From server: " + ActionResults);
+
+        if (!ActionResults.equals("Order succeeded")) {
+            attackOrders = new ArrayList<>();
+            moveOrders = new ArrayList<>();
+            upgradeOrders = new ArrayList<>();
+            researchOrder = null;
+        }
+
+        else {
+            game = client.updatedGameAfterTurn();
+            client.checkWin();
+            client.checkLost();
+            // initialize();
+            // App.loadScenefromMain("submit-actions");
+        }
+
     }
 
 }

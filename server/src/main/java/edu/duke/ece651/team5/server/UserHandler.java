@@ -430,12 +430,15 @@ public class UserHandler implements Runnable {
                     if (user.getUserStatus() == UserStatus.LOGGED_IN
                             && (userActiveStatus == null || userActiveStatus == true)) {
                         clients.get(user).writeData(gameController.getGame());
+                        System.out.println("Send map to user " + user.getUserName());
                     }
                 }
                 System.out.println("Sent map to all players");
 
                 // check game win or not
+                System.out.println("before checking for win " + currentUser.getUserName());
                 String winerName = gameController.checkGameWin();
+                System.out.println("win decision for " + currentUser.getUserName() + " :" + winerName);
                 // if win, send winner name and end this game
                 if (winerName != null) {
                     playerConnection.writeData(winerName);
@@ -443,7 +446,9 @@ public class UserHandler implements Runnable {
                 }
 
                 // no one win until now
+                System.out.println("Send no winner to user (before)" + currentUser.getUserName());
                 playerConnection.writeData("No winner");
+                System.out.println("Send no winner to user " + currentUser.getUserName());
 
                 // check user lose or not
                 // lost
@@ -459,6 +464,7 @@ public class UserHandler implements Runnable {
                 }
 
                 playerConnection.writeData("Not lost");
+                System.out.println("Send not lost to user " + currentUser.getUserName());
             }
 
         } catch (ClassNotFoundException | IOException e) {

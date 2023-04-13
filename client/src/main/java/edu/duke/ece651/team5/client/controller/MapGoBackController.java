@@ -90,8 +90,8 @@ public class MapGoBackController extends MapController {
         super.initialize();
         ObservableList<SoldierLevel> options = FXCollections.observableArrayList(SoldierLevel.values());
         unitsComboBox.setItems(options);
-        onSourceTerritorySelection();
-        onDestTerritorySelection();
+        // onSourceTerritorySelection();
+        // onDestTerritorySelection();
         showTerritoryColors(showAll);
         gameID.setText("gameID: " + client.getCurrentGameID().toString());
         playerNametxt.setText("Name: " + client.getColor());
@@ -110,21 +110,23 @@ public class MapGoBackController extends MapController {
 
     }
 
-    public void onSourceTerritorySelection() {
+    // public void onSourceTerritorySelection() {
 
-        ObservableList<String> sourceOptions = FXCollections.observableArrayList(list);
-        sourceTerritorybtn.setItems(sourceOptions);
-        // ObservableList<String> destOptions = FXCollections.observableArrayList(list);
-        // destTerritorybtn.setItems(destOptions);
+    // ObservableList<String> sourceOptions =
+    // FXCollections.observableArrayList(list);
+    // sourceTerritorybtn.setItems(sourceOptions);
+    // // ObservableList<String> destOptions =
+    // FXCollections.observableArrayList(list);
+    // // destTerritorybtn.setItems(destOptions);
 
-    }
+    // }
 
-    public void onDestTerritorySelection() {
+    // public void onDestTerritorySelection() {
 
-        ObservableList<String> destOptions = FXCollections.observableArrayList(list);
-        destTerritorybtn.setItems(destOptions);
+    // ObservableList<String> destOptions = FXCollections.observableArrayList(list);
+    // destTerritorybtn.setItems(destOptions);
 
-    }
+    // }
 
     public void onSubmitMove() {
 

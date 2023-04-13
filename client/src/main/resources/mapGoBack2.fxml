@@ -72,8 +72,8 @@
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>
                   </Text>
-                  <ComboBox fx:id="sourceTerritorybtn" layoutX="442.0" layoutY="652.0" onAction="#onSourceTerritorySelection" prefWidth="150.0" promptText="source territory" translateX="125.0" />
-                  <ComboBox fx:id="destTerritorybtn" layoutX="660.0" layoutY="653.0" onAction="#onDestTerritorySelection" prefWidth="150.0" promptText="destination territory" translateX="125.0" />
+                  <ComboBox fx:id="sourceTerritorybtn" layoutX="442.0" layoutY="652.0" prefWidth="150.0" promptText="source territory" translateX="125.0" />
+                  <ComboBox fx:id="destTerritorybtn" layoutX="660.0" layoutY="653.0" prefWidth="150.0" promptText="destination territory" translateX="125.0" />
                   <Text fx:id="playerNametxt" layoutX="24.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="445.6033172607422" y="40.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="36.0" />

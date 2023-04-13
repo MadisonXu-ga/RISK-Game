@@ -215,11 +215,9 @@ public class MapController extends GoBackController {
 
         if (game != null) {
             for (Player playerx : game.getPlayers()) {
-                System.out.println("Client color: [" + client.getColor() + "], and player name: ["
-                        + playerx.getName() + "]");
+
                 if (showAll == false && !(client.getColor().equals(playerx.getName()))) {
-                    System.out.println("Client color: [" + client.getColor() + "], and player name: ["
-                            + playerx.getName() + "]");
+
                     continue;
                 }
                 for (Territory territory : playerx.getTerritories()) {

@@ -200,6 +200,11 @@ public class Client {
 
   }
 
+  public Game updatedGameAfterTurn() throws ClassNotFoundException, IOException {
+
+    return (Game) playerConnection.readData();
+  }
+
   public String getGameConfirmation() throws IOException, ClassNotFoundException {
 
     String msg = null;
@@ -269,10 +274,32 @@ public class Client {
 
   public Game recvUpdatedGame() throws ClassNotFoundException, IOException {
 
+    System.out.println("The message for updated map:");
     Game updatedGame = (Game) playerConnection.readData();
+    System.out.println("The message for updated map:");
 
     return updatedGame;
 
+  }
+
+  public String checkWin() throws ClassNotFoundException, IOException {
+
+    String msg = (String) playerConnection.readData();
+
+    System.out.println("The message for checkwin: " + msg);
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+    return msg;
+  }
+
+  public String checkLost() throws ClassNotFoundException, IOException {
+
+    String msg = (String) playerConnection.readData();
+
+    System.out.println("The message for checkLost: " + msg);
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+    return msg;
   }
 
   public String sendOrder(Integer gameID, Action turnActions) throws IOException, ClassNotFoundException {

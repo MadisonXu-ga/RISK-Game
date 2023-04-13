@@ -55,7 +55,7 @@ public class MapPlacementTerritory extends MapController {
         territoryFields = new ArrayList<>();
         ownedTerritories = new ArrayList<>();
         availableUnits = Constants.AVAILABLE_UNIT;
-        System.out.println("Avaialable: " + availableUnits);
+        // System.out.println("Avaialable: " + availableUnits);
         availableUnitTxt.setText(availableUnits.toString());
 
         colorTerritoriesYouOwn();
@@ -101,8 +101,9 @@ public class MapPlacementTerritory extends MapController {
             }
         }
 
-        System.out
-                .println("textFields size: " + territoryFields.size() + ", textp[] size: " + territoryNamesText.size());
+        // System.out
+        // .println("textFields size: " + territoryFields.size() + ", textp[] size: " +
+        // territoryNamesText.size());
     }
 
     public void onsubmitPlacement() throws IOException, ClassNotFoundException {
@@ -129,7 +130,7 @@ public class MapPlacementTerritory extends MapController {
             // client.sendPlacementPrompt();
             String placementResult = client.sendPlacementOrder(game.getGameID(), placementOrders);
             Game updatedGame = client.recvUpdatedGame();
-            System.out.println(placementResult);
+            // System.out.println(placementResult);
 
             unitsPlacedText.setText("");
             resetFields();
@@ -179,7 +180,8 @@ public class MapPlacementTerritory extends MapController {
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
 
-        System.out.println("just before going to placing actions" + client.getCurrentGameID());
+        // System.out.println("just before going to placing actions" +
+        // client.getCurrentGameID());
         MultipleGamesController multipleGamesController = new MultipleGamesController(client);
         controllers.put(MapChooseActionController.class, new MapChooseActionController(client, updatedGame));
         controllers.put(MultipleGamesController.class, multipleGamesController);

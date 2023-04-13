@@ -120,6 +120,7 @@
                         <Font name="Lucida Calligraphy Italic" size="18.0" />
                      </font>
                   </Text>
+                  <ComboBox fx:id="unitsComboBoxTarget" layoutX="315.0" layoutY="607.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" />
                </children>
             </AnchorPane>
          </right>

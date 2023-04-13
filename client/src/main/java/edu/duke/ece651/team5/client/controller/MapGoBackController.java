@@ -19,6 +19,7 @@ import edu.duke.ece651.team5.shared.order.UpgradeOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
+import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -74,6 +75,9 @@ public class MapGoBackController extends MapController {
 
     @FXML
     ComboBox<SoldierLevel> unitsComboBox;
+
+    @FXML
+    ComboBox<SoldierLevel> unitsComboBoxTarget;
 
     @FXML
     ComboBox<String> sourceTerritorybtn;

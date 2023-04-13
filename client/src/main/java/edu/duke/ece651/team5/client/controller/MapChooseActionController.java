@@ -17,6 +17,7 @@ import edu.duke.ece651.team5.shared.order.MoveOrder;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 import edu.duke.ece651.team5.shared.order.UpgradeOrder;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
+import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -56,6 +57,8 @@ public class MapChooseActionController extends MapController {
     @FXML
     ComboBox<SoldierLevel> unitsComboBox;
 
+    ResourceConsumeCalculator calculator;
+
     @FXML
     public void initialize() {
         super.initialize();
@@ -66,6 +69,8 @@ public class MapChooseActionController extends MapController {
         attackOrders = new ArrayList<>();
         moveOrders = new ArrayList<>();
         upgradeOrders = new ArrayList<>();
+
+        calculator = new ResourceConsumeCalculator();
 
     }
 
@@ -144,19 +149,19 @@ public class MapChooseActionController extends MapController {
     }
 
     public void onResearchAction() {
-
+        ResearchOrder researchOrdernew = new ResearchOrder(game.getPlayerByName(client.getColor()), game);
+        Integer researchCost = ResourceConsumeCalculator.computeTechConsumeForResearch(researchOrdernew);
         Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION,
-                "Are you sure you want to upgrade? It will cost you " + game);
+                "Are you sure you want to upgrade? It will cost you " + researchCost + " technology resources");
         confirmationDialog.setTitle("Confirmation");
         confirmationDialog.setHeaderText(null);
 
         // Show the confirmation dialog and wait for the user's response
         ButtonType confirmButton = confirmationDialog.showAndWait().orElse(ButtonType.CANCEL);
-
+        researchOrder = researchOrdernew;
         // Check if the user clicked the "OK" button
         if (confirmButton == ButtonType.OK) {
-            // User clicked OK, proceed with the action
-            // ...
+
         } else {
             // User clicked Cancel, do nothing or handle accordingly
             // ...
@@ -165,7 +170,7 @@ public class MapChooseActionController extends MapController {
 
     public void onDone() throws ClassNotFoundException, IOException {
 
-        Action emptyAction = new Action(attackOrders, moveOrders, null, new ArrayList<>());
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, new ArrayList<>());
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);

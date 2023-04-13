@@ -89,12 +89,12 @@
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>
                   </Text>
-                  <Text layoutX="705.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="218.4033660888672" y="40.0">
+                  <Text fx:id="foodAmnt" layoutX="705.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="218.4033660888672" y="40.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>
                   </Text>
-                  <Text layoutX="734.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="252.8033905029297" y="40.0">
+                  <Text fx:id="techAmnt" layoutX="734.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="252.8033905029297" y="40.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>
@@ -104,17 +104,7 @@
                         <Font name="Lucida Calligraphy Italic" size="18.0" />
                      </font>
                   </Text>
-                  <Text layoutX="24.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cost to perform the action:" wrappingWidth="167.20327758789062" y="40.0">
-                     <font>
-                        <Font name="Lucida Calligraphy Italic" size="18.0" />
-                     </font>
-                  </Text>
-                  <Text layoutX="24.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30" underline="true" wrappingWidth="40.00326919555664" y="40.0">
-                     <font>
-                        <Font name="Lucida Calligraphy Italic" size="18.0" />
-                     </font>
-                  </Text>
-                  <Text layoutX="59.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="points" wrappingWidth="96.00326919555664" y="40.0">
+                  <Text layoutX="24.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The cost for the action will be displayed as a confirmation on the submit button" wrappingWidth="167.20327758789062" y="40.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="18.0" />
                      </font>
@@ -130,7 +120,7 @@
                         <Font name="Lucida Calligraphy Italic" size="18.0" />
                      </font>
                   </Text>
-                  <ComboBox fx:id="unitsComboBoxTarget" layoutX="314.0" layoutY="687.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" />
+                  <ComboBox fx:id="unitsComboBoxTarget" layoutX="314.0" layoutY="687.0" prefWidth="150.0" promptText="Types of unit" />
                </children>
             </AnchorPane>
          </right>

@@ -22,6 +22,7 @@ public class ResearchOrder implements Order {
     /**
      * constructor
      * @param player the player who issued this order
+     * @param game the game
      */
     public ResearchOrder(Player player, Game game) {
         this.game = game;

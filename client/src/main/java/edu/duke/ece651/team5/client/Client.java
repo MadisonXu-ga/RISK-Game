@@ -46,7 +46,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30491, br, out);
+    this("localhost", 30492, br, out);
   }
 
   /**

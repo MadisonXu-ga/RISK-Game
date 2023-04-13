@@ -275,7 +275,11 @@ public class GameController {
             String name = entry.getKey();
             int unitNum = entry.getValue();
             Territory terr = game.getMap().getTerritoryByName(name);
-            terr.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), unitNum - 1);
+            terr.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), unitNum);
+
+            // System.out.println(
+            // "In territory: " + terr.getName() + "there are " +
+            // terr.getSoldierArmy().getTotalCountSolider());
         }
     }
 

@@ -4,11 +4,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.Territory;
+import edu.duke.ece651.team5.shared.unit.Soldier;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
@@ -139,6 +141,24 @@ public class MapController extends GoBackController {
         button.getStyleClass().add(getStyle);
     }
 
+    public String getTerritoryTroops(String terri) {
+
+        // System.out.print("the territory you are trying to find is: [" + terri + "]");
+        if (game != null) {
+
+            Map<Soldier, Integer> soldiersObject = game.getMap().getTerritoryByName(terri).getSoldierArmy()
+                    .getAllSoldiers();
+
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<Soldier, Integer> entry : soldiersObject.entrySet()) {
+                sb.append(entry.getKey()).append(": ").append(entry.getValue()).append(System.lineSeparator());
+            }
+
+            return sb.toString();
+        }
+        return null;
+    }
+
     public void handleMouseEntered(MouseEvent event) {
         Button btn = (Button) event.getSource();
         Popup popup = new Popup();
@@ -148,7 +168,7 @@ public class MapController extends GoBackController {
 
         // Add some content to the popup's pane
         LocalTime time = LocalTime.now();
-        Label label = new Label(btn.getId() + "\n\n" + "here");
+        Label label = new Label(btn.getId() + "\n\n" + getTerritoryTroops(btn.getId()));
         label.setFont(Font.font(18));
         label.setLayoutX(0);
         label.setLayoutY(0);

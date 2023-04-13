@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
@@ -24,20 +25,27 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 public class MapChooseActionController extends MapController {
 
     // Game game;
+
+    @FXML
+    Text playerNametxt;
+
+    @FXML
+    Text gameID;
 
     public MapChooseActionController(Client client, Game game) {
         super(client, game);
         // this.game = game;
     }
 
-    ArrayList<AttackOrder> attackOrders;
-    ArrayList<MoveOrder> moveOrders;
-    ResearchOrder researchOrder;
-    ArrayList<UpgradeOrder> upgradeOrders;
+    public ArrayList<AttackOrder> attackOrders;
+    public ArrayList<MoveOrder> moveOrders;
+    public ResearchOrder researchOrder;
+    public ArrayList<UpgradeOrder> upgradeOrders;
 
     @FXML
     ComboBox<SoldierLevel> unitsComboBox;
@@ -47,6 +55,11 @@ public class MapChooseActionController extends MapController {
         super.initialize();
         // colorTerritoriesbyOwner();
         showTerritoryColors(true);
+        gameID.setText("gameID: " + client.getCurrentGameID().toString());
+        playerNametxt.setText("Name: " + client.getColor());
+        attackOrders = new ArrayList<>();
+        moveOrders = new ArrayList<>();
+        upgradeOrders = new ArrayList<>();
     }
 
     public void onMoveAction() throws IOException {
@@ -56,7 +69,8 @@ public class MapChooseActionController extends MapController {
         FXMLLoader loader = new FXMLLoader(xmlResource);
 
         HashMap<Class<?>, Object> controllers = new HashMap<>();
-        controllers.put(MapGoBackController.class, new MapGoBackController(client, game, false));
+        MapGoBackController mapGoBackController = new MapGoBackController(client, game, false, this);
+        controllers.put(MapGoBackController.class, mapGoBackController);
         // controllers.put(MapChooseActionController.class, new
         // MapChooseActionController());
         loader.setControllerFactory((c) -> {
@@ -67,6 +81,12 @@ public class MapChooseActionController extends MapController {
 
         Scene scene = new Scene(new StackPane(bp));
 
+        List<Territory> ownTerritory = game.getPlayerByName(client.getColor()).getTerritories();
+        ArrayList<String> ownTerritoriesStr = mapGoBackController.setList(ownTerritory);
+
+        // App.getPrimaryStage().setScene(scene);
+        mapGoBackController.refresh(ownTerritoriesStr, ownTerritoriesStr, client.getColor(), client.getColor());
+        System.out.println(ownTerritoriesStr);
         App.getPrimaryStage().setScene(scene);
     }
 

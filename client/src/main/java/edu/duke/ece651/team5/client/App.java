@@ -144,6 +144,7 @@ public class App extends Application {
   public static void loadScenefromMain(String sceneName) {
 
     Scene loadedScene = loadedScenes.get(sceneName);
+
     primaryStage.setScene(loadedScene);
     primaryStage.show();
 

@@ -190,7 +190,7 @@ public class MapPlacementTerritory extends MapController {
         StackPane bp = loader.load();
 
         Scene scene = new Scene(new StackPane(bp));
-        // App.addScenetoMain("pl", scene);
+        App.addScenetoMain("submit-actions", scene);
 
         App.getPrimaryStage().setScene(scene);
     }

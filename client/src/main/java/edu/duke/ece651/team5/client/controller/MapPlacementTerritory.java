@@ -105,7 +105,7 @@ public class MapPlacementTerritory extends MapController {
                 .println("textFields size: " + territoryFields.size() + ", textp[] size: " + territoryNamesText.size());
     }
 
-    public void onsubmitPlacement() throws IOException {
+    public void onsubmitPlacement() throws IOException, ClassNotFoundException {
 
         HashMap<String, Integer> placementOrders = new HashMap<>();
 
@@ -125,6 +125,11 @@ public class MapPlacementTerritory extends MapController {
         }
 
         if (sum == 50) {
+
+            // client.sendPlacementPrompt();
+            String placementResult = client.sendPlacementOrder(game.getGameID(), placementOrders);
+
+            System.out.println(placementResult);
 
             unitsPlacedText.setText("");
             resetFields();
@@ -156,6 +161,16 @@ public class MapPlacementTerritory extends MapController {
         return sum;
 
     }
+
+    // public void getPlacementOrder(){
+    // HashMap<String, Integer> placementOrder = new HashMap<>();
+
+    // for (int i =0; i < territoryFields.size(); i++){
+
+    // place
+    // }
+
+    // }
 
     public void goToPlacingActionsScreen() throws IOException {
 

@@ -68,4 +68,5 @@ public class MapChooseActionController extends MapController {
 
         App.getPrimaryStage().setScene(scene);
     }
+
 }

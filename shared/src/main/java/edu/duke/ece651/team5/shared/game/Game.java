@@ -28,6 +28,10 @@ public class Game implements Serializable {
         this.gameID = gameID;
     }
 
+    public Integer getGameID() {
+        return gameID;
+    }
+
     public Player getPlayerByName(String name) {
         return players
                 .stream()

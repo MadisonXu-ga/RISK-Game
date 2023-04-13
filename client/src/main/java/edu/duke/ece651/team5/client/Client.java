@@ -240,6 +240,31 @@ public class Client {
 
   }
 
+  public String sendPlacementOrder(Integer gameID, HashMap<String, Integer> placementOrders)
+      throws IOException, ClassNotFoundException {
+
+    playerConnection.writeData("Place unit");
+    playerConnection.writeData(gameID);
+    playerConnection.writeData(placementOrders);
+    String msg = (String) playerConnection.readData();
+
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+    return msg;
+
+  }
+
+  public String sendGameID(Integer gameID) throws ClassNotFoundException, IOException {
+
+    playerConnection.writeData(gameID);
+    String msg = (String) playerConnection.readData();
+
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+    return msg;
+
+  }
+
   public ArrayList<Integer> getGamesStarted() throws IOException, ClassNotFoundException {
 
     playerConnection.writeData("Retrieve active games");

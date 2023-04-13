@@ -97,8 +97,8 @@ public class MapGoBackController extends MapController {
         System.out.println("you are trying to move from: " + sourceTerritory + " to " + destTerritorry);
     }
 
-    public void onsubmitPlacement() {
+    // public void onSubmitMove() {
 
-    }
+    // }
 
 }

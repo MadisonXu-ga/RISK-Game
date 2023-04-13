@@ -2,6 +2,7 @@ package edu.duke.ece651.team5.shared.game;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 /*
  * This class handle a list of players and a map for the game
@@ -71,4 +72,17 @@ public class Game implements Serializable {
                 .orElse(null);
     }
 
+    /**
+     * get player by player object
+     * @param player the target player to find
+     * @return the player
+     */
+    public Player getPlayer(Player player){
+        return players.stream()
+                .filter(targetPlayer -> targetPlayer.equals(player))
+                .findFirst()
+                .orElse(null);
+        
+    }
+    
 }

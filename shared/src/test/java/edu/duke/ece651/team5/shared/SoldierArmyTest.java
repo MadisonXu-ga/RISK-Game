@@ -8,13 +8,11 @@ import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 
-import static edu.duke.ece651.team5.shared.constant.Constants.DEFAULT_INIT_SOLDIER_NUM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,6 +80,7 @@ public class SoldierArmyTest {
 
         SoldierArmy expected = new SoldierArmy();
         expected.addSoldier(soldier, 5);
+        System.out.println(allSoldiers);
         assertEquals(expected.getAllSoldiers(), allSoldiers);
     }
 

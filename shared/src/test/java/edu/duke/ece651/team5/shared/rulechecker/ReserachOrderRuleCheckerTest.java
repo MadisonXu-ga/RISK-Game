@@ -2,10 +2,12 @@ package edu.duke.ece651.team5.shared.rulechecker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 import edu.duke.ece651.team5.shared.resource.Resource;
@@ -14,11 +16,13 @@ import edu.duke.ece651.team5.shared.resource.ResourceType;
 public class ReserachOrderRuleCheckerTest {
     private ResearchOrderRuleChecker ruleChecker;
     private ResearchOrder order;
+    private Game game;
 
     @BeforeEach
     public void setUp() {
         ruleChecker = new ResearchLevelBoundRuleChecker(new ResearchEnoughResourceRuleChecker(null)); // No next rule checker, as it is the last in the chain
-        order = new ResearchOrder(new Player("Player 1"));
+        game = mock(Game.class);
+        order = new ResearchOrder(new Player("Player 1"), game);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package edu.duke.ece651.team5.shared.game;
 
 import edu.duke.ece651.team5.shared.order.AttackOrder;
+import edu.duke.ece651.team5.shared.unit.Soldier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,7 +136,10 @@ public class CombatResolver {
         targetTerri.getOwner().loseTerritory(fightingTerri);
         targetTerri.setOwner(targetPlayer);
         System.out.println("new owner: " + fightingTerri.getOwner().getName());
-        targetTerri.getSoldierArmy().setSoldiers(combatPlayers.convertToSoldier(winner));
+        Map<Soldier, Integer> res = combatPlayers.convertToSoldier(winner);
+        for(Soldier soldier: res.keySet()){
+            targetTerri.getSoldierArmy().addSoldier(soldier, res.get(soldier));;
+        }
         System.out.println("new unit: " + fightingTerri.getSoldierArmy().getAllSoldiers());
         targetPlayer.addTerritory(fightingTerri);
     }

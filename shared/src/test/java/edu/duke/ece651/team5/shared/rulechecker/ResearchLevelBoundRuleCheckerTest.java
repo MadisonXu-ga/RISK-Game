@@ -2,10 +2,12 @@ package edu.duke.ece651.team5.shared.rulechecker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 import edu.duke.ece651.team5.shared.constant.*;
@@ -13,16 +15,18 @@ import edu.duke.ece651.team5.shared.constant.*;
 public class ResearchLevelBoundRuleCheckerTest {
     private ResearchLevelBoundRuleChecker ruleChecker;
     private Player player;
+    private Game game;
 
     @BeforeEach
     public void setUp() {
         ruleChecker = new ResearchLevelBoundRuleChecker(null); // No next rule checker, as it is the last in the chain
         player = new Player("Player 1");
+        game = mock(Game.class);
     }
 
     @Test
     public void testCheckMyRuleWithLowerTechnologyLevel() {
-        ResearchOrder order = new ResearchOrder(player);
+        ResearchOrder order = new ResearchOrder(player, game);
         String result = ruleChecker.checkMyRule(order);
 
         assertNull(result);
@@ -30,7 +34,7 @@ public class ResearchLevelBoundRuleCheckerTest {
 
     @Test
     public void testCheckMyRuleWithMaxTechnologyLevel() {
-        ResearchOrder order = new ResearchOrder(player);
+        ResearchOrder order = new ResearchOrder(player, game);
         player.setCurrTechnologyLevel(Constants.GAME_MAX_TECHNOLOGY_LEVEL);
         String result = ruleChecker.checkMyRule(order);
         assertEquals("Cannot upgrade technology level anymore", result);

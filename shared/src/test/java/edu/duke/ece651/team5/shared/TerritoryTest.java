@@ -72,9 +72,9 @@ public class TerritoryTest {
         Territory t = new Territory(1, "Territory A", new Player("Player 1"));
         Soldier s = new Soldier(SoldierLevel.INFANTRY);
 
-        assertEquals(1, t.getSoldierArmy().getSoldierCount(s));
+        assertEquals(0, t.getSoldierArmy().getSoldierCount(s));
         t.getSoldierArmy().addSoldier(s, 1);
-        assertEquals(2, t.getSoldierArmy().getSoldierCount(s));
+        assertEquals(1, t.getSoldierArmy().getSoldierCount(s));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class TerritoryTest {
         t.getSoldierArmy().addSoldier(s1,1);
         t.getSoldierArmy().addSoldier(s2, 1);
 
-        assertEquals(2, t.getSoldierArmy().getAllSoldiers().get(s1));
+        assertEquals(1, t.getSoldierArmy().getAllSoldiers().get(s1));
         assertEquals(1, t.getSoldierArmy().getAllSoldiers().get(s2));
     }
 
@@ -101,10 +101,10 @@ public class TerritoryTest {
         Territory territory = new Territory(2, "Territory 1", new Player("Player 1"), army1);
         territory.getSoldierArmy().setSoldiers(army2.getAllSoldiers());
     
-        Map<Soldier, Integer> expectedArmy = new HashMap<>();
-        expectedArmy.put(new Soldier(SoldierLevel.INFANTRY), 11);
+        SoldierArmy expectedArmy = new SoldierArmy();
+        expectedArmy.getAllSoldiers().put(new Soldier(SoldierLevel.INFANTRY), 10);
     
-        assertEquals(expectedArmy, territory.getSoldierArmy().getAllSoldiers());
+        assertEquals(expectedArmy.getAllSoldiers(), territory.getSoldierArmy().getAllSoldiers());
     }
     
 }

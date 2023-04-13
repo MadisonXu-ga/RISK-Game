@@ -1,6 +1,8 @@
 package edu.duke.ece651.team5.shared.resource;
 
-public class Resource {
+import java.io.Serializable;
+
+public class Resource implements Serializable {
     // the type of the resource
     ResourceType type;
 

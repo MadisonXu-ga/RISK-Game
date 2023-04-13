@@ -16,13 +16,16 @@ public class ResearchOrder implements Order {
             new ArrayList<>(Arrays.asList(20, 40, 80, 160, 320));
 
     // the player who issued this order
-    Player player;
+    private Player player;
+    private Game game;
 
     /**
      * constructor
      * @param player the player who issued this order
+     * @param game the game
      */
-    public ResearchOrder(Player player) {
+    public ResearchOrder(Player player, Game game) {
+        this.game = game;
         this.player = player;
     }
 
@@ -43,6 +46,6 @@ public class ResearchOrder implements Order {
         int currTechnologyLevel = this.player.getCurrTechnologyLevel();
         this.player.consumeResource(new Resource(ResourceType.TECHNOLOGY),
                 researchConsumeCost.get(currTechnologyLevel));
-        this.player.upgradeTechnologyLevel();
+        this.game.getPlayer(player).upgradeTechnologyLevel();
     }
 }

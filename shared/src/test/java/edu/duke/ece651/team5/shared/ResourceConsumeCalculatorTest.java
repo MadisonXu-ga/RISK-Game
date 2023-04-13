@@ -1,6 +1,7 @@
 package edu.duke.ece651.team5.shared;
 
 import edu.duke.ece651.team5.shared.datastructure.Pair;
+import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.Territory;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 public class ResourceConsumeCalculatorTest {
     RISKMap map;
@@ -28,6 +30,7 @@ public class ResourceConsumeCalculatorTest {
     Territory territory4;
     Territory territory2;
     Player player;
+    Game game;
     @BeforeEach
     public void setUp() {
         Map<String, Territory> territories = new HashMap<>();
@@ -50,7 +53,12 @@ public class ResourceConsumeCalculatorTest {
         territory2 = map.getTerritoryByName("Territory 2");
         territory4 = map.getTerritoryByName("Territory 4");
         player = territory1.getOwner();
-    }
+
+        Game game = mock(Game.class);
+        when(game.getMap()).thenReturn(map);
+        when(game.getPlayer(any(Player.class))).thenReturn(player);
+        when(game.getPlayeryByName(anyString())).thenReturn(player);
+        }
     @Test
     void computeFoodConsumeForMove() {
         SoldierArmy soldierArmy = territory1.getSoldierArmy();
@@ -73,7 +81,7 @@ public class ResourceConsumeCalculatorTest {
 
     @Test
     void computeTechConsumeForResearch() {
-        ResearchOrder research = new ResearchOrder(player);
+        ResearchOrder research = new ResearchOrder(player, game);
         assertEquals(20, ResourceConsumeCalculator.computeTechConsumeForResearch(research));
     }
 

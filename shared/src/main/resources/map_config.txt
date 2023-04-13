@@ -2,7 +2,7 @@ Narnia, Elantris, Midkemia, Scadrial, Oz, Roshar, Gondor, Mordor, Hogwarts, Thal
 Arathia: Hogwarts, Eryndor, Kaelindor, Eterna, Sylvaria
 Celestia: Kaelindor, Emberfall
 Draconia: Mythosia, Kaelindor, Stormhaven
-Elantris: Narnia, Midkemia, Scadrial4
+Elantris: Narnia, Midkemia, Scadrial
 Emberfall: Oz, Mordor, Sylvaria, Kaelindor, Celestia
 Eryndor: Arathia, Eterna
 Eterna: Eryndor, Arathia, Kaelindor, Mythosia, Shadowmire

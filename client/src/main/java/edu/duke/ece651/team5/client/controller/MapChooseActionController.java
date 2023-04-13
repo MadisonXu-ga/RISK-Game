@@ -91,9 +91,47 @@ public class MapChooseActionController extends MapController {
         App.getPrimaryStage().setScene(scene);
     }
 
+    public void onAttackAction() throws IOException {
+
+        URL xmlResource = getClass().getResource("/attack-map.fxml");
+        // URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+        MapGoBackController mapGoBackController = new MapGoBackController(client, game, false, this);
+        controllers.put(MapGoBackController.class, mapGoBackController);
+        // controllers.put(MapChooseActionController.class, new
+        // MapChooseActionController());
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        StackPane bp = loader.load();
+
+        Scene scene = new Scene(new StackPane(bp));
+
+        List<Territory> ownTerritory = game.getPlayerByName(client.getColor()).getTerritories();
+
+        List<Territory> enemyTerritory = new ArrayList<>();
+
+        for (Territory territory : ownTerritory) {
+
+            enemyTerritory.addAll(game.getMap().getNeighbors(territory.getId(), false,
+                    game.getPlayerByName(client.getColor())));
+
+        }
+        ArrayList<String> ownTerritoriesStr = mapGoBackController.setList(ownTerritory);
+        ArrayList<String> enemyTerritoriesStr = mapGoBackController.setList(enemyTerritory);
+
+        // App.getPrimaryStage().setScene(scene);
+        mapGoBackController.refresh(ownTerritoriesStr, enemyTerritoriesStr, client.getColor(), client.getColor());
+        System.out.println(ownTerritoriesStr);
+        App.getPrimaryStage().setScene(scene);
+    }
+
     public void onDone() throws ClassNotFoundException, IOException {
 
-        Action emptyAction = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Action emptyAction = new Action(attackOrders, moveOrders, null, new ArrayList<>());
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
@@ -109,8 +147,12 @@ public class MapChooseActionController extends MapController {
             game = client.updatedGameAfterTurn();
             client.checkWin();
             client.checkLost();
-            // initialize();
-            // App.loadScenefromMain("submit-actions");
+            initialize();
+            App.loadScenefromMain("submit-actions");
+            attackOrders = new ArrayList<>();
+            moveOrders = new ArrayList<>();
+            upgradeOrders = new ArrayList<>();
+            researchOrder = null;
         }
 
     }

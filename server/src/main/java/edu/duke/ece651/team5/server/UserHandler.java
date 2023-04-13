@@ -447,18 +447,19 @@ public class UserHandler implements Runnable {
 
                         // check user lose or not
                         // lost
-                        if (gameController.checkUserLose(user)) {
-                            playerConnectionNow.writeData("You lost");
-                            String lostChoice = (String) playerConnectionNow.readData();
-                            if (lostChoice.equals("Disconnect")) {
-                                gameController.setUserActiveStatus(user, false);
-                            } else if (lostChoice.equals("Display")) {
-                                gameController.setUserActiveStatus(user, null);
+                        if ((userActiveStatus != null && userActiveStatus == true)) {
+                            if (gameController.checkUserLose(user)) {
+                                playerConnectionNow.writeData("You lost");
+                                String lostChoice = (String) playerConnectionNow.readData();
+                                if (lostChoice.equals("Disconnect")) {
+                                    gameController.setUserActiveStatus(user, false);
+                                } else if (lostChoice.equals("Display")) {
+                                    gameController.setUserActiveStatus(user, null);
+                                }
+                                return;
                             }
-                            return;
+                            playerConnectionNow.writeData("Not lost");
                         }
-
-                        playerConnectionNow.writeData("Not lost");
                     }
                 }
 

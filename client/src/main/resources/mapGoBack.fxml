@@ -39,7 +39,7 @@
             <Button fx:id="Shadowmire" layoutX="1211.0" layoutY="399.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="175.0" prefWidth="165.0" styleClass="Shadowmirebtn" stylesheets="@territory.css" />
             <Button fx:id="Eterna" layoutX="1078.0" layoutY="371.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="160.0" prefWidth="203.0" styleClass="Eternabtn" stylesheets="@territory.css" />
             <Button fx:id="Draconia" layoutX="1121.0" layoutY="182.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="81.0" prefWidth="57.0" styleClass="Draconiabtn" stylesheets="@territory.css" />
-            <Button fx:id="Mythosia" layoutX="1125.0" layoutY="169.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="237.0" prefWidth="181.0" styleClass="Myhtosiabtn" stylesheets="@territory.css" />
+            <Button fx:id="Mythosia" layoutX="1125.0" layoutY="169.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="237.0" prefWidth="181.0" styleClass="Mythosiabtn" stylesheets="@territory.css" />
             <Button fx:id="Stormhaven" layoutX="1169.0" layoutY="104.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="134.0" prefWidth="129.0" styleClass="Stormhavenbtn" stylesheets="@territory.css" />
             <Button fx:id="Verdantia" layoutX="1284.0" layoutY="212.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="109.0" prefWidth="87.0" styleClass="Verdantiabtn" stylesheets="@territory.css" />
             <Button fx:id="Frosthold" layoutX="1288.0" layoutY="309.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="103.0" prefWidth="83.0" styleClass="Frostholdbtn" stylesheets="@territory.css" />

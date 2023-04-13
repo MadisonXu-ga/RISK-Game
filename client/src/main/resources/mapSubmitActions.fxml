@@ -17,7 +17,7 @@
                   <Font name="Lucida Calligraphy Italic" size="18.0" />
                </font>
             </Text>
-            <Button fx:id="attackOrderbtn" layoutX="14.0" layoutY="314.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Attack order">
+            <Button fx:id="attackOrderbtn" layoutX="14.0" layoutY="314.0" mnemonicParsing="false" onAction="#onAttackAction" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Attack order">
                <font>
                   <Font size="16.0" />
                </font>
@@ -67,7 +67,7 @@
                   <Button fx:id="Shadowmire" layoutX="1000.0" layoutY="334.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="175.0" prefWidth="165.0" styleClass="Shadowmirebtn" stylesheets="@territory.css" translateX="150.0" translateY="50.0" />
                   <Button fx:id="Eterna" layoutX="867.0" layoutY="306.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="160.0" prefWidth="203.0" styleClass="Eternabtn" stylesheets="@territory.css" translateX="150.0" translateY="50.0" />
                   <Button fx:id="Draconia" layoutX="910.0" layoutY="117.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="81.0" prefWidth="57.0" styleClass="Draconiabtn" stylesheets="@territory.css" translateX="150.0" translateY="50.0" />
-                  <Button fx:id="Mythosia" layoutX="914.0" layoutY="104.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="237.0" prefWidth="181.0" styleClass="Myhtosiabtn" stylesheets="@territory.css" translateX="150.0" translateY="50.0" />
+                  <Button fx:id="Mythosia" layoutX="914.0" layoutY="104.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="237.0" prefWidth="181.0" styleClass="Mythosiabtn" stylesheets="@territory.css" translateX="150.0" translateY="50.0" />
                   <Button fx:id="Stormhaven" layoutX="958.0" layoutY="39.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="134.0" prefWidth="129.0" styleClass="Stormhavenbtn" stylesheets="@territory.css" translateX="150.0" translateY="50.0" />
                   <Button fx:id="Verdantia" layoutX="1073.0" layoutY="147.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="109.0" prefWidth="87.0" styleClass="Verdantiabtn" stylesheets="@territory.css" translateX="150.0" translateY="50.0" />
                   <Button fx:id="Frosthold" layoutX="1077.0" layoutY="244.0" mnemonicParsing="false" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseEntered" pickOnBounds="false" prefHeight="103.0" prefWidth="83.0" styleClass="Frostholdbtn" stylesheets="@territory.css" translateX="150.0" translateY="50.0" />

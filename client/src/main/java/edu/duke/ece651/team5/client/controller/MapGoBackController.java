@@ -136,13 +136,25 @@ public class MapGoBackController extends MapController {
         destTerritorybtn.setValue(destTerritorybtn.getId());
         System.out.println("you are trying to move from: " + sourceTerritory + " to " + destTerritorry);
 
-        int numberUnits = numberUnitsSpinner.getValue();
+        // int numberUnits = numberUnitsSpinner.getValue();
         SoldierArmy soldierArmy = new SoldierArmy();
-        soldierArmy.addSoldier(new Soldier(unitsComboBox.getValue()), numberUnits);
+        // soldierArmy.addSoldier(new Soldier(unitsComboBox.getValue()), numberUnits);
+
+        try {
+            // get the selected value from the ComboBox
+            int numberUnits = numberUnitsSpinner.getValue();
+            soldierArmy.addSoldier(new Soldier(unitsComboBox.getValue()), numberUnits);
+
+            // process the selected value and value from spinner...
+        } catch (NullPointerException | NumberFormatException e) {
+            // handle invalid input
+            e.printStackTrace();
+        }
         Player player = game.getPlayerByName(client.getColor());
 
-        if (sourceTerritory != sourceTerritorybtn.getId() && destTerritorry != destTerritorybtn.getValue()
-                && soldierArmy != null) {
+        if (game.getMap().getTerritoryByName(sourceTerritory) != null
+                && game.getMap().getTerritoryByName(destTerritorry) != null
+                && !(soldierArmy.equals(new SoldierArmy()))) {
             // code to execute if all variables are not null
             MoveOrder moveOrder = new MoveOrder(sourceTerritory, destTerritorry, soldierArmy, player);
             mapChooseActionController.moveOrders.add(moveOrder);
@@ -171,16 +183,27 @@ public class MapGoBackController extends MapController {
         destTerritorybtn.setValue(destTerritorybtn.getId());
         System.out.println("you are trying to move from: " + sourceTerritory + " to " + destTerritorry);
 
-        int numberUnits = numberUnitsSpinner.getValue();
         SoldierArmy soldierArmy = new SoldierArmy();
-        soldierArmy.addSoldier(new Soldier(unitsComboBox.getValue()), numberUnits);
+
+        try {
+            // get the selected value from the ComboBox
+            int numberUnits = numberUnitsSpinner.getValue();
+            soldierArmy.addSoldier(new Soldier(unitsComboBox.getValue()), numberUnits);
+
+            // process the selected value and value from spinner...
+        } catch (NullPointerException | NumberFormatException e) {
+            // handle invalid input
+            e.printStackTrace();
+        }
+
         Player player = game.getPlayerByName(client.getColor());
 
-        if (sourceTerritory != sourceTerritorybtn.getId() && destTerritorry != destTerritorybtn.getValue()
-                && soldierArmy != null) {
+        if (game.getMap().getTerritoryByName(sourceTerritory) != null
+                && game.getMap().getTerritoryByName(destTerritorry) != null
+                && !(soldierArmy.equals(new SoldierArmy()))) {
             // code to execute if all variables are not null
-            MoveOrder moveOrder = new MoveOrder(sourceTerritory, destTerritorry, soldierArmy, player);
-            mapChooseActionController.moveOrders.add(moveOrder);
+            AttackOrder attackOrder = new AttackOrder(sourceTerritory, destTerritorry, soldierArmy, player);
+            mapChooseActionController.attackOrders.add(attackOrder);
             actionMessage.setText("");
         } else {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
@@ -222,7 +245,10 @@ public class MapGoBackController extends MapController {
             System.out.println("Territory button: " + matchingButton.getId());
             if (matchingButton != null) {
                 // System.out.println("color: [" + client.getColor() + "]");
-                matchingButton.setStyle("-fx-background-color: " + colorSource + ";");
+                matchingButton.getStyleClass().clear();
+                matchingButton.getStyleClass().add(sourceTerri + "btn");
+                matchingButton.getStyleClass()
+                        .add(game.getMap().getTerritoryByName(sourceTerri).getOwner().getName() + "Playerbtn");
                 // matchingButton.setStyle("-fx-background-color: red;");
             }
         }
@@ -232,7 +258,13 @@ public class MapGoBackController extends MapController {
             Button matchingButton = getMatchingGameButton(destTerritory);
             if (matchingButton != null) {
                 // System.out.println("color: [" + client.getColor() + "]");
-                matchingButton.setStyle("-fx-background-color: " + colorDest + ";");
+                // matchingButton.getStyleClass()
+                // .add(game.getMap().getTerritoryByName(destTerritory).getOwner().getName() +
+                // "Playerbtn");
+                matchingButton.getStyleClass().clear();
+                matchingButton.getStyleClass().add(destTerritory + "btn");
+                matchingButton.getStyleClass()
+                        .add(game.getMap().getTerritoryByName(destTerritory).getOwner().getName() + "Playerbtn");
                 // matchingButton.setStyle("-fx-background-color: red;");
             }
         }

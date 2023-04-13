@@ -1,6 +1,11 @@
 package edu.duke.ece651.team5.shared;
 
 import edu.duke.ece651.team5.shared.*;
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.order.AttackOrder;
+import edu.duke.ece651.team5.shared.order.MoveOrder;
+import edu.duke.ece651.team5.shared.unit.Soldier;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,7 +31,7 @@ public class ActionTest {
     ArrayList<MoveOrder> expected = new ArrayList<>();
     Map<Soldier, Integer> soldiers1 = new HashMap<>();
     Player green = new Player("green");
-    expected.add(new MoveOrder("A", "B", soldiers1, green));
+    expected.add(new MoveOrder("A", "B",new SoldierArmy(soldiers1) , green));
     expected.add(new MoveOrder("C", "D", soldiers1, green));
     assertEquals(expected, act.getMoveOrders());
   }

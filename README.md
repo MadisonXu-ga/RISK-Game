@@ -10,40 +10,117 @@
 ## UML Diagram
 https://app.diagrams.net/#G1KTyLsnkdNQ0dshPDDPIh9IM6hmnQTf1p
 
-## Game Mechanics
+### Game Rule
+our game supports player from 2 to 4
+There are a total of 24 territories, and will assigned to players evenly according to the player number
 
-Welcome to our game! Here you will find the latest version of the RISC game from us, team 5.
+All the soldiers will begin at level 0 (with the name of infantry), and there are a total of 7 levels:
+0 - INFANTRY
+1 - CAVALRY
+2 - ARTILLERY
+3 - AIRBORNE
+4 - ARMOR
+5 - AVIATION
+6 - INTELLIGENCE
 
-Here we explain the game mechanics of how it works:
 
-- please open at least 2 terminals
-- in the first one run the following commands
-  - `.\gradlew installDist` to make sure the file is up to date
-  - `.\gradlew run-server`
-- open the second terminal
-  - `./client/build/install/client/bin/client`
-  - choose how many players in total you want in your game [2-4]
-- open the other terminals and run the below command in each one
-  - `./client/build/install/client/bin/client`
 
-### Territory unit placement
+ - client : the code for the client
+ - server : the code for the server
+ - shared : for code that is shared between the client and the server
 
-#### Our Rules
+If you take a look, you will see that we have setup a few placeholder classes:
 
-- each player will have 50 units at the start which they could place in each of their pre assigned territories at will
-- our RISK map has 24 existing territories which are pre assigned to the current players
-- each territory already has a starting unit which they can't remove at least until the turn starts
-- PS. BE SMART ABOUT YOUR CHOICES! it can mean the difference between winning and losing
-- continue placing the units until you run out
+ - shared/src/main/java/edu/duke/ece651/teamX/shared/MyName.java
+   is a class shared between the client and server.  This placeholder
+   class just has getName(), but in RISC you might put things here
+   like Territory, RISKMap, etc.
+ - client/src/main/java/edu/duke/ece651/teamX/client/App.java
+   is the "client" code.  It makes use of the shared class MyName
+   and calls MyName.getName() its getMessage() method.
+ - server/src/main/java/edu/duke/ece651/teamX/server/App.java
+   is the "server" code.  It also uses MyName.getName() for
+   its getMessage() method. (Note there is nothing special
+   about getMessage() nor do real client/servers need those---
+   our placeholders just print a message).
 
-### Move and Attack!
+You can run the client fro the top-level (gradle-skeleton directory)
+with
 
-- now that you made some good decisions for the territories is time to have some fun!
-- Start making moves across your map any time a connecting territory is present
-  - make sure you have enough units to do so
-- if you feel confident you can even attack your opponent! But how?
-  - the attack movement can only be performed from adjacent territories, and will always be performed after the movements have been made, even if they were 'ordered' before them.
-  - the result of the attack will be decided by a dice which determines by random chance who wins in a fight 1v1 for each unit that fights
-- the game will continue until a winner (the person who gets all the territories) is reached
+./gradlew run-client
 
-Have some fun and see you for our V2 of the game!
+which will print:
+
+> Task :client:run
+Hello from the client for teamX
+
+(and then some gradle warnings about features deprecated in 8.0)
+
+Likewise you can run the server with
+
+./gradlew run-server
+
+which will print:
+
+> Task :server:run
+Hello from the server for teamX
+
+(and then the gradle deprecation warnings)
+
+Note that everything here is in a package for "teamX".  Best practices
+are to replace that with your team (like team1, team2, team3) so
+that your package names are unique.
+
+If you open the code for the provided files in Emacs and run test
+coverage (C-c C-t) you will get test coverage for that particular
+sub-project.  E.g., if you are editing server code, you will get
+test coverage for the server code.  If you are editing shared
+code, you will get test coverage for the shared code. That is
+as-intended.
+
+However, you will need to make a small change to your CI scripts
+to aggregate the reports and get them from the right place.
+
+First, the dcoverage.el in factor server is slightly outdated
+(which is no big deal for that project), so you should use the
+one installed in your dev-setup (~/.emacs.d/dcoverage/dcoverage.el).
+We've also included that in this directory.
+
+Second, the scripts/test.sh file in the CI/CD tutorial (factor server) says:
+
+#!/bin/bash
+
+./gradlew build || exit 1
+./gradlew cloverGenerateReport || exit 1
+scripts/coverage_summary.sh
+cp -r app/build/reports/clover/html/* /coverage-out/ || exit 1
+
+This script needs two changes:
+
+#!/bin/bash
+
+./gradlew build || exit 1
+./gradlew cloverGenerateReport || exit 1
+# Change 1: run cloverAggregateReport
+./gradlew cloverAggregateReport || exit 1
+scripts/coverage_summary.sh
+# Change 2: remove "app/" from this path
+cp -r build/reports/clover/html/* /coverage-out/ || exit 1
+
+
+We've included that updated file here for you as well.
+
+With that, you should be able to get your multi-project gradle setup,
+and get your CI/CD setup!
+
+
+
+
+
+
+
+
+
+
+
+

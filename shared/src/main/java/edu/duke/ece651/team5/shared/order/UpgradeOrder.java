@@ -16,11 +16,11 @@ public class UpgradeOrder implements Order {
     public final static ArrayList<Integer> upgradeConsumeCost =
             new ArrayList<>(Arrays.asList(0, 3, 11, 30, 55, 90, 140));
     // the territory name of the territory where is upgrade is about to happen
-    String territoryName;
+   private String territoryName;
     // (solider, how many of this soldier) -> target level
     protected Map<Pair<Soldier, Integer>, SoldierLevel> soldierToUpgrade;
     // the player issued this order
-    Player player;
+    private Player player;
 
     /**
      * constructor

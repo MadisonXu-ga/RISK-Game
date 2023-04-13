@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -225,7 +226,7 @@ public class GameControllerTest {
     }
 
     @Test
-    void testReceiveActionFromUser(){
+    void testReceiveActionFromUser() throws ClassNotFoundException, IOException{
         GameController game = new GameController(3);
         User mockUser1 = mock(User.class);
         User mockUser2 = mock(User.class);

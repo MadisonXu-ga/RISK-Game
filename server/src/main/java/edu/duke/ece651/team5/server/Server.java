@@ -22,18 +22,14 @@ public class Server {
     private ArrayList<Socket> clientSockets;
     private final PrintStream out;
 
-    // public GameController gameController;
-
     // true -> normal accept; null -> lost but watch the game;
     // false -> lost and disconnect.
     // TODO: move to gamecontroller
     HashMap<Integer, Boolean> playerConnectionStatus;
 
     // ----------add v2 new features------------
-    // private ArrayList<PlayerConnection> clients;
     private HashMap<User, PlayerConnection> clients;
     private UserManager userManager;
-    // private ArrayList<GameController> allGames;
     private HashMap<Integer, GameController> allGames;
     private UserGameMap userGameMap;
 

@@ -174,7 +174,8 @@ public class MapChooseActionController extends MapController {
 
         // Check if the user clicked the "OK" button
         if (confirmButton == ButtonType.OK) {
-            researchOrder = new ResearchOrder(game.getPlayerByName(client.getColor()), game);
+            // User clicked OK, proceed with the action
+            // ...
         } else {
             // User clicked Cancel, do nothing or handle accordingly
             // ...

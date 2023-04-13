@@ -104,6 +104,21 @@
                         <Font name="Lucida Calligraphy Italic" size="18.0" />
                      </font>
                   </Text>
+                  <Text layoutX="24.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cost to perform the action:" wrappingWidth="167.20327758789062" y="40.0">
+                     <font>
+                        <Font name="Lucida Calligraphy Italic" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="24.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30" underline="true" wrappingWidth="40.00326919555664" y="40.0">
+                     <font>
+                        <Font name="Lucida Calligraphy Italic" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="59.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="points" wrappingWidth="96.00326919555664" y="40.0">
+                     <font>
+                        <Font name="Lucida Calligraphy Italic" size="18.0" />
+                     </font>
+                  </Text>
                   <Spinner fx:id="numberUnitsSpinner" layoutX="245.0" layoutY="652.0" prefHeight="26.0" prefWidth="58.0" style="-fx-border-radius: 2;" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
                   <Text fx:id="gameID" layoutX="31.0" layoutY="-91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="gameID:" wrappingWidth="445.6033172607422" y="200.0">
                      <font>
@@ -115,12 +130,6 @@
                         <Font name="Lucida Calligraphy Italic" size="18.0" />
                      </font>
                   </Text>
-                  <Text layoutX="24.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The cost for the action will be displayed as a confirmation on the submit button" wrappingWidth="167.20327758789062" y="40.0">
-                     <font>
-                        <Font name="Lucida Calligraphy Italic" size="18.0" />
-                     </font>
-                  </Text>
-                  <ComboBox fx:id="unitsComboBoxTarget" layoutX="315.0" layoutY="607.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" />
                </children>
             </AnchorPane>
          </right>

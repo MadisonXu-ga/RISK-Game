@@ -21,7 +21,6 @@ import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
-import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -173,14 +172,8 @@ public class MapGoBackController extends MapController {
                 && !(soldierArmy.equals(new SoldierArmy()))) {
             // code to execute if all variables are not null
             MoveOrder moveOrder = new MoveOrder(sourceTerritory, destTerritorry, soldierArmy, player);
-
-            Integer foodAmount = ResourceConsumeCalculator.computeFoodConsumeForMove(moveOrder, game.getMap());
-
-            if (getConfirmation(foodAmount)) {
-                mapChooseActionController.moveOrders.add(moveOrder);
-                actionMessage.setText("");
-            }
-
+            mapChooseActionController.moveOrders.add(moveOrder);
+            actionMessage.setText("");
         } else {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
             destTerritorybtn.setValue(destTerritorybtn.getId());
@@ -225,13 +218,8 @@ public class MapGoBackController extends MapController {
                 && !(soldierArmy.equals(new SoldierArmy()))) {
             // code to execute if all variables are not null
             AttackOrder attackOrder = new AttackOrder(sourceTerritory, destTerritorry, soldierArmy, player);
-
-            Integer foodAmount = ResourceConsumeCalculator.computeFoodConsumeForAttack(attackOrder, game.getMap());
-
-            if (getConfirmation(foodAmount)) {
-                mapChooseActionController.attackOrders.add(attackOrder);
-                actionMessage.setText("");
-            }
+            mapChooseActionController.attackOrders.add(attackOrder);
+            actionMessage.setText("");
         } else {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
             destTerritorybtn.setValue(destTerritorybtn.getId());
@@ -296,21 +284,6 @@ public class MapGoBackController extends MapController {
             }
         }
         // App.loadScenefromMain("submit-actions");
-
-    }
-
-    public boolean getConfirmation(Integer amount) {
-        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION,
-                "Are you sure you want to upgrade? It will cost you "
-                        + amount + " food resources");
-        confirmationDialog.setTitle("Confirmation");
-        confirmationDialog.setHeaderText(null);
-
-        // Show the confirmation dialog and wait for the user's response
-        ButtonType confirmButton = confirmationDialog.showAndWait().orElse(ButtonType.CANCEL);
-
-        // Check if the user clicked the "OK" button
-        return (confirmButton == ButtonType.OK);
 
     }
 

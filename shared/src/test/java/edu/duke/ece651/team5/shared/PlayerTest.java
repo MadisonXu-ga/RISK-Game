@@ -10,6 +10,7 @@ import edu.duke.ece651.team5.shared.game.Territory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,11 +77,12 @@ public class PlayerTest {
     }
 
     @Test
-    public void testEqualsAndHashCode() {
+    public void testEqualsAndHashCode() throws IOException, ClassNotFoundException {
         Player player1 = new Player("Player 1");
         Player player2 = new Player("Player 2");
         // Test equals() method
-        Player player1Copy = new Player("Player 1");
+        //Player player1Copy = new Player("Player 1");
+        Player player1Copy = player1.getDeepCopy();
         Player player1Different = new Player("Player 3");
         Player nullPlayer = null;
         String stringObject = "Not a Player object";

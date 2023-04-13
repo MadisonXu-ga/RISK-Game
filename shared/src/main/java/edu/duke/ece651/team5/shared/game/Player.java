@@ -1,6 +1,6 @@
 package edu.duke.ece651.team5.shared.game;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 
 import edu.duke.ece651.team5.shared.resource.Resource;
@@ -58,6 +58,20 @@ public class Player implements Serializable {
         } else {
             resourceToAmount.put(resource, newCount);
         }
+    }
+
+    public Player getDeepCopy() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(this);
+        oos.close();
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Player copy = (Player) ois.readObject();
+        ois.close();
+
+        return copy;
     }
 
     /**

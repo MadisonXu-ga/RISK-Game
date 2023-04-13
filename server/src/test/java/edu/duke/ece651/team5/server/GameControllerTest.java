@@ -246,4 +246,9 @@ public class GameControllerTest {
         String errorMsg = game.receiveActionFromUser(mockUser2, action2);
         assertNotNull(errorMsg);
     }
+
+    @Test
+    void testTryResolveAllOrders(){
+        //
+    }
 }

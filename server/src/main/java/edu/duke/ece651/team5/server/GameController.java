@@ -80,7 +80,7 @@ public class GameController {
         return game;
     }
 
-    public String getUserColor(User user){
+    public String getUserColor(User user) {
         return userToPlayerMap.get(user).getName();
     }
 
@@ -237,7 +237,7 @@ public class GameController {
         return userActiveStatus.get(user);
     }
 
-    public void setUserActiveStatus(User user, Boolean newStatus){
+    public void setUserActiveStatus(User user, Boolean newStatus) {
         userActiveStatus.put(user, newStatus);
     }
 
@@ -257,7 +257,7 @@ public class GameController {
         resolveUnitPlacement(unitPlacements);
         ++initialNum;
 
-        if(initialNum==playerNum){
+        if (initialNum == playerNum) {
             this.status = GameStatus.STARTED;
             return "Placement finished";
         }
@@ -275,7 +275,7 @@ public class GameController {
             String name = entry.getKey();
             int unitNum = entry.getValue();
             Territory terr = game.getMap().getTerritoryByName(name);
-            terr.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), unitNum);
+            terr.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), unitNum - 1);
         }
     }
 
@@ -333,7 +333,6 @@ public class GameController {
     }
 
     // TODO: move all of these to a new file
-    
 
     public synchronized String checkGameWin() {
         //
@@ -348,16 +347,16 @@ public class GameController {
         return null;
     }
 
-    public synchronized boolean checkUserLose(User user){
+    public synchronized boolean checkUserLose(User user) {
         HashMap<String, Boolean> playerStatus = getPlayerWinLoseStatus(players);
         Player player = userToPlayerMap.get(user);
-        if(playerStatus.get(player.getName())==null){
+        if (playerStatus.get(player.getName()) == null) {
             return false;
         }
         return true;
     }
 
-    protected HashMap<String, Boolean> getPlayerWinLoseStatus(ArrayList<Player> players){
+    protected HashMap<String, Boolean> getPlayerWinLoseStatus(ArrayList<Player> players) {
         HashMap<String, Boolean> playerStatus = new HashMap<>();
         for (Player player : players) {
             if (player.getTerritories().size() == 0) {

@@ -72,4 +72,20 @@ public class UpgradeOrder implements Order {
                     );
                 });
     }
+
+    public void execute(RISKMap map, Player player) {
+        Territory territory = map.getTerritoryByName(territoryName);
+        soldierToUpgrade.entrySet().stream()
+                .forEach(entry -> {
+                    Soldier soldier = entry.getKey().getFirst();
+                    int count = entry.getKey().getSecond();
+                    SoldierLevel currLevel = soldier.getLevel();
+                    SoldierLevel targetLevel = entry.getValue();
+                    territory.getSoldierArmy().upgradeSoldier(soldier, count, targetLevel);
+                    player.consumeResource(
+                            new Resource(ResourceType.TECHNOLOGY),
+                            upgradeConsumeCost.get(targetLevel.ordinal() - currLevel.ordinal()) * count
+                    );
+                });
+    }
 }

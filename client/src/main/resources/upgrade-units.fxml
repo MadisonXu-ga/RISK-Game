@@ -61,19 +61,13 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <ComboBox fx:id="unitsComboBox" layoutX="189.0" layoutY="652.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" translateX="125.0" />
-                  <Text layoutX="366.0" layoutY="475.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="from " translateX="125.0" wrappingWidth="104.0032958984375" y="200.0">
+                  <ComboBox fx:id="unitsComboBox" layoutX="89.0" layoutY="653.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" translateX="125.0" />
+                  <Text layoutX="668.0" layoutY="475.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="to level" translateX="125.0" wrappingWidth="104.0032958984375" y="200.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>
                   </Text>
-                  <Text layoutX="611.0" layoutY="475.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="to" translateX="125.0" wrappingWidth="104.0032958984375" y="200.0">
-                     <font>
-                        <Font name="Lucida Calligraphy Italic" size="24.0" />
-                     </font>
-                  </Text>
-                  <ComboBox fx:id="sourceTerritorybtn" layoutX="442.0" layoutY="652.0" prefWidth="150.0" promptText="source territory" translateX="125.0" />
-                  <ComboBox fx:id="destTerritorybtn" layoutX="660.0" layoutY="653.0" prefWidth="150.0" promptText="destination territory" translateX="125.0" />
+                  <ComboBox fx:id="sourceTerritorybtn" layoutX="505.0" layoutY="653.0" prefWidth="150.0" promptText="source territory" translateX="125.0" />
                   <Text fx:id="playerNametxt" layoutX="24.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" wrappingWidth="445.6033172607422" y="40.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="36.0" />
@@ -104,7 +98,7 @@
                         <Font name="Lucida Calligraphy Italic" size="18.0" />
                      </font>
                   </Text>
-                  <Spinner fx:id="numberUnitsSpinner" layoutX="245.0" layoutY="652.0" prefHeight="26.0" prefWidth="58.0" style="-fx-border-radius: 2;" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+                  <Spinner fx:id="numberUnitsSpinner" layoutX="143.0" layoutY="652.0" prefHeight="26.0" prefWidth="58.0" style="-fx-border-radius: 2;" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
                   <Text fx:id="gameID" layoutX="31.0" layoutY="-91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="gameID:" wrappingWidth="445.6033172607422" y="200.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="12.0" />
@@ -120,7 +114,13 @@
                         <Font name="Lucida Calligraphy Italic" size="18.0" />
                      </font>
                   </Text>
-                  <ComboBox fx:id="unitsComboBoxTarget" layoutX="315.0" layoutY="607.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" />
+                  <Text layoutX="373.0" layoutY="635.0" strokeType="OUTSIDE" strokeWidth="0.0" text="units at territory" wrappingWidth="242.4033966064453" y="40.0">
+                     <font>
+                        <Font name="Lucida Calligraphy Italic" size="24.0" />
+                     </font>
+                  </Text>
+                  <ComboBox fx:id="destTerritorybtn" layoutX="630.0" layoutY="687.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="Types of unit" />
+                  <ComboBox fx:id="unitsComboBoxTarget" layoutX="911.0" layoutY="652.0" onAction="#onUnitSelection" prefWidth="150.0" promptText="taget level of unit" />
                </children>
             </AnchorPane>
          </right>

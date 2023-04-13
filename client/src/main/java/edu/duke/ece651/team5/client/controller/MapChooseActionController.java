@@ -92,7 +92,7 @@ public class MapChooseActionController extends MapController {
 
     public void onDone() throws ClassNotFoundException, IOException {
 
-        Action emptyAction = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Action emptyAction = new Action(new ArrayList<>(), moveOrders, null, new ArrayList<>());
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);

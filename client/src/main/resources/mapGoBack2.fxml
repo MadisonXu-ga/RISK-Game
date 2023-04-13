@@ -125,6 +125,11 @@
                         <Font name="Lucida Calligraphy Italic" size="12.0" />
                      </font>
                   </Text>
+                  <Text fx:id="actionMessage" fill="RED" layoutX="733.0" layoutY="104.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="432.8032684326172">
+                     <font>
+                        <Font name="Lucida Calligraphy Italic" size="18.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
          </right>

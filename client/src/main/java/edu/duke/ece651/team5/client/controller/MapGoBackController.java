@@ -9,6 +9,7 @@ import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.game.Game;
+import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.order.BasicOrder;
@@ -82,6 +83,9 @@ public class MapGoBackController extends MapController {
     Spinner<Integer> numberUnitsSpinner;
 
     @FXML
+    Text actionMessage;
+
+    @FXML
     public void initialize() {
         super.initialize();
         ObservableList<SoldierLevel> options = FXCollections.observableArrayList(SoldierLevel.values());
@@ -133,6 +137,28 @@ public class MapGoBackController extends MapController {
         int numberUnits = numberUnitsSpinner.getValue();
         SoldierArmy soldierArmy = new SoldierArmy();
         soldierArmy.addSoldier(new Soldier(unitsComboBox.getValue()), numberUnits);
+        Player player = game.getPlayerByName(client.getColor());
+
+        if (sourceTerritory != sourceTerritorybtn.getId() && destTerritorry != destTerritorybtn.getValue()
+                && soldierArmy != null) {
+            // code to execute if all variables are not null
+            MoveOrder moveOrder = new MoveOrder(sourceTerritory, destTerritorry, soldierArmy, player);
+            mapChooseActionController.moveOrders.add(moveOrder);
+            actionMessage.setText("");
+        } else {
+            sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
+            destTerritorybtn.setValue(destTerritorybtn.getId());
+            unitsComboBox.setValue(null);
+            numberUnitsSpinner.getValueFactory().setValue(0);
+            actionMessage.setText("Invalid action move. Try again!");
+
+        }
+
+        // System.out.println("before - Move order object size is " +
+        // mapChooseActionController.moveOrders.size());
+
+        // System.out.println("after - Move order object size is " +
+        // mapChooseActionController.moveOrders.size());
     }
 
     public ArrayList<String> setList(List<Territory> territories) {

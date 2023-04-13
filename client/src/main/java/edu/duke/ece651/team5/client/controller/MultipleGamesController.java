@@ -194,7 +194,7 @@ public class MultipleGamesController extends GoBackController {
             try {
                 // client.getGame();
                 Game game = client.getGame();
-                client.getGameConfirmation();
+                // client.getGameConfirmation();
 
                 game.setGameID(gameID);
                 client.setGameID(gameID);

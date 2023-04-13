@@ -279,7 +279,7 @@ public class UserHandler implements Runnable {
                 if (user.getUserStatus() == UserStatus.LOGGED_IN
                         && (userActiveStatus == true)) {
                     clients.get(user).writeData(game);
-                    clients.get(user).writeData("Game sent");
+                    // clients.get(user).writeData("Game sent");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

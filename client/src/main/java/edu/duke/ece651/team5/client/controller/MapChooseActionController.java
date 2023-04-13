@@ -76,7 +76,7 @@ public class MapChooseActionController extends MapController {
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
-        System.out.println(ActionResults);
+        System.out.println("From server: " + ActionResults);
     }
 
 }

@@ -136,7 +136,7 @@ public class JoinableGamesController extends GoBackController {
                 goToWaitingScreen(color);
                 Game game = client.getGame();
                 game.setGameID(gameID);
-                client.getGameConfirmation();
+                // client.getGameConfirmation();
                 goToPlacement(game);
 
                 // multipleGamesController.refresh();

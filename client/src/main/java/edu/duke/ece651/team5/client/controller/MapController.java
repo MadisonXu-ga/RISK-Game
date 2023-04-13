@@ -181,7 +181,8 @@ public class MapController extends GoBackController {
 
         // Add some content to the popup's pane
         LocalTime time = LocalTime.now();
-        Label label = new Label(btn.getId() + "\n\n" + getTerritoryTroops(btn.getId()));
+        Label label = new Label(game.getMap().getTerritoryByName(btn.getId()).getOwner().getName() + "\n" + btn.getId()
+                + "\n\n" + getTerritoryTroops(btn.getId()));
         label.setFont(Font.font(18));
         label.setLayoutX(0);
         label.setLayoutY(0);

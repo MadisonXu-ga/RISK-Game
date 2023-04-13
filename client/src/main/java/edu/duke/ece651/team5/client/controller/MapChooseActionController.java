@@ -145,7 +145,8 @@ public class MapChooseActionController extends MapController {
 
     public void onResearchAction() {
 
-        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to proceed?");
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to upgrade? It will cost you " + game);
         confirmationDialog.setTitle("Confirmation");
         confirmationDialog.setHeaderText(null);
 

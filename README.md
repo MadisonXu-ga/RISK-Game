@@ -25,7 +25,7 @@ All the soldiers will begin at level 0 (with the name of infantry), and there ar
 And for each player, their own technical level will begin from level 1, with a maximum of level 6. 
 
 
-
+test
 
 
 

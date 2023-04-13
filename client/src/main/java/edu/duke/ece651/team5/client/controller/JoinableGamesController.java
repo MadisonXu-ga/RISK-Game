@@ -28,6 +28,10 @@ public class JoinableGamesController extends GoBackController {
     private Button[] gameButtons;
     private Game game;
 
+    /**
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     @FXML
     public void initialize() throws ClassNotFoundException, IOException {
         gameButtons = multipleGameButtons.lookupAll(".button").toArray(new Button[0]);
@@ -42,10 +46,16 @@ public class JoinableGamesController extends GoBackController {
 
     }
 
+    /**
+     * @param client
+     */
     public JoinableGamesController(Client client) {
         this.client = client;
     }
 
+    /**
+     * @param gameIDs
+     */
     public void showJoinableGames(ArrayList<Integer> gameIDs) {
 
         System.out.println(gameButtons.length);
@@ -61,6 +71,11 @@ public class JoinableGamesController extends GoBackController {
         }
     }
 
+    /**
+     * @param color
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void goToWaitingScreen(String color) throws IOException, ClassNotFoundException {
         URL xmlResource = getClass().getResource("/waiting-room.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
@@ -113,6 +128,11 @@ public class JoinableGamesController extends GoBackController {
     // App.loadScenefromMain("multiple-games");
     // }
 
+    /**
+     * @param ae
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     public void onJoinGame(ActionEvent ae) throws ClassNotFoundException, IOException {
 
         Object source = ae.getSource();
@@ -150,6 +170,11 @@ public class JoinableGamesController extends GoBackController {
         }
     }
 
+    /**
+     * @param game
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void goToPlacement(Game game) throws IOException, ClassNotFoundException {
         URL xmlResource = getClass().getResource("/mapPlacement.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);

@@ -8,6 +8,12 @@ import javafx.fxml.FXML;
 
 public class GoBackController {
 
+    /**
+     * @param ae an ActionEvent object representing the user's click on the button
+     * @throws IOException            if there is an error during I/O operations
+     * @throws ClassNotFoundException if there is an error during deserialization of
+     *                                objects
+     */
     public void onSaveAndExit(ActionEvent ae) throws IOException, ClassNotFoundException {
 
         // TODO create the disconnect action with server

@@ -38,6 +38,9 @@ public class MapController extends GoBackController {
             Arrays.asList("Narnia", "Elantris", "Gondor", "Mordor", "Hogwarts",
                     "Thalassia", "Arathia", "Eryndor", "Sylvaria", "Kaelindor", "Emberfall", "Verdantia"));
 
+    /**
+     * @param client
+     */
     public MapController(Client client) {
 
         this.client = client;
@@ -50,6 +53,9 @@ public class MapController extends GoBackController {
         this.game = game;
     }
 
+    /**
+     * refresh contents of the page
+     */
     @FXML
     public void initialize() {
 
@@ -92,6 +98,9 @@ public class MapController extends GoBackController {
 
     }
 
+    /**
+     * @return see if the list has the buttons from page
+     */
     public ArrayList<String> checkListAgainstGameButtons() {
         boolean allFound = true;
         ArrayList<String> foundTerri = new ArrayList<>();
@@ -112,6 +121,10 @@ public class MapController extends GoBackController {
         return foundTerri;
     }
 
+    /**
+     * @param element see the name of button we need to return (String )
+     * @return
+     */
     public Button getMatchingGameButton(String element) {
         for (Button button : gameButtons) {
             if (button.getId().equals(element)) {

@@ -22,7 +22,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -37,6 +39,10 @@ public class MapChooseActionController extends MapController {
     @FXML
     Text gameID;
 
+    /**
+     * @param client
+     * @param game
+     */
     public MapChooseActionController(Client client, Game game) {
         super(client, game);
         // this.game = game;
@@ -63,6 +69,9 @@ public class MapChooseActionController extends MapController {
 
     }
 
+    /**
+     * @throws IOException
+     */
     public void onMoveAction() throws IOException {
 
         URL xmlResource = getClass().getResource("/mapGoBack2.fxml");
@@ -91,6 +100,11 @@ public class MapChooseActionController extends MapController {
         App.getPrimaryStage().setScene(scene);
     }
 
+    /**
+     * attack button for submitting orders
+     * 
+     * @throws IOException
+     */
     public void onAttackAction() throws IOException {
 
         URL xmlResource = getClass().getResource("/attack-map.fxml");
@@ -127,6 +141,25 @@ public class MapChooseActionController extends MapController {
         mapGoBackController.refresh(ownTerritoriesStr, enemyTerritoriesStr, client.getColor(), client.getColor());
         System.out.println(ownTerritoriesStr);
         App.getPrimaryStage().setScene(scene);
+    }
+
+    public void onResearchAction() {
+
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to proceed?");
+        confirmationDialog.setTitle("Confirmation");
+        confirmationDialog.setHeaderText(null);
+
+        // Show the confirmation dialog and wait for the user's response
+        ButtonType confirmButton = confirmationDialog.showAndWait().orElse(ButtonType.CANCEL);
+
+        // Check if the user clicked the "OK" button
+        if (confirmButton == ButtonType.OK) {
+            // User clicked OK, proceed with the action
+            // ...
+        } else {
+            // User clicked Cancel, do nothing or handle accordingly
+            // ...
+        }
     }
 
     public void onDone() throws ClassNotFoundException, IOException {

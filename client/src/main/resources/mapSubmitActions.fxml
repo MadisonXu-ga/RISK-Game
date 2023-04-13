@@ -22,12 +22,12 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <Button fx:id="rdOrderbtn" layoutX="14.0" layoutY="368.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="R&amp;D order">
+            <Button fx:id="researchbtn" layoutX="14.0" layoutY="368.0" mnemonicParsing="false" onAction="#onResearchAction" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Research order">
                <font>
-                  <Font size="16.0" />
+                  <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="donebtn" layoutX="14.0" layoutY="425.0" mnemonicParsing="false" onAction="#onDone" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Done">
+            <Button fx:id="donebtn" layoutX="14.0" layoutY="482.0" mnemonicParsing="false" onAction="#onDone" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Done">
                <font>
                   <Font size="16.0" />
                </font>
@@ -81,6 +81,11 @@
                   <Font name="Lucida Calligraphy Italic" size="12.0" />
                </font>
             </Text>
+            <Button fx:id="upgradebtn" layoutX="14.0" layoutY="423.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Upgrade">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

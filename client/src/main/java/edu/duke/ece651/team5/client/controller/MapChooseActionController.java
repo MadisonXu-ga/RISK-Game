@@ -116,6 +116,7 @@ public class MapChooseActionController extends MapController {
         // App.getPrimaryStage().setScene(scene);
         mapGoBackController.refresh(ownTerritoriesStr, ownTerritoriesStr, client.getColor(), client.getColor());
         System.out.println(ownTerritoriesStr);
+        mapGoBackController.unitsComboBoxTarget.setVisible(false);
         App.getPrimaryStage().setScene(scene);
     }
 
@@ -159,11 +160,13 @@ public class MapChooseActionController extends MapController {
         // App.getPrimaryStage().setScene(scene);
         mapGoBackController.refresh(ownTerritoriesStr, enemyTerritoriesStr, client.getColor(), client.getColor());
         System.out.println(ownTerritoriesStr);
+        mapGoBackController.unitsComboBoxTarget.setVisible(false);
         App.getPrimaryStage().setScene(scene);
     }
 
     public void onResearchAction() {
-        ResearchOrder researchOrdernew = new ResearchOrder(game.getPlayerByName(client.getColor()), game);
+        Player player = game.getPlayerByName(client.getColor());
+        ResearchOrder researchOrdernew = new ResearchOrder(player, game);
         Integer researchCost = ResourceConsumeCalculator.computeTechConsumeForResearch(researchOrdernew);
         Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION,
                 "Are you sure you want to upgrade? It will cost you " + researchCost + " technology resources");
@@ -172,10 +175,12 @@ public class MapChooseActionController extends MapController {
 
         // Show the confirmation dialog and wait for the user's response
         ButtonType confirmButton = confirmationDialog.showAndWait().orElse(ButtonType.CANCEL);
-        researchOrder = researchOrdernew;
+
         // Check if the user clicked the "OK" button
         if (confirmButton == ButtonType.OK) {
-
+            System.out.println("research order: [" + researchOrder + "]");
+            researchOrder = researchOrdernew;
+            System.out.println("research order: [" + researchOrder + "]");
         } else {
             // User clicked Cancel, do nothing or handle accordingly
             // ...
@@ -216,12 +221,16 @@ public class MapChooseActionController extends MapController {
         // App.getPrimaryStage().setScene(scene);
         mapGoBackController.refresh(ownTerritoriesStr, enemyTerritoriesStr, client.getColor(), client.getColor());
         System.out.println(ownTerritoriesStr);
+        mapGoBackController.destTerritorybtn.setVisible(false);
+
         App.getPrimaryStage().setScene(scene);
+
     }
 
     public void onDone() throws ClassNotFoundException, IOException {
 
-        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, new ArrayList<>());
+        System.out.println("the number of upgrade orders is: " + upgradeOrders.size());
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);

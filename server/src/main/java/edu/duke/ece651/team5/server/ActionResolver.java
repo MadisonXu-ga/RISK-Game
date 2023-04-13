@@ -9,7 +9,6 @@ import edu.duke.ece651.team5.shared.*;
 import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.order.*;
 
-
 public class ActionResolver {
     public void tryResolveAllMoveOrders(HashMap<Player, Action> playerActions, RISKMap map) {
         ArrayList<MoveOrder> allMoveOrders = new ArrayList<>();
@@ -44,9 +43,13 @@ public class ActionResolver {
     }
 
     public void tryResolveAllResearchOrder(HashMap<Player, Action> playerActions, RISKMap map) {
+        System.out.println("tryResolveAllResearchOrder");
         for (Action action : playerActions.values()) {
+            System.out.println("Iterate Action: ");
             if (action.getResearchOrder() != null) {
+                System.out.println("Research order is not null!!");
                 action.getResearchOrder().execute(map);
+                System.out.println("Have already executed research order!!");
             }
         }
     }

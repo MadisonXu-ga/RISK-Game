@@ -4,6 +4,7 @@ import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.game.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,9 +12,8 @@ import java.util.Arrays;
  * For a certain player,
  * using research order to upgrade its current technical level
  */
-public class ResearchOrder implements Order {
-    public static final ArrayList<Integer> researchConsumeCost =
-            new ArrayList<>(Arrays.asList(20, 40, 80, 160, 320));
+public class ResearchOrder implements Order, Serializable {
+    public static final ArrayList<Integer> researchConsumeCost = new ArrayList<>(Arrays.asList(20, 40, 80, 160, 320));
 
     // the player who issued this order
     private Player player;
@@ -21,8 +21,9 @@ public class ResearchOrder implements Order {
 
     /**
      * constructor
+     * 
      * @param player the player who issued this order
-     * @param game the game
+     * @param game   the game
      */
     public ResearchOrder(Player player, Game game) {
         this.game = game;
@@ -31,14 +32,16 @@ public class ResearchOrder implements Order {
 
     /**
      * Getter for player
+     * 
      * @return the player who issued this order
      */
-    public Player getPlayer(){
+    public Player getPlayer() {
         return player;
     }
 
     /**
      * the actual excecute the research order
+     * 
      * @param map the map
      */
     @Override

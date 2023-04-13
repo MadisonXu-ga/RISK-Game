@@ -1,13 +1,15 @@
 package edu.duke.ece651.team5.shared.datastructure;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * data structure to hold to object together
+ * 
  * @param <T> the type of the first element
  * @param <U> the type of the second element
  */
-public class Pair<T, U> {
+public class Pair<T, U> implements Serializable {
     private final T first;
     private final U second;
 
@@ -18,6 +20,7 @@ public class Pair<T, U> {
 
     /**
      * Getter for first element in pair
+     * 
      * @return first element
      */
     public T getFirst() {
@@ -26,6 +29,7 @@ public class Pair<T, U> {
 
     /**
      * Getter for second element in pair
+     * 
      * @return second element
      */
     public U getSecond() {
@@ -34,12 +38,15 @@ public class Pair<T, U> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Pair<?, ?> pair = (Pair<?, ?>) o;
 
-        if (!Objects.equals(first, pair.first)) return false;
+        if (!Objects.equals(first, pair.first))
+            return false;
         return Objects.equals(second, pair.second);
     }
 
@@ -50,4 +57,3 @@ public class Pair<T, U> {
         return result;
     }
 }
-

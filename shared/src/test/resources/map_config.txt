@@ -11,7 +11,7 @@ Gondor: Midkemia, Scadrial
 Hogwarts: Thalassia, Roshar, Mordor, Scadrial, Arathia
 Ironcliff: Oz, Scadrial
 Kaelindor: Scadrial, Emberfall, Celestia, Draconia, Mythosia, Eterna, Arathia
-Midkemia: Elantris, Scadrial, Midkemia
+Midkemia: Elantris, Scadrial, Gondor
 Mordor: Scadrial, Oz, Emberfall, Sylvaria, Hogwarts, Roshar
 Mythosia: Kaelindor, Draconia, Emberfall, Verdantia, Frosthold, Eterna, Shadowmire
 Narnia: Elantris, Midkemia, Roshar

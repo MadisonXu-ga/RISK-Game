@@ -3,11 +3,14 @@ package edu.duke.ece651.team5.client.controller;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.shared.Action;
+import edu.duke.ece651.team5.shared.datastructure.Pair;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.Territory;
@@ -104,6 +107,7 @@ public class MapGoBackController extends MapController {
         super.initialize();
         ObservableList<SoldierLevel> options = FXCollections.observableArrayList(SoldierLevel.values());
         unitsComboBox.setItems(options);
+        unitsComboBoxTarget.setItems(options);
         // onSourceTerritorySelection();
         // onDestTerritorySelection();
         showTerritoryColors(showAll);
@@ -229,6 +233,51 @@ public class MapGoBackController extends MapController {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
             destTerritorybtn.setValue(destTerritorybtn.getId());
             unitsComboBox.setValue(null);
+            numberUnitsSpinner.getValueFactory().setValue(0);
+            actionMessage.setText("Invalid action move. Try again!");
+
+        }
+
+    }
+
+    public void onSubmitUpgrade() {
+
+        String sourceTerritory = sourceTerritorybtn.getValue();
+        Map<Pair<Soldier, Integer>, SoldierLevel> soldierToUpgrade = new HashMap<>();
+
+        try {
+            // get the selected value from the ComboBox
+
+            soldierToUpgrade.put(new Pair<>(new Soldier(unitsComboBox.getValue()), numberUnitsSpinner.getValue()),
+                    unitsComboBoxTarget.getValue());
+
+            System.out.println("parameters for constructor:");
+            System.out.println(numberUnitsSpinner.getValue());
+            System.out.println(unitsComboBox.getValue());
+            System.out.println(sourceTerritory);
+            System.out.println(unitsComboBoxTarget.getValue());
+
+            // process the selected value and value from spinner...
+        } catch (NullPointerException | NumberFormatException e) {
+            // handle invalid input
+            System.out.println("exception");
+            e.printStackTrace();
+        }
+
+        if (game.getMap().getTerritoryByName(sourceTerritory) != null
+                && !(soldierToUpgrade.equals(new HashMap<>()))) {
+
+            UpgradeOrder upgradeOrder = new UpgradeOrder(sourceTerritory, soldierToUpgrade,
+                    game.getPlayerByName(client.getColor()));
+            System.out.println("just before adding it to array: " + mapChooseActionController.upgradeOrders.size());
+            mapChooseActionController.upgradeOrders.add(upgradeOrder);
+            System.out.println("just after adding it to array: " + mapChooseActionController.upgradeOrders.size());
+        } else {
+            sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
+            System.out.println("Value: " + soldierToUpgrade);
+
+            unitsComboBox.setValue(null);
+            unitsComboBoxTarget.setValue(null);
             numberUnitsSpinner.getValueFactory().setValue(0);
             actionMessage.setText("Invalid action move. Try again!");
 

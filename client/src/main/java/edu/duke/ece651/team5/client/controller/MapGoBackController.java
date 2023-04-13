@@ -16,6 +16,8 @@ import edu.duke.ece651.team5.shared.order.BasicOrder;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 import edu.duke.ece651.team5.shared.order.UpgradeOrder;
+import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
@@ -88,6 +90,12 @@ public class MapGoBackController extends MapController {
     Text actionMessage;
 
     @FXML
+    Text foodAmnt;
+
+    @FXML
+    Text techAmnt;
+
+    @FXML
     public void initialize() {
         super.initialize();
         ObservableList<SoldierLevel> options = FXCollections.observableArrayList(SoldierLevel.values());
@@ -102,6 +110,11 @@ public class MapGoBackController extends MapController {
                 100,
                 0);
         numberUnitsSpinner.setValueFactory(valueFactory);
+        Integer foodInt = game.getPlayerByName(client.getColor()).getResourceCount(new Resource(ResourceType.FOOD));
+        foodAmnt.setText(foodInt.toString());
+        Integer techAmntInt = game.getPlayerByName(client.getColor())
+                .getResourceCount(new Resource(ResourceType.TECHNOLOGY));
+        techAmnt.setText(techAmntInt.toString());
 
     }
 

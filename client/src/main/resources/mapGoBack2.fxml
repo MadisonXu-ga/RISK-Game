@@ -89,12 +89,12 @@
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>
                   </Text>
-                  <Text layoutX="705.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="218.4033660888672" y="40.0">
+                  <Text fx:id="foodAmnt" layoutX="705.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="218.4033660888672" y="40.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>
                   </Text>
-                  <Text layoutX="734.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="252.8033905029297" y="40.0">
+                  <Text fx:id="techAmnt" layoutX="734.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="252.8033905029297" y="40.0">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="24.0" />
                      </font>

@@ -16,7 +16,10 @@ import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
 import edu.duke.ece651.team5.shared.order.UpgradeOrder;
+import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
+import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -38,6 +41,14 @@ public class MapChooseActionController extends MapController {
 
     @FXML
     Text gameID;
+
+    @FXML
+    Text foodAmnt;
+
+    @FXML
+    Text techAmnt;
+
+    public ResourceConsumeCalculator calculator;
 
     /**
      * @param client
@@ -66,6 +77,12 @@ public class MapChooseActionController extends MapController {
         attackOrders = new ArrayList<>();
         moveOrders = new ArrayList<>();
         upgradeOrders = new ArrayList<>();
+        this.calculator = new ResourceConsumeCalculator();
+        Integer foodInt = game.getPlayerByName(client.getColor()).getResourceCount(new Resource(ResourceType.FOOD));
+        foodAmnt.setText(foodInt.toString());
+        Integer techAmntInt = game.getPlayerByName(client.getColor())
+                .getResourceCount(new Resource(ResourceType.TECHNOLOGY));
+        techAmnt.setText(techAmntInt.toString());
 
     }
 
@@ -145,8 +162,10 @@ public class MapChooseActionController extends MapController {
 
     public void onResearchAction() {
 
+        ResearchOrder resOrder = new ResearchOrder(game.getPlayerByName(client.getColor()), game);
         Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION,
-                "Are you sure you want to upgrade? It will cost you " + game);
+                "Are you sure you want to upgrade? It will cost you "
+                        + ResourceConsumeCalculator.computeTechConsumeForResearch(resOrder) + " tech resources");
         confirmationDialog.setTitle("Confirmation");
         confirmationDialog.setHeaderText(null);
 

@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.shared.game;
 
+import java.io.Serializable;
 import java.util.*;
 
 import edu.duke.ece651.team5.shared.resource.Resource;
@@ -10,7 +11,7 @@ import edu.duke.ece651.team5.shared.resource.ResourceType;
  */
 
 
-public class Player {
+public class Player implements Serializable {
     //name of the player
     private final String name;
     //list of territories this player owned

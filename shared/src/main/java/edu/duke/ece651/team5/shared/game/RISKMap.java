@@ -1,20 +1,15 @@
 package edu.duke.ece651.team5.shared.game;
 
-import javax.xml.transform.Source;
-import java.io.IOException;
-import java.sql.SQLOutput;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 /**
  * this class handle functionality of a map
  */
 
-public class RISKMap {
+public class RISKMap implements Serializable{
     private Map<String, Territory> territories;
 
     private HashMap<Integer, List<Edge>> connections;
@@ -22,7 +17,7 @@ public class RISKMap {
     /**
      * Inner class to represent an edge
      */
-    public static class Edge {
+    public static class Edge implements Serializable{
         private int from;
         private int to;
         private int distance;
@@ -88,6 +83,20 @@ public class RISKMap {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public RISKMap getDeepCopy() throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(this);
+        oos.close();
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        RISKMap copy = (RISKMap) ois.readObject();
+        ois.close();
+
+        return copy;
     }
 
     /**

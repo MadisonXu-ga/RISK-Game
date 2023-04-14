@@ -82,9 +82,15 @@ public class MapChooseActionController extends MapController {
         showTerritoryColors(true);
         gameID.setText("gameID: " + client.getCurrentGameID().toString());
         playerNametxt.setText("Name: " + client.getColor());
-        attackOrders = new ArrayList<>();
-        moveOrders = new ArrayList<>();
-        upgradeOrders = new ArrayList<>();
+        if (attackOrders == null) {
+            attackOrders = new ArrayList<>();
+        }
+        if (moveOrders == null) {
+            moveOrders = new ArrayList<>();
+        }
+        if (upgradeOrders == null) {
+            upgradeOrders = new ArrayList<>();
+        }
 
         calculator = new ResourceConsumeCalculator();
         Integer techAmntInt = game.getPlayerByName(client.getColor())
@@ -94,6 +100,10 @@ public class MapChooseActionController extends MapController {
                 .getResourceCount(new Resource(ResourceType.FOOD));
         foodAmnt.setText(foodAmntInt.toString());
 
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     /**
@@ -253,13 +263,8 @@ public class MapChooseActionController extends MapController {
         }
 
         else {
-            Integer food1 = game.getPlayerByName(client.getColor())
-                    .getResourceCount(new Resource(ResourceType.FOOD));
-            System.out.println("Food before: " + food1.toString());
+
             game = client.updatedGameAfterTurn();
-            Integer food2 = game.getPlayerByName(client.getColor())
-                    .getResourceCount(new Resource(ResourceType.FOOD));
-            System.out.println("Food after: " + food2.toString());
 
             String winResult = client.checkWin();
             if (!winResult.equals("No winner")) {
@@ -269,7 +274,12 @@ public class MapChooseActionController extends MapController {
             if (client.checkLost().equals("You lost")) {
                 checkLostPopUp(App.getPrimaryStage());
             }
-            initialize();
+            // initialize();
+            // MapChooseActionController actionController = (MapChooseActionController) App
+            // .loadController("submit-actions");
+            setGame(game);
+
+            this.initialize();
             App.loadScenefromMain("submit-actions");
             attackOrders = new ArrayList<>();
             moveOrders = new ArrayList<>();

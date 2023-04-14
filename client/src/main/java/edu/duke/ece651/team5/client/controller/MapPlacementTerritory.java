@@ -187,7 +187,8 @@ public class MapPlacementTerritory extends MapController {
         // System.out.println("just before going to placing actions" +
         // client.getCurrentGameID());
         MultipleGamesController multipleGamesController = new MultipleGamesController(client);
-        controllers.put(MapChooseActionController.class, new MapChooseActionController(client, updatedGame));
+        MapChooseActionController mapChooseActionController = new MapChooseActionController(client, updatedGame);
+        controllers.put(MapChooseActionController.class, mapChooseActionController);
         controllers.put(MultipleGamesController.class, multipleGamesController);
         loader.setControllerFactory((c) -> {
             return controllers.get(c);
@@ -196,6 +197,7 @@ public class MapPlacementTerritory extends MapController {
         StackPane bp = loader.load();
 
         Scene scene = new Scene(new StackPane(bp));
+        App.addControllertoMain("submit-actions", mapChooseActionController);
         App.addScenetoMain("submit-actions", scene);
 
         App.getPrimaryStage().setScene(scene);

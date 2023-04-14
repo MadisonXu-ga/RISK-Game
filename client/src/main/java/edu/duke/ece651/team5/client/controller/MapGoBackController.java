@@ -242,6 +242,9 @@ public class MapGoBackController extends MapController {
 
     public void onSubmitUpgrade() {
 
+        if (mapChooseActionController.upgradeOrders == null) {
+            mapChooseActionController.upgradeOrders = new ArrayList<>();
+        }
         String sourceTerritory = sourceTerritorybtn.getValue();
         Map<Pair<Soldier, Integer>, SoldierLevel> soldierToUpgrade = new HashMap<>();
 
@@ -342,6 +345,9 @@ public class MapGoBackController extends MapController {
     }
 
     public void onBackbtn() {
+
+        MapChooseActionController actionController = (MapChooseActionController) App.loadController("submit-actions");
+        actionController.initialize();
         App.loadScenefromMain("submit-actions");
     }
 

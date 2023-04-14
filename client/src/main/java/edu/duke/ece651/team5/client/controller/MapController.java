@@ -59,7 +59,9 @@ public class MapController extends GoBackController {
     @FXML
     public void initialize() {
 
-        gameButtons = rightSideScreen.lookupAll(".button:@territory.css").toArray(new Button[0]);
+        if (gameButtons == null) {
+            gameButtons = rightSideScreen.lookupAll(".button:@territory.css").toArray(new Button[0]);
+        }
 
         // for (String element : list) {
         // Button matchingButton = getMatchingGameButton(element);
@@ -228,18 +230,33 @@ public class MapController extends GoBackController {
     protected void showTerritoryColors(boolean showAll) {
 
         if (game != null) {
+
+            System.out.println("size of game buttons in the pane: " + gameButtons.length);
+
+            System.out.println("This is coloring the territories now");
             for (Player playerx : game.getPlayers()) {
 
-                if (showAll == false && !(client.getColor().equals(playerx.getName()))) {
+                // if (showAll == false && !(client.getColor().equals(playerx.getName()))) {
 
-                    continue;
-                }
+                // continue;
+                // }
                 for (Territory territory : playerx.getTerritories()) {
+                    System.out.println(
+                            "therritory " + territory.getName() + "is owned by " + territory.getOwner().getName());
 
                     Button matchingButton = getMatchingGameButton(territory.getName());
+                    System.out.println("matching button ID is [" + matchingButton.getId() + "]");
                     if (matchingButton != null) {
                         // System.out.println("color: [" + client.getColor() + "]");
                         assignButtonToPlayer(matchingButton, playerx.getName());
+
+                        matchingButton.getStyleClass().clear();
+                        matchingButton.getStyleClass().add(territory.getName() + "btn");
+
+                        matchingButton.getStyleClass()
+                                .add(territory.getOwner().getName()
+                                        + "Playerbtn");
+
                         // matchingButton.setStyle("-fx-background-color: red;");
                     }
                 }

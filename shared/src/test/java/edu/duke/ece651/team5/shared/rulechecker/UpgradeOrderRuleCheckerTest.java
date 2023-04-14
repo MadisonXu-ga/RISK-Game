@@ -43,12 +43,12 @@ public class UpgradeOrderRuleCheckerTest {
     @Test
     public void testCheckMyRuleWithIncorrectInput() {
         Player player = upgradeOrder.getPlayer();
-        player.setCurrTechnologyLevel(1);
-        player.addResourceFromTerritory(new Resource(ResourceType.TECHNOLOGY), 5);
+        player.setCurrTechnologyLevel(5);
+        player.addResourceFromTerritory(new Resource(ResourceType.TECHNOLOGY), 0);
 
         String result = ruleChecker.checkOrder(upgradeOrder);
 
-        // assertEquals("You do not have enough technology resources.", result);
+        assertEquals("You do not have enough technology resources.", result);
     }
 
 }

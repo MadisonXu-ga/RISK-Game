@@ -30,8 +30,8 @@ public class Player implements Serializable {
         this.territories = new ArrayList<>();
         currTechnologyLevel = 0;
         resourceToAmount = new HashMap<>();
-        resourceToAmount.put(new Resource(ResourceType.FOOD), 10000);
-        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 1000);
+        resourceToAmount.put(new Resource(ResourceType.FOOD), 10);
+        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 10);
     }
 
     /**
@@ -92,6 +92,7 @@ public class Player implements Serializable {
      * @param num      number of resource add to
      */
     public void addResourceFromTerritory(Resource resource, int num) {
+        System.out.println("player add resource hash code: " + resource.hashCode());
         resourceToAmount.put(resource,
                 resourceToAmount.get(resource) + num);
     }

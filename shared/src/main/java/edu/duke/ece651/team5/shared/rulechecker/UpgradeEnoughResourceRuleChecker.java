@@ -2,6 +2,7 @@ package edu.duke.ece651.team5.shared.rulechecker;
 
 import edu.duke.ece651.team5.shared.resource.Resource;
 import edu.duke.ece651.team5.shared.resource.ResourceType;
+import edu.duke.ece651.team5.shared.unit.*;
 import edu.duke.ece651.team5.shared.order.UpgradeOrder;
 
 public class UpgradeEnoughResourceRuleChecker extends UpgradeOrderRuleChecker{
@@ -23,12 +24,17 @@ public class UpgradeEnoughResourceRuleChecker extends UpgradeOrderRuleChecker{
     @Override
     protected String checkMyRule(UpgradeOrder upgradeOrder) {
         int need = upgradeOrder.getSoldierToUpgrade().entrySet().stream()
-        .mapToInt(entry ->
-            UpgradeOrder.upgradeConsumeCost
-            .get(entry.getValue().ordinal() - entry.getKey().getFirst().getLevel().ordinal()))
+        .mapToInt(entry -> {
+            Soldier soldier = entry.getKey().getFirst();
+            int count = entry.getKey().getSecond();
+            SoldierLevel currLevel = soldier.getLevel();
+            SoldierLevel targetLevel = entry.getValue();
+            return UpgradeOrder.upgradeConsumeCost.get(targetLevel.ordinal() - currLevel.ordinal()) * count;
+        })
         .sum();
-
+        System.out.println("upgrade need amount: " + need);
         int actual = upgradeOrder.getPlayer().getResourceToAmount().get(new Resource(ResourceType.TECHNOLOGY));
+        System.out.println("upgrade actual amount: " + actual);
         if(need > actual){
             return "You do not have enough technology resources.";
         }

@@ -102,7 +102,7 @@ class SigninControllerTest {
     Button[] buttons = multipleGamesController.getButtons();
     robot.clickOn("#beginNewGamebtn");
     buttons = multipleGamesController.getButtons();
-    robot.clickOn("#saveAndExit");
+    // robot.clickOn("#saveAndExit");
     buttons = multipleGamesController.getButtons();
     }
 

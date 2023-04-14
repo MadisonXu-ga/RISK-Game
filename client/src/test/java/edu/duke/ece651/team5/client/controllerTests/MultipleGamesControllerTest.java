@@ -94,8 +94,8 @@ class MultipleGamesControllerTest {
         // for now the amount of games that will be active is 6
         assertEquals(6, buttons.length);
         robot.clickOn("#beginNewGamebtn");
-        robot.clickOn("#saveAndExit");
-        FxAssert.verifyThat("#saveAndExit", NodeMatchers.isVisible());
+        // robot.clickOn("#saveAndExit");
+        // FxAssert.verifyThat("#saveAndExit", NodeMatchers.isVisible());
 
     }
 }

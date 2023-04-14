@@ -4,9 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -27,6 +32,10 @@ import org.testfx.matcher.control.TextMatchers;
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.client.controller.MultipleGamesController;
+import edu.duke.ece651.team5.shared.game.Game;
+import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.RISKMap;
+import edu.duke.ece651.team5.shared.game.Territory;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Text;
@@ -37,6 +46,9 @@ class SigninControllerTest {
     App a;
     Stage stage;
     Client client;
+    private Game game;
+    private RISKMap map;
+    Player player;
 
     @Start
     public void start(Stage stage) throws IOException, ClassNotFoundException {
@@ -45,6 +57,8 @@ class SigninControllerTest {
         a = new App(client);
         a.start(stage);
         this.stage = stage;
+        this.game = Mockito.mock(Game.class);
+        this.player = Mockito.mock(Player.class);
 
     }
 
@@ -58,6 +72,7 @@ class SigninControllerTest {
     IOException {
 
     when(client.login(any(ArrayList.class))).thenReturn("Not exists");
+    
     FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
     FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
     FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText(""));
@@ -78,32 +93,54 @@ class SigninControllerTest {
 
     @Test
     void testSignInButton_success(FxRobot robot) throws ClassNotFoundException,
-    IOException {
+            IOException, InterruptedException {
 
-    when(client.login(any(ArrayList.class))).thenReturn("Login succeeded");
-    FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
-    FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
-    FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText(""));
+        List<Territory> territories = new ArrayList<>();
+        Territory mockedTerritory = Mockito.mock(Territory.class);
+        territories.add(mockedTerritory);
+        territories.add(mockedTerritory);
 
-    String userNameStr = "coolUserName";
-    String password = "intelligentPassword";
-    robot.clickOn("#userName").write(userNameStr);
-    robot.clickOn("#password").write(password);
-    FxAssert.verifyThat("#userName",
-    TextInputControlMatchers.hasText(userNameStr));
-    FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(password));
-    robot.clickOn("#loginBtn");
-    FxAssert.verifyThat("#beginNewGamebtn", NodeMatchers.isVisible());
-    FxAssert.verifyThat("#joinOtherGamesbtn", NodeMatchers.isVisible());
+        when(client.login(any(ArrayList.class))).thenReturn("Login succeeded");
+        when(client.beginNewGame(any(Integer.class))).thenReturn("Success");
+        when(client.receiveColor()).thenReturn("Red", "Red", "Red", "Red", "Red");
+        when(client.getGameID()).thenReturn(1);
+        when(client.getGame()).thenReturn(game);
+        // when(game.getPlayerByName(Mockito.anyString())).thenReturn(player, player,
+        // player, player);
+        // when(player.getTerritories()).thenReturn(territories, territories);
+        when(mockedTerritory.getName()).thenReturn("Narnia", "Narnia", "Narnia", "Narnia", "Narnia");
 
-    MultipleGamesController multipleGamesController = (MultipleGamesController) App
-                        .loadController("multiple-games");
-                multipleGamesController.refresh();
-    Button[] buttons = multipleGamesController.getButtons();
-    robot.clickOn("#beginNewGamebtn");
-    buttons = multipleGamesController.getButtons();
-    // robot.clickOn("#saveAndExit");
-    buttons = multipleGamesController.getButtons();
+        FxAssert.verifyThat("#userName", TextInputControlMatchers.hasText(""));
+        FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(""));
+        FxAssert.verifyThat("#loginFeedback", TextMatchers.hasText(""));
+
+        String userNameStr = "coolUserName";
+        String password = "intelligentPassword";
+        robot.clickOn("#userName").write(userNameStr);
+        robot.clickOn("#password").write(password);
+        FxAssert.verifyThat("#userName",
+                TextInputControlMatchers.hasText(userNameStr));
+        FxAssert.verifyThat("#password", TextInputControlMatchers.hasText(password));
+        robot.clickOn("#loginBtn");
+        FxAssert.verifyThat("#beginNewGamebtn", NodeMatchers.isVisible());
+        FxAssert.verifyThat("#joinOtherGamesbtn", NodeMatchers.isVisible());
+
+        MultipleGamesController multipleGamesController = (MultipleGamesController) App
+                .loadController("multiple-games");
+        multipleGamesController.refresh();
+        Button[] buttons = multipleGamesController.getButtons();
+        robot.clickOn("#amountPlayers");
+        robot.write("2");
+        robot.clickOn("#beginNewGamebtn");
+
+        verify(client).getGame();
+        verify(client).getColor();
+        verify(game).getPlayerByName("blue");
+        verify(player).getTerritories();
+        // robot.wait(2000);
+        // buttons = multipleGamesController.getButtons();
+        // robot.clickOn("#saveAndExit");
+        // buttons = multipleGamesController.getButtons();
     }
 
     @Test

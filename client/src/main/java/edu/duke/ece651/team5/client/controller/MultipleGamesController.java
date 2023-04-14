@@ -100,6 +100,7 @@ public class MultipleGamesController extends GoBackController {
         String message = client.continueGame(gameIDInt);
         Game retrievedGame = client.updatedGameAfterTurn();
         client.setGameID(gameIDInt);
+        retrievedGame.setGameID(gameIDInt);
 
         if (message.equals("Initializing")) {
             goToPlacement(retrievedGame);

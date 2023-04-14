@@ -29,6 +29,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
@@ -253,7 +254,9 @@ public class MapChooseActionController extends MapController {
                     .getResourceCount(new Resource(ResourceType.FOOD));
             System.out.println("Food after: " + food2.toString());
 
-            client.checkWin();
+            if (!client.checkWin().equals("No winner")) {
+                showPopupAndExit(client.checkWin());
+            }
             client.checkLost();
             initialize();
             App.loadScenefromMain("submit-actions");
@@ -263,6 +266,22 @@ public class MapChooseActionController extends MapController {
             researchOrder = null;
         }
 
+    }
+
+    private void showPopupAndExit(String message) throws ClassNotFoundException, IOException {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Congratulations");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+
+        MultipleGamesController multipleGamesController = (MultipleGamesController) App
+                .loadController("multiple-games");
+        multipleGamesController.refresh();
+        System.out.println("this is printing from the gobackcontroller");
+
+        alert.showAndWait()
+                .filter(response -> response == ButtonType.OK)
+                .ifPresent(response -> App.loadScenefromMain("multiple-games"));
     }
 
 }

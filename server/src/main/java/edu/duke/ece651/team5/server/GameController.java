@@ -333,12 +333,31 @@ public class GameController {
 
         ActionResolver actionResolver = new ActionResolver();
         // resolve
-        actionResolver.tryResolveAllMoveOrders(playerActions, game.getMap());
+        System.out.println("-----------------------------------");
+        Player player0 = players.get(0);
+        Player player1 = players.get(1);
+        System.out.println(
+                player0.getName() + " food resource before resolve move: "
+                        + player0.getResourceCount(new Resource(ResourceType.FOOD)));
+        actionResolver.tryResolveAllMoveOrders(playerActions, game);
+        System.out.println(
+                player0.getName() + " food resource after resolve move, before attack: "
+                        + player0.getResourceCount(new Resource(ResourceType.FOOD)));
         actionResolver.tryResolveAllAttackOrders(playerActions, game);
-        actionResolver.tryResolveAllUpgradeOrder(playerActions, game.getMap());
+        System.out.println(
+                player0.getName() + " food resource after resolve attack, before upgrade: "
+                        + player0.getResourceCount(new Resource(ResourceType.FOOD)));
+        actionResolver.tryResolveAllUpgradeOrder(playerActions, game);
+        System.out.println(
+                player0.getName() + " food resource after resolve upgrade, before research: "
+                        + player0.getResourceCount(new Resource(ResourceType.FOOD)));
 
         // resolve research last to ensure not affect others
-        actionResolver.tryResolveAllResearchOrder(playerActions, game.getMap());
+        actionResolver.tryResolveAllResearchOrder(playerActions, game);
+        System.out.println(
+                player0.getName() + " food resource after resolve research: "
+                        + player0.getResourceCount(new Resource(ResourceType.FOOD)));
+        System.out.println("-----------------------------------");
 
         // clear action to be ready for next time
         playerActions.clear();

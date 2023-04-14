@@ -46,6 +46,7 @@ public class UserHandler implements Runnable {
         this.operationHandlers.put("Log out", this::handleLogOut);
         this.operationHandlers.put("Place unit", this::handleUnitPlacement);
         this.operationHandlers.put("Order", this::handleOrders);
+        this.operationHandlers.put("Continue", this::handleContinueGame);
     }
 
     @Override
@@ -414,6 +415,7 @@ public class UserHandler implements Runnable {
 
             // TODO: one way is to resolve bothe null and true user's action, but need
             // client to submit automatically an empty action
+            System.out.println("---------------------------------------------------------");
             System.out.println("User color: " + gameController.getUserColor(currentUser)
                     + " Before resolve player food resource: "
                     + gameController.mapUserToPlayer(currentUser).getResourceCount(new Resource(ResourceType.FOOD)));
@@ -423,6 +425,8 @@ public class UserHandler implements Runnable {
                     + gameController.mapUserToPlayer(currentUser).getResourceCount(new Resource(ResourceType.FOOD)));
 
             System.out.println("Resolved user " + currentUser.getUserName() + " orders");
+            System.out.println("---------------------------------------------------------");
+
             if (receiveAll) {
                 System.out.println("Received all players' ations");
                 // update unit and resource

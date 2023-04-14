@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
@@ -24,14 +25,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class MapChooseActionController extends MapController {
 
@@ -254,10 +261,14 @@ public class MapChooseActionController extends MapController {
                     .getResourceCount(new Resource(ResourceType.FOOD));
             System.out.println("Food after: " + food2.toString());
 
-            if (!client.checkWin().equals("No winner")) {
-                showPopupAndExit(client.checkWin());
+            String winResult = client.checkWin();
+            if (!winResult.equals("No winner")) {
+                showPopupAndExit(winResult);
             }
-            client.checkLost();
+
+            if (client.checkLost().equals("You lost")) {
+                checkLostPopUp(App.getPrimaryStage());
+            }
             initialize();
             App.loadScenefromMain("submit-actions");
             attackOrders = new ArrayList<>();
@@ -282,6 +293,51 @@ public class MapChooseActionController extends MapController {
         alert.showAndWait()
                 .filter(response -> response == ButtonType.OK)
                 .ifPresent(response -> App.loadScenefromMain("multiple-games"));
+    }
+
+    private void checkLostPopUp(Window window) {
+
+        Stage popup = new Stage();
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.initOwner(window);
+        popup.setTitle("Game Over");
+
+        Label label = new Label("You've lost the game. What would you like to do?");
+        Button keepExpectatingBtn = new Button("Keep Expectating");
+        keepExpectatingBtn.setOnAction(e -> {
+            popup.close();
+            try {
+                onDone();
+            } catch (ClassNotFoundException | IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } // Call the "Done" button functionality
+        });
+
+        Button logOutBtn = new Button("Go back to Main Page");
+        logOutBtn.setOnAction(e -> {
+            // Implement the logout functionality here
+
+            MultipleGamesController multipleGamesController = (MultipleGamesController) App
+                    .loadController("multiple-games");
+            try {
+                multipleGamesController.refresh();
+            } catch (ClassNotFoundException | IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            System.out.println("this is printing from the gobackcontroller");
+            App.loadScenefromMain("multiple-games");
+        });
+
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(label, keepExpectatingBtn, logOutBtn);
+
+        Scene scene = new Scene(layout, 400, 200);
+        popup.setScene(scene);
+        popup.showAndWait();
+
     }
 
 }

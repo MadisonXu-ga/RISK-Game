@@ -30,8 +30,8 @@ public class Player implements Serializable {
         this.territories = new ArrayList<>();
         currTechnologyLevel = 0;
         resourceToAmount = new HashMap<>();
-        resourceToAmount.put(new Resource(ResourceType.FOOD), 100);
-        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 100);
+        resourceToAmount.put(new Resource(ResourceType.FOOD), 10000);
+        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 1000);
     }
 
     /**

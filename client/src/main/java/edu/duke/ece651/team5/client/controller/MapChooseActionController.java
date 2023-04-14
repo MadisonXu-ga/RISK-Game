@@ -246,7 +246,6 @@ public class MapChooseActionController extends MapController {
     }
 
     public void onDone() throws ClassNotFoundException, IOException {
-
         System.out.println("the number of upgrade orders is: " + upgradeOrders.size());
         Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
 

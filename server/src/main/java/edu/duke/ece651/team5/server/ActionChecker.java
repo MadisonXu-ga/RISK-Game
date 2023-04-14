@@ -52,6 +52,7 @@ public class ActionChecker {
 
         // check upgrade orders valid
         message = checkUpgradeValid(upgradeOrders, upgradeOrderRuleChecker, deepCopyMap);
+        System.out.println("action checker, check upgrade Valid: " + message);
         if (message != null) {
             return message;
         }
@@ -129,6 +130,7 @@ public class ActionChecker {
         String message = null;
         for (UpgradeOrder upgradeOrder : upgradeOrders) {
             message = upgradeOrderRuleChecker.checkOrder(upgradeOrder);
+            System.out.println("Upgrade order checker message: " + message);
             if (message != null) {
                 return message;
             }

@@ -60,8 +60,6 @@ public class GoToPlacementTest extends ApplicationTest {
         Mockito.when(mockTerritory.getName()).thenReturn("Narnia", "Oz", "Narnia", "Oz");
         Mockito.when(mockTerritory2.getName()).thenReturn("Narnia");
         Mockito.when(mockClient.recvUpdatedGame()).thenReturn(mockGame);
-        // Mockito.when(mockClient.sendPlacementOrder(anyInt(),
-        // any(HashMap.class))).thenReturn("Success");
 
         // Load the FXML file
         URL xmlResource = getClass().getResource("/mapPlacement.fxml");

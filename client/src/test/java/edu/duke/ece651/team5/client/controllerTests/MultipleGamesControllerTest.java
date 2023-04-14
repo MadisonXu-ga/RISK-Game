@@ -98,4 +98,9 @@ class MultipleGamesControllerTest {
         // FxAssert.verifyThat("#saveAndExit", NodeMatchers.isVisible());
 
     }
+
+    @Test
+    public void onJoinGame_test() {
+
+    }
 }

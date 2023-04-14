@@ -137,14 +137,15 @@ public class JoinableGamesController extends GoBackController {
 
         Object source = ae.getSource();
 
-        System.out.println("in Join function");
+        // System.out.println("in Join function");
         if (source instanceof Button) {
             Button btn = (Button) source;
             // btn.setText("clicked");
-            System.out.println("button pressed");
+            // System.out.println("button pressed");
             Integer gameID = Integer.parseInt(btn.getText());
             client.setGameID(gameID);
-            System.out.println("from the one that joins the game: " + client.getCurrentGameID());
+            // System.out.println("from the one that joins the game: " +
+            // client.getCurrentGameID());
             String msg = client.joinNewGame(gameID);
 
             if (msg.equals("Joined Success")) {
@@ -163,9 +164,9 @@ public class JoinableGamesController extends GoBackController {
 
                 // Game game = client.getGame();
 
-                System.out.println("we received a game!" + gameID);
+                // System.out.println("we received a game!" + gameID);
             }
-            System.out.println(msg);
+            // System.out.println(msg);
 
         }
     }

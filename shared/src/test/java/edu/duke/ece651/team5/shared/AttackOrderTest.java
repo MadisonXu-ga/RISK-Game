@@ -82,4 +82,29 @@ public class AttackOrderTest {
         verify(soldierArmy).removeSoldier(any(Soldier.class), anyInt());
 
     }
+
+    @Test
+    void testExecute2() {
+        String sourceName = "Source Territory";
+        String destinationName = "Destination Territory";
+        Map<Soldier, Integer> soldiers = new HashMap<>();
+        soldiers.put(new Soldier(SoldierLevel.INFANTRY), 1);
+        SoldierArmy army = new SoldierArmy(soldiers);
+        Player player = new Player("Player1");
+
+        AttackOrder attackOrder = new AttackOrder(sourceName, destinationName, army, player);
+
+        Territory sourceTerritory = mock(Territory.class);
+
+        RISKMap map = mock(RISKMap.class);
+        when(map.getTerritoryByName(sourceName)).thenReturn(sourceTerritory);
+
+        SoldierArmy soldierArmy = mock(SoldierArmy.class);
+        when(sourceTerritory.getSoldierArmy()).thenReturn(soldierArmy);
+       
+
+        attackOrder.execute(map, player);
+        verify(soldierArmy).removeSoldier(any(Soldier.class), anyInt());
+
+    }
 }

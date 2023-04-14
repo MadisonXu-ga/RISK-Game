@@ -63,4 +63,11 @@ public class MoveOrderTest {
         assertEquals(10, move.getPlayer().getResourceCount(new Resource(ResourceType.FOOD)));
     }
 
+    @Test
+    public void execute2() {
+        move.execute(map, territory1.getOwner());
+        assertEquals(1, territory1.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+        assertEquals(2, territory4.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+    }
+
 }

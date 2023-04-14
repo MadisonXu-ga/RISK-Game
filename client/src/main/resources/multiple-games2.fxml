@@ -41,13 +41,13 @@
             <AnchorPane fx:id="multipleGameButtons" prefHeight="735.0" prefWidth="686.0">
                <children>
                   <Text fx:id="loginStatus" layoutX="-422.0" layoutY="381.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" textAlignment="CENTER" wrappingWidth="281.336669921875" x="600.0" y="100.0" />
-                  <Button id="game1btn" fx:id="game1btn" layoutX="250.0" layoutY="50.0" mnemonicParsing="false" onAction="#onGame1" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 1" />
-                  <Button id="game2btn" fx:id="game2btn" layoutX="250.0" layoutY="150.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 2" />
-                  <Button id="game3btn" fx:id="game3btn" layoutX="250.0" layoutY="250.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 3" />
+                  <Button id="game1btn" fx:id="game1btn" layoutX="250.0" layoutY="50.0" mnemonicParsing="false" onAction="#Oncontinue" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 1" />
+                  <Button id="game2btn" fx:id="game2btn" layoutX="250.0" layoutY="150.0" mnemonicParsing="false" onAction="#Oncontinue" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 2" />
+                  <Button id="game3btn" fx:id="game3btn" layoutX="250.0" layoutY="250.0" mnemonicParsing="false" onAction="#Oncontinue" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 3" />
                   <Button id="joinOtherGamesbtn" fx:id="joinOtherGamesbtn" layoutX="54.0" layoutY="650.0" mnemonicParsing="false" onAction="#onjoinOtherGames" prefHeight="50.0" prefWidth="300.0" styleClass="secondarybtn" stylesheets="@actionButtons.css" text="join other games" />
-                  <Button id="game1btn" fx:id="game4btn" layoutX="250.0" layoutY="338.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 4" />
-                  <Button id="game2btn" fx:id="game5btn" layoutX="250.0" layoutY="438.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 5" />
-                  <Button id="game3btn" fx:id="game6btn" layoutX="250.0" layoutY="538.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 6" />
+                  <Button id="game1btn" fx:id="game4btn" layoutX="250.0" layoutY="338.0" mnemonicParsing="false" onAction="#Oncontinue" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 4" />
+                  <Button id="game2btn" fx:id="game5btn" layoutX="250.0" layoutY="438.0" mnemonicParsing="false" onAction="#Oncontinue" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 5" />
+                  <Button id="game3btn" fx:id="game6btn" layoutX="250.0" layoutY="538.0" mnemonicParsing="false" onAction="#Oncontinue" prefHeight="50.0" prefWidth="150.0" styleClass="neutralbtn" stylesheets="@actionButtons.css" text="Game 6" />
                   <Button fx:id="Logout" layoutX="507.0" layoutY="28.0" mnemonicParsing="false" onAction="#onLogOut" prefHeight="42.0" prefWidth="125.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Log out">
                      <font>
                         <Font size="16.0" />

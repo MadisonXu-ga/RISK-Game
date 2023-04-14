@@ -46,7 +46,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 30495, br, out);
+    this("localhost", 30496, br, out);
   }
 
   /**
@@ -299,6 +299,19 @@ public class Client {
     System.out.println("The message for checkLost: " + msg);
     msg = msg.trim(); // removes leading and trailing whitespace
     msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+    return msg;
+  }
+
+  public String continueGame(Integer gameID) throws ClassNotFoundException, IOException {
+
+    playerConnection.writeData("Continue");
+    playerConnection.writeData(gameID);
+    String msg = (String) playerConnection.readData();
+    System.out.println("The game message for continuing game is: [" + msg + "] ");
+
+    msg = msg.trim(); // removes leading and trailing whitespace
+    msg = msg.replaceAll("\\r|\\n", ""); // removes carriage return and newline characters
+
     return msg;
   }
 

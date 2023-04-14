@@ -93,10 +93,20 @@ public class MultipleGamesController extends GoBackController {
 
     }
 
-    public void onGame1(ActionEvent ae) {
+    public void Oncontinue(ActionEvent ae) throws ClassNotFoundException, IOException {
 
-        System.out.print(gameButtons.length);
+        Button source = (Button) ae.getSource();
+        Integer gameIDInt = Integer.parseInt(source.getText());
+        String message = client.continueGame(gameIDInt);
+        Game retrievedGame = client.updatedGameAfterTurn();
+        client.setGameID(gameIDInt);
 
+        if (message.equals("Initializing")) {
+            goToPlacement(retrievedGame);
+        }
+        if (message.equals("Started")) {
+            goToPlacingActionsScreen(retrievedGame);
+        }
     }
 
     public void onBeginNewGame(ActionEvent ae) throws IOException, ClassNotFoundException {
@@ -226,7 +236,7 @@ public class MultipleGamesController extends GoBackController {
         BorderPane bp = loader.load();
 
         Scene scene = new Scene(new StackPane(bp));
-        // App.addScenetoMain("pl", scene);
+        App.addScenetoMain("placement", scene);
 
         App.getPrimaryStage().setScene(scene);
         // Game game = client.getGame();
@@ -273,5 +283,29 @@ public class MultipleGamesController extends GoBackController {
             gameButtons[i].setText(gameIDs.get(i).toString());
 
         }
+    }
+
+    public void goToPlacingActionsScreen(Game updatedGame) throws IOException {
+
+        URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
+        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+        HashMap<Class<?>, Object> controllers = new HashMap<>();
+
+        // System.out.println("just before going to placing actions" +
+        // client.getCurrentGameID());
+        MultipleGamesController multipleGamesController = new MultipleGamesController(client);
+        controllers.put(MapChooseActionController.class, new MapChooseActionController(client, updatedGame));
+        controllers.put(MultipleGamesController.class, multipleGamesController);
+        loader.setControllerFactory((c) -> {
+            return controllers.get(c);
+        });
+
+        StackPane bp = loader.load();
+
+        Scene scene = new Scene(new StackPane(bp));
+        App.addScenetoMain("submit-actions", scene);
+
+        App.getPrimaryStage().setScene(scene);
     }
 }

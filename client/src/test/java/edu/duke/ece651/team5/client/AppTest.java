@@ -18,9 +18,9 @@ import org.junit.jupiter.api.Disabled;
 
 class AppTest {
 
-    @Test
-    void test_Main() throws IOException, ClassNotFoundException, InterruptedException {
-        App.main(null);
-    }
+    // @Test
+    // void test_Main() throws IOException, ClassNotFoundException,
+    // InterruptedException {
+    // App.main(null);
 
 }

@@ -103,12 +103,14 @@ public class App extends Application {
     primaryStage.setOnCloseRequest(event -> {
 
       event.consume();
-      logoutGame(getPrimaryStage());
-      try {
-        classClient.logOutfromX();
-      } catch (IOException e) {
+      boolean closeRequest = logoutGame(getPrimaryStage());
+      if (closeRequest == true) {
+        try {
+          classClient.logOutfromX();
+        } catch (IOException e) {
 
-        e.printStackTrace();
+          e.printStackTrace();
+        }
       }
     });
   }
@@ -156,7 +158,7 @@ public class App extends Application {
     return loadedContoller;
   }
 
-  public static void logoutGame(Stage stage) {
+  public static boolean logoutGame(Stage stage) {
 
     Alert alert = new Alert(AlertType.CONFIRMATION);
     alert.setTitle("Logout");
@@ -166,8 +168,10 @@ public class App extends Application {
     if (alert.showAndWait().get() == ButtonType.OK) {
 
       primaryStage.close();
+      return true;
 
     }
+    return false;
   }
 
   public static void main(String[] args) {

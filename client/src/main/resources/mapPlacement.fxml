@@ -85,13 +85,13 @@
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <Spinner layoutX="175.0" layoutY="189.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Spinner fx:id="comboBox1" layoutX="175.0" layoutY="189.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
             <Text layoutX="30.0" layoutY="239.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />
                </font>
             </Text>
-            <Spinner layoutX="175.0" layoutY="219.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
+            <Spinner fx:id="comboBox2" layoutX="175.0" layoutY="219.0" prefHeight="27.0" prefWidth="54.0" styleClass="neutralTxtField" stylesheets="@actionButtons.css" />
             <Text layoutX="30.0" layoutY="272.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Territory: " wrappingWidth="144.80328369140625">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="20.0" />

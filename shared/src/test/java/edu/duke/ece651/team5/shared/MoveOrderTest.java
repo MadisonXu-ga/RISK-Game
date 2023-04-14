@@ -4,6 +4,8 @@ import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
+import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
@@ -46,14 +48,19 @@ public class MoveOrderTest {
         SoldierArmy toMove = new SoldierArmy();
         toMove.addSoldier(new Soldier(SoldierLevel.INFANTRY), 2);  // total 2
 
+        territory1.produceResource(new Resource(ResourceType.FOOD));
+        territory1.produceResource(new Resource(ResourceType.FOOD));
+
         move = new MoveOrder("Territory 1", "Territory 4", toMove, territory1.getOwner());
     }
 
     @Test
     public void execute() {
+        assertEquals(20, move.getPlayer().getResourceCount(new Resource(ResourceType.FOOD)));
         move.execute(map);
         assertEquals(1, territory1.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
         assertEquals(2, territory4.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+        assertEquals(10, move.getPlayer().getResourceCount(new Resource(ResourceType.FOOD)));
     }
 
 }

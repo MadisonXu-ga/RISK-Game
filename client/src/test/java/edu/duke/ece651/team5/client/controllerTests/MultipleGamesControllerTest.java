@@ -102,6 +102,5 @@ class MultipleGamesControllerTest {
     @Test
     public void onJoinGame_test() {
 
-        
     }
 }

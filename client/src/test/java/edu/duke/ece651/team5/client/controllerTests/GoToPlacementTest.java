@@ -147,8 +147,11 @@ public class GoToPlacementTest extends ApplicationTest {
                 break;
             }
         }
+        finalValue = (int) robot.lookup(spinnerId).queryAs(Spinner.class).getValue();
         robot.lookup(spinnerId).queryAs(Spinner.class).getValue();
-        assertEquals(48, finalValue);
-        // robot.clickOn("#submitPlacement");
+        assertEquals(49, finalValue);
+        robot.clickOn("#submitPlacement");
+
+        FxAssert.verifyThat("#donebtn", NodeMatchers.isVisible());
     }
 }

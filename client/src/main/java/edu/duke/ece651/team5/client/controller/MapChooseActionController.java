@@ -19,6 +19,7 @@ import edu.duke.ece651.team5.shared.order.ResearchOrder;
 import edu.duke.ece651.team5.shared.order.UpgradeOrder;
 import edu.duke.ece651.team5.shared.resource.Resource;
 import edu.duke.ece651.team5.shared.resource.ResourceType;
+import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
 import javafx.collections.FXCollections;
@@ -79,8 +80,14 @@ public class MapChooseActionController extends MapController {
     Text turnFeedback;
 
     @FXML
+    Text currTechnologyLevel;
+
+    @FXML
     public void initialize() {
         super.initialize();
+        Integer technologyLevelStr = (game.getPlayerByName(client.getColor()).getCurrTechnologyLevel());
+        SoldierLevel technologyEnumStr = SoldierLevel.values()[technologyLevelStr];
+        currTechnologyLevel.setText(technologyEnumStr.toString());
         // colorTerritoriesbyOwner();
         showTerritoryColors(true);
         gameID.setText("gameID: " + client.getCurrentGameID().toString());

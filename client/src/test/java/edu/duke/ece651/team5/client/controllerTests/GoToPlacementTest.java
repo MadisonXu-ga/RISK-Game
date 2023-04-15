@@ -168,7 +168,7 @@ public class GoToPlacementTest extends ApplicationTest {
     @Test
     public void goToPlacingActionsScreen_test() throws IOException {
 
-        JFXPanel jfxPanel = new JFXPanel(); // Initializes the JavaFX environment
+        // JFXPanel jfxPanel = new JFXPanel(); // Initializes the JavaFX environment
         // mapPlacementTerritory = new MapPlacementTerritory(mockClient, mockGame);
 
         // Call the method to test

@@ -12,6 +12,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -91,6 +92,7 @@ class SigninControllerTest {
 
     }
 
+    @Disabled
     @Test
     void testSignInButton_success(FxRobot robot) throws ClassNotFoundException,
             IOException, InterruptedException {

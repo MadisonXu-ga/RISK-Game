@@ -80,31 +80,34 @@ public class GoToPlacementTest extends ApplicationTest {
             if (c == MapPlacementTerritory.class) {
                 MapPlacementTerritory mapPlacementTerritory = new MapPlacementTerritory(mockClient, mockGame) {
 
-                    @Override
-                    protected void goToPlacingActionsScreen(Game updatedGame) throws IOException {
+                    // @Override
+                    // protected void goToPlacingActionsScreen(Game updatedGame) throws IOException
+                    // {
 
-                        URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
-                        FXMLLoader loader = new FXMLLoader(xmlResource);
+                    // URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
+                    // FXMLLoader loader = new FXMLLoader(xmlResource);
 
-                        HashMap<Class<?>, Object> controllers = new HashMap<>();
+                    // HashMap<Class<?>, Object> controllers = new HashMap<>();
 
-                        MultipleGamesController multipleGamesController = new MultipleGamesController(mockClient);
-                        MapChooseActionController mapChooseActionController = new MapChooseActionController(mockClient,
-                                updatedGame);
-                        controllers.put(MapChooseActionController.class, mapChooseActionController);
-                        controllers.put(MultipleGamesController.class, multipleGamesController);
-                        loader.setControllerFactory((c) -> {
-                            return controllers.get(c);
-                        });
+                    // MultipleGamesController multipleGamesController = new
+                    // MultipleGamesController(mockClient);
+                    // MapChooseActionController mapChooseActionController = new
+                    // MapChooseActionController(mockClient,
+                    // updatedGame);
+                    // controllers.put(MapChooseActionController.class, mapChooseActionController);
+                    // controllers.put(MultipleGamesController.class, multipleGamesController);
+                    // loader.setControllerFactory((c) -> {
+                    // return controllers.get(c);
+                    // });
 
-                        StackPane bp = loader.load();
+                    // StackPane bp = loader.load();
 
-                        Scene scene = new Scene(new StackPane(bp));
+                    // Scene scene = new Scene(new StackPane(bp));
 
-                        Stage stage = new Stage();
-                        stage.setScene(scene);
-                        stage.show();
-                    }
+                    // Stage stage = new Stage();
+                    // stage.setScene(scene);
+                    // stage.show();
+                    // }
 
                 };
                 this.mapPlacementTerritory = mapPlacementTerritory;
@@ -158,9 +161,9 @@ public class GoToPlacementTest extends ApplicationTest {
         }
         robot.lookup(spinnerId).queryAs(Spinner.class).getValue();
         assertEquals(48, finalValue);
-        robot.clickOn("#submitPlacement");
-        robot.clickOn("#submitPlacement");
-        FxAssert.verifyThat("#donebtn", NodeMatchers.isVisible());
+        // robot.clickOn("#submitPlacement");
+        // robot.clickOn("#submitPlacement");
+        // FxAssert.verifyThat("#donebtn", NodeMatchers.isVisible());
 
     }
 

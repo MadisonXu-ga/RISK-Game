@@ -1,7 +1,9 @@
 package edu.duke.ece651.team5.client.controllerTests;
 
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.client.controller.MapChooseActionController;
 import edu.duke.ece651.team5.client.controller.MapPlacementTerritory;
+import edu.duke.ece651.team5.client.controller.MultipleGamesController;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.Territory;
@@ -10,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Spinner;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +71,35 @@ public class GoToPlacementTest extends ApplicationTest {
         // Set the controller factory with mock objects
         loader.setControllerFactory(c -> {
             if (c == MapPlacementTerritory.class) {
-                return new MapPlacementTerritory(mockClient, mockGame);
+                return new MapPlacementTerritory(mockClient, mockGame) {
+
+                    @Override
+                    protected void goToPlacingActionsScreen(Game updatedGame) throws IOException {
+
+                        URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
+                        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+                        HashMap<Class<?>, Object> controllers = new HashMap<>();
+
+                        MultipleGamesController multipleGamesController = new MultipleGamesController(mockClient);
+                        MapChooseActionController mapChooseActionController = new MapChooseActionController(mockClient,
+                                updatedGame);
+                        controllers.put(MapChooseActionController.class, mapChooseActionController);
+                        controllers.put(MultipleGamesController.class, multipleGamesController);
+                        loader.setControllerFactory((c) -> {
+                            return controllers.get(c);
+                        });
+
+                        StackPane bp = loader.load();
+
+                        Scene scene = new Scene(new StackPane(bp));
+
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+
+                };
             }
             return null;
         });

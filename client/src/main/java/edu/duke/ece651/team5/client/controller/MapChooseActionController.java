@@ -76,6 +76,9 @@ public class MapChooseActionController extends MapController {
     Text foodAmnt;
 
     @FXML
+    Text turnFeedback;
+
+    @FXML
     public void initialize() {
         super.initialize();
         // colorTerritoriesbyOwner();
@@ -252,6 +255,7 @@ public class MapChooseActionController extends MapController {
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
         System.out.println("Action results:" + ActionResults);
+        turnFeedback.setText("Action results: " + ActionResults);
 
         if (!ActionResults.equals("Order succeeded")) {
             attackOrders = new ArrayList<>();

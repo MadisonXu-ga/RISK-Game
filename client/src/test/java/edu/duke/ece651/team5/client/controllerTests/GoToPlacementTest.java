@@ -1,19 +1,27 @@
 package edu.duke.ece651.team5.client.controllerTests;
 
+import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
+import edu.duke.ece651.team5.client.controller.MapChooseActionController;
 import edu.duke.ece651.team5.client.controller.MapPlacementTerritory;
+import edu.duke.ece651.team5.client.controller.MultipleGamesController;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.Territory;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Spinner;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
@@ -21,6 +29,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.control.TextMatchers;
+import org.testfx.util.WaitForAsyncUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,6 +50,7 @@ public class GoToPlacementTest extends ApplicationTest {
     private Player mockPlayer;
     private Territory mockTerritory;
     private Territory mockTerritory2;
+    private MapPlacementTerritory mapPlacementTerritory;
 
     @Override
     public void start(Stage stage) throws IOException, ClassNotFoundException {
@@ -68,7 +78,37 @@ public class GoToPlacementTest extends ApplicationTest {
         // Set the controller factory with mock objects
         loader.setControllerFactory(c -> {
             if (c == MapPlacementTerritory.class) {
-                return new MapPlacementTerritory(mockClient, mockGame);
+                MapPlacementTerritory mapPlacementTerritory = new MapPlacementTerritory(mockClient, mockGame) {
+
+                    @Override
+                    protected void goToPlacingActionsScreen(Game updatedGame) throws IOException {
+
+                        URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
+                        FXMLLoader loader = new FXMLLoader(xmlResource);
+
+                        HashMap<Class<?>, Object> controllers = new HashMap<>();
+
+                        MultipleGamesController multipleGamesController = new MultipleGamesController(mockClient);
+                        MapChooseActionController mapChooseActionController = new MapChooseActionController(mockClient,
+                                updatedGame);
+                        controllers.put(MapChooseActionController.class, mapChooseActionController);
+                        controllers.put(MultipleGamesController.class, multipleGamesController);
+                        loader.setControllerFactory((c) -> {
+                            return controllers.get(c);
+                        });
+
+                        StackPane bp = loader.load();
+
+                        Scene scene = new Scene(new StackPane(bp));
+
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+
+                };
+                this.mapPlacementTerritory = mapPlacementTerritory;
+                return mapPlacementTerritory;
             }
             return null;
         });
@@ -118,6 +158,26 @@ public class GoToPlacementTest extends ApplicationTest {
         }
         robot.lookup(spinnerId).queryAs(Spinner.class).getValue();
         assertEquals(48, finalValue);
-        // robot.clickOn("#submitPlacement");
+        robot.clickOn("#submitPlacement");
+        robot.clickOn("#submitPlacement");
+        FxAssert.verifyThat("#donebtn", NodeMatchers.isVisible());
+
+    }
+
+    // @Disabled
+    @Test
+    public void goToPlacingActionsScreen_test() throws IOException {
+
+        JFXPanel jfxPanel = new JFXPanel(); // Initializes the JavaFX environment
+        // mapPlacementTerritory = new MapPlacementTerritory(mockClient, mockGame);
+
+        // Call the method to test
+        // mapPlacementTerritory.goToPlacingActionsScreen(mockGame){
+
+        // }
+
+        // Verify interactions with the Client object
+        // verify(client).getColor();
+
     }
 }

@@ -177,7 +177,7 @@ public class MapPlacementTerritory extends MapController {
 
     // }
 
-    public void goToPlacingActionsScreen(Game updatedGame) throws IOException {
+    protected void goToPlacingActionsScreen(Game updatedGame) throws IOException {
 
         URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);

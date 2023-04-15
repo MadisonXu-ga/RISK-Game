@@ -83,8 +83,31 @@ public class MapChooseActionController extends MapController {
     Text currTechnologyLevel;
 
     @FXML
+    Button researchbtn;
+
+    @FXML
+    Text moenySpentTurn;
+
+    @FXML
+    Text foodSpentTurn;
+
+    public Integer moneySpent;
+    public Integer foodSpent;
+
+    @FXML
     public void initialize() {
         super.initialize();
+        researchbtn.setDisable(false);
+        if (moneySpent == null) {
+            moneySpent = 0;
+        }
+        if (foodSpent == null) {
+            foodSpent = 0;
+        }
+
+        moenySpentTurn.setText(Integer.toString(moneySpent));
+        foodSpentTurn.setText(Integer.toString(foodSpent));
+
         Integer technologyLevelStr = (game.getPlayerByName(client.getColor()).getCurrTechnologyLevel());
         SoldierLevel technologyEnumStr = SoldierLevel.values()[technologyLevelStr];
         currTechnologyLevel.setText(technologyEnumStr.toString());
@@ -193,6 +216,7 @@ public class MapChooseActionController extends MapController {
     }
 
     public void onResearchAction() {
+
         Player player = game.getPlayerByName(client.getColor());
         ResearchOrder researchOrdernew = new ResearchOrder(player, game);
         Integer researchCost = ResourceConsumeCalculator.computeTechConsumeForResearch(researchOrdernew);
@@ -208,7 +232,11 @@ public class MapChooseActionController extends MapController {
         if (confirmButton == ButtonType.OK) {
             System.out.println("research order: [" + researchOrder + "]");
             researchOrder = researchOrdernew;
+            researchbtn.setDisable(true);
             System.out.println("research order: [" + researchOrder + "]");
+            moneySpent += researchCost;
+            moenySpentTurn.setText(Integer.toString(moneySpent));
+
         } else {
             // User clicked Cancel, do nothing or handle accordingly
             // ...
@@ -275,7 +303,8 @@ public class MapChooseActionController extends MapController {
         else {
 
             game = client.updatedGameAfterTurn();
-
+            moneySpent = 0;
+            foodSpent = 0;
             String winResult = client.checkWin();
             if (!winResult.equals("No winner")) {
                 showPopupAndExit(winResult);

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import edu.duke.ece651.team5.client.App;
 import edu.duke.ece651.team5.client.Client;
@@ -36,6 +37,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -181,8 +183,25 @@ public class MapGoBackController extends MapController {
                 && !(soldierArmy.equals(new SoldierArmy()))) {
             // code to execute if all variables are not null
             MoveOrder moveOrder = new MoveOrder(sourceTerritory, destTerritorry, soldierArmy, player);
-            mapChooseActionController.moveOrders.add(moveOrder);
-            actionMessage.setText("");
+
+            Integer moneyCost = ResourceConsumeCalculator.computeFoodConsumeForMove(moveOrder, game.getMap());
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Are you sure you want to submit? It will cost you " + moneyCost + " food points");
+            alert.setContentText("Press OK to submit, or Cancel to cancel.");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                mapChooseActionController.foodSpent += moneyCost;
+                mapChooseActionController.moveOrders.add(moveOrder);
+                mapChooseActionController.foodSpentTurn
+                        .setText(Integer.toString(mapChooseActionController.foodSpent));
+                actionMessage.setText("");
+                actionMessage.setText("");
+            }
+
+            // mapChooseActionController.moveOrders.add(moveOrder);
+            // actionMessage.setText("");
         } else {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
             destTerritorybtn.setValue(destTerritorybtn.getId());
@@ -227,8 +246,27 @@ public class MapGoBackController extends MapController {
                 && !(soldierArmy.equals(new SoldierArmy()))) {
             // code to execute if all variables are not null
             AttackOrder attackOrder = new AttackOrder(sourceTerritory, destTerritorry, soldierArmy, player);
-            mapChooseActionController.attackOrders.add(attackOrder);
-            actionMessage.setText("");
+
+            Integer moneyCost = ResourceConsumeCalculator.computeFoodConsumeForAttack(attackOrder, game.getMap());
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Are you sure you want to submit? It will cost you " + moneyCost + " food points");
+            alert.setContentText("Press OK to submit, or Cancel to cancel.");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                mapChooseActionController.foodSpent += moneyCost;
+                mapChooseActionController.attackOrders.add(attackOrder);
+
+                mapChooseActionController.foodSpentTurn
+                        .setText(Integer.toString(mapChooseActionController.foodSpent));
+                actionMessage.setText("");
+
+                actionMessage.setText("");
+            }
+
+            // mapChooseActionController.attackOrders.add(attackOrder);
+            // actionMessage.setText("");
         } else {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
             destTerritorybtn.setValue(destTerritorybtn.getId());
@@ -254,11 +292,11 @@ public class MapGoBackController extends MapController {
             soldierToUpgrade.put(new Pair<>(new Soldier(unitsComboBox.getValue()), numberUnitsSpinner.getValue()),
                     unitsComboBoxTarget.getValue());
 
-            System.out.println("parameters for constructor:");
-            System.out.println(numberUnitsSpinner.getValue());
-            System.out.println(unitsComboBox.getValue());
-            System.out.println(sourceTerritory);
-            System.out.println(unitsComboBoxTarget.getValue());
+            // System.out.println("parameters for constructor:");
+            // System.out.println(numberUnitsSpinner.getValue());
+            // System.out.println(unitsComboBox.getValue());
+            // System.out.println(sourceTerritory);
+            // System.out.println(unitsComboBoxTarget.getValue());
 
             // process the selected value and value from spinner...
         } catch (NullPointerException | NumberFormatException e) {
@@ -272,9 +310,29 @@ public class MapGoBackController extends MapController {
 
             UpgradeOrder upgradeOrder = new UpgradeOrder(sourceTerritory, soldierToUpgrade,
                     game.getPlayerByName(client.getColor()));
-            System.out.println("just before adding it to array: " + mapChooseActionController.upgradeOrders.size());
-            mapChooseActionController.upgradeOrders.add(upgradeOrder);
-            System.out.println("just after adding it to array: " + mapChooseActionController.upgradeOrders.size());
+
+            Integer moneyCost = ResourceConsumeCalculator.computeTechConsumeForUpgrade(upgradeOrder);
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Are you sure you want to submit? It will cost you " + moneyCost + " food points");
+            alert.setContentText("Press OK to submit, or Cancel to cancel.");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                mapChooseActionController.moneySpent += moneyCost;
+                mapChooseActionController.upgradeOrders.add(upgradeOrder);
+
+                mapChooseActionController.moenySpentTurn
+                        .setText(Integer.toString(mapChooseActionController.moneySpent));
+                actionMessage.setText("");
+            }
+            // System.out.println("just before adding it to array: " +
+            // mapChooseActionController.upgradeOrders.size());
+
+            // mapChooseActionController.upgradeOrders.add(upgradeOrder);
+
+            // System.out.println("just after adding it to array: " +
+            // mapChooseActionController.upgradeOrders.size());
         } else {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
             System.out.println("Value: " + soldierToUpgrade);

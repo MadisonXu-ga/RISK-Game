@@ -50,19 +50,20 @@ public class TextPlayer {
     return player.getName();
   }
 
-  /**
-   * If player is the first one enter the game, she/he is responsible to select
-   * the number of player in this game
-   * and will do a format and bound check for user input
-   * 
-   * @return a int for the user selection
-   */
-  public int selectNumPlayer() {
-    out.println("Seems like you are the first player in the game!");
-    String instruction = "Please first enter how many players you want to play with(from 2 to 4 inclusive)\n";
-    int numPlayer = parseNumFromUsr(instruction, 2, 4, 1);
-    return numPlayer;
-  }
+  // /**
+  // * If player is the first one enter the game, she/he is responsible to select
+  // * the number of player in this game
+  // * and will do a format and bound check for user input
+  // *
+  // * @return a int for the user selection
+  // */
+  // public int selectNumPlayer() {
+  // out.println("Seems like you are the first player in the game!");
+  // String instruction = "Please first enter how many players you want to play
+  // with(from 2 to 4 inclusive)\n";
+  // int numPlayer = parseNumFromUsr(instruction, 2, 4, 1);
+  // return numPlayer;
+  // }
 
   /**
    * Set the player name
@@ -82,45 +83,47 @@ public class TextPlayer {
    * @return a HashMap with key of Territory Name and value of number of desired
    *         unit
    */
-  public HashMap<String, Integer> unitPlacement(Game game) {
-    // RISKMap currMap = game.getMap();
-    // Player player = game.getPlayerByName(playerName);
-    int availableUnit = Constants.AVAILABLE_UNIT;
-    int numTerries = player.getTerritories().size();
-    int count = 0;
-    int checkUnit = 0;
-    HashMap<String, Integer> placementInfo = new HashMap<>();
-    // iterate each territory this player is owned`
-    for (Territory t : player.getTerritories()) {
-      // if player do not have enough unit or is select last territory, will assign
-      // automatically
-      if (availableUnit == 0 || count == numTerries - 1) {
-        placementInfo.put(t.getName(), availableUnit + 1);
-        checkUnit += 1;
-        continue;
-      }
-      String instruction = "How many unit you want to place in your " + t.getName();
-      int placeUnit = parseNumFromUsr(instruction, 1, availableUnit, 0);
-      placementInfo.put(t.getName(), placeUnit + 1);
-      checkUnit += placeUnit + 1;
-      availableUnit -= placeUnit;
-      count++;
-    }
-    return placementInfo;
-  }
+  // public HashMap<String, Integer> unitPlacement(Game game) {
+  // // RISKMap currMap = game.getMap();
+  // // Player player = game.getPlayerByName(playerName);
+  // int availableUnit = Constants.AVAILABLE_UNIT;
+  // int numTerries = player.getTerritories().size();
+  // int count = 0;
+  // int checkUnit = 0;
+  // HashMap<String, Integer> placementInfo = new HashMap<>();
+  // // iterate each territory this player is owned`
+  // for (Territory t : player.getTerritories()) {
+  // // if player do not have enough unit or is select last territory, will assign
+  // // automatically
+  // if (availableUnit == 0 || count == numTerries - 1) {
+  // placementInfo.put(t.getName(), availableUnit + 1);
+  // checkUnit += 1;
+  // continue;
+  // }
+  // String instruction = "How many unit you want to place in your " +
+  // t.getName();
+  // int placeUnit = parseNumFromUsr(instruction, 1, availableUnit, 0);
+  // placementInfo.put(t.getName(), placeUnit + 1);
+  // checkUnit += placeUnit + 1;
+  // availableUnit -= placeUnit;
+  // count++;
+  // }
+  // return placementInfo;
+  // }
 
-  /**
-   * Responsible to print the placement result to player
-   * 
-   * @param unitApprove approvement from server
-   */
-  public void printPlacementResult(boolean unitApprove) {
-    if (unitApprove) {
-      out.println("Great! All your placement choices get approved!");
-    } else {
-      out.println("Sorry your unit placement is not successful, please give another try.");
-    }
-  }
+  // /**
+  // * Responsible to print the placement result to player
+  // *
+  // * @param unitApprove approvement from server
+  // */
+  // public void printPlacementResult(boolean unitApprove) {
+  // if (unitApprove) {
+  // out.println("Great! All your placement choices get approved!");
+  // } else {
+  // out.println("Sorry your unit placement is not successful, please give another
+  // try.");
+  // }
+  // }
 
   /**
    * Display the current map and ask player to select order type and do format
@@ -191,59 +194,61 @@ public class TextPlayer {
   // }
   // }
 
-  /**
-   * check if in current round, if any player wins the game
-   * 
-   * @param result the result received from server
-   * @return if any player win, return the name of player
-   *         else, return null
-   */
-  public String checkWinner(HashMap<String, Boolean> result) {
-    String winner = "";
-    for (String player : result.keySet()) {
-      if (result.get(player) != null && result.get(player)) {
-        winner = player;
-        out.println("Player " + winner + " wins!\nGame End NOW");
-        break;
-      }
-    }
-    return winner;
-  }
+  // /**
+  // * check if in current round, if any player wins the game
+  // *
+  // * @param result the result received from server
+  // * @return if any player win, return the name of player
+  // * else, return null
+  // */
+  // public String checkWinner(HashMap<String, Boolean> result) {
+  // String winner = "";
+  // for (String player : result.keySet()) {
+  // if (result.get(player) != null && result.get(player)) {
+  // winner = player;
+  // out.println("Player " + winner + " wins!\nGame End NOW");
+  // break;
+  // }
+  // }
+  // return winner;
+  // }
 
-  /**
-   * Check if player lose the game
-   * 
-   * @param result the result received from server
-   * @return if not lose, return blank
-   *         if lose, send string message to tell server if want to continue to
-   *         watch the game or quit
-   */
-  public String checkIfILose(HashMap<String, Boolean> result) {
-    String response = "";
-    if (result.get(this.player.getName()) != null && !result.get(this.player.getName())) {
-      String instruction = "Sorry Player " + this.player.getName() + ", you lose for this Game.\n"
-          + "Now you have two options:\n"
-          + "1. Continue to watch the game\n"
-          + "2. Quit the game\n"
-          + "Please enter 1 or 2\n";
-      int answer = parseNumFromUsr(instruction, 1, 2, 1);
-      response = (answer == 1) ? "Display" : "Disconnect";
-    }
-    return response;
-  }
+  // /**
+  // * Check if player lose the game
+  // *
+  // * @param result the result received from server
+  // * @return if not lose, return blank
+  // * if lose, send string message to tell server if want to continue to
+  // * watch the game or quit
+  // */
+  // public String checkIfILose(HashMap<String, Boolean> result) {
+  // String response = "";
+  // if (result.get(this.player.getName()) != null &&
+  // !result.get(this.player.getName())) {
+  // String instruction = "Sorry Player " + this.player.getName() + ", you lose
+  // for this Game.\n"
+  // + "Now you have two options:\n"
+  // + "1. Continue to watch the game\n"
+  // + "2. Quit the game\n"
+  // + "Please enter 1 or 2\n";
+  // int answer = parseNumFromUsr(instruction, 1, 2, 1);
+  // response = (answer == 1) ? "Display" : "Disconnect";
+  // }
+  // return response;
+  // }
 
-  /**
-   * Responsible to print the commit result to player
-   * 
-   * @param commitApprove approvement sent from server
-   */
-  public void printCommitResult(boolean commitApprove, String errMsg) {
-    if (commitApprove) {
-      out.println("You successfully commit all your orders!");
-    } else {
-      out.println("Sorry your commit is not successful because: " + errMsg);
-    }
-  }
+  // /**
+  // * Responsible to print the commit result to player
+  // *
+  // * @param commitApprove approvement sent from server
+  // */
+  // public void printCommitResult(boolean commitApprove, String errMsg) {
+  // if (commitApprove) {
+  // out.println("You successfully commit all your orders!");
+  // } else {
+  // out.println("Sorry your commit is not successful because: " + errMsg);
+  // }
+  // }
 
   // public void printAttackResult(ArrayList<AttackOrder> attRes) {
   // if (attRes == null) {
@@ -271,83 +276,86 @@ public class TextPlayer {
   // out.println(view.displayMap());
   // }
 
-  /**
-   * helper method to parse number from user input, it will also check formate and
-   * bound
-   * if user input is not correct, it will ask user to conitnue type input untill
-   * pass
-   * 
-   * @param instruction a string with instruction for user
-   * @param lowerBound  a lower bound to do bound check
-   * @param upperBound  a upper bound to do bound check
-   * @return return a valid int number inside the range
-   */
-  private int parseNumFromUsr(String instruction, int lowerBound, int upperBound, int type) {
-    boolean status = false;
-    int res = 0;
-    while (!status) {
-      try {
-        String inputUnit = readUserInput(instruction);
-        res = Integer.parseInt(inputUnit);
-        // System.out.println("do bound check.\n");
-        if (res < lowerBound || res > upperBound) {
-          out.println("Number input out of range. Please try again.");
-          continue;
-        }
-        int check = upperBound - res;
-        status = true;
-      } catch (Exception e) {
-        out.println("Not a valid number input. Please try again");
-      }
-    }
-    return res;
-  }
+  // /**
+  // * helper method to parse number from user input, it will also check formate
+  // and
+  // * bound
+  // * if user input is not correct, it will ask user to conitnue type input
+  // untill
+  // * pass
+  // *
+  // * @param instruction a string with instruction for user
+  // * @param lowerBound a lower bound to do bound check
+  // * @param upperBound a upper bound to do bound check
+  // * @return return a valid int number inside the range
+  // */
+  // private int parseNumFromUsr(String instruction, int lowerBound, int
+  // upperBound, int type) {
+  // boolean status = false;
+  // int res = 0;
+  // while (!status) {
+  // try {
+  // String inputUnit = readUserInput(instruction);
+  // res = Integer.parseInt(inputUnit);
+  // // System.out.println("do bound check.\n");
+  // if (res < lowerBound || res > upperBound) {
+  // out.println("Number input out of range. Please try again.");
+  // continue;
+  // }
+  // int check = upperBound - res;
+  // status = true;
+  // } catch (Exception e) {
+  // out.println("Not a valid number input. Please try again");
+  // }
+  // }
+  // return res;
+  // }
 
-  /**
-   * helper method to read input from terminal
-   * 
-   * @param prompt the helper instruction message
-   * @return a string contained user input
-   * @throws IOException          will throw exception is msg is null
-   * @throws InterruptedException
-   */
-  private String readUserInput(String prompt) throws IOException {
-    out.println(prompt);
-    String msg = inputReader.readLine();
-    return msg;
-  }
+  // /**
+  // * helper method to read input from terminal
+  // *
+  // * @param prompt the helper instruction message
+  // * @return a string contained user input
+  // * @throws IOException will throw exception is msg is null
+  // * @throws InterruptedException
+  // */
+  // private String readUserInput(String prompt) throws IOException {
+  // out.println(prompt);
+  // String msg = inputReader.readLine();
+  // return msg;
+  // }
 
-  /**
-   * helper method to check if user has correct type input
-   * 
-   * @param type the input to be checked
-   * @throws IllegalArgumentException will throw if user input is not within the
-   *                                  correct choices
-   */
-  private void typeCheck(String type) {
-    if (!(type.equalsIgnoreCase("D") || type.equalsIgnoreCase("done")
-        || type.equalsIgnoreCase("M") || type.equalsIgnoreCase("move")
-        || type.equalsIgnoreCase("A") || type.equalsIgnoreCase("attack"))) {
-      throw new IllegalArgumentException("Invalid Type Input\n");
-    }
-  }
+  // /**
+  // * helper method to check if user has correct type input
+  // *
+  // * @param type the input to be checked
+  // * @throws IllegalArgumentException will throw if user input is not within the
+  // * correct choices
+  // */
+  // private void typeCheck(String type) {
+  // if (!(type.equalsIgnoreCase("D") || type.equalsIgnoreCase("done")
+  // || type.equalsIgnoreCase("M") || type.equalsIgnoreCase("move")
+  // || type.equalsIgnoreCase("A") || type.equalsIgnoreCase("attack"))) {
+  // throw new IllegalArgumentException("Invalid Type Input\n");
+  // }
+  // }
 
-  /**
-   * helper method to parse user input of move order input (source, destination,
-   * unit number)
-   * 
-   * @param input the input to be parsed
-   * @return a string arraylist contains each info
-   */
-  public ArrayList<String> parseUserInput(String input) {
-    ArrayList<String> res = new ArrayList<>();
-    int firstParse = input.indexOf("-");
-    res.add(input.substring(0, firstParse));
-    int secondParse = input.indexOf("-", firstParse + 1);
-    res.add(input.substring(firstParse + 1, secondParse));
-    res.add(input.substring(secondParse + 1));
-    return res;
-  }
+  // /**
+  // * helper method to parse user input of move order input (source, destination,
+  // * unit number)
+  // *
+  // * @param input the input to be parsed
+  // * @return a string arraylist contains each info
+  // */
+  // public ArrayList<String> parseUserInput(String input) {
+  // ArrayList<String> res = new ArrayList<>();
+  // int firstParse = input.indexOf("-");
+  // res.add(input.substring(0, firstParse));
+  // int secondParse = input.indexOf("-", firstParse + 1);
+  // res.add(input.substring(firstParse + 1, secondParse));
+  // res.add(input.substring(secondParse + 1));
+  // return res;
+  // }
 
   public String checkMoveOrder(MoveOrder moveOrder, RISKMap map) {
     OrderRuleChecker moveRuleChecker = new MoveOwnershipRuleChecker(

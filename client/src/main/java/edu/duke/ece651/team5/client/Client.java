@@ -46,7 +46,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 31001, br, out);
+    this("localhost", 31002, br, out);
   }
 
   /**
@@ -103,23 +103,24 @@ public class Client {
    * @throws IOException            if any IO failure
    * @throws ClassNotFoundException if unknown host failure
    */
-  public void handlePlayerName() throws IOException, ClassNotFoundException {
-    out.println("\nWaiting to receive your player name...\n");
-    String msg = (String) playerConnection.readData();
-    Player playerInfo = null;
-    // if identified as first player, ask user choice for the number of player for
-    // this game
-    if (msg.equals("First")) {
-      int numPlayer = textPlayer.selectNumPlayer();
-      out.println("\nSending your choice..\n");
-      playerConnection.writeData(numPlayer);
-      // get player name for first user
-      playerInfo = (Player) playerConnection.readData();
-    }
-    // set player name
-    out.println("\nWe got your player name!\n");
-    textPlayer.setPlayer(playerInfo);
-  }
+  // public void handlePlayerName() throws IOException, ClassNotFoundException {
+  // out.println("\nWaiting to receive your player name...\n");
+  // String msg = (String) playerConnection.readData();
+  // Player playerInfo = null;
+  // // if identified as first player, ask user choice for the number of player
+  // for
+  // // this game
+  // if (msg.equals("First")) {
+  // int numPlayer = textPlayer.selectNumPlayer();
+  // out.println("\nSending your choice..\n");
+  // playerConnection.writeData(numPlayer);
+  // // get player name for first user
+  // playerInfo = (Player) playerConnection.readData();
+  // }
+  // // set player name
+  // out.println("\nWe got your player name!\n");
+  // textPlayer.setPlayer(playerInfo);
+  // }
 
   public String confirmGame() throws IOException, ClassNotFoundException {
 
@@ -349,30 +350,31 @@ public class Client {
 
   }
 
-  /**
-   * handle user choice for their unit placement, send the choices to server
-   * and continue to ask user choice if not approved by server
-   * Once got approval, display successful message to user
-   * 
-   * @throws IOException            if any IO failure
-   * @throws ClassNotFoundException if unknown host failure
-   */
-  public void handlePlacement() throws IOException, ClassNotFoundException {
-    boolean complete = false;
-    // gather placeInfo from textPlayer
-    Game game = recvGame();
-    out.println("\nNow you need to decide where to put your territories...\nThink Carefully!\n");
-    do {
-      HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(game);
-      out.println("\nWe got all your choices, sending your choices...\n");
-      // write info to server
-      playerConnection.writeData(placeInfo);
-      // receive approval or not from server
-      complete = isValidFromServer();
-      // display result accordingly
-      textPlayer.printPlacementResult(complete);
-    } while (!complete);
-  }
+  // /**
+  // * handle user choice for their unit placement, send the choices to server
+  // * and continue to ask user choice if not approved by server
+  // * Once got approval, display successful message to user
+  // *
+  // * @throws IOException if any IO failure
+  // * @throws ClassNotFoundException if unknown host failure
+  // */
+  // public void handlePlacement() throws IOException, ClassNotFoundException {
+  // boolean complete = false;
+  // // gather placeInfo from textPlayer
+  // Game game = recvGame();
+  // out.println("\nNow you need to decide where to put your territories...\nThink
+  // Carefully!\n");
+  // do {
+  // HashMap<String, Integer> placeInfo = textPlayer.unitPlacement(game);
+  // out.println("\nWe got all your choices, sending your choices...\n");
+  // // write info to server
+  // playerConnection.writeData(placeInfo);
+  // // receive approval or not from server
+  // complete = isValidFromServer();
+  // // display result accordingly
+  // textPlayer.printPlacementResult(complete);
+  // } while (!complete);
+  // }
 
   /**
    * if current player is lose, only display map to user
@@ -453,22 +455,22 @@ public class Client {
   /**
    * handle playing game control
    */
-  public void play() {
-    try {
-      createPlayer();
-      handlePlayerName();
-      handlePlacement();
-      String winner = "";
-      while (winner.isEmpty()) {
-        // playOneTurn();
-        // winner = checkResult();
-      }
-      out.println("\nSee you next time!\n");
-      playerConnection.close();
-    } catch (Exception e) {
-      out.println("Something went wrong... " + e.getMessage());
-    }
-  }
+  // public void play() {
+  // try {
+  // createPlayer();
+  // handlePlayerName();
+  // handlePlacement();
+  // String winner = "";
+  // while (winner.isEmpty()) {
+  // // playOneTurn();
+  // // winner = checkResult();
+  // }
+  // out.println("\nSee you next time!\n");
+  // playerConnection.close();
+  // } catch (Exception e) {
+  // out.println("Something went wrong... " + e.getMessage());
+  // }
+  // }
 
   /**
    * handle map receiving from server

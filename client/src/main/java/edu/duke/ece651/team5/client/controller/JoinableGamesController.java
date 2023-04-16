@@ -98,35 +98,8 @@ public class JoinableGamesController extends GoBackController {
 
         App.getPrimaryStage().setScene(scene);
         System.out.print("waiting");
-        // Game game = client.getGame();
-
-        // Game game = client.getGame();
-
-        // Platform.runLater(() -> {
-        // // code to be executed after the scene is set
-        // try {
-        // Game game = client.getGame();
-        // goToPlacement(game);
-        // } catch (ClassNotFoundException | IOException e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
-        // });
-
-        // if (client.confirmGame().equals("Game sent")) {
-
-        // goToPlacement(game);
-        // }
 
     }
-
-    // public void onsaveAndExit(ActionEvent ae) throws ClassNotFoundException,
-    // IOException {
-
-    // // TODO create the disconnect action with server
-
-    // App.loadScenefromMain("multiple-games");
-    // }
 
     /**
      * @param ae
@@ -160,13 +133,7 @@ public class JoinableGamesController extends GoBackController {
                 // client.getGameConfirmation();
                 goToPlacement(game);
 
-                // multipleGamesController.refresh();
-
-                // Game game = client.getGame();
-
-                // System.out.println("we received a game!" + gameID);
             }
-            // System.out.println(msg);
 
         }
     }
@@ -183,7 +150,6 @@ public class JoinableGamesController extends GoBackController {
         HashMap<Class<?>, Object> controllers = new HashMap<>();
 
         MultipleGamesController multipleGamesController = new MultipleGamesController(client);
-        // controllers.put(GoBackController.class, new GoBackController());
         controllers.put(MapPlacementTerritory.class, new MapPlacementTerritory(client, game));
         controllers.put(MultipleGamesController.class, multipleGamesController);
         loader.setControllerFactory((c) -> {
@@ -193,11 +159,9 @@ public class JoinableGamesController extends GoBackController {
         BorderPane bp = loader.load();
 
         Scene scene = new Scene(new StackPane(bp));
-        // App.addScenetoMain("pl", scene);
 
         App.getPrimaryStage().setScene(scene);
-        // Game game = client.getGame();
-        // System.out.println("we received a game!");
+
     }
 
 }

@@ -94,10 +94,16 @@ public class MapChooseActionController extends MapController {
     public Integer moneySpent;
     public Integer foodSpent;
 
+    /*
+     * this function initializes the controller and view
+     * if the resources are null, it sets them to zero
+     * Calculates the resources available to one player and displays them
+     */
     @FXML
     public void initialize() {
         super.initialize();
         researchbtn.setDisable(false);
+
         if (moneySpent == null) {
             moneySpent = 0;
         }
@@ -135,11 +141,16 @@ public class MapChooseActionController extends MapController {
 
     }
 
+    /**
+     * @param game sets the game for the controller
+     */
     public void setGame(Game game) {
         this.game = game;
     }
 
     /**
+     * the action of moving button
+     * 
      * @throws IOException
      */
     public void onMoveAction() throws IOException {
@@ -215,6 +226,9 @@ public class MapChooseActionController extends MapController {
         App.getPrimaryStage().setScene(scene);
     }
 
+    /**
+     * The action of pressing the research button
+     */
     public void onResearchAction() {
 
         Player player = game.getPlayerByName(client.getColor());
@@ -237,12 +251,14 @@ public class MapChooseActionController extends MapController {
             moneySpent += researchCost;
             moenySpentTurn.setText(Integer.toString(moneySpent));
 
-        } else {
-            // User clicked Cancel, do nothing or handle accordingly
-            // ...
         }
     }
 
+    /**
+     * upgrading the units through the button
+     * 
+     * @throws IOException
+     */
     public void onUpgradeAction() throws IOException {
         URL xmlResource = getClass().getResource("/upgrade-units.fxml");
         // URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
@@ -283,6 +299,12 @@ public class MapChooseActionController extends MapController {
 
     }
 
+    /**
+     * submits the actions in this turn
+     * 
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     public void onDone() throws ClassNotFoundException, IOException {
         System.out.println("the number of upgrade orders is: " + upgradeOrders.size());
         Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
@@ -375,7 +397,7 @@ public class MapChooseActionController extends MapController {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-            System.out.println("this is printing from the gobackcontroller");
+            // System.out.println("this is printing from the gobackcontroller");
             App.loadScenefromMain("multiple-games");
         });
 

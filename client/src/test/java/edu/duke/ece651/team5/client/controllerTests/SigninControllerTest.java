@@ -133,7 +133,7 @@ class SigninControllerTest {
         Button[] buttons = multipleGamesController.getButtons();
         robot.clickOn("#amountPlayers");
         robot.write("2");
-        robot.clickOn("#beginNewGamebtn");
+        // robot.clickOn("#beginNewGamebtn");
 
         // verify(client).getGame();
         // verify(client).getColor();

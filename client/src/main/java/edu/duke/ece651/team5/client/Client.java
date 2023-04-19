@@ -97,6 +97,12 @@ public class Client {
     return color;
   }
 
+  public void setPlayerConnection(PlayerConnection playerConnection) {
+
+    this.playerConnection = playerConnection;
+
+  }
+
   /**
    * receive player name from server and assign it to current player
    * 

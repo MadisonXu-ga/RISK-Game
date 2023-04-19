@@ -28,8 +28,6 @@ public class ResourceConsumeCalculator {
         SoldierArmy soldierToNumber = moveOrder.getSoldierToNumber();
         int totalNumberOfSoldier = soldierToNumber.getTotalCountSolider();
         int distance = map.getShortestPathDistance(sourceName, destinationName, true);
-        System.out.println(distance);
-        System.out.println(totalNumberOfSoldier);
         return C * distance * totalNumberOfSoldier;
     }
 

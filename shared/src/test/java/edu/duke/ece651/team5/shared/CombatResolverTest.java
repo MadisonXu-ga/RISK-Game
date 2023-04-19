@@ -76,6 +76,15 @@ public class CombatResolverTest {
        
     }
 
+    @Test
+    void testResolveAttack() {
+        ArrayList<AttackOrder> attackOrders = new ArrayList<>();
+        HashMap<String, ArrayList<AttackOrder>> resolve = new HashMap<>();
+        resolve.put("destination1", attackOrders);
+        resolver.resolveAttackOrder(resolve, game);
+        assertEquals("Player 1", territory.getOwner().getName());
+    }
+
 
     @Test
     void testBeginFight() {

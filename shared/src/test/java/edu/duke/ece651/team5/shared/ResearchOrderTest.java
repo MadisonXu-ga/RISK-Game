@@ -20,6 +20,7 @@ class ResearchOrderTest {
     private ResearchOrder researchOrder;
     private Player player;
     private Game game;
+    private RISKMap map;
 
     @BeforeEach
     public void setUp() {
@@ -29,10 +30,11 @@ class ResearchOrderTest {
 
         Map<String, Territory> territories = new HashMap<>();
         territories.put("Territory 1", territory);
-        RISKMap map = new RISKMap(territories, null);
+        map = new RISKMap(territories, null);
         Game game = new Game(players, map);
 
         territory.setOwner(player);
+        territory.produceResource(new Resource(ResourceType.FOOD));
         territory.produceResource(new Resource(ResourceType.TECHNOLOGY));
         territory.produceResource(new Resource(ResourceType.TECHNOLOGY));
         territory.produceResource(new Resource(ResourceType.TECHNOLOGY));
@@ -40,7 +42,7 @@ class ResearchOrderTest {
         System.out.println(player.getResourceCount(new Resource(ResourceType.TECHNOLOGY)));
 
         researchOrder = new ResearchOrder(player, game);
-        researchOrder.execute(map);
+
     }
 
     @Test
@@ -50,6 +52,15 @@ class ResearchOrderTest {
 
     @Test
     void execute() {
+        researchOrder.execute(map);
+        assertEquals(1, player.getCurrTechnologyLevel());
+        assertEquals(10, player.getResourceCount(new Resource(ResourceType.TECHNOLOGY)));
+    }
+
+    
+    @Test
+    void execute2() {
+        researchOrder.execute(map, player);
         assertEquals(1, player.getCurrTechnologyLevel());
         // assertEquals(10, player.getResourceCount(new
         // Resource(ResourceType.TECHNOLOGY)));

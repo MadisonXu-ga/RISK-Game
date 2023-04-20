@@ -53,6 +53,7 @@ public class App extends Application {
   public App() throws UnknownHostException, IOException {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     this.classClient = new Client(input, System.out);
+    this.classClient.createPlayer();
   }
 
   @Override

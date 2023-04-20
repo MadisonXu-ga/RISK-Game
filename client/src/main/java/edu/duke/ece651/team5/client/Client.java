@@ -65,7 +65,7 @@ public class Client {
     this.inputReader = br;
     this.out = out;
     this.isLose = false;
-    this.playerConnection = new PlayerConnection(new Socket(host, port));
+    // this.playerConnection = new PlayerConnection(new Socket(host, port));
     this.color = null;
     this.currentGameID = null;
   }
@@ -78,7 +78,7 @@ public class Client {
    */
   public void createPlayer() throws UnknownHostException, IOException {
     this.playerConnection = new PlayerConnection(new Socket(host, port));
-    this.textPlayer = new TextPlayer(inputReader, out);
+    // this.textPlayer = new TextPlayer(inputReader, out);
   }
 
   public void setColor(String color) {

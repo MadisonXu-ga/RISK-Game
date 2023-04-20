@@ -2,6 +2,9 @@ package edu.duke.ece651.team5.shared.unit;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import edu.duke.ece651.team5.shared.game.Player;
 
 
 /**
@@ -31,12 +34,32 @@ public class SoldierArmy implements Serializable {
     }
 
     /**
+     * add soldiers in soldierArmy to current soldiers
+     * @param soldierArmy target soldier Arymy
+     */
+    public void addSoldierArmy(SoldierArmy soldierArmy){
+        for(Soldier soldier: soldierArmy.getAllSoldiers().keySet()){
+            addSoldier(soldier, soldierArmy.getSoldierCount(soldier));
+        }
+    }
+
+    /**
+     * remove soldiers in soldierArmy to current soldiers
+     * @param soldierArmy target soldier Arymy
+     */
+    public void removeSoldierArmy(SoldierArmy soldierArmy){
+        for(Soldier soldier: soldierArmy.getAllSoldiers().keySet()){
+            removeSoldier(soldier, soldierArmy.getSoldierCount(soldier));
+        }
+    }
+
+    /**
      * add soldier and corresponding number to soldier army
      * @param soldier target soldier
      * @param count number of this soldier
      */
     public void addSoldier(Soldier soldier, int count) {
-        soldiers.put(soldier, soldiers.get(soldier) + count);
+        soldiers.put(soldier, soldiers.getOrDefault(soldier, 0) + count);
     }
 
     /**
@@ -96,6 +119,18 @@ public class SoldierArmy implements Serializable {
      */
     public Map<Soldier, Integer> getAllSoldiers() {
         return soldiers;
+    }
+
+    /**
+     * getter for all available soldiers (#soldier > 0)
+     * for displaying in the front end
+     * @return map of available soldier
+     */
+    public Map<Soldier, Integer> getAvailableSoldiers() {
+        return soldiers.entrySet()
+                   .stream()
+                   .filter(entry -> entry.getValue() > 0)
+                   .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     @Override

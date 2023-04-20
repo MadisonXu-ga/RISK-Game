@@ -5,13 +5,11 @@ import edu.duke.ece651.team5.shared.game.*;
 public class AllianceOrder {
     Player player;
     Player targetAlliancePlayer;
-    Game game;
     
 
-    public AllianceOrder(Player player, Player targetAlliancePlayer, Game game ){
+    public AllianceOrder(Player player, Player targetAlliancePlayer){
         this.player = player;
         this.targetAlliancePlayer = targetAlliancePlayer;
-        this.game = game;
     }
 
 
@@ -31,7 +29,6 @@ public class AllianceOrder {
         int result = 1;
         result = prime * result + ((player == null) ? 0 : player.hashCode());
         result = prime * result + ((targetAlliancePlayer == null) ? 0 : targetAlliancePlayer.hashCode());
-        result = prime * result + ((game == null) ? 0 : game.hashCode());
         return result;
     }
 
@@ -55,11 +52,7 @@ public class AllianceOrder {
                 return false;
         } else if (!targetAlliancePlayer.equals(other.targetAlliancePlayer))
             return false;
-        if (game == null) {
-            if (other.game != null)
-                return false;
-        } else if (!game.equals(other.game))
-            return false;
+
         return true;
     }
 

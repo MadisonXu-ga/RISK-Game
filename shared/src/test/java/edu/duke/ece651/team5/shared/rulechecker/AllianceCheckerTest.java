@@ -3,9 +3,11 @@ package edu.duke.ece651.team5.shared.rulechecker;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,6 @@ import edu.duke.ece651.team5.shared.order.AllianceOrder;
 
 public class AllianceCheckerTest {
     private List<AllianceOrder> orders;
-    private Game game;
     private Player player1;
     private Player player2;
     private Player player3;
@@ -28,7 +29,6 @@ public class AllianceCheckerTest {
     @BeforeEach
     private void setUp(){
         checker = new AllianceChecker();
-        game = mock(Game.class);
         orders = new ArrayList<>();
         player1 = new Player("A");
         player2 = new Player("B");
@@ -39,12 +39,12 @@ public class AllianceCheckerTest {
 
     @Test
     void testNoAlliance(){
-        orders.add(new AllianceOrder(player1, player2, game));
-        orders.add(new AllianceOrder(player2, player3, game));
-        orders.add(new AllianceOrder(player4, player3, game));
-        List<Pair<Player, Player>> res = new ArrayList<>();
-        res = checker.checkAlliance(orders, game);
-        List<Pair<Player, Player>> expected = new ArrayList<>();
+        orders.add(new AllianceOrder(player1, player2));
+        orders.add(new AllianceOrder(player2, player3));
+        orders.add(new AllianceOrder(player4, player3));
+        Set<Set<Player>> res = new HashSet<>();
+        res = checker.checkAlliance(orders);
+        Set<Set<Player>> expected = new HashSet<>();
         assertEquals(expected, res);
     }
 
@@ -54,14 +54,14 @@ public class AllianceCheckerTest {
 
     @Test
     void testAlliancePlayer() {
-        orders.add(new AllianceOrder(player1, player2, game));
-        orders.add(new AllianceOrder(player4, player2, game));
-        orders.add(new AllianceOrder(player3, player1, game));
-        orders.add(new AllianceOrder(player2, player1, game));
-        List<Pair<Player, Player>> res = new ArrayList<>();
-        res = checker.checkAlliance(orders, game);
-        List<Pair<Player, Player>> expected = new ArrayList<>();
-        expected.add(new Pair<Player,Player>(player1, player2));
+        orders.add(new AllianceOrder(player1, player2));
+        orders.add(new AllianceOrder(player4, player2));
+        orders.add(new AllianceOrder(player3, player1));
+        orders.add(new AllianceOrder(player2, player1));
+        Set<Set<Player>>  res = new HashSet<>();
+        res = checker.checkAlliance(orders);
+        Set<Set<Player>>  expected =new HashSet<>();
+        expected.add(new HashSet<Player>(Arrays.asList(player1, player2)));
         assertEquals(expected, res);
     }
 }

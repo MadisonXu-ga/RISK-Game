@@ -19,6 +19,8 @@ public class Player implements Serializable {
     private int currTechnologyLevel;
     // the resource player currently owned for food and tech resources
     private final Map<Resource, Integer> resourceToAmount;
+    //list of alliance player
+    private Allience alliencePlayers;
 
     /**
      * Constructor to create a player
@@ -32,8 +34,23 @@ public class Player implements Serializable {
         resourceToAmount = new HashMap<>();
         resourceToAmount.put(new Resource(ResourceType.FOOD), 0);
         resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 0);
+        alliencePlayers = new Allience();
     }
 
+    public boolean containsAlliance(Player player) {
+        return alliencePlayers.containsAlliance(player);
+    }
+
+    public void addAliance(Player player) {
+        alliencePlayers.addAlliance(player);
+    }
+    
+    public void removeAlliance(Player breakPlayer){
+        alliencePlayers.removeAlliance(breakPlayer);
+    }
+
+
+    
     /**
      * when player as defenser lose in combat, lose control of this territory
      * 

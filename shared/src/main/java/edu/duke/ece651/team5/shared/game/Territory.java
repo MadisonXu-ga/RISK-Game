@@ -1,11 +1,15 @@
 package edu.duke.ece651.team5.shared.game;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import edu.duke.ece651.team5.shared.constant.Constants;
-import edu.duke.ece651.team5.shared.resource.Resource;
-import edu.duke.ece651.team5.shared.resource.ResourceType;
+import edu.duke.ece651.team5.shared.datastructure.Pair;
+import edu.duke.ece651.team5.shared.order.AllianceOrder;
+import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 /**
@@ -21,6 +25,9 @@ public class Territory implements Serializable {
     //store all the soldiers
     private SoldierArmy soldierArmy;
 
+    private Map<Player, SoldierArmy> allianceSolider;
+    
+
     /**
      * only used for test case
      * @param id assigned id
@@ -33,6 +40,7 @@ public class Territory implements Serializable {
         this.name = name;
         this.owner = owner;
         this.soldierArmy = soldierArmy;
+        this.allianceSolider = new HashMap<>();
     }
 
     /**
@@ -46,6 +54,7 @@ public class Territory implements Serializable {
         this.name = name;
         this.owner = owner;
         this.soldierArmy = new SoldierArmy();
+        this.allianceSolider = new HashMap<>();
     }
 
     /**
@@ -57,6 +66,26 @@ public class Territory implements Serializable {
         this.id = id;
         this.name = name;
         this.soldierArmy = new SoldierArmy();
+        this.allianceSolider = new HashMap<>();
+    }
+
+    /**
+     * add alliacne soldiers to current territory
+     * @param alliance player
+     * @param soldierArmy targetSoldier
+     */
+    public void addAllianceSoldier(Player alliance, SoldierArmy soldierArmy){
+        allianceSolider.put(alliance, soldierArmy);
+    }
+
+    /**
+     * remove break up alliance from current territory
+     * @param breakUpPlayer player
+     * @param closestTerritory players owned closest territory
+     */
+    public void removeBreakUpAlliance(Player breakUpPlayer, Territory closestTerritory){
+        closestTerritory.getSoldierArmy().addSoldierArmy(allianceSolider.get(breakUpPlayer));
+        allianceSolider.remove(breakUpPlayer);
     }
 
     /**
@@ -130,12 +159,14 @@ public class Territory implements Serializable {
         this.soldierArmy = soldierArmy;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
         Territory territory = (Territory) o;
-        return id == territory.id && Objects.equals(name, territory.name) && Objects.equals(owner, territory.owner) && Objects.equals(soldierArmy, territory.soldierArmy);
+        return id == territory.id && Objects.equals(name, territory.name);
+        // return id == territory.id && Objects.equals(name, territory.name) && Objects.equals(owner, territory.owner) && Objects.equals(soldierArmy, territory.soldierArmy);
     }
 
     @Override

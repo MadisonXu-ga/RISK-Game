@@ -33,6 +33,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -90,6 +91,9 @@ public class MapChooseActionController extends MapController {
 
     @FXML
     Text foodSpentTurn;
+
+    @FXML
+    TextField allianceTextBox;
 
     public Integer moneySpent;
     public Integer foodSpent;
@@ -408,6 +412,17 @@ public class MapChooseActionController extends MapController {
         Scene scene = new Scene(layout, 400, 200);
         popup.setScene(scene);
         popup.showAndWait();
+
+    }
+
+    public void onFormAlliance() {
+
+        // once the button is clicked the String is populated and the Textfield
+        // in viewis reset to empy
+        String allianceInput = allianceTextBox.getText();
+        allianceTextBox.setText("");
+
+        // do implementation here
 
     }
 

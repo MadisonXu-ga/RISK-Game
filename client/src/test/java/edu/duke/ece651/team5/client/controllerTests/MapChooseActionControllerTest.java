@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.client.controllerTests;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -11,15 +12,20 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.testfx.api.FxAssert;
+import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
 
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.client.controller.MapChooseActionController;
 import edu.duke.ece651.team5.client.controller.MultipleGamesController;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
+import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.Territory;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,6 +40,7 @@ public class MapChooseActionControllerTest extends ApplicationTest {
     private Player mockPlayer2;
     private Territory mockTerritory;
     private Territory mockTerritory2;
+    private RISKMap map;
 
     @Override
     public void start(Stage stage) throws IOException, ClassNotFoundException {
@@ -43,6 +50,7 @@ public class MapChooseActionControllerTest extends ApplicationTest {
         mockPlayer = Mockito.mock(Player.class);
         mockTerritory = Mockito.mock(Territory.class);
         mockTerritory2 = Mockito.mock(Territory.class);
+        map = Mockito.mock(RISKMap.class);
 
         // Set up the behavior for the mock objects
         Mockito.when(mockClient.getGame()).thenReturn(mockGame, mockGame);
@@ -53,6 +61,10 @@ public class MapChooseActionControllerTest extends ApplicationTest {
         Mockito.when(mockTerritory.getName()).thenReturn("Narnia", "Oz", "Narnia", "Oz");
         Mockito.when(mockTerritory2.getName()).thenReturn("Narnia");
         Mockito.when(mockClient.recvUpdatedGame()).thenReturn(mockGame);
+        Mockito.when(mockGame.getMap()).thenReturn(map);
+        Mockito.when(map.getTerritoryByName(any(String.class))).thenReturn(mockTerritory);
+        Mockito.when(mockTerritory.getOwner()).thenReturn(mockPlayer);
+        Mockito.when(mockTerritory.getSoldierArmy()).thenReturn(new SoldierArmy());
 
         URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");
         FXMLLoader loader = new FXMLLoader(xmlResource);
@@ -73,7 +85,8 @@ public class MapChooseActionControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void submitActionsTest() {
+    public void testGoToPlacement(FxRobot robot) {
 
+        FxAssert.verifyThat("#upgradebtn", NodeMatchers.isVisible());
     }
 }

@@ -100,6 +100,24 @@ public class CombatPlayers {
         return playerToBonusSoldier;
     }
 
+
+    private Map<Player, List<Integer>> mergeAlliance( Map<Player, List<Integer>> playerToBonusSoldier){
+        //for player in map
+        //check if player has alliance in keyset
+        //if not continue
+        //yes: merge, 
+        //find whose soldier large,sum of list
+        //record alliance player and ratio
+        Map<Player, List<Integer>> mergeAlliance = new HashMap<>();
+        for(Player player: playerToBonusSoldier.keySet()){
+            if(!mergeAlliance.containsKey(player)){
+                continue;
+            }
+        }
+        return mergeAlliance;
+
+    }
+
     /**
      * helper method to add bonus to each order's soldier
      * @param order order needs to convert
@@ -115,7 +133,4 @@ public class CombatPlayers {
         bonusSoldier.sort(Collections.reverseOrder());
         return bonusSoldier;
     }
-
-
-
 }

@@ -1,8 +1,11 @@
 package edu.duke.ece651.team5.shared.game;
 
 import java.io.Serializable;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /*
  * This class handle a list of players and a map for the game
@@ -31,6 +34,26 @@ public class Game implements Serializable {
 
     public Integer getGameID() {
         return gameID;
+    }
+
+    public String checkCurrentAlliance(){
+        StringBuilder sb = new StringBuilder();
+        for(Player player: players){
+            sb.append(player + player.getAlliencePlayers().toString() + "\n");
+        }
+        return sb.toString();
+    }
+
+
+    public List<Player> findAvailableAlliance(Player currentPlayer) {
+        return players.stream()
+                    .filter(player -> !currentPlayer.containsAlliance(currentPlayer) && !player.equals(currentPlayer))
+                    .collect(Collectors.toList());
+    }
+    
+
+    public Integer getTotalPlayerNum(){
+        return players.size();
     }
 
     public Player getPlayerByName(String name) {

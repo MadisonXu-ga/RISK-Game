@@ -94,7 +94,6 @@ public class Territory implements Serializable {
      */
     public void produceResource(Resource resource) {
         int amount = (resource.getType().equals(ResourceType.FOOD)) ? Constants.PRODUCE_FOOD_RESOURCE_PER_TURN : Constants.PRODUCE_TECH_RESOURCE_PER_TURN;
-        System.out.println("territory produce resource hash code: " + resource.hashCode());
         owner.addResourceFromTerritory(resource, amount);
     }
 

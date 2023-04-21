@@ -20,7 +20,8 @@ public class CombatResolver {
     public CombatResolver() {
     }
 
-   
+
+
     /**
      * merge attack order offered by same player to attack same destination territory
      * @param attackOrder

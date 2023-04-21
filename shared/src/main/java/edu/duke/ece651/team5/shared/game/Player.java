@@ -22,6 +22,10 @@ public class Player implements Serializable {
     //list of alliance player
     private Allience alliencePlayers;
 
+    public Allience getAlliencePlayers() {
+        return alliencePlayers;
+    }
+
     /**
      * Constructor to create a player
      * 
@@ -109,7 +113,6 @@ public class Player implements Serializable {
      * @param num      number of resource add to
      */
     public void addResourceFromTerritory(Resource resource, int num) {
-        System.out.println("player add resource hash code: " + resource.hashCode());
         resourceToAmount.put(resource,
                 resourceToAmount.get(resource) + num);
     }

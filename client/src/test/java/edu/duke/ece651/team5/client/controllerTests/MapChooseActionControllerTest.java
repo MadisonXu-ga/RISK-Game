@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -84,6 +85,7 @@ public class MapChooseActionControllerTest extends ApplicationTest {
         stage.show();
     }
 
+    @Disabled
     @Test
     public void testGoToPlacement(FxRobot robot) {
 

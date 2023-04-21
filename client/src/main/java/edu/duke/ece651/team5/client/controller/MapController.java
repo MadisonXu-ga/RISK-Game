@@ -236,10 +236,10 @@ public class MapController extends GoBackController {
             System.out.println("This is coloring the territories now");
             for (Player playerx : game.getPlayers()) {
 
-                // if (showAll == false && !(client.getColor().equals(playerx.getName()))) {
+                if (showAll == false && !(client.getColor().equals(playerx.getName()))) {
 
-                // continue;
-                // }
+                    continue;
+                }
                 for (Territory territory : playerx.getTerritories()) {
                     System.out.println(
                             "therritory " + territory.getName() + "is owned by " + territory.getOwner().getName());

@@ -148,6 +148,11 @@
                   <Font size="16.0" />
                </font>
             </Button>
+            <Button fx:id="chat" layoutX="14.0" layoutY="537.0" mnemonicParsing="false" onAction="#onChat" prefHeight="42.0" prefWidth="158.0" stylesheets="@actionButtons.css" text="Chat">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

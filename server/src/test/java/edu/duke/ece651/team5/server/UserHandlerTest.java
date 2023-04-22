@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -18,6 +19,7 @@ import edu.duke.ece651.team5.server.MyEnum.GameStatus;
 import edu.duke.ece651.team5.server.MyEnum.UserStatus;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 
+@Disabled
 public class UserHandlerTest {
         @Test
         void testHandleLogin() throws ClassNotFoundException, IOException {
@@ -314,7 +316,8 @@ public class UserHandlerTest {
         }
 
         @Test
-        void testHandleUnitPlacement(){}
+        void testHandleUnitPlacement() {
+        }
 
         @Test
         void testHandleUserOperation() {

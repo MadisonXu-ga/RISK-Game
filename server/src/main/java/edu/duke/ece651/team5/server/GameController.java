@@ -35,14 +35,13 @@ public class GameController {
     private int initialNum;
 
     private ArrayList<Player> players;
-    private HashMap<String, User> playerToUserMap; // TODO: maybe deleted
+    private HashMap<String, User> playerToUserMap;
     private HashMap<User, Player> userToPlayerMap;
-
     private HashMap<User, Boolean> userActiveStatus;
-
     private HashMap<Player, Action> playerActions;
-
     private HashMap<Player, Boolean> playerWinLoseStatus;
+
+    private ChatRoom chatRoom;
 
     public GameController(int playerNum) {
         this.id = nextId;
@@ -67,6 +66,9 @@ public class GameController {
         createPlayers(playerNum);
         // create game
         this.game = new Game(players, new RISKMap());
+
+        // create chat room
+        this.chatRoom = new ChatRoom(id, playerNum);
     }
 
     public int getID() {
@@ -87,6 +89,10 @@ public class GameController {
 
     public Player mapUserToPlayer(User user) {
         return userToPlayerMap.get(user);
+    }
+
+    public ChatRoom geChatRoom(){
+        return chatRoom;
     }
 
     /**

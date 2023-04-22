@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import edu.duke.ece651.team5.shared.*;
 import edu.duke.ece651.team5.shared.game.*;
-import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.constant.*;
 import edu.duke.ece651.team5.shared.datastructure.*;
 import edu.duke.ece651.team5.shared.order.*;
@@ -36,6 +35,11 @@ public class Client {
   private String host;
 
   protected boolean isLose;
+
+  // for v3 chat
+  private PlayerChatConnection playerConnection_chat;
+
+  private HashMap<Integer, ArrayList<String>> gameAllMessages;
 
   /**
    * Default constructor to set host and port as predefined
@@ -68,6 +72,10 @@ public class Client {
     this.playerConnection = new PlayerConnection(new Socket(host, port));
     this.color = null;
     this.currentGameID = null;
+
+    // for v3 chat
+    this.playerConnection_chat = new PlayerChatConnection(new Socket(host, port));
+    this.gameAllMessages = new HashMap<>();
   }
 
   /**
@@ -504,6 +512,41 @@ public class Client {
   private boolean isValidFromServer() throws IOException, ClassNotFoundException {
     boolean isValid = (Boolean) playerConnection.readData();
     return isValid;
+  }
+
+  // for v3 chat
+  public void listenForChat() {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        while (!playerConnection_chat.getSocket().isClosed()) {
+          try {
+            // String gameID = playerConnection_chat.readString();
+            // String playerColor = playerConnection_chat.readString();
+            // String message = playerConnection_chat.readString();
+            String messageReceived = playerConnection_chat.readString();
+            if (messageReceived == null) {
+              continue;
+            }
+            String[] words = messageReceived.split(" ");
+            int gameID = Integer.parseInt(words[0]);
+            String messageToDisplay = words[1] + words[2];
+            if (!gameAllMessages.containsKey(gameID)) {
+              gameAllMessages.put(gameID, new ArrayList<>());
+            }
+            gameAllMessages.get(gameID).add(messageToDisplay);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    });
+  }
+
+  // for v3 chat
+  public void sendMessage(int gameID, String playerColor, String message) {
+    String messageToSend = Integer.toString(gameID) + " " + playerColor + " " + message;
+    playerConnection_chat.writeString(messageToSend);
   }
 
 }

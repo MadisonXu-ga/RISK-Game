@@ -521,9 +521,6 @@ public class Client {
       public void run() {
         while (!playerConnection_chat.getSocket().isClosed()) {
           try {
-            // String gameID = playerConnection_chat.readString();
-            // String playerColor = playerConnection_chat.readString();
-            // String message = playerConnection_chat.readString();
             String messageReceived = playerConnection_chat.readString();
             if (messageReceived == null) {
               continue;

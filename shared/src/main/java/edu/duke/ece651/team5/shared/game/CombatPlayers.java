@@ -18,15 +18,19 @@ import java.util.Map;
 public class CombatPlayers {
     //list to keep track of bonus unit
     private final ArrayList<Integer> levelToBonus = 
-        new ArrayList<>(Arrays.asList(0, 1, 3, 5, 8, 11, 15));
+        new ArrayList<>(Arrays.asList(1, 2, 4, 6, 9, 12, 16));
     
     //list to store soldier level
     private final SoldierLevel[] bonusToLevel = SoldierLevel.values();
     
     //players with list of soldier represented by integer
     private Map<Player, List<Integer>> playerToBonusSoldier;
-    private List<Player> combatPlayersforThisTurn = new ArrayList<>();
-    Map<Player, Integer> alliaceRatio = new HashMap<>();
+    private List<Player> combatPlayersforThisTurn;
+    private Map<Player, Double> alliaceRatio;
+    private Map<Soldier, Integer> winnerSoldier;
+
+
+
 
     /**
      * constructor to create combatPlayers in combatResolver
@@ -35,6 +39,13 @@ public class CombatPlayers {
      */
     public CombatPlayers(List<AttackOrder> attackOrders){
         this.playerToBonusSoldier = createBonusUnit(attackOrders);
+        combatPlayersforThisTurn = new ArrayList<>();
+        alliaceRatio = new HashMap<>();
+        winnerSoldier = new HashMap<>();
+    }
+
+    public Map<Player, Double> getAlliaceRatio() {
+        return alliaceRatio;
     }
 
     /**
@@ -60,7 +71,30 @@ public class CombatPlayers {
             Soldier soldier = new Soldier(bonusToLevel[levelToBonus.indexOf(bonus)]);
             res.merge(soldier, 1, Integer::sum);
         }
+        winnerSoldier = res;
         return res;
+    }
+
+    public Map<Soldier, Integer> splitLeaderSoldier(Player winner, boolean isLeader, Map<Soldier, Integer> soldiers){
+        double ratio = isLeader ? alliaceRatio.get(winner) : 1 - alliaceRatio.get(winner);
+        Map<Soldier, Integer> leaderSoldier = new HashMap<>();
+        for(Soldier soldier: soldiers.keySet()){
+            int num = (int) Math.ceil(soldiers.get(soldier) * ratio);
+            leaderSoldier.put(soldier, num);
+            soldiers.put(soldier, soldiers.get(soldier) - num);
+        }
+        return leaderSoldier;
+    }
+
+    
+    public Map<Soldier, Integer> getWinnerSoldier() {
+        return winnerSoldier;
+    }
+
+    
+
+    public boolean hasAlliance(Player winner){
+        return alliaceRatio.containsKey(winner.getAlliancePlayer());
     }
 
     /**
@@ -123,7 +157,7 @@ public class CombatPlayers {
             int allianceCount = allianceBonusSoldier.stream().mapToInt(Integer::intValue).sum();
             Player leader = (playerCount > allianceCount) ? player : alliance;
             Player dependence = (leader == player) ? alliance : player;
-            int ratio = Math.floorDiv(Math.min(playerCount, allianceCount), Math.max(playerCount, allianceCount));
+            double ratio = (Math.max(playerCount, allianceCount)/(playerCount + allianceCount));
     
             mergeAlliance.put(leader, combinedBonusSoldier);
             alliaceRatio.put(dependence, ratio);

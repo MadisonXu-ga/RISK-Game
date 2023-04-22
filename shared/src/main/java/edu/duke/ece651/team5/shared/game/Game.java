@@ -56,7 +56,7 @@ public class Game implements Serializable {
     public void removeBreakUpAlliance(Player player){
         for(Territory territory: player.getTerritories()){
             Territory nearestTerri = map.findNearestNeighbor(territory, player);
-            nearestTerri.removeBreakUpAlliance(player, territory);
+            nearestTerri.removeBreakUpAlliance(territory);
         }
         player.removeAlliance();
     }

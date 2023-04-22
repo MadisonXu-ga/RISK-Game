@@ -22,7 +22,7 @@ public class Territory implements Serializable {
     //store all the soldiers
     private SoldierArmy soldierArmy;
 
-    private Map<Player, SoldierArmy> allianceSolider;
+    private SoldierArmy allianceSoliderArmy;
     
 
     /**
@@ -37,7 +37,7 @@ public class Territory implements Serializable {
         this.name = name;
         this.owner = owner;
         this.soldierArmy = soldierArmy;
-        this.allianceSolider = new HashMap<>();
+        this.allianceSoliderArmy = new SoldierArmy();
     }
 
     /**
@@ -51,7 +51,7 @@ public class Territory implements Serializable {
         this.name = name;
         this.owner = owner;
         this.soldierArmy = new SoldierArmy();
-        this.allianceSolider = new HashMap<>();
+        this.allianceSoliderArmy = new SoldierArmy();
     }
 
     /**
@@ -63,7 +63,7 @@ public class Territory implements Serializable {
         this.id = id;
         this.name = name;
         this.soldierArmy = new SoldierArmy();
-        this.allianceSolider = new HashMap<>();
+        this.allianceSoliderArmy = new SoldierArmy();
     }
 
     /**
@@ -71,8 +71,8 @@ public class Territory implements Serializable {
      * @param alliance player
      * @param soldierArmy targetSoldier
      */
-    public void addAllianceSoldier(Player alliance, SoldierArmy soldierArmy){
-        allianceSolider.put(alliance, soldierArmy);
+    public void addAllianceSoldier(SoldierArmy soldierArmy){
+        allianceSoliderArmy = soldierArmy;
     }
 
     /**
@@ -80,12 +80,12 @@ public class Territory implements Serializable {
      * @param breakUpPlayer player
      * @param closestTerritory players owned closest territory
      */
-    public void removeBreakUpAlliance(Player breakUpPlayer, Territory closestTerritory){
-        if(allianceSolider.isEmpty()){
+    public void removeBreakUpAlliance(Territory closestTerritory){
+        if(allianceSoliderArmy.getTotalCountSolider() == 0){
             return;
         }
-        closestTerritory.getSoldierArmy().addSoldierArmy(allianceSolider.get(breakUpPlayer));
-        allianceSolider.remove(breakUpPlayer);
+        closestTerritory.getSoldierArmy().addSoldierArmy(allianceSoliderArmy);
+        allianceSoliderArmy = new SoldierArmy();
     }
 
     /**

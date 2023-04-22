@@ -43,6 +43,12 @@ public class SoldierArmy implements Serializable {
         }
     }
 
+    public void addSoldierArmy(Map<Soldier, Integer> soldierArmy){
+        for(Soldier soldier: soldierArmy.keySet()){
+            addSoldier(soldier, soldierArmy.get(soldier));
+        }
+    }
+
     /**
      * remove soldiers in soldierArmy to current soldiers
      * @param soldierArmy target soldier Arymy

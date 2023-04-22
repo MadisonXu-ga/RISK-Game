@@ -65,8 +65,6 @@ public class MapChooseActionControllerTest extends ApplicationTest {
         Mockito.when(mockGame.getMap()).thenReturn(map);
         Mockito.when(map.getTerritoryByName(any(String.class))).thenReturn(mockTerritory);
         Mockito.when(mockTerritory.getOwner()).thenReturn(mockPlayer);
-        Mockito.when(mockPlayer.getName()).thenReturn("Red");
-
         Mockito.when(mockTerritory.getSoldierArmy()).thenReturn(new SoldierArmy());
 
         URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");

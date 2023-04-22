@@ -33,7 +33,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
@@ -66,7 +65,6 @@ public class MapChooseActionController extends MapController {
     public ArrayList<MoveOrder> moveOrders;
     public ResearchOrder researchOrder;
     public ArrayList<UpgradeOrder> upgradeOrders;
-    private ObservableList<String> messages = FXCollections.observableArrayList();
 
     @FXML
     ComboBox<SoldierLevel> unitsComboBox;
@@ -420,47 +418,12 @@ public class MapChooseActionController extends MapController {
     public void onFormAlliance() {
 
         // once the button is clicked the String is populated and the Textfield
-        // in viewis reset to empty
+        // in viewis reset to empy
         String allianceInput = allianceTextBox.getText();
-
-        // error checking
-
         allianceTextBox.setText("");
 
         // do implementation here
 
-    }
-
-    public void onChat() {
-
-        Stage secondStage = new Stage();
-        secondStage.initModality(Modality.APPLICATION_MODAL);
-        secondStage.initOwner(App.getPrimaryStage());
-        secondStage.setTitle("Message Viewer");
-
-        ListView<String> messageListView = new ListView<>(messages);
-
-        TextField messageInput = new TextField();
-        messageInput.setPromptText("Enter message");
-        Button submitButton = new Button("Submit");
-        submitButton.setOnAction(e -> {
-            String message = messageInput.getText();
-            if (!message.isBlank()) {
-                addMessage(message);
-                messageInput.clear();
-            }
-        });
-
-        VBox secondStageLayout = new VBox(10);
-        secondStageLayout.getChildren().addAll(messageListView, messageInput, submitButton);
-        Scene secondStageScene = new Scene(secondStageLayout, 300, 200);
-        secondStage.setScene(secondStageScene);
-
-        secondStage.show();
-    }
-
-    private void addMessage(String message) {
-        messages.add(message);
     }
 
 }

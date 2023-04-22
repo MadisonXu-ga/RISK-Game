@@ -268,7 +268,7 @@ public class RISKMap implements Serializable{
                     int neighbourId = edge.to;
                     Territory neighbor = getTerritoryById(neighbourId);
                     if (hasSameOwner && (!source.getOwner().equals(neighbor.getOwner())
-                            || (!dest.getOwner().equals(neighbor.getOwner()) && !dest.getOwner().getAlliancePlayer().equals(neighbor.getOwner()) )
+                            ||  (!dest.getOwner().equals(neighbor.getOwner()) && (dest.getOwner().getAlliancePlayer()!=null &&!dest.getOwner().getAlliancePlayer().equals(neighbor.getOwner())) )
                             )) {
                         continue; // skip neighbors with different owners
                     }

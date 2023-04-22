@@ -543,7 +543,10 @@ public class Client {
             System.out.println("client received:" + messageReceived);
             String[] words = messageReceived.split(" ");
             int gameID = Integer.parseInt(words[0]);
-            String messageToDisplay = words[1] + words[2];
+            String messageToDisplay = words[1] + ":";
+            for (int i = 2; i < words.length; ++i) {
+              messageToDisplay += " " + words[i];
+            }
             if (!gameAllMessages.containsKey(gameID)) {
               gameAllMessages.put(gameID, FXCollections.observableArrayList());
             }

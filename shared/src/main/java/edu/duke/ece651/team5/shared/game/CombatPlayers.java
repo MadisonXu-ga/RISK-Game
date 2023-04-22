@@ -24,8 +24,8 @@ public class CombatPlayers {
     private final SoldierLevel[] bonusToLevel = SoldierLevel.values();
     
     //players with list of soldier represented by integer
-    private Map<Player, List<Integer>> playerToBonusSoldier;
-    private List<Player> combatPlayersforThisTurn;
+    private Map<Player, List<Integer>> playerToBonusSoldier = new HashMap<>();
+    private List<Player> combatPlayersforThisTurn = new ArrayList<>();
     private Map<Player, Double> alliaceRatio;
     private Map<Soldier, Integer> winnerSoldier;
 
@@ -39,7 +39,6 @@ public class CombatPlayers {
      */
     public CombatPlayers(List<AttackOrder> attackOrders){
         this.playerToBonusSoldier = createBonusUnit(attackOrders);
-        combatPlayersforThisTurn = new ArrayList<>();
         alliaceRatio = new HashMap<>();
         winnerSoldier = new HashMap<>();
     }

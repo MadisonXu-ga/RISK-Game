@@ -66,7 +66,7 @@ public class CombatPlayersTest {
 
     @Test
     public void testGetPlayerToBonusSoldier() {
-        List<Integer> player1Bonus = new ArrayList<>(Arrays.asList(1,1,1,0,0,0,0,0));
+        List<Integer> player1Bonus = new ArrayList<>(Arrays.asList(2,2,2,1,1,1,1,1));
         assertEquals(player1Bonus, combatPlayers.getPlayerToBonusSoldier().get(new Player("Player 1")));
     }
 
@@ -79,7 +79,7 @@ public class CombatPlayersTest {
         combatPlayers.resolveLosePlayer(loser, isAttack);
         // Assert expected result
         assertEquals(2, combatPlayers.getPlayerToBonusSoldier().get(loser).size());
-        assertEquals(3, combatPlayers.getPlayerToBonusSoldier().get(loser).get(1));
+        assertEquals(4, combatPlayers.getPlayerToBonusSoldier().get(loser).get(1));
 
 
         Player loser2 = new Player("Player 3");

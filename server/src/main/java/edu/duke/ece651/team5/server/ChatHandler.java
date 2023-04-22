@@ -32,6 +32,7 @@ public class ChatHandler implements Runnable {
                 if (messageReceived == null) {
                     continue;
                 }
+                System.out.println("server received: " + messageReceived);
                 String[] words = messageReceived.split(" ");
                 String gameID = words[0];
                 GameController gameController = allGames.get(Integer.parseInt(gameID));
@@ -44,6 +45,7 @@ public class ChatHandler implements Runnable {
     }
 
     protected void broadcastChat(ArrayList<User> users, String gameID, String messageToSend) {
+        System.out.println("server broadcast: " + messageToSend);
         for (User user : users) {
             clientsChat.get(user).writeString(messageToSend);
         }

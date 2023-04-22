@@ -22,7 +22,10 @@ import edu.duke.ece651.team5.shared.resource.ResourceType;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +36,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
@@ -41,6 +45,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 
 public class MapChooseActionController extends MapController {
 
@@ -97,6 +102,10 @@ public class MapChooseActionController extends MapController {
 
     public Integer moneySpent;
     public Integer foodSpent;
+    private ListView<String> messageListView;
+    private Stage secondStage;
+    // private ObservableList<String> messages =
+    // FXCollections.observableArrayList();
 
     /*
      * this function initializes the controller and view
@@ -143,6 +152,7 @@ public class MapChooseActionController extends MapController {
                 .getResourceCount(new Resource(ResourceType.FOOD));
         foodAmnt.setText(foodAmntInt.toString());
 
+        setupRefreshTimeline();
     }
 
     /**
@@ -424,6 +434,55 @@ public class MapChooseActionController extends MapController {
 
         // do implementation here
 
+    }
+
+    private Scene createChatScene() {
+        ObservableList<String> messagesDisplay = client.getMessages();
+        messageListView = new ListView<>(messagesDisplay);
+
+        TextField messageInput = new TextField();
+        messageInput.setPromptText("Enter message");
+        Button submitButton = new Button("Submit");
+        submitButton.setOnAction(e -> {
+            String message = messageInput.getText();
+            if (!message.isBlank()) {
+                client.sendMessage(client.getCurrentGameID(), client.getColor(), message);
+                System.out.println(client.getMessages());
+                messageInput.clear();
+
+                // Refresh the scene
+                secondStage.setScene(createChatScene());
+            }
+        });
+
+        VBox secondStageLayout = new VBox(10);
+        secondStageLayout.getChildren().addAll(messageListView, messageInput, submitButton);
+
+        return new Scene(secondStageLayout, 300, 200);
+    }
+
+    public void onChat() {
+        secondStage = new Stage();
+        secondStage.initModality(Modality.APPLICATION_MODAL);
+        secondStage.initOwner(App.getPrimaryStage());
+        secondStage.setTitle("Message Viewer");
+
+        secondStage.setScene(createChatScene());
+
+        secondStage.show();
+    }
+
+    private void setupRefreshTimeline() {
+        Timeline refreshTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (messageListView != null && client != null) {
+                ObservableList<String> messagesDisplay = client.getMessages();
+                messageListView.setItems(null);
+                messageListView.setItems(messagesDisplay);
+            }
+        }));
+
+        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+        refreshTimeline.play();
     }
 
 }

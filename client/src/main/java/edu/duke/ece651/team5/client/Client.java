@@ -52,7 +52,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 31005, br, out);
+    this("localhost", 31006, br, out);
   }
 
   /**
@@ -530,15 +530,17 @@ public class Client {
 
   // for v3 chat
   public void listenForChat() {
-    new Thread(new Runnable() {
+    Thread chatThread = new Thread(new Runnable() {
       @Override
       public void run() {
         while (!playerConnection_chat.getSocket().isClosed()) {
           try {
             String messageReceived = playerConnection_chat.readString();
+            System.out.println("client received before:" + messageReceived);
             if (messageReceived == null) {
               continue;
             }
+            System.out.println("client received:" + messageReceived);
             String[] words = messageReceived.split(" ");
             int gameID = Integer.parseInt(words[0]);
             String messageToDisplay = words[1] + words[2];
@@ -552,17 +554,22 @@ public class Client {
         }
       }
     });
+    chatThread.start();
   }
 
   // for v3 chat
   public void sendMessage(int gameID, String playerColor, String message) {
     String messageToSend = Integer.toString(gameID) + " " + playerColor + " " + message;
+    System.out.println("client send:" + messageToSend);
     playerConnection_chat.writeString(messageToSend);
   }
 
   public ObservableList<String> getMessages() {
 
     ObservableList<String> messages = gameAllMessages.get(currentGameID);
+    if (messages == null) {
+      return FXCollections.observableArrayList();
+    }
     return messages;
   }
 }

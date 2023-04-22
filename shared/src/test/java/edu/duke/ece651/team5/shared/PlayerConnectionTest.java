@@ -6,29 +6,29 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 public class PlayerConnectionTest {
 
   @Test
   void testReadAndWrite() throws IOException, ClassNotFoundException {
-      Socket mockSocket = mock(Socket.class);
-      String data = "data";
-      ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-      ObjectOutputStream objOut = new ObjectOutputStream(bytesOut);
-      objOut.writeObject(data);
-      objOut.flush();
-      when(mockSocket.getOutputStream()).thenReturn(bytesOut);
-  
-      ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
-      when(mockSocket.getInputStream()).thenReturn(bytesIn);
-  
-      PlayerConnection playerConnection = new PlayerConnection(mockSocket);
-      playerConnection.writeData(data);
-      assertEquals(data, playerConnection.readData());
-      playerConnection.close();
+    Socket mockSocket = mock(Socket.class);
+    String data = "data";
+    ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+    ObjectOutputStream objOut = new ObjectOutputStream(bytesOut);
+    objOut.writeObject(data);
+    objOut.flush();
+    when(mockSocket.getOutputStream()).thenReturn(bytesOut);
+
+    ByteArrayInputStream bytesIn = new ByteArrayInputStream(bytesOut.toByteArray());
+    when(mockSocket.getInputStream()).thenReturn(bytesIn);
+
+    PlayerConnection playerConnection = new PlayerConnection(mockSocket);
+    playerConnection.writeData(data);
+    assertEquals(data, playerConnection.readData());
+    playerConnection.close();
   }
 
   @Test
@@ -52,29 +52,27 @@ public class PlayerConnectionTest {
     assertThrows(IOException.class, () -> playerConnection.writeData("data"));
   }
 
+  @Test
+  public void testGetObjectOutputStream() {
+    PlayerConnection playerConnection = mock(PlayerConnection.class);
+    ObjectOutputStream expectedOutput = mock(ObjectOutputStream.class);
 
-    @Test
-    public void testGetObjectOutputStream() {
-        PlayerConnection playerConnection = mock(PlayerConnection.class);
-        ObjectOutputStream expectedOutput = mock(ObjectOutputStream.class);
+    when(playerConnection.getObjectOutputStream()).thenReturn(expectedOutput);
 
-        when(playerConnection.getObjectOutputStream()).thenReturn(expectedOutput);
+    ObjectOutputStream actualOutput = playerConnection.getObjectOutputStream();
 
-        ObjectOutputStream actualOutput = playerConnection.getObjectOutputStream();
+    assertEquals(expectedOutput, actualOutput);
+  }
 
-        assertEquals(expectedOutput, actualOutput);
-    }
+  @Test
+  public void testGetObjectInputStream() {
+    PlayerConnection playerConnection = mock(PlayerConnection.class);
+    ObjectInputStream expectedInput = mock(ObjectInputStream.class);
 
-    @Test
-    public void testGetObjectInputStream() {
-        PlayerConnection playerConnection = mock(PlayerConnection.class);
-        ObjectInputStream expectedInput = mock(ObjectInputStream.class);
+    when(playerConnection.getObjectInputStream()).thenReturn(expectedInput);
 
-        when(playerConnection.getObjectInputStream()).thenReturn(expectedInput);
+    ObjectInputStream actualInput = playerConnection.getObjectInputStream();
 
-        ObjectInputStream actualInput = playerConnection.getObjectInputStream();
-
-        assertEquals(expectedInput, actualInput);
-    }
-
+    assertEquals(expectedInput, actualInput);
+  }
 }

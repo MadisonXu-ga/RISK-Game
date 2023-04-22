@@ -1,11 +1,15 @@
 package edu.duke.ece651.team5.shared.game;
 
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import edu.duke.ece651.team5.shared.constant.Constants;
+import edu.duke.ece651.team5.shared.datastructure.Pair;
+import edu.duke.ece651.team5.shared.order.AllianceOrder;
 import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
@@ -24,6 +28,17 @@ public class Territory implements Serializable {
 
     private Map<Player, SoldierArmy> allianceSolider;
     
+    private static WeatherType weather = WeatherType.CLOUDY;
+
+    public static void setWeather(WeatherType weather) {
+        Territory.weather = weather;
+        produceResourceStrategy = new WeatherResourceProduceStrategy(
+            new DefaultResourceProduceStrategy(), weather);
+    }
+
+    private static ProduceResourceStrategy produceResourceStrategy = 
+    new WeatherResourceProduceStrategy(
+        new DefaultResourceProduceStrategy(), weather);
 
     /**
      * only used for test case
@@ -81,9 +96,6 @@ public class Territory implements Serializable {
      * @param closestTerritory players owned closest territory
      */
     public void removeBreakUpAlliance(Player breakUpPlayer, Territory closestTerritory){
-        if(allianceSolider.isEmpty()){
-            return;
-        }
         closestTerritory.getSoldierArmy().addSoldierArmy(allianceSolider.get(breakUpPlayer));
         allianceSolider.remove(breakUpPlayer);
     }
@@ -93,7 +105,8 @@ public class Territory implements Serializable {
      * @param resource the resource object with a specific type
      */
     public void produceResource(Resource resource) {
-        int amount = (resource.getType().equals(ResourceType.FOOD)) ? Constants.PRODUCE_FOOD_RESOURCE_PER_TURN : Constants.PRODUCE_TECH_RESOURCE_PER_TURN;
+        int amount = produceResourceStrategy.produceResources(resource);
+        System.out.println("territory produce resource hash code: " + resource.hashCode());
         owner.addResourceFromTerritory(resource, amount);
     }
 

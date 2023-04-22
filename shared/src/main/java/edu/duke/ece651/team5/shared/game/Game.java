@@ -4,6 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import edu.duke.ece651.team5.shared.event.DroughtEvent;
+import edu.duke.ece651.team5.shared.event.EventType;
+import edu.duke.ece651.team5.shared.event.FloodEvent;
+import edu.duke.ece651.team5.shared.event.StormEvent;
+import edu.duke.ece651.team5.shared.resource.WeatherType;
+import edu.duke.ece651.team5.shared.utils.RandomDice;
+
 /*
  * This class handle a list of players and a map for the game
  */
@@ -12,6 +19,10 @@ public class Game implements Serializable {
     private List<Player> players;
     private RISKMap map;
     private Integer gameID;
+    private EventType event;
+
+
+    private WeatherType weather;
 
     /**
      * Constructor of the game, initialized by a list of players and the map
@@ -23,6 +34,8 @@ public class Game implements Serializable {
         this.players = players;
         this.map = map;
         this.gameID = null;
+        event = EventType.NORMAL;
+        weather = WeatherType.CLOUDY;
     }
 
     public void setGameID(Integer gameID) {
@@ -31,6 +44,42 @@ public class Game implements Serializable {
 
     public Integer getGameID() {
         return gameID;
+    }
+
+    public EventType getEvent() {
+        return event;
+    }
+
+    public WeatherType getWeather() {
+        return weather;
+    }
+
+    public void handleWeather(){
+        weather = RandomDice.rollWeatherDice();
+        map.setWeather(weather);
+    }
+
+
+    public void hanldeEvent() {
+        this.event = RandomDice.rollEventDice();
+        switch (event) {
+            case NORMAL:
+                break;
+            case STORM:
+                StormEvent stormEvent = new StormEvent(map);
+                stormEvent.execute(map);
+                break;
+            case DROUGHT:
+                DroughtEvent droughtEvent = new DroughtEvent(map);
+                droughtEvent.execute(map);
+                break;
+            case FLOOD:
+                FloodEvent floodEvent = new FloodEvent(map);
+                floodEvent.execute(map);
+                break;
+            default:
+                throw new RuntimeException("Invalid event type");
+        }
     }
 
     public boolean checkPlayerAlliance(Player player){
@@ -117,5 +166,7 @@ public class Game implements Serializable {
                 .orElse(null);
         
     }
+
+
     
 }

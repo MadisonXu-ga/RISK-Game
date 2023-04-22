@@ -3,6 +3,9 @@ package edu.duke.ece651.team5.shared.game;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import edu.duke.ece651.team5.shared.resource.WeatherType;
+
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -13,6 +16,18 @@ public class RISKMap implements Serializable{
     private Map<String, Territory> territories;
 
     private HashMap<Integer, List<Edge>> connections;
+
+
+    private WeatherType weather;
+
+    public WeatherType getWeather() {
+        return weather;
+    }
+
+    public void setWeather(WeatherType weather) {
+        this.weather = weather;
+        Territory.setWeather(weather);
+    }
 
     /**
      * Inner class to represent an edge

@@ -76,7 +76,9 @@ public class Server {
     public void start() throws IOException, ClassNotFoundException {
         while (true) {
             Socket clientSocket_game = this.serverSocket.accept();  // for game
+            System.out.println("accept client for game");
             Socket clientSocket_chat = this.serverSocket.accept();  // for chat
+            System.out.println("accept client for chat");
             PlayerConnection playerConnection_game = new PlayerConnection(clientSocket_game);
             PlayerChatConnection playerConnection_chat = new PlayerChatConnection(clientSocket_chat);
             // clients.add(playerConnection);

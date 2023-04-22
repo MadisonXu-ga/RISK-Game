@@ -35,7 +35,8 @@ import javafx.stage.Stage;
 //     client.play();
 //   }
 // }
-public class App extends Application {
+// public class App extends Application {
+public class App {
 
   public static Scene signInScene;
   public static Stage primaryStage;
@@ -55,6 +56,7 @@ public class App extends Application {
     this.classClient = new Client(input, System.out);
   }
 
+  /** 
   @Override
   public void start(Stage stage) throws IOException {
 
@@ -114,6 +116,7 @@ public class App extends Application {
       }
     });
   }
+*/
 
   // this function will be used from the controllers to set new scenes in the same
   // stage
@@ -174,9 +177,13 @@ public class App extends Application {
     return false;
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws UnknownHostException, IOException {
 
-    launch();
+    // launch();
+    System.out.println("Run client!!");
+    Client client_test = new Client("127.0.0.1", 31002, new BufferedReader(new InputStreamReader(System.in)),
+        System.out);
+
   }
 
 }

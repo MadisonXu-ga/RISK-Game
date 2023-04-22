@@ -28,9 +28,13 @@ public class PlayerConnection {
    * @throws IOException for any IO failure
    */
   public PlayerConnection(Socket playerSocket) throws IOException {
+    System.out.println(1);
     this.playerSocket = playerSocket;
+    System.out.println(2);
     output = new ObjectOutputStream(this.playerSocket.getOutputStream());
+    System.out.println(3);
     input = new ObjectInputStream(this.playerSocket.getInputStream());
+    System.out.println(4);
   }
 
   /**

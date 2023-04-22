@@ -69,12 +69,16 @@ public class Client {
     this.inputReader = br;
     this.out = out;
     this.isLose = false;
-    this.playerConnection = new PlayerConnection(new Socket(host, port));
+    Socket socket_game = new Socket(host, port);
+    Socket socket_chat = new Socket(host, port);
+    out.println("connect to server for game");
     this.color = null;
     this.currentGameID = null;
 
     // for v3 chat
-    this.playerConnection_chat = new PlayerChatConnection(new Socket(host, port));
+    this.playerConnection_chat = new PlayerChatConnection(socket_chat);
+    this.playerConnection = new PlayerConnection(socket_game);
+    out.println("connect to server for chat");
     this.gameAllMessages = new HashMap<>();
   }
 

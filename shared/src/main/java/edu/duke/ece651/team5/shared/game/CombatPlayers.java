@@ -26,6 +26,7 @@ public class CombatPlayers {
     //players with list of soldier represented by integer
     private Map<Player, List<Integer>> playerToBonusSoldier;
     private List<Player> combatPlayersforThisTurn = new ArrayList<>();
+    Map<Player, Integer> alliaceRatio = new HashMap<>();
 
     /**
      * constructor to create combatPlayers in combatResolver
@@ -97,23 +98,37 @@ public class CombatPlayers {
             playerToBonusSoldier.put(order.getPlayer(), addBonusToOrder(order));
             combatPlayersforThisTurn.add(order.getPlayer());
         }
-        return playerToBonusSoldier;
+        return mergeAlliance(playerToBonusSoldier);
     }
 
 
     private Map<Player, List<Integer>> mergeAlliance( Map<Player, List<Integer>> playerToBonusSoldier){
-        //for player in map
-        //check if player has alliance in keyset
-        //if not continue
-        //yes: merge, 
-        //find whose soldier large,sum of list
-        //record alliance player and ratio
         Map<Player, List<Integer>> mergeAlliance = new HashMap<>();
-        for(Player player: playerToBonusSoldier.keySet()){
-            if(!mergeAlliance.containsKey(player)){
+
+        for (Player player : playerToBonusSoldier.keySet()) {
+            if (mergeAlliance.containsKey(player)) continue;
+    
+            Player alliance = player.getAlliancePlayer();
+            if (alliance == null) {
+                mergeAlliance.put(player, playerToBonusSoldier.get(player));
                 continue;
             }
+    
+            List<Integer> playerBonusSoldier = playerToBonusSoldier.get(player);
+            List<Integer> allianceBonusSoldier = playerToBonusSoldier.get(alliance);
+            List<Integer> combinedBonusSoldier = new ArrayList<>(playerBonusSoldier);
+            combinedBonusSoldier.addAll(allianceBonusSoldier);
+    
+            int playerCount = playerBonusSoldier.stream().mapToInt(Integer::intValue).sum();
+            int allianceCount = allianceBonusSoldier.stream().mapToInt(Integer::intValue).sum();
+            Player leader = (playerCount > allianceCount) ? player : alliance;
+            Player dependence = (leader == player) ? alliance : player;
+            int ratio = Math.floorDiv(Math.min(playerCount, allianceCount), Math.max(playerCount, allianceCount));
+    
+            mergeAlliance.put(leader, combinedBonusSoldier);
+            alliaceRatio.put(dependence, ratio);
         }
+    
         return mergeAlliance;
 
     }

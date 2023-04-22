@@ -1,10 +1,7 @@
 package edu.duke.ece651.team5.shared.game;
 
 import java.io.Serializable;
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /*
@@ -36,10 +33,14 @@ public class Game implements Serializable {
         return gameID;
     }
 
-    public String checkCurrentAlliance(){
+    public boolean checkPlayerAlliance(Player player){
+        return player.hasAlliance();
+    }
+
+    public String checkAllAlliance(){
         StringBuilder sb = new StringBuilder();
         for(Player player: players){
-            sb.append(player + player.getAlliencePlayers().toString() + "\n");
+            sb.append(player + " is alliance with " + player.getAlliancePlayer() + "\n");
         }
         return sb.toString();
     }
@@ -47,8 +48,17 @@ public class Game implements Serializable {
 
     public List<Player> findAvailableAlliance(Player currentPlayer) {
         return players.stream()
-                    .filter(player -> !currentPlayer.containsAlliance(currentPlayer) && !player.equals(currentPlayer))
+                    .filter(player -> !player.equals(currentPlayer))
                     .collect(Collectors.toList());
+    }
+
+
+    public void removeBreakUpAlliance(Player player){
+        for(Territory territory: player.getTerritories()){
+            Territory nearestTerri = map.findNearestNeighbor(territory, player);
+            nearestTerri.removeBreakUpAlliance(player, territory);
+        }
+        player.removeAlliance();
     }
     
 

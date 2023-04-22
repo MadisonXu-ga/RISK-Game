@@ -2,13 +2,10 @@ package edu.duke.ece651.team5.shared.game;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import edu.duke.ece651.team5.shared.constant.Constants;
-import edu.duke.ece651.team5.shared.datastructure.Pair;
-import edu.duke.ece651.team5.shared.order.AllianceOrder;
 import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
@@ -84,6 +81,9 @@ public class Territory implements Serializable {
      * @param closestTerritory players owned closest territory
      */
     public void removeBreakUpAlliance(Player breakUpPlayer, Territory closestTerritory){
+        if(allianceSolider.isEmpty()){
+            return;
+        }
         closestTerritory.getSoldierArmy().addSoldierArmy(allianceSolider.get(breakUpPlayer));
         allianceSolider.remove(breakUpPlayer);
     }

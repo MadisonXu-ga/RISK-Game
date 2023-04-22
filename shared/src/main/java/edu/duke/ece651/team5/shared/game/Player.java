@@ -20,10 +20,10 @@ public class Player implements Serializable {
     // the resource player currently owned for food and tech resources
     private final Map<Resource, Integer> resourceToAmount;
     //list of alliance player
-    private Allience alliencePlayers;
+    private Player alliancePlayer;
 
-    public Allience getAlliencePlayers() {
-        return alliencePlayers;
+    public Player getAlliancePlayer() {
+        return alliancePlayer;
     }
 
     /**
@@ -38,19 +38,19 @@ public class Player implements Serializable {
         resourceToAmount = new HashMap<>();
         resourceToAmount.put(new Resource(ResourceType.FOOD), 0);
         resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 0);
-        alliencePlayers = new Allience();
+        alliancePlayer = null;
     }
 
-    public boolean containsAlliance(Player player) {
-        return alliencePlayers.containsAlliance(player);
+    public boolean hasAlliance() {
+        return alliancePlayer == null;
     }
 
     public void addAliance(Player player) {
-        alliencePlayers.addAlliance(player);
+        this.alliancePlayer = player;
     }
     
-    public void removeAlliance(Player breakPlayer){
-        alliencePlayers.removeAlliance(breakPlayer);
+    public void removeAlliance(){
+        alliancePlayer = null;
     }
 
 
@@ -196,4 +196,11 @@ public class Player implements Serializable {
         // return name != null ? name.hashCode() : 0;
         return name.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    
 }

@@ -26,11 +26,13 @@ public class MoveOwnershipRuleChecker extends OrderRuleChecker{
         String sourceName = order.getSourceName();
         Territory source = map.getTerritoryByName(sourceName);
         Territory destination = map.getTerritoryByName(destinationName);
-        if (!source.getOwner().equals(order.getPlayer()) || 
-            (!destination.getOwner().equals(order.getPlayer()) && !order.getPlayer().containsAlliance(destination.getOwner()))) {
-            return "You cannot move between territories that do not belong to you or your alliance";
-        } else {
+        if (source.getOwner().equals(order.getPlayer()) &&
+            (destination.getOwner().equals(order.getPlayer()) 
+                || (destination.getOwner().getAlliancePlayer()!=null && destination.getOwner().getAlliancePlayer().equals(order.getPlayer()))
+                )) {
             return null;
+        } else {
+            return "You cannot move between territories that do not belong to you or your alliance";
         }
     }
 }

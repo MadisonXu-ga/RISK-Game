@@ -1,8 +1,10 @@
 package edu.duke.ece651.team5.shared.rulechecker;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import edu.duke.ece651.team5.shared.datastructure.Pair;
@@ -31,16 +33,18 @@ public class AllianceChecker {
         return result;
     }
 
-    public Set<Set<Player>> checkBreak(List<AttackOrder> attackOrders, RISKMap map) {
-        Set<Set<Player>> result = new HashSet<>();
+    public Set<Player> checkBreak(List<AttackOrder> attackOrders, RISKMap map) {
+        Set<Player> result = new HashSet<>();
         for (AttackOrder order : attackOrders) {
             Player player = order.getPlayer();
             String destName = order.getDestinationName();
             Player targetPlayer = map.getTerritoryByName(destName).getOwner();
     
-            if (player.containsAlliance(targetPlayer)) {
-                result.add(new HashSet<Player>(Arrays.asList(player, targetPlayer)));
+            if (player.hasAlliance()) {
+                result.add(player);
+                result.add(targetPlayer);
             }
+            //todo remove all territores
         
     }
     return result;

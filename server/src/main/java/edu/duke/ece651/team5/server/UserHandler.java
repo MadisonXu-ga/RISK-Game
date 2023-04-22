@@ -9,27 +9,23 @@ import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.unit.*;
 import edu.duke.ece651.team5.shared.Action;
-import edu.duke.ece651.team5.shared.PlayerChatConnection;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 import edu.duke.ece651.team5.server.MyEnum.*;
 
 public class UserHandler implements Runnable {
 
     private PlayerConnection playerConnection;
-    private PlayerChatConnection playerConnection_chat;
     private UserManager userManager;
     private HashMap<String, Runnable> operationHandlers;
     private HashMap<Integer, GameController> allGames;
     private User currentUser;
     private UserGameMap userGameMap;
     private HashMap<User, PlayerConnection> clients;
-    private HashMap<User, PlayerChatConnection> clientsChat;
 
-    public UserHandler(PlayerConnection playerConnection, PlayerChatConnection playerConnection_chat,UserManager userManager,
+    public UserHandler(PlayerConnection playerConnection, UserManager userManager,
             HashMap<Integer, GameController> allGames,
-            UserGameMap userGameMap, HashMap<User, PlayerConnection> clients, HashMap<User, PlayerChatConnection> clientsChat) {
+            UserGameMap userGameMap, HashMap<User, PlayerConnection> clients) {
         this.playerConnection = playerConnection;
-        this.playerConnection_chat = playerConnection_chat;
         this.userManager = userManager;
         this.operationHandlers = new HashMap<>();
 
@@ -39,7 +35,6 @@ public class UserHandler implements Runnable {
         this.userGameMap = userGameMap;
 
         this.clients = clients;
-        this.clientsChat = clientsChat;
 
         // initializa functions
         this.operationHandlers.put("Login", this::handleLogin);
@@ -130,9 +125,6 @@ public class UserHandler implements Runnable {
             // add user and connection to clients
             clients.put(currentUser, playerConnection);
 
-            // v3
-            clientsChat.put(currentUser, playerConnection_chat);
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -181,10 +173,6 @@ public class UserHandler implements Runnable {
             GameController newGame = new GameController(playerNum);
             // add game to all games
             allGames.put(newGame.getID(), newGame);
-            
-            // add new chatroom (v3)
-            // chatServer.addChatRoom(newGame.getID(), newGame.geChatRoom());
-
             // let user join this game
             String msg = newGame.joinGame(currentUser);
             // actually this will never fail in logic
@@ -310,8 +298,6 @@ public class UserHandler implements Runnable {
             playerConnection.close();
 
             clients.remove(currentUser);
-            // v3
-            clientsChat.remove(currentUser);
 
             // deal with games that not started
             ArrayList<GameController> gamesNotStarted = new ArrayList<>();
@@ -499,18 +485,6 @@ public class UserHandler implements Runnable {
                 }
             }
 
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void handleChat(){
-        System.out.println("Dealing with handling orders...");
-
-        try {
-            int gameID = (int) playerConnection.readData();
-            String chatMessage = (String) playerConnection.readData();
-            
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }

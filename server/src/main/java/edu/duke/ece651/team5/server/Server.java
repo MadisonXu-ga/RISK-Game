@@ -33,11 +33,6 @@ public class Server {
     private HashMap<Integer, GameController> allGames;
     private UserGameMap userGameMap;
 
-    // v3
-    private HashMap<User, PlayerChatConnection> clientsChat;
-
-    // private ChatServer chatServer;
-
     /**
      * Default constructor of server
      * 
@@ -60,30 +55,23 @@ public class Server {
         // ------------------v2 new code-------------------------
         this.clients = new HashMap<>();
         this.userManager = new UserManager();
+        // this.allGames = new ArrayList<>();
         this.allGames = new HashMap<>();
         this.userGameMap = new UserGameMap();
-
-        // v3
-        this.clientsChat = new HashMap<>();
     }
 
     /**
      * server start to accept clients(players)
      * 
      * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public void start() throws IOException, ClassNotFoundException {
+    public void start() throws IOException {
         while (true) {
-            Socket clientSocket_game = this.serverSocket.accept();  // for game
-            Socket clientSocket_chat = this.serverSocket.accept();  // for chat
-            PlayerConnection playerConnection_game = new PlayerConnection(clientSocket_game);
-            PlayerChatConnection playerConnection_chat = new PlayerChatConnection(clientSocket_chat);
+            Socket clientSocket = this.serverSocket.accept();
+            PlayerConnection playerConnection = new PlayerConnection(clientSocket);
             // clients.add(playerConnection);
-            UserHandler userHandler = new UserHandler(playerConnection_game, playerConnection_chat, userManager, allGames, userGameMap, clients, clientsChat);
-            ChatHandler chatHandler = new ChatHandler(playerConnection_chat, allGames, userGameMap, clientsChat);
+            UserHandler userHandler = new UserHandler(playerConnection, userManager, allGames, userGameMap, clients);
             this.threadPool.execute(userHandler);
-            this.threadPool.execute(chatHandler);
         }
     }
 

@@ -54,6 +54,7 @@ public class App extends Application {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     this.classClient = new Client(input, System.out);
     this.classClient.createPlayer();
+    classClient.listenForChat();
   }
 
   @Override

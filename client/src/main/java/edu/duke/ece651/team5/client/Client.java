@@ -14,6 +14,8 @@ import edu.duke.ece651.team5.shared.datastructure.*;
 import edu.duke.ece651.team5.shared.order.*;
 import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.rulechecker.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Client is responsible to handle socket connection with server and to interact
@@ -25,6 +27,10 @@ public class Client {
   protected TextPlayer textPlayer;
   // connection to handle socket and object streams
   protected PlayerConnection playerConnection;
+  // for v3 chat
+  private PlayerChatConnection playerConnection_chat;
+
+  private HashMap<Integer, ObservableList<String>> gameAllMessages;
 
   private String color;
   private Integer currentGameID;
@@ -46,7 +52,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 31002, br, out);
+    this("localhost", 31005, br, out);
   }
 
   /**
@@ -68,6 +74,7 @@ public class Client {
     // this.playerConnection = new PlayerConnection(new Socket(host, port));
     this.color = null;
     this.currentGameID = null;
+    this.gameAllMessages = new HashMap<>();
   }
 
   /**
@@ -77,7 +84,11 @@ public class Client {
    * @throws IOException          if any IO failure
    */
   public void createPlayer() throws UnknownHostException, IOException {
-    this.playerConnection = new PlayerConnection(new Socket(host, port));
+    Socket socket_game = new Socket(host, port);
+    Socket socket_chat = new Socket(host, port);
+    this.playerConnection_chat = new PlayerChatConnection(socket_chat);
+    this.playerConnection = new PlayerConnection(socket_game);
+
     // this.textPlayer = new TextPlayer(inputReader, out);
   }
 
@@ -254,7 +265,12 @@ public class Client {
 
     playerConnection.writeData("Log out");
     playerConnection.close();
-    this.playerConnection = new PlayerConnection(new Socket(host, port));
+    playerConnection_chat.close();
+
+    Socket socket_game = new Socket(host, port);
+    Socket socket_chat = new Socket(host, port);
+    this.playerConnection_chat = new PlayerChatConnection(socket_chat);
+    this.playerConnection = new PlayerConnection(socket_game);
 
   }
 
@@ -512,4 +528,41 @@ public class Client {
     return isValid;
   }
 
+  // for v3 chat
+  public void listenForChat() {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        while (!playerConnection_chat.getSocket().isClosed()) {
+          try {
+            String messageReceived = playerConnection_chat.readString();
+            if (messageReceived == null) {
+              continue;
+            }
+            String[] words = messageReceived.split(" ");
+            int gameID = Integer.parseInt(words[0]);
+            String messageToDisplay = words[1] + words[2];
+            if (!gameAllMessages.containsKey(gameID)) {
+              gameAllMessages.put(gameID, FXCollections.observableArrayList());
+            }
+            gameAllMessages.get(gameID).add(messageToDisplay);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    });
+  }
+
+  // for v3 chat
+  public void sendMessage(int gameID, String playerColor, String message) {
+    String messageToSend = Integer.toString(gameID) + " " + playerColor + " " + message;
+    playerConnection_chat.writeString(messageToSend);
+  }
+
+  public ObservableList<String> getMessages() {
+
+    ObservableList<String> messages = gameAllMessages.get(currentGameID);
+    return messages;
+  }
 }

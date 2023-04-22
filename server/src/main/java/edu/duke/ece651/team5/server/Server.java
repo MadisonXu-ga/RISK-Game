@@ -33,6 +33,9 @@ public class Server {
     private HashMap<Integer, GameController> allGames;
     private UserGameMap userGameMap;
 
+    // v3
+    private HashMap<User, PlayerChatConnection> clientsChat;
+
     /**
      * Default constructor of server
      * 
@@ -58,6 +61,9 @@ public class Server {
         // this.allGames = new ArrayList<>();
         this.allGames = new HashMap<>();
         this.userGameMap = new UserGameMap();
+
+        // v3
+        this.clientsChat = new HashMap<>();
     }
 
     /**
@@ -74,8 +80,11 @@ public class Server {
             PlayerConnection playerConnection_game = new PlayerConnection(clientSocket_game);
             PlayerChatConnection playerConnection_chat = new PlayerChatConnection(clientSocket_chat);
             // clients.add(playerConnection);
-            UserHandler userHandler = new UserHandler(playerConnection, userManager, allGames, userGameMap, clients);
+            UserHandler userHandler = new UserHandler(playerConnection_game, playerConnection_chat, userManager,
+                    allGames, userGameMap, clients, clientsChat);
+            ChatHandler chatHandler = new ChatHandler(playerConnection_chat, allGames, userGameMap, clientsChat);
             this.threadPool.execute(userHandler);
+            this.threadPool.execute(chatHandler);
         }
     }
 

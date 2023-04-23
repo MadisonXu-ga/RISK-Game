@@ -158,6 +158,16 @@
                   <Font name="Lucida Calligraphy Italic" size="12.0" />
                </font>
             </Text>
+            <Text fx:id="WeatherText" layoutX="1175.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Weather:" wrappingWidth="198.39999999999992" y="40.0">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="EventText" layoutX="1175.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Event:  here" wrappingWidth="198.39999999999986" y="40.0">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="18.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>

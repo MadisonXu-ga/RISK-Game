@@ -20,6 +20,7 @@ import edu.duke.ece651.team5.shared.order.ResearchOrder;
 import edu.duke.ece651.team5.shared.order.UpgradeOrder;
 import edu.duke.ece651.team5.shared.resource.Resource;
 import edu.duke.ece651.team5.shared.resource.ResourceType;
+import edu.duke.ece651.team5.shared.resource.WeatherType;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 import edu.duke.ece651.team5.shared.utils.ResourceConsumeCalculator;
@@ -107,6 +108,12 @@ public class MapChooseActionController extends MapController {
     @FXML
     Button formAlliance;
 
+    @FXML
+    Text WeatherText;
+
+    @FXML
+    Text EventText;
+
     public Integer moneySpent;
     public Integer foodSpent;
     private ListView<String> messageListView;
@@ -162,6 +169,8 @@ public class MapChooseActionController extends MapController {
         setupRefreshTimeline();
         getOtherPlayers();
         announceAlliance();
+        displayWeather();
+        displayEvent();
     }
 
     /**
@@ -574,4 +583,19 @@ public class MapChooseActionController extends MapController {
         }
     }
 
+    public void displayWeather() {
+        String weather = game.getWeather().toString();
+
+        WeatherText.setText("Weather:" + weather);
+    }
+
+    public void displayEvent() {
+
+        String event = game.getEvent().toString();
+
+        EventText.setText("Event:" + event);
+
+        List<Territory> affectedTerritories = game.getAffectedTerritories();
+        // TODO do alert pop up with the territories affected
+    }
 }

@@ -53,10 +53,6 @@ public class Player implements Serializable {
         alliancePlayer = null;
     }
 
-    public void removeAlliance() {
-        alliancePlayer = null;
-    }
-
     /**
      * when player as defenser lose in combat, lose control of this territory
      * 
@@ -195,13 +191,6 @@ public class Player implements Serializable {
 
     @Override
     public int hashCode() {
-        // return name != null ? name.hashCode() : 0;
-        return name.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return name;
         // return name != null ? name.hashCode() : 0;
         return name.hashCode();
     }

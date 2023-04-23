@@ -153,19 +153,6 @@ public class SoldierArmy implements Serializable {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    /**
-     * getter for all available soldiers (#soldier > 0)
-     * for displaying in the front end
-     * 
-     * @return map of available soldier
-     */
-    public Map<Soldier, Integer> getAvailableSoldiers() {
-        return soldiers.entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() > 0)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this)

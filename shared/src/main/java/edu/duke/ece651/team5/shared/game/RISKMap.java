@@ -48,10 +48,6 @@ public class RISKMap implements Serializable {
             return from;
         }
 
-        public int getFrom() {
-            return from;
-        }
-
         public int getTo() {
             return to;
         }
@@ -60,9 +56,6 @@ public class RISKMap implements Serializable {
             return distance;
         }
 
-        public int getDistance() {
-            return distance;
-        }
     }
 
     /**
@@ -220,53 +213,6 @@ public class RISKMap implements Serializable {
         int srcId = srcTerri.getId();
         int destId = destTerry.getId();
         return connections.get(srcId).stream().anyMatch(edge -> edge.to == destId);
-    }
-
-    /**
-     * find nearest neigher whose territory is owned by target player
-     * 
-     * @param startTerritory player
-     * @param player         target Player
-     * @return nearest territory
-     */
-    public Territory findNearestNeighbor(Territory startTerritory, Player player) {
-        // Create a map to keep track of the shortest distances to each territory
-        Map<Territory, Integer> distance = new HashMap<>();
-        for (Territory territory : territories.values()) {
-            distance.put(territory, Integer.MAX_VALUE);
-        }
-        distance.put(startTerritory, 0);
-
-        // Create a priority queue to store the territories by their distance from the
-        // start territory
-        PriorityQueue<Territory> queue = new PriorityQueue<>(Comparator.comparingInt(distance::get));
-        queue.add(startTerritory);
-
-        // Perform Dijkstra's algorithm until we find a neighbor owned by the player
-        while (!queue.isEmpty()) {
-            Territory currentTerritory = queue.poll();
-            int currentDistance = distance.get(currentTerritory);
-
-            // Check if the current territory is owned by the player
-            if (currentTerritory.getOwner() == player) {
-                return currentTerritory;
-            }
-
-            // Update the distances to all adjacent territories
-            for (Edge edge : connections.get(currentTerritory.getId())) {
-                int neighborId = edge.getTo();
-                Territory neighborTerritory = getTerritoryById(neighborId);
-                int neighborDistance = currentDistance + edge.getDistance();
-                if (neighborDistance < distance.get(neighborTerritory)) {
-                    distance.put(neighborTerritory, neighborDistance);
-                    queue.remove(neighborTerritory);
-                    queue.add(neighborTerritory);
-                }
-            }
-        }
-
-        // If no neighbor owned by the player was found, return null
-        return null;
     }
 
     /**

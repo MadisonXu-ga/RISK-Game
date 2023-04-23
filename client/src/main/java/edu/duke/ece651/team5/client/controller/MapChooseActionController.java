@@ -13,6 +13,7 @@ import edu.duke.ece651.team5.shared.Action;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.Player;
 import edu.duke.ece651.team5.shared.game.Territory;
+import edu.duke.ece651.team5.shared.order.AllianceOrder;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.order.MoveOrder;
 import edu.duke.ece651.team5.shared.order.ResearchOrder;
@@ -444,6 +445,7 @@ public class MapChooseActionController extends MapController {
 
     }
 
+    // TODO add alliance order to action
     public void onFormAlliance() {
 
         // once the button is clicked the String is populated and the Textfield
@@ -460,9 +462,11 @@ public class MapChooseActionController extends MapController {
         // Check if the user clicked the "OK" button
         if (confirmButton == ButtonType.OK) {
 
-            formAlliance.setDisable(true);
+            Player ally = game.getPlayerByName(playersCombobox.getValue());
 
-            playersCombobox.getItems().clear();
+            AllianceOrder allianceOrder = new AllianceOrder(game.getPlayerByName(client.getColor()), ally);
+            formAlliance.setDisable(true);
+            playersCombobox.disableProperty();
 
         }
 

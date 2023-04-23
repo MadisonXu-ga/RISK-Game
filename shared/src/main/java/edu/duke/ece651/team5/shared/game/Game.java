@@ -1,6 +1,7 @@
 package edu.duke.ece651.team5.shared.game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public class Game implements Serializable {
     private RISKMap map;
     private Integer gameID;
     private EventType event;
+    private List<Territory> affectedTerritories;
 
     private WeatherType weather;
 
@@ -36,6 +38,11 @@ public class Game implements Serializable {
         this.gameID = null;
         event = EventType.NORMAL;
         weather = WeatherType.CLOUDY;
+        affectedTerritories = new ArrayList<>();
+    }
+
+    public List<Territory> getAffectedTerritories() {
+        return affectedTerritories;
     }
 
     public void setGameID(Integer gameID) {
@@ -99,18 +106,22 @@ public class Game implements Serializable {
             case STORM:
                 StormEvent stormEvent = new StormEvent(map);
                 stormEvent.execute(map);
+                affectedTerritories = stormEvent.getSelectedTerritories();
                 break;
             case DROUGHT:
                 DroughtEvent droughtEvent = new DroughtEvent(map);
                 droughtEvent.execute(map);
+                affectedTerritories = droughtEvent.getSelectedTerritories();
                 break;
             case FLOOD:
                 FloodEvent floodEvent = new FloodEvent(map);
                 floodEvent.execute(map);
+                affectedTerritories = floodEvent.getSelectedTerritories();
                 break;
             default:
                 throw new RuntimeException("Invalid event type");
         }
+        
     }
 
     public Player getPlayerByName(String name) {

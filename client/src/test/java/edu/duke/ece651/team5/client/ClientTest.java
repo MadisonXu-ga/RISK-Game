@@ -282,7 +282,7 @@ public class ClientTest {
 
     String message = "You can continue";
     Integer gameID = 4;
-    Action action = new Action(null, null, null, null);
+    Action action = new Action(null, null, null, null, null);
     when(test.readData()).thenReturn(message);
     String messageReceived = client.sendOrder(gameID, action);
 

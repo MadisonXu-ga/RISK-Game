@@ -240,14 +240,14 @@ public class GameControllerTest {
         game.joinGame(mockUser2);
         game.joinGame(mockUser3);
 
-        Action action1 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Action action1 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), null);
         String correctMsg = game.receiveActionFromUser(mockUser1, action1);
         assertNull(correctMsg);
 
         MoveOrder moveOrder = new MoveOrder("Narnia", "Elantris", new SoldierArmy(), new Player("Green"));
         ArrayList<MoveOrder> moveOrders = new ArrayList<>();
         moveOrders.add(moveOrder);
-        Action action2 = new Action(new ArrayList<>(), moveOrders, null, new ArrayList<>());
+        Action action2 = new Action(new ArrayList<>(), moveOrders, null, new ArrayList<>(), null);
         String errorMsg = game.receiveActionFromUser(mockUser2, action2);
         assertNotNull(errorMsg);
     }
@@ -263,9 +263,9 @@ public class GameControllerTest {
         game.joinGame(mockUser2);
         game.joinGame(mockUser3);
 
-        Action action1 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
-        Action action2 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
-        Action action3 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Action action1 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), null);
+        Action action2 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), null);
+        Action action3 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), null);
 
         game.receiveActionFromUser(mockUser1, action1);
         assertFalse(game.tryResolveAllOrders());
@@ -301,8 +301,8 @@ public class GameControllerTest {
         assertFalse(game.checkUserLose(mockUser3));
         game.setUserActiveStatus(mockUser1, null);
 
-        Action action2 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
-        Action action3 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+        Action action2 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), null);
+        Action action3 = new Action(new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), null);
 
         game.receiveActionFromUser(mockUser2, action2);
         assertFalse(game.tryResolveAllOrders());

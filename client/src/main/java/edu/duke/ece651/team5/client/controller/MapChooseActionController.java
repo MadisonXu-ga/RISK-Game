@@ -350,7 +350,7 @@ public class MapChooseActionController extends MapController {
      */
     public void onDone() throws ClassNotFoundException, IOException {
         System.out.println("the number of upgrade orders is: " + upgradeOrders.size());
-        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders, null);
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);

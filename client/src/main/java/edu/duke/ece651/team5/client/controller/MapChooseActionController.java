@@ -98,7 +98,13 @@ public class MapChooseActionController extends MapController {
     Text foodSpentTurn;
 
     @FXML
-    TextField allianceTextBox;
+    Text allianceMessageText;
+
+    @FXML
+    ComboBox<String> playersCombobox;
+
+    @FXML
+    Button formAlliance;
 
     public Integer moneySpent;
     public Integer foodSpent;
@@ -153,6 +159,8 @@ public class MapChooseActionController extends MapController {
         foodAmnt.setText(foodAmntInt.toString());
 
         setupRefreshTimeline();
+        getOtherPlayers();
+        announceAlliance();
     }
 
     /**
@@ -188,6 +196,17 @@ public class MapChooseActionController extends MapController {
 
         List<Territory> ownTerritory = game.getPlayerByName(client.getColor()).getTerritories();
         ArrayList<String> ownTerritoriesStr = mapGoBackController.setList(ownTerritory);
+
+        // if player has ally put destination territories as well in Move Action
+        if (game.getPlayeryByName(client.getColor()).hasAlliance()) {
+
+            Player ally = game.getPlayerByName(client.getColor()).getAlliancePlayer();
+            List<Territory> allyTerritories = game.getPlayer(ally).getTerritories();
+            ArrayList<String> allianceTerritoriesStr = mapGoBackController.setList(allyTerritories);
+
+            ownTerritoriesStr.addAll(allianceTerritoriesStr);
+
+        }
 
         // App.getPrimaryStage().setScene(scene);
         mapGoBackController.refresh(ownTerritoriesStr, ownTerritoriesStr, client.getColor(), client.getColor());
@@ -429,8 +448,26 @@ public class MapChooseActionController extends MapController {
 
         // once the button is clicked the String is populated and the Textfield
         // in viewis reset to empy
-        String allianceInput = allianceTextBox.getText();
-        allianceTextBox.setText("");
+
+        Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to try forming an Alliance with " + playersCombobox.getValue() + "?");
+        confirmationDialog.setTitle("Confirmation");
+        confirmationDialog.setHeaderText(null);
+
+        // Show the confirmation dialog and wait for the user's response
+        ButtonType confirmButton = confirmationDialog.showAndWait().orElse(ButtonType.CANCEL);
+
+        // Check if the user clicked the "OK" button
+        if (confirmButton == ButtonType.OK) {
+
+            formAlliance.setDisable(true);
+
+            playersCombobox.getItems().clear();
+
+        }
+
+        // String allianceInput = allianceTextBox.getText();
+        // allianceTextBox.setText("");
 
         // do implementation here
 
@@ -483,6 +520,54 @@ public class MapChooseActionController extends MapController {
 
         refreshTimeline.setCycleCount(Timeline.INDEFINITE);
         refreshTimeline.play();
+    }
+
+    public void getOtherPlayers() {
+
+        allowAlliance();
+
+        ArrayList<String> otherPlayers = new ArrayList<>();
+
+        for (Player player : game.getPlayers()) {
+
+            if (player.getName().equals(client.getColor())) {
+                continue;
+            }
+            otherPlayers.add(player.getName());
+
+        }
+        ObservableList<String> sourceOptions = FXCollections.observableArrayList(otherPlayers);
+
+        playersCombobox.setItems(sourceOptions);
+    }
+
+    public void allowAlliance() {
+
+        if (game.getTotalPlayerNum() == 2) {
+
+            System.out.println("total number of players is 2");
+            formAlliance.setDisable(true);
+        }
+
+        if (game.checkPlayerAlliance(game.getPlayerByName(client.getColor()))) {
+
+            System.out.println("player " + client.getColor() + "has an alliance");
+            formAlliance.setDisable(true);
+        }
+    }
+
+    public void announceAlliance() {
+
+        String announcement = game.checkAllAlliance();
+
+        if (announcement != null) {
+
+            allianceMessageText.setText(announcement);
+        }
+
+        else {
+            allianceMessageText.setText("");
+        }
     }
 
 }

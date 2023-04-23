@@ -19,7 +19,7 @@ public class Player implements Serializable {
     private int currTechnologyLevel;
     // the resource player currently owned for food and tech resources
     private final Map<Resource, Integer> resourceToAmount;
-    //list of alliance player
+    // list of alliance player
     private Player alliancePlayer;
 
     public Player getAlliancePlayer() {
@@ -42,19 +42,17 @@ public class Player implements Serializable {
     }
 
     public boolean hasAlliance() {
-        return alliancePlayer == null;
+        return alliancePlayer != null;
     }
 
     public void addAliance(Player player) {
         this.alliancePlayer = player;
     }
-    
-    public void removeAlliance(){
+
+    public void removeAlliance() {
         alliancePlayer = null;
     }
 
-
-    
     /**
      * when player as defenser lose in combat, lose control of this territory
      * 
@@ -202,5 +200,4 @@ public class Player implements Serializable {
         return name;
     }
 
-    
 }

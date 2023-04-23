@@ -33,36 +33,35 @@ public class Game implements Serializable {
         return gameID;
     }
 
-    public boolean checkPlayerAlliance(Player player){
+    public boolean checkPlayerAlliance(Player player) {
         return player.hasAlliance();
     }
 
-    public String checkAllAlliance(){
+    public String checkAllAlliance() {
         StringBuilder sb = new StringBuilder();
-        for(Player player: players){
-            sb.append(player + " is alliance with " + player.getAlliancePlayer() + "\n");
+        for (Player player : players) {
+            if (player.hasAlliance()) {
+                sb.append(player + " is alliance with " + player.getAlliancePlayer() + "\n");
+            }
         }
         return sb.toString();
     }
 
-
     public List<Player> findAvailableAlliance(Player currentPlayer) {
         return players.stream()
-                    .filter(player -> !player.equals(currentPlayer))
-                    .collect(Collectors.toList());
+                .filter(player -> !player.equals(currentPlayer))
+                .collect(Collectors.toList());
     }
 
-
-    public void removeBreakUpAlliance(Player player){
-        for(Territory territory: player.getTerritories()){
+    public void removeBreakUpAlliance(Player player) {
+        for (Territory territory : player.getTerritories()) {
             Territory nearestTerri = map.findNearestNeighbor(territory, player);
             nearestTerri.removeBreakUpAlliance(territory);
         }
         player.removeAlliance();
     }
-    
 
-    public Integer getTotalPlayerNum(){
+    public Integer getTotalPlayerNum() {
         return players.size();
     }
 
@@ -107,15 +106,16 @@ public class Game implements Serializable {
 
     /**
      * get player by player object
+     * 
      * @param player the target player to find
      * @return the player
      */
-    public Player getPlayer(Player player){
+    public Player getPlayer(Player player) {
         return players.stream()
                 .filter(targetPlayer -> targetPlayer.equals(player))
                 .findFirst()
                 .orElse(null);
-        
+
     }
-    
+
 }

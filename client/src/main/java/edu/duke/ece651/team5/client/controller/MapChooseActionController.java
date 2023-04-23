@@ -584,16 +584,21 @@ public class MapChooseActionController extends MapController {
     }
 
     public void displayWeather() {
-        String weather = game.getWeather().toString();
 
-        WeatherText.setText("Weather:" + weather);
+        if (game.getWeather() != null) {
+            String weather = game.getWeather().toString();
+            WeatherText.setText("Weather:" + weather);
+        }
+
     }
 
     public void displayEvent() {
 
-        String event = game.getEvent().toString();
+        if (game.getEvent() != null) {
+            String event = game.getEvent().toString();
+            EventText.setText("Event:" + event);
 
-        EventText.setText("Event:" + event);
+        }
 
         List<Territory> affectedTerritories = game.getAffectedTerritories();
         // TODO do alert pop up with the territories affected

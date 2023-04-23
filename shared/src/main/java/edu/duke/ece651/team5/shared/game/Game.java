@@ -2,7 +2,7 @@ package edu.duke.ece651.team5.shared.game;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 /*
  * This class handle a list of players and a map for the game
@@ -31,6 +31,39 @@ public class Game implements Serializable {
 
     public Integer getGameID() {
         return gameID;
+    }
+
+    public boolean checkPlayerAlliance(Player player){
+        return player.hasAlliance();
+    }
+
+    public String checkAllAlliance(){
+        StringBuilder sb = new StringBuilder();
+        for(Player player: players){
+            sb.append(player + " is alliance with " + player.getAlliancePlayer() + "\n");
+        }
+        return sb.toString();
+    }
+
+
+    public List<Player> findAvailableAlliance(Player currentPlayer) {
+        return players.stream()
+                    .filter(player -> !player.equals(currentPlayer))
+                    .collect(Collectors.toList());
+    }
+
+
+    public void removeBreakUpAlliance(Player player){
+        for(Territory territory: player.getTerritories()){
+            Territory nearestTerri = map.findNearestNeighbor(territory, player);
+            nearestTerri.removeBreakUpAlliance(territory);
+        }
+        player.removeAlliance();
+    }
+    
+
+    public Integer getTotalPlayerNum(){
+        return players.size();
     }
 
     public Player getPlayerByName(String name) {

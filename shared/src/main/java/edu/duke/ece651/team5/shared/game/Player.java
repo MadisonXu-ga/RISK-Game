@@ -19,6 +19,12 @@ public class Player implements Serializable {
     private int currTechnologyLevel;
     // the resource player currently owned for food and tech resources
     private final Map<Resource, Integer> resourceToAmount;
+    //list of alliance player
+    private Player alliancePlayer;
+
+    public Player getAlliancePlayer() {
+        return alliancePlayer;
+    }
 
     /**
      * Constructor to create a player
@@ -30,10 +36,25 @@ public class Player implements Serializable {
         this.territories = new ArrayList<>();
         currTechnologyLevel = 0;
         resourceToAmount = new HashMap<>();
-        resourceToAmount.put(new Resource(ResourceType.FOOD), 10);
-        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 10);
+        resourceToAmount.put(new Resource(ResourceType.FOOD), 0);
+        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 0);
+        alliancePlayer = null;
     }
 
+    public boolean hasAlliance() {
+        return alliancePlayer == null;
+    }
+
+    public void addAliance(Player player) {
+        this.alliancePlayer = player;
+    }
+    
+    public void removeAlliance(){
+        alliancePlayer = null;
+    }
+
+
+    
     /**
      * when player as defenser lose in combat, lose control of this territory
      * 
@@ -92,7 +113,6 @@ public class Player implements Serializable {
      * @param num      number of resource add to
      */
     public void addResourceFromTerritory(Resource resource, int num) {
-        System.out.println("player add resource hash code: " + resource.hashCode());
         resourceToAmount.put(resource,
                 resourceToAmount.get(resource) + num);
     }
@@ -173,6 +193,14 @@ public class Player implements Serializable {
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        // return name != null ? name.hashCode() : 0;
+        return name.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    
 }

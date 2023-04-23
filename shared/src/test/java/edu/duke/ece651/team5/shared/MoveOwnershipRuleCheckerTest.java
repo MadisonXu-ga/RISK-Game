@@ -52,7 +52,7 @@ public class MoveOwnershipRuleCheckerTest {
     public void checkMyRule() {
         MoveOwnershipRuleChecker moveOwnershipRuleChecker = new MoveOwnershipRuleChecker(null);
         assertNull(moveOwnershipRuleChecker.checkOrder(move2, map));
-        assertEquals("You cannot move between territories that do not belong to you", moveOwnershipRuleChecker.checkOrder(move1, map));
-        assertEquals("You cannot move between territories that do not belong to you", moveOwnershipRuleChecker.checkOrder(move3, map));
+        assertEquals("You cannot move between territories that do not belong to you or your alliance", moveOwnershipRuleChecker.checkOrder(move1, map));
+        assertEquals("You cannot move between territories that do not belong to you or your alliance", moveOwnershipRuleChecker.checkOrder(move3, map));
     }
 }

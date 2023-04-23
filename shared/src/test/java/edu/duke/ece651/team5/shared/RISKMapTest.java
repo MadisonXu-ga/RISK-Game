@@ -108,5 +108,17 @@ public class RISKMapTest {
     public void testGetDeepCopy() throws IOException, ClassNotFoundException {
         RISKMap deepCopy = map.getDeepCopy();
     }
+
+    @Test
+    public void testFindNearestNeighbor(){
+        RISKMap testMap = new RISKMap();
+        Player player = new Player("A");
+        Territory mordor = testMap.getTerritoryByName("Mordor");
+        Territory thalassia = testMap.getTerritoryByName("Thalassia");
+        Territory eterna = testMap.getTerritoryByName("Eterna");
+        thalassia.setOwner(player);
+        eterna.setOwner(player);
+        System.out.println(testMap.findNearestNeighbor(mordor, player));
+    }
 }
 

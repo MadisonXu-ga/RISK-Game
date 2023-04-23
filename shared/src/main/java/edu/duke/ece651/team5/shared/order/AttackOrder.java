@@ -60,6 +60,7 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
     }
 
 
+
     public void execute(RISKMap map, Player targetPlayer) {
         Territory source = map.getTerritoryByName(sourceName);
         for (Map.Entry<Soldier, Integer> entry : soldierToNumber.getAllSoldiers().entrySet()) {

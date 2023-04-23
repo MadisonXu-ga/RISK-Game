@@ -47,7 +47,9 @@ public class ReserachOrderRuleCheckerTest {
 
         String result = ruleChecker.checkOrder(order);
 
-        // assertEquals("You do not have enough technical resource for this research
-        // order.", result);
+        assertEquals("You do not have enough technical resource for this research order.", result);
+
+        player.addResourceFromTerritory(new Resource(ResourceType.TECHNOLOGY), 100);
+        assertNull(ruleChecker.checkOrder(order));
     }
 }

@@ -54,7 +54,7 @@ public class OrderRuleCheckerTest {
         MovePathWithSameOwnerRuleChecker movePathWithSameOwnerRuleChecker = new MovePathWithSameOwnerRuleChecker(moveOwnershipRuleChecker);
         assertNull(movePathWithSameOwnerRuleChecker.checkOrder(move2, map));
         assertNull(moveOwnershipRuleChecker.checkOrder(move2, map));
-        assertEquals("You cannot move between territories that do not belong to you", moveOwnershipRuleChecker.checkOrder(move1, map));
-        assertEquals("You cannot move between territories that do not belong to you", moveOwnershipRuleChecker.checkOrder(move3, map));
+        assertEquals("You cannot move between territories that do not belong to you or your alliance", moveOwnershipRuleChecker.checkOrder(move1, map));
+        assertEquals("You cannot move between territories that do not belong to you or your alliance", moveOwnershipRuleChecker.checkOrder(move3, map));
     }
 }

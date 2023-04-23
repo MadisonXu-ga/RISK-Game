@@ -6,12 +6,9 @@ import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.Collectors;
 
  //todo can move to server
@@ -20,7 +17,8 @@ public class CombatResolver {
     public CombatResolver() {
     }
 
-   
+
+
     /**
      * merge attack order offered by same player to attack same destination territory
      * @param attackOrder
@@ -132,6 +130,8 @@ public class CombatResolver {
     * @param combatPlayers combatPlayers
     */
     protected void resolveWinnerForThisRound(Player winner, Territory fightingTerri, CombatPlayers combatPlayers, Game game) {
+        //todo split
+        
         Territory targetTerri = game.getMap().getTerritoryByName(fightingTerri.getName());
         Player targetPlayer = game.getPlayeryByName(winner.getName());
         targetTerri.getOwner().loseTerritory(fightingTerri);
@@ -139,11 +139,18 @@ public class CombatResolver {
         System.out.println("new owner: " + fightingTerri.getOwner().getName());
         Map<Soldier, Integer> res = combatPlayers.convertToSoldier(winner);
         targetTerri.setSoldierArmy(new SoldierArmy());
-        for(Soldier soldier: res.keySet()){
-            targetTerri.getSoldierArmy().addSoldier(soldier, res.get(soldier));
+        if(combatPlayers.hasAlliance(winner)){
+            Map<Soldier, Integer> leaderSoldier = combatPlayers.splitLeaderSoldier(winner, true, res);
+            Map<Soldier, Integer> dependentSoldier = combatPlayers.getWinnerSoldier();
+            targetTerri.getSoldierArmy().addSoldierArmy(leaderSoldier);
+            targetTerri.addAllianceSoldier(new SoldierArmy(dependentSoldier));
+            System.out.println("new unit for leader : " + fightingTerri.getSoldierArmy().getAllSoldiers());
+        }else{
+            targetTerri.getSoldierArmy().addSoldierArmy(res);
+            System.out.println("new unit: " + fightingTerri.getSoldierArmy().getAllSoldiers());
         }
-        System.out.println("new unit: " + fightingTerri.getSoldierArmy().getAllSoldiers());
         targetPlayer.addTerritory(fightingTerri);
+        
     }
     
     /**

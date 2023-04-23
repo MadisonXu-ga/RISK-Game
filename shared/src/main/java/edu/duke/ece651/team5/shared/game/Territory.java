@@ -1,11 +1,15 @@
 package edu.duke.ece651.team5.shared.game;
 
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import edu.duke.ece651.team5.shared.constant.Constants;
+import edu.duke.ece651.team5.shared.datastructure.Pair;
+import edu.duke.ece651.team5.shared.order.AllianceOrder;
 import edu.duke.ece651.team5.shared.resource.*;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 
@@ -13,23 +17,34 @@ import edu.duke.ece651.team5.shared.unit.SoldierArmy;
  * This class handle all the functionality of Territory
  */
 public class Territory implements Serializable {
-    //id to represent territory in connections
+    // id to represent territory in connections
     private int id;
-    //territory name
+    // territory name
     private String name;
-    //owner of territory
+    // owner of territory
     private Player owner;
-    //store all the soldiers
+    // store all the soldiers
     private SoldierArmy soldierArmy;
 
     private SoldierArmy allianceSoliderArmy;
-    
+
+    private static WeatherType weather = WeatherType.CLOUDY;
+
+    public static void setWeather(WeatherType weather) {
+        Territory.weather = weather;
+        produceResourceStrategy = new WeatherResourceProduceStrategy(
+                new DefaultResourceProduceStrategy(), weather);
+    }
+
+    private static ProduceResourceStrategy produceResourceStrategy = new WeatherResourceProduceStrategy(
+            new DefaultResourceProduceStrategy(), weather);
 
     /**
      * only used for test case
-     * @param id assigned id
-     * @param name territory name
-     * @param owner owner of 
+     * 
+     * @param id          assigned id
+     * @param name        territory name
+     * @param owner       owner of
      * @param soldierArmy
      */
     public Territory(int id, String name, Player owner, SoldierArmy soldierArmy) {
@@ -42,6 +57,7 @@ public class Territory implements Serializable {
 
     /**
      * designed for test case
+     * 
      * @param id
      * @param name
      * @param owner
@@ -55,8 +71,9 @@ public class Territory implements Serializable {
     }
 
     /**
-     * constructor 
-     * @param id assigned id
+     * constructor
+     * 
+     * @param id   assigned id
      * @param name territory name
      */
     public Territory(int id, String name) {
@@ -68,20 +85,22 @@ public class Territory implements Serializable {
 
     /**
      * add alliacne soldiers to current territory
-     * @param alliance player
+     * 
+     * @param alliance    player
      * @param soldierArmy targetSoldier
      */
-    public void addAllianceSoldier(SoldierArmy soldierArmy){
+    public void addAllianceSoldier(SoldierArmy soldierArmy) {
         allianceSoliderArmy = soldierArmy;
     }
 
     /**
      * remove break up alliance from current territory
-     * @param breakUpPlayer player
+     * 
+     * @param breakUpPlayer    player
      * @param closestTerritory players owned closest territory
      */
-    public void removeBreakUpAlliance(Territory closestTerritory){
-        if(allianceSoliderArmy.getTotalCountSolider() == 0){
+    public void removeBreakUpAlliance(Territory closestTerritory) {
+        if (allianceSoliderArmy.getTotalCountSolider() == 0) {
             return;
         }
         closestTerritory.getSoldierArmy().addSoldierArmy(allianceSoliderArmy);
@@ -90,16 +109,18 @@ public class Territory implements Serializable {
 
     /**
      * produce resource every turn
+     * 
      * @param resource the resource object with a specific type
      */
     public void produceResource(Resource resource) {
-        int amount = (resource.getType().equals(ResourceType.FOOD)) ? Constants.PRODUCE_FOOD_RESOURCE_PER_TURN : Constants.PRODUCE_TECH_RESOURCE_PER_TURN;
+        int amount = (resource.getType().equals(ResourceType.FOOD)) ? Constants.PRODUCE_FOOD_RESOURCE_PER_TURN
+                : Constants.PRODUCE_TECH_RESOURCE_PER_TURN;
         owner.addResourceFromTerritory(resource, amount);
     }
 
-
     /**
      * getter for territory id
+     * 
      * @return
      */
     public int getId() {
@@ -108,6 +129,7 @@ public class Territory implements Serializable {
 
     /**
      * setter for territory id
+     * 
      * @param id
      */
     public void setId(int id) {
@@ -116,6 +138,7 @@ public class Territory implements Serializable {
 
     /**
      * Get the territory name
+     * 
      * @return the name of the territory
      */
     public String getName() {
@@ -124,6 +147,7 @@ public class Territory implements Serializable {
 
     /**
      * Setter for territory name
+     * 
      * @param name territory name
      */
     public void setName(String name) {
@@ -132,6 +156,7 @@ public class Territory implements Serializable {
 
     /**
      * Getter for territory owner
+     * 
      * @return territory owner
      */
     public Player getOwner() {
@@ -140,6 +165,7 @@ public class Territory implements Serializable {
 
     /**
      * Setter for territory owner
+     * 
      * @return territory owner
      */
     public void setOwner(Player newOwner) {
@@ -148,16 +174,16 @@ public class Territory implements Serializable {
 
     /**
      * Getter for territory soldier army
+     * 
      * @return territory soldier army
      */
     public SoldierArmy getSoldierArmy() {
         return this.soldierArmy;
     }
 
-    public void setSoldierArmy(SoldierArmy soldierArmy){
+    public void setSoldierArmy(SoldierArmy soldierArmy) {
         this.soldierArmy = soldierArmy;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -165,7 +191,9 @@ public class Territory implements Serializable {
             return true;
         Territory territory = (Territory) o;
         return id == territory.id && Objects.equals(name, territory.name);
-        // return id == territory.id && Objects.equals(name, territory.name) && Objects.equals(owner, territory.owner) && Objects.equals(soldierArmy, territory.soldierArmy);
+        // return id == territory.id && Objects.equals(name, territory.name) &&
+        // Objects.equals(owner, territory.owner) && Objects.equals(soldierArmy,
+        // territory.soldierArmy);
     }
 
     @Override

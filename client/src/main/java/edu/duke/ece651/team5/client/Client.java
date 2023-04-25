@@ -372,6 +372,12 @@ public class Client {
 
   }
 
+  public void checkLoseDecision(String decisionSpectate) throws IOException {
+
+    playerConnection.writeData(decisionSpectate);
+
+  }
+
   // /**
   // * handle user choice for their unit placement, send the choices to server
   // * and continue to ask user choice if not approved by server

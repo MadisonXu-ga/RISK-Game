@@ -25,9 +25,11 @@ public class UserHandler implements Runnable {
     private HashMap<User, PlayerConnection> clients;
     private HashMap<User, PlayerChatConnection> clientsChat;
 
-    public UserHandler(PlayerConnection playerConnection, PlayerChatConnection playerConnection_chat,UserManager userManager,
+    public UserHandler(PlayerConnection playerConnection, PlayerChatConnection playerConnection_chat,
+            UserManager userManager,
             HashMap<Integer, GameController> allGames,
-            UserGameMap userGameMap, HashMap<User, PlayerConnection> clients, HashMap<User, PlayerChatConnection> clientsChat) {
+            UserGameMap userGameMap, HashMap<User, PlayerConnection> clients,
+            HashMap<User, PlayerChatConnection> clientsChat) {
         this.playerConnection = playerConnection;
         this.playerConnection_chat = playerConnection_chat;
         this.userManager = userManager;
@@ -181,7 +183,7 @@ public class UserHandler implements Runnable {
             GameController newGame = new GameController(playerNum);
             // add game to all games
             allGames.put(newGame.getID(), newGame);
-            
+
             // add new chatroom (v3)
             // chatServer.addChatRoom(newGame.getID(), newGame.geChatRoom());
 
@@ -460,6 +462,7 @@ public class UserHandler implements Runnable {
                                 .getResourceCount(new Resource(ResourceType.FOOD)));
 
                 // send map to all active users in this game
+                System.out.println("Sending game at the end of turn...");
                 for (User user : userGameMap.getGameUsers(gameController)) {
                     Boolean userActiveStatus = gameController.getUserActiveStatus(user);
                     if (user.getUserStatus() == UserStatus.LOGGED_IN
@@ -482,13 +485,17 @@ public class UserHandler implements Runnable {
 
                         // check user lose or not
                         // lost
+                        System.out.println("Check losing...");
                         if ((userActiveStatus != null && userActiveStatus == true)) {
                             if (gameController.checkUserLose(user)) {
                                 playerConnectionNow.writeData("You lost");
+                                System.out.println("Send lost to player");
                                 String lostChoice = (String) playerConnectionNow.readData();
                                 if (lostChoice.equals("Disconnect")) {
                                     gameController.setUserActiveStatus(user, false);
+                                    System.out.println("Player said disconnect");
                                 } else if (lostChoice.equals("Display")) {
+                                    System.out.println("Player said display");
                                     gameController.setUserActiveStatus(user, null);
                                 }
                                 return;
@@ -504,13 +511,13 @@ public class UserHandler implements Runnable {
         }
     }
 
-    protected void handleChat(){
+    protected void handleChat() {
         System.out.println("Dealing with handling orders...");
 
         try {
             int gameID = (int) playerConnection.readData();
             String chatMessage = (String) playerConnection.readData();
-            
+
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }

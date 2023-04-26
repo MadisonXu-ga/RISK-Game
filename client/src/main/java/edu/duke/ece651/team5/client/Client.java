@@ -561,8 +561,9 @@ public class Client {
   }
 
   // for v3 chat
-  public void sendMessage(int gameID, String playerColor, String message) {
-    String messageToSend = Integer.toString(gameID) + " " + playerColor + " " + message;
+  // add dest color -> only send message to destColor
+  public void sendMessage(int gameID, String playerColor, String message, String destColor) {
+    String messageToSend = Integer.toString(gameID) + " " + playerColor + " " + destColor + " " + message;
     System.out.println("client send:" + messageToSend);
     playerConnection_chat.writeString(messageToSend);
   }

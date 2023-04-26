@@ -118,6 +118,7 @@ public class MapChooseActionController extends MapController {
     public Integer foodSpent;
     private ListView<String> messageListView;
     private Stage secondStage;
+    private boolean lostGame;
     // private ObservableList<String> messages =
     // FXCollections.observableArrayList();
 
@@ -371,13 +372,7 @@ public class MapChooseActionController extends MapController {
             moneySpent = 0;
             foodSpent = 0;
             String winResult = client.checkWin();
-            if (!winResult.equals("No winner")) {
-                showPopupAndExit(winResult);
-            }
 
-            if (client.checkLost().equals("You lost")) {
-                checkLostPopUp(App.getPrimaryStage());
-            }
             // initialize();
             // MapChooseActionController actionController = (MapChooseActionController) App
             // .loadController("submit-actions");
@@ -385,11 +380,50 @@ public class MapChooseActionController extends MapController {
 
             this.initialize();
             App.loadScenefromMain("submit-actions");
+            if (!winResult.equals("No winner")) {
+                showPopupAndExit(winResult);
+            }
+
+            if (lostGame != true) {
+                if (client.checkLost().equals("You lost")) {
+                    lostGame = true;
+                    checkLostPopUp(App.getPrimaryStage());
+                }
+            }
             attackOrders = new ArrayList<>();
             moveOrders = new ArrayList<>();
             upgradeOrders = new ArrayList<>();
             researchOrder = null;
         }
+
+    }
+
+    public void doneAfterLosing() throws ClassNotFoundException, IOException {
+
+        this.initialize();
+        App.loadScenefromMain("submit-actions");
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
+        String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
+
+        game = client.updatedGameAfterTurn();
+        moneySpent = 0;
+        foodSpent = 0;
+        String winResult = client.checkWin();
+
+        setGame(game);
+
+        this.initialize();
+        App.loadScenefromMain("submit-actions");
+
+        if (!winResult.equals("No winner")) {
+            showPopupAndExit(winResult);
+        }
+
+        attackOrders = new ArrayList<>();
+        moveOrders = new ArrayList<>();
+        upgradeOrders = new ArrayList<>();
+        researchOrder = null;
+        doneAfterLosing();
 
     }
 
@@ -421,20 +455,24 @@ public class MapChooseActionController extends MapController {
         keepExpectatingBtn.setOnAction(e -> {
             popup.close();
             try {
-                onDone();
-            } catch (ClassNotFoundException | IOException e1) {
+                client.checkLoseDecision("Display");
+                doneAfterLosing();
+            } catch (IOException | ClassNotFoundException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             } // Call the "Done" button functionality
+
         });
 
         Button logOutBtn = new Button("Go back to Main Page");
         logOutBtn.setOnAction(e -> {
+            popup.close();
             // Implement the logout functionality here
 
             MultipleGamesController multipleGamesController = (MultipleGamesController) App
                     .loadController("multiple-games");
             try {
+                client.checkLoseDecision("Disconnect");
                 multipleGamesController.refresh();
             } catch (ClassNotFoundException | IOException e1) {
                 // TODO Auto-generated catch block

@@ -37,17 +37,17 @@ public class MoveOrder extends BasicOrder implements Serializable {
                 Territory destination = map.getTerritoryByName(destinationName);
                 soldierToNumber.getAllSoldiers()
                                 .forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
-                soldierToNumber.getAllSoldiers()
+                if(destination.getOwner().equals(player)){
+                        soldierToNumber.getAllSoldiers()
                                 .forEach((soldier, number) -> destination.getSoldierArmy().addSoldier(soldier, number));
+                }else{
+                        destination.addAllianceSoldier(soldierToNumber);
+                }
+                
                 // consume resource
                 int distance = map.getShortestPathDistance(sourceName, destinationName, true);
-
-                Integer foodAmntInt = player.getResourceCount(new Resource(ResourceType.FOOD));
-                // System.out.println("before executing food resources: " + foodAmntInt);
                 player.consumeResource(new Resource(ResourceType.FOOD),
                                 Constants.C * distance * soldierToNumber.getTotalCountSolider());
-                Integer foodAmntInt2 = player.getResourceCount(new Resource(ResourceType.FOOD));
-                // System.out.println("after executing food resources: " + foodAmntInt2);
         }
 
         public void execute(RISKMap map, Player targetPlayer) {
@@ -55,11 +55,16 @@ public class MoveOrder extends BasicOrder implements Serializable {
                 Territory destination = map.getTerritoryByName(destinationName);
                 soldierToNumber.getAllSoldiers()
                                 .forEach((soldier, number) -> source.getSoldierArmy().removeSoldier(soldier, number));
-                soldierToNumber.getAllSoldiers()
+                if(destination.getOwner().equals(targetPlayer)){
+                        soldierToNumber.getAllSoldiers()
                                 .forEach((soldier, number) -> destination.getSoldierArmy().addSoldier(soldier, number));
-                // consume resource
+                }else{
+                        destination.addAllianceSoldier(soldierToNumber);
+                }// consume resource
                 int distance = map.getShortestPathDistance(sourceName, destinationName, true);
                 targetPlayer.consumeResource(new Resource(ResourceType.FOOD),
                                 Constants.C * distance * soldierToNumber.getTotalCountSolider());
+                System.out.println("owner soldier army: " + destination.getSoldierArmy());
+                System.out.println("alliance soldier army" + destination.getAllianceSoliderArmy());
         }
 }

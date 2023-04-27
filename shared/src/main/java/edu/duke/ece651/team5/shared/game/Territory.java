@@ -28,6 +28,10 @@ public class Territory implements Serializable {
 
     private SoldierArmy allianceSoliderArmy;
 
+    public SoldierArmy getAllianceSoliderArmy() {
+        return allianceSoliderArmy;
+    }
+
     private static WeatherType weather = WeatherType.CLOUDY;
 
     public static void setWeather(WeatherType weather) {

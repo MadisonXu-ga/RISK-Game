@@ -26,8 +26,8 @@ public class CombatPlayers {
     //players with list of soldier represented by integer
     private Map<Player, List<Integer>> playerToBonusSoldier = new HashMap<>();
     private List<Player> combatPlayersforThisTurn = new ArrayList<>();
-    private Map<Player, Double> alliaceRatio;
-    private Map<Soldier, Integer> winnerSoldier;
+    private Map<Player, Double> alliaceRatio = new HashMap<>();
+    private Map<Soldier, Integer> winnerSoldier = new HashMap<>();
 
 
 
@@ -40,8 +40,8 @@ public class CombatPlayers {
      */
     public CombatPlayers(List<AttackOrder> attackOrders) {
         this.playerToBonusSoldier = createBonusUnit(attackOrders);
-        alliaceRatio = new HashMap<>();
-        winnerSoldier = new HashMap<>();
+        // alliaceRatio = new HashMap<>();
+        // winnerSoldier = new HashMap<>();
     }
 
     public Map<Player, Double> getAlliaceRatio() {
@@ -79,7 +79,7 @@ public class CombatPlayers {
     }
 
     public Map<Soldier, Integer> splitLeaderSoldier(Player winner, boolean isLeader, Map<Soldier, Integer> soldiers){
-        double ratio = isLeader ? alliaceRatio.get(winner) : 1 - alliaceRatio.get(winner);
+        double ratio = isLeader ? 1 - alliaceRatio.get(winner.getAlliancePlayer()) : alliaceRatio.get(winner.getAlliancePlayer());
         Map<Soldier, Integer> leaderSoldier = new HashMap<>();
         for(Soldier soldier: soldiers.keySet()){
             int num = (int) Math.ceil(soldiers.get(soldier) * ratio);
@@ -163,7 +163,7 @@ public class CombatPlayers {
             int allianceCount = allianceBonusSoldier.stream().mapToInt(Integer::intValue).sum();
             Player leader = (playerCount > allianceCount) ? player : alliance;
             Player dependence = (leader == player) ? alliance : player;
-            double ratio = (Math.max(playerCount, allianceCount)/(playerCount + allianceCount));
+            double ratio = (Math.min(playerCount, allianceCount)/(playerCount + allianceCount));
     
             mergeAlliance.put(leader, combinedBonusSoldier);
             alliaceRatio.put(dependence, ratio);

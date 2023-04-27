@@ -11,6 +11,7 @@ import edu.duke.ece651.team5.shared.event.EventType;
 import edu.duke.ece651.team5.shared.event.FloodEvent;
 import edu.duke.ece651.team5.shared.event.StormEvent;
 import edu.duke.ece651.team5.shared.resource.WeatherType;
+import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.utils.RandomDice;
 
 /*
@@ -44,6 +45,12 @@ public class Game implements Serializable {
     public List<Territory> getAffectedTerritories() {
         return affectedTerritories;
     }
+
+    public SoldierArmy getAllianceSoldierArmy(Territory t){
+        return t.getAllianceSoliderArmy();
+    }
+
+
 
     public void setGameID(Integer gameID) {
         this.gameID = gameID;

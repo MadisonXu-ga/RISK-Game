@@ -114,6 +114,20 @@ public class MapChooseActionController extends MapController {
     @FXML
     Text EventText;
 
+    @FXML
+    Button moveOrderbtn;
+
+    @FXML
+    Button attackOrderbtn;
+
+    @FXML
+    Button upgradebtn;
+    @FXML
+    Button chat;
+
+    @FXML
+    Button saveAndExitbtn;
+
     public Integer moneySpent;
     public Integer foodSpent;
     private ListView<String> messageListView;
@@ -350,6 +364,11 @@ public class MapChooseActionController extends MapController {
      * @throws IOException
      */
     public void onDone() throws ClassNotFoundException, IOException {
+
+        if (lostGame == true) {
+            doneAfterLosing();
+        }
+
         System.out.println("the number of upgrade orders is: " + upgradeOrders.size());
         Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
 
@@ -400,6 +419,19 @@ public class MapChooseActionController extends MapController {
 
     public void doneAfterLosing() throws ClassNotFoundException, IOException {
 
+        moveOrderbtn.setDisable(true);
+        saveAndExitbtn.setDisable(true);
+        attackOrderbtn.setDisable(true);
+        researchbtn.setDisable(true);
+        upgradebtn.setDisable(true);
+        chat.setDisable(true);
+        formAlliance.setDisable(true);
+        researchbtn.setDisable(true);
+
+        attackOrders = new ArrayList<>();
+        moveOrders = new ArrayList<>();
+        upgradeOrders = new ArrayList<>();
+        researchOrder = null;
         this.initialize();
         App.loadScenefromMain("submit-actions");
         Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
@@ -412,18 +444,9 @@ public class MapChooseActionController extends MapController {
 
         setGame(game);
 
-        this.initialize();
-        App.loadScenefromMain("submit-actions");
-
         if (!winResult.equals("No winner")) {
             showPopupAndExit(winResult);
         }
-
-        attackOrders = new ArrayList<>();
-        moveOrders = new ArrayList<>();
-        upgradeOrders = new ArrayList<>();
-        researchOrder = null;
-        doneAfterLosing();
 
     }
 
@@ -456,8 +479,8 @@ public class MapChooseActionController extends MapController {
             popup.close();
             try {
                 client.checkLoseDecision("Display");
-                doneAfterLosing();
-            } catch (IOException | ClassNotFoundException e1) {
+
+            } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             } // Call the "Done" button functionality

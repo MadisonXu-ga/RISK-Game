@@ -26,9 +26,11 @@ public class UserHandler implements Runnable {
     private HashMap<User, PlayerChatConnection> clientsChat;
 
     public UserHandler(PlayerConnection playerConnection, PlayerChatConnection playerConnection_chat,
+            
             UserManager userManager,
             HashMap<Integer, GameController> allGames,
             UserGameMap userGameMap, HashMap<User, PlayerConnection> clients,
+           
             HashMap<User, PlayerChatConnection> clientsChat) {
         this.playerConnection = playerConnection;
         this.playerConnection_chat = playerConnection_chat;
@@ -445,6 +447,7 @@ public class UserHandler implements Runnable {
 
             if (receiveAll) {
                 System.out.println("Received all players' ations");
+
                 // update unit and resource
                 Map<String, Territory> territories = gameController.getGame().getMap().getAllTerritories();
                 System.out.println("Last User color: " + gameController.getUserColor(currentUser)
@@ -456,10 +459,15 @@ public class UserHandler implements Runnable {
                     territory.produceResource(new Resource(ResourceType.TECHNOLOGY));
                     territory.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), 1);
                 }
+
                 System.out.println("Last User color: " + gameController.getUserColor(currentUser)
                         + " After territory produce food resource: "
                         + gameController.mapUserToPlayer(currentUser)
                                 .getResourceCount(new Resource(ResourceType.FOOD)));
+
+                // new feature for game
+                gameController.getGame().handleWeather();
+                gameController.getGame().hanldeEvent();
 
                 // send map to all active users in this game
                 System.out.println("Sending game at the end of turn...");
@@ -505,18 +513,6 @@ public class UserHandler implements Runnable {
                     }
                 }
             }
-
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void handleChat() {
-        System.out.println("Dealing with handling orders...");
-
-        try {
-            int gameID = (int) playerConnection.readData();
-            String chatMessage = (String) playerConnection.readData();
 
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();

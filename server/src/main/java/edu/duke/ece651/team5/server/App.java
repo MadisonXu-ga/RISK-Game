@@ -16,7 +16,7 @@ public class App {
       throws SocketException, IOException, NumberFormatException, ClassNotFoundException, InterruptedException {
     // App a = new App();
     // System.out.println(a.getMessage());
-    Server server = new Server(31007, System.out);
+    Server server = new Server(31008, System.out);
     server.start();
     server.stop();
   }

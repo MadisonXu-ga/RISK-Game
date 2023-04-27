@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import edu.duke.ece651.team5.shared.*;
 import edu.duke.ece651.team5.shared.game.*;
 import edu.duke.ece651.team5.shared.order.*;
 import edu.duke.ece651.team5.shared.resource.Resource;
 import edu.duke.ece651.team5.shared.resource.ResourceType;
+import edu.duke.ece651.team5.shared.rulechecker.AllianceChecker;
 
 public class ActionResolver {
     public void tryResolveAllMoveOrders(HashMap<Player, Action> playerActions, Game game) {
@@ -70,6 +72,49 @@ public class ActionResolver {
         for (UpgradeOrder upgradeOrder : allUpgradeOrders) {
             String tempgetPlayerColor = upgradeOrder.getPlayer().getName();
             upgradeOrder.execute(game.getMap(), game.getPlayerByName(tempgetPlayerColor));
+        }
+    }
+
+    public void tryResolveAllAllianceOrder(HashMap<Player, Action> playerActions, Game game) {
+        // make an allicance checker
+        AllianceChecker allianceChecker = new AllianceChecker();
+        // get allianceOrders of all players
+        List<AllianceOrder> allianceOrders = new ArrayList<>();
+        for (Action action : playerActions.values()) {
+            if (action.getAllianceOrder() != null) {
+                allianceOrders.add(action.getAllianceOrder());
+            }
+        }
+        // 1. check if alliance exists
+        Set<Set<Player>> allianceRes = allianceChecker.checkAlliance(allianceOrders);
+        if (!allianceRes.isEmpty()) {
+            for (Set<Player> players : allianceRes) {
+                // get all(2) players' names from player set
+                ArrayList<String> playerNames = new ArrayList<>();
+                for (Player player : players) {
+                    playerNames.add(player.getName());
+                }
+                // add alliance
+                Player player1 = game.getPlayerByName(playerNames.get(0));
+                Player player2 = game.getPlayerByName(playerNames.get(1));
+                player1.addAliance(player2);
+                player2.addAliance(player1);
+            }
+        }
+        // 2. check breakup
+        List<AttackOrder> allAttackOrders = new ArrayList<>();
+        for (Map.Entry<Player, Action> entry : playerActions.entrySet()) {
+            allAttackOrders.addAll(entry.getValue().getAttackOrders());
+        }
+
+        // TODO: checkBreak may have a bug: player get from order is different from map!
+        Set<Player> breakUpRes = allianceChecker.checkBreak(allAttackOrders, game.getMap());
+        if(!breakUpRes.isEmpty()){
+            for(Player player: breakUpRes){
+                String name = player.getName();
+                Player playerInGame = game.getPlayerByName(name);
+                game.removeBreakUpAlliance(playerInGame);
+            }
         }
     }
 }

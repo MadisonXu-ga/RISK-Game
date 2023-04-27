@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.common.base.Objects;
 
@@ -332,10 +333,14 @@ public class GameController {
         }
 
         ActionResolver actionResolver = new ActionResolver();
-        // resolve
+        // TODO: may need before chekcer? but actually cannot cuz checker is for only
+        // only player
+        // before other orders, resolve alliance first
+        actionResolver.tryResolveAllAllianceOrder(playerActions, game);
+
+        // resolve other orders
         System.out.println("-----------------------------------");
         Player player0 = players.get(0);
-        Player player1 = players.get(1);
         System.out.println(
                 player0.getName() + " food resource before resolve move: "
                         + player0.getResourceCount(new Resource(ResourceType.FOOD)));

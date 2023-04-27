@@ -41,6 +41,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -72,6 +73,7 @@ public class MapChooseActionController extends MapController {
     public ArrayList<MoveOrder> moveOrders;
     public ResearchOrder researchOrder;
     public ArrayList<UpgradeOrder> upgradeOrders;
+    AllianceOrder allianceOrder;
 
     @FXML
     ComboBox<SoldierLevel> unitsComboBox;
@@ -113,6 +115,20 @@ public class MapChooseActionController extends MapController {
 
     @FXML
     Text EventText;
+
+    @FXML
+    Button moveOrderbtn;
+
+    @FXML
+    Button attackOrderbtn;
+
+    @FXML
+    Button upgradebtn;
+    @FXML
+    Button chat;
+
+    @FXML
+    Button saveAndExitbtn;
 
     public Integer moneySpent;
     public Integer foodSpent;
@@ -157,6 +173,9 @@ public class MapChooseActionController extends MapController {
         }
         if (upgradeOrders == null) {
             upgradeOrders = new ArrayList<>();
+        }
+        if (allianceOrder == null) {
+            allianceOrder = null;
         }
 
         calculator = new ResourceConsumeCalculator();
@@ -350,8 +369,13 @@ public class MapChooseActionController extends MapController {
      * @throws IOException
      */
     public void onDone() throws ClassNotFoundException, IOException {
+
+        if (lostGame == true) {
+            doneAfterLosing();
+        }
+
         System.out.println("the number of upgrade orders is: " + upgradeOrders.size());
-        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders, allianceOrder);
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
@@ -400,9 +424,22 @@ public class MapChooseActionController extends MapController {
 
     public void doneAfterLosing() throws ClassNotFoundException, IOException {
 
+        moveOrderbtn.setDisable(true);
+        saveAndExitbtn.setDisable(true);
+        attackOrderbtn.setDisable(true);
+        researchbtn.setDisable(true);
+        upgradebtn.setDisable(true);
+        chat.setDisable(true);
+        formAlliance.setDisable(true);
+        researchbtn.setDisable(true);
+
+        attackOrders = new ArrayList<>();
+        moveOrders = new ArrayList<>();
+        upgradeOrders = new ArrayList<>();
+        researchOrder = null;
         this.initialize();
         App.loadScenefromMain("submit-actions");
-        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders, allianceOrder);
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
 
         game = client.updatedGameAfterTurn();
@@ -412,18 +449,9 @@ public class MapChooseActionController extends MapController {
 
         setGame(game);
 
-        this.initialize();
-        App.loadScenefromMain("submit-actions");
-
         if (!winResult.equals("No winner")) {
             showPopupAndExit(winResult);
         }
-
-        attackOrders = new ArrayList<>();
-        moveOrders = new ArrayList<>();
-        upgradeOrders = new ArrayList<>();
-        researchOrder = null;
-        doneAfterLosing();
 
     }
 
@@ -456,8 +484,8 @@ public class MapChooseActionController extends MapController {
             popup.close();
             try {
                 client.checkLoseDecision("Display");
-                doneAfterLosing();
-            } catch (IOException | ClassNotFoundException e1) {
+
+            } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             } // Call the "Done" button functionality
@@ -511,9 +539,9 @@ public class MapChooseActionController extends MapController {
 
             Player ally = game.getPlayerByName(playersCombobox.getValue());
 
-            AllianceOrder allianceOrder = new AllianceOrder(game.getPlayerByName(client.getColor()), ally);
-            formAlliance.setDisable(true);
-            playersCombobox.disableProperty();
+            this.allianceOrder = new AllianceOrder(game.getPlayerByName(client.getColor()), ally);
+            // formAlliance.setDisable(true);
+            // playersCombobox.disableProperty();
 
         }
 
@@ -530,11 +558,25 @@ public class MapChooseActionController extends MapController {
 
         TextField messageInput = new TextField();
         messageInput.setPromptText("Enter message");
+
+        ComboBox<String> comboBox = new ComboBox<>();
+
+        for (Player player : game.getPlayers()) {
+
+            if (player.getName().equals(client.getColor())) {
+                continue;
+            }
+
+            comboBox.getItems().add(player.getName());
+        }
+
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             String message = messageInput.getText();
             if (!message.isBlank()) {
-                client.sendMessage(client.getCurrentGameID(), client.getColor(), message);
+
+                String selectedOption = comboBox.getSelectionModel().getSelectedItem();
+                client.sendMessage(client.getCurrentGameID(), client.getColor(), message, selectedOption);
                 System.out.println(client.getMessages());
                 messageInput.clear();
 
@@ -543,8 +585,12 @@ public class MapChooseActionController extends MapController {
             }
         });
 
+        HBox hbox = new HBox(10);
+        hbox.getChildren().addAll(comboBox, submitButton);
         VBox secondStageLayout = new VBox(10);
-        secondStageLayout.getChildren().addAll(messageListView, messageInput, submitButton);
+        secondStageLayout.getChildren().addAll(messageListView, messageInput, hbox);
+        // secondStageLayout.getChildren().addAll(messageListView, messageInput,
+        // submitButton);
 
         return new Scene(secondStageLayout, 300, 200);
     }

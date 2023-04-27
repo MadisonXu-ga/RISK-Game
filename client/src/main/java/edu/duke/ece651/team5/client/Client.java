@@ -52,7 +52,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 31007, br, out);
+    this("localhost", 31008, br, out);
   }
 
   /**
@@ -549,8 +549,12 @@ public class Client {
             System.out.println("client received:" + messageReceived);
             String[] words = messageReceived.split(" ");
             int gameID = Integer.parseInt(words[0]);
-            String messageToDisplay = words[1] + ":";
-            for (int i = 2; i < words.length; ++i) {
+            // change 1 to 2
+            if (words[2].equals(getColor())) {
+              words[2] = "me";
+            }
+            String messageToDisplay = words[2] + ":";
+            for (int i = 3; i < words.length; ++i) {
               messageToDisplay += " " + words[i];
             }
             if (!gameAllMessages.containsKey(gameID)) {
@@ -567,8 +571,9 @@ public class Client {
   }
 
   // for v3 chat
-  public void sendMessage(int gameID, String playerColor, String message) {
-    String messageToSend = Integer.toString(gameID) + " " + playerColor + " " + message;
+  // add dest color -> only send message to destColor
+  public void sendMessage(int gameID, String playerColor, String message, String destColor) {
+    String messageToSend = Integer.toString(gameID) + " " + destColor + " " + playerColor + " " + message;
     System.out.println("client send:" + messageToSend);
     playerConnection_chat.writeString(messageToSend);
   }

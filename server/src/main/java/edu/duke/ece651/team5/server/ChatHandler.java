@@ -25,9 +25,6 @@ public class ChatHandler implements Runnable {
     public void run() {
         try {
             while (!playerConnection_chat.getSocket().isClosed()) {
-                // String gameID = playerConnection_chat.readString();
-                // String color = playerConnection_chat.readString();
-                // String chatMessage = playerConnection_chat.readString();
                 String messageReceived = playerConnection_chat.readString();
                 if (messageReceived == null) {
                     continue;
@@ -35,19 +32,26 @@ public class ChatHandler implements Runnable {
                 System.out.println("server received: " + messageReceived);
                 String[] words = messageReceived.split(" ");
                 String gameID = words[0];
+                String destColor = words[1];
+                String playerColor = words[2];
                 GameController gameController = allGames.get(Integer.parseInt(gameID));
                 ArrayList<User> users = userGameMap.getGameUsers(gameController);
-                broadcastChat(users, gameID, messageReceived);
+                broadcastChat(users, gameID, playerColor, destColor, messageReceived, gameController);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    protected void broadcastChat(ArrayList<User> users, String gameID, String messageToSend) {
+    protected void broadcastChat(ArrayList<User> users, String gameID, String playerColor, String destColor,
+            String messageToSend,
+            GameController gameController) {
         System.out.println("server broadcast: " + messageToSend);
         for (User user : users) {
-            clientsChat.get(user).writeString(messageToSend);
+            if (gameController.getUserColor(user).equals(destColor)
+                    || gameController.getUserColor(user).equals(playerColor)) {
+                clientsChat.get(user).writeString(messageToSend);
+            }
         }
     }
 

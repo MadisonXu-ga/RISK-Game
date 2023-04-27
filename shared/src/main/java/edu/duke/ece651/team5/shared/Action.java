@@ -13,13 +13,15 @@ public class Action implements Serializable {
   ArrayList<MoveOrder> moveOrders;
   ResearchOrder researchOrder;
   ArrayList<UpgradeOrder> upgradeOrders;
+  AllianceOrder allianceOrder;
 
   public Action(ArrayList<AttackOrder> attackOrders, ArrayList<MoveOrder> moveOrders, ResearchOrder researchOrder,
-      ArrayList<UpgradeOrder> upgradeOrders) {
+      ArrayList<UpgradeOrder> upgradeOrders, AllianceOrder allianceOrder) {
     this.attackOrders = attackOrders;
     this.moveOrders = moveOrders;
     this.researchOrder = researchOrder;
     this.upgradeOrders = upgradeOrders;
+    this.allianceOrder = allianceOrder;
   }
 
   public ArrayList<AttackOrder> getAttackOrders() {
@@ -36,5 +38,9 @@ public class Action implements Serializable {
 
   public ArrayList<UpgradeOrder> getUpgradeOrders() {
     return upgradeOrders;
+  }
+
+  public AllianceOrder getAllianceOrder(){
+    return allianceOrder;
   }
 }

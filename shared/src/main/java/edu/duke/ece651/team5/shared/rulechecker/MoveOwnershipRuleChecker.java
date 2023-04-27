@@ -27,7 +27,7 @@ public class MoveOwnershipRuleChecker extends OrderRuleChecker{
         Territory source = map.getTerritoryByName(sourceName);
         Territory destination = map.getTerritoryByName(destinationName);
         if (source.getOwner().equals(order.getPlayer()) &&
-            (destination.getOwner().equals(order.getPlayer()) 
+            (destination.getOwner().equals(order.getPlayer())
                 || (destination.getOwner().getAlliancePlayer()!=null && destination.getOwner().getAlliancePlayer().equals(order.getPlayer()))
                 )) {
             return null;

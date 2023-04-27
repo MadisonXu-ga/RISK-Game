@@ -22,13 +22,18 @@ public class MoveOwnershipRuleCheckerTest {
     MoveOrder move1;
     MoveOrder move2;
     MoveOrder move3;
+    private Player player1;
+    private Player player2;
+
     @BeforeEach
     public void setUp() {
         Map<String, Territory> territories = new HashMap<>();
-        territories.put("Territory 1", new Territory(1, "Territory 1", new Player("Player 1")));
-        territories.put("Territory 2", new Territory(2, "Territory 2", new Player("Player 2")));
-        territories.put("Territory 3", new Territory(3, "Territory 3", new Player("Player 2")));
-        territories.put("Territory 4", new Territory(4, "Territory 4", new Player("Player 1")));
+        player1 =  new Player("Player 1");
+        player2 = new Player("Player 2");
+        territories.put("Territory 1", new Territory(1, "Territory 1", player1));
+        territories.put("Territory 2", new Territory(2, "Territory 2", player2));
+        territories.put("Territory 3", new Territory(3, "Territory 3", player2));
+        territories.put("Territory 4", new Territory(4, "Territory 4", player1));
 
         HashMap<Integer, List<RISKMap.Edge>> connections = new HashMap<>();
         connections.put(1, Arrays.asList(new RISKMap.Edge(1, 2, 5),
@@ -53,6 +58,16 @@ public class MoveOwnershipRuleCheckerTest {
         MoveOwnershipRuleChecker moveOwnershipRuleChecker = new MoveOwnershipRuleChecker(null);
         assertNull(moveOwnershipRuleChecker.checkOrder(move2, map));
         assertEquals("You cannot move between territories that do not belong to you or your alliance", moveOwnershipRuleChecker.checkOrder(move1, map));
+        assertEquals("You cannot move between territories that do not belong to you or your alliance", moveOwnershipRuleChecker.checkOrder(move3, map));
+    }
+
+    @Test
+    public void checkAllianceMyRule() {
+        player1.addAliance(player2);
+        player2.addAliance(player1);
+        MoveOwnershipRuleChecker moveOwnershipRuleChecker = new MoveOwnershipRuleChecker(null);
+        assertNull(moveOwnershipRuleChecker.checkOrder(move2, map));
+        assertNull(moveOwnershipRuleChecker.checkOrder(move1, map));
         assertEquals("You cannot move between territories that do not belong to you or your alliance", moveOwnershipRuleChecker.checkOrder(move3, map));
     }
 }

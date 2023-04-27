@@ -17,14 +17,18 @@ public class MovePathWithSameOwnerRuleCheckerTest {
     private RISKMap map;
     private MoveOrder move1;
     private MoveOrder move2;
+    private Player player1;
+    private Player player2;
 
     @BeforeEach
     public void setUp() {
         Map<String, Territory> territories = new HashMap<>();
-        territories.put("Territory 1", new Territory(1, "Territory 1", new Player("Player 1")));
-        territories.put("Territory 2", new Territory(2, "Territory 2", new Player("Player 2")));
-        territories.put("Territory 3", new Territory(3, "Territory 3", new Player("Player 2")));
-        territories.put("Territory 4", new Territory(4, "Territory 4", new Player("Player 1")));
+        player1 =  new Player("Player 1");
+        player2 = new Player("Player 2");
+        territories.put("Territory 1", new Territory(1, "Territory 1", player1));
+        territories.put("Territory 2", new Territory(2, "Territory 2", player2));
+        territories.put("Territory 3", new Territory(3, "Territory 3", player2));
+        territories.put("Territory 4", new Territory(4, "Territory 4", player1));
 
         HashMap<Integer, List<RISKMap.Edge>> connections = new HashMap<>();
         connections.put(1, Arrays.asList(new RISKMap.Edge(1, 2, 5),
@@ -47,6 +51,14 @@ public class MovePathWithSameOwnerRuleCheckerTest {
         assertEquals("There is no such a path from Territory 1 to Territory 2 owned by Player 1",
                 movePathWithSameOwnerRuleChecker.checkOrder(move1, map));
         assertNull(movePathWithSameOwnerRuleChecker.checkOrder(move2, map));
+    }
+
+    @Test
+    void checkAllianceRule() {
+        player1.addAliance(player2);
+        player2.addAliance(player1);
+        MovePathWithSameOwnerRuleChecker movePathWithSameOwnerRuleChecker = new MovePathWithSameOwnerRuleChecker(null);
+        assertNull(movePathWithSameOwnerRuleChecker.checkOrder(move1, map));
     }
 
 

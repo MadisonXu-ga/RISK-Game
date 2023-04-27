@@ -49,7 +49,7 @@ public class UpgradeOrderRuleCheckerTest {
 
         String result = ruleChecker.checkOrder(upgradeOrder);
 
-        assertEquals("You do not have enough technology resources.", result);
+        assertEquals("Cannot upgrade unit level larger than current technology level.", result);
 
         player.addResourceFromTerritory(new Resource(ResourceType.TECHNOLOGY), 20);
         assertEquals("Cannot upgrade unit level larger than current technology level.",

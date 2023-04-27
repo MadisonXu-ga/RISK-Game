@@ -56,12 +56,12 @@ public class MoveOrderTest {
     
     @Test
     public void execute() {
-        assertEquals(20, move.getPlayer().getResourceCount(new Resource(ResourceType.FOOD)));
+        assertEquals(30, move.getPlayer().getResourceCount(new Resource(ResourceType.FOOD)));
         move.execute(map);
         System.out.println(move.getPlayer().getResourceCount(new Resource(ResourceType.FOOD)));
         assertEquals(1, territory1.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
         assertEquals(2, territory4.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
-        assertEquals(10, move.getPlayer().getResourceCount(new Resource(ResourceType.FOOD)));
+        assertEquals(20, move.getPlayer().getResourceCount(new Resource(ResourceType.FOOD)));
     }
 
     @Test

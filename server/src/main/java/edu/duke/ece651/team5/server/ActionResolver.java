@@ -28,6 +28,12 @@ public class ActionResolver {
         CombatResolver combatResolver = new CombatResolver();
         ArrayList<AttackOrder> allAttackOrders = new ArrayList<>();
 
+        // execute first
+        for (AttackOrder attackOrder : allAttackOrders) {
+            String tempgetPlayerColor = attackOrder.getPlayer().getName();
+            attackOrder.execute(game.getMap(), game.getPlayerByName(tempgetPlayerColor));
+        }
+
         // merge attackorders for each player first, then all them to allAttackOrders
         for (Map.Entry<Player, Action> entry : playerActions.entrySet()) {
             List<AttackOrder> playerMergeOrders = combatResolver
@@ -35,11 +41,7 @@ public class ActionResolver {
             allAttackOrders.addAll(playerMergeOrders);
         }
 
-        // execute first
-        for (AttackOrder attackOrder : allAttackOrders) {
-            String tempgetPlayerColor = attackOrder.getPlayer().getName();
-            attackOrder.execute(game.getMap(), game.getPlayerByName(tempgetPlayerColor));
-        }
+
 
         // then combat
         Map<String, List<AttackOrder>> attackOrderByTerris = combatResolver.mergeOrderByTerritory(allAttackOrders);

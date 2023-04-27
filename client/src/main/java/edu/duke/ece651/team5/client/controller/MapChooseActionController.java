@@ -406,6 +406,8 @@ public class MapChooseActionController extends MapController {
             setGame(game);
 
             this.initialize();
+            formAlliance.setDisable(false);
+            
             App.loadScenefromMain("submit-actions");
             if (!winResult.equals("No winner")) {
                 showPopupAndExit(winResult);

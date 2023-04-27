@@ -72,6 +72,7 @@ public class MapChooseActionController extends MapController {
     public ArrayList<MoveOrder> moveOrders;
     public ResearchOrder researchOrder;
     public ArrayList<UpgradeOrder> upgradeOrders;
+    AllianceOrder allianceOrder;
 
     @FXML
     ComboBox<SoldierLevel> unitsComboBox;
@@ -171,6 +172,9 @@ public class MapChooseActionController extends MapController {
         }
         if (upgradeOrders == null) {
             upgradeOrders = new ArrayList<>();
+        }
+        if (allianceOrder == null) {
+            allianceOrder = null;
         }
 
         calculator = new ResourceConsumeCalculator();
@@ -370,7 +374,7 @@ public class MapChooseActionController extends MapController {
         }
 
         System.out.println("the number of upgrade orders is: " + upgradeOrders.size());
-        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders, null);
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders, allianceOrder);
 
         System.out.println("Current game ID before sending the orders: " + client.getCurrentGameID());
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
@@ -434,7 +438,7 @@ public class MapChooseActionController extends MapController {
         researchOrder = null;
         this.initialize();
         App.loadScenefromMain("submit-actions");
-        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders, null);
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders, allianceOrder);
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
 
         game = client.updatedGameAfterTurn();
@@ -534,9 +538,9 @@ public class MapChooseActionController extends MapController {
 
             Player ally = game.getPlayerByName(playersCombobox.getValue());
 
-            AllianceOrder allianceOrder = new AllianceOrder(game.getPlayerByName(client.getColor()), ally);
-            formAlliance.setDisable(true);
-            playersCombobox.disableProperty();
+            this.allianceOrder = new AllianceOrder(game.getPlayerByName(client.getColor()), ally);
+            // formAlliance.setDisable(true);
+            // playersCombobox.disableProperty();
 
         }
 

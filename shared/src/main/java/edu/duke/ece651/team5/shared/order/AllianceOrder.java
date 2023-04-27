@@ -1,8 +1,10 @@
 package edu.duke.ece651.team5.shared.order;
 
+import java.io.Serializable;
+
 import edu.duke.ece651.team5.shared.game.*;
 
-public class AllianceOrder {
+public class AllianceOrder implements Serializable{
     Player player;
     Player targetAlliancePlayer;
     

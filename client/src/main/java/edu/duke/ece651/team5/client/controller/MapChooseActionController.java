@@ -111,6 +111,9 @@ public class MapChooseActionController extends MapController {
     Button formAlliance;
 
     @FXML
+    Text territoriesAffectedTxt;
+
+    @FXML
     Text WeatherText;
 
     @FXML
@@ -540,8 +543,8 @@ public class MapChooseActionController extends MapController {
             Player ally = game.getPlayerByName(playersCombobox.getValue());
 
             this.allianceOrder = new AllianceOrder(game.getPlayerByName(client.getColor()), ally);
-            // formAlliance.setDisable(true);
-            // playersCombobox.disableProperty();
+            formAlliance.setDisable(true);
+            playersCombobox.disableProperty();
 
         }
 
@@ -684,7 +687,37 @@ public class MapChooseActionController extends MapController {
 
         }
 
-        List<Territory> affectedTerritories = game.getAffectedTerritories();
+        if (game.getAffectedTerritories().size() > 0) {
+            List<Territory> affectedTerritoriesTerr = game.getAffectedTerritories();
+            List<String> affectedTerritoriesStr = setList(affectedTerritoriesTerr);
+
+            StringBuilder territoriesAffected = new StringBuilder("");
+            territoriesAffected.append("Territories affected: ");
+            territoriesAffected.append(affectedTerritoriesStr.get(0));
+
+            for (String territory : affectedTerritoriesStr) {
+
+                if (territory.equals(affectedTerritoriesStr.get(0))) {
+                    continue;
+                }
+                territoriesAffected.append(", " + territory);
+
+            }
+            territoriesAffectedTxt.setText(territoriesAffected.toString());
+        }
+
         // TODO do alert pop up with the territories affected
+    }
+
+    public ArrayList<String> setList(List<Territory> territories) {
+
+        ArrayList<String> listToReturn = new ArrayList<>();
+
+        for (Territory territory : territories) {
+            listToReturn.add(territory.getName());
+        }
+
+        return listToReturn;
+
     }
 }

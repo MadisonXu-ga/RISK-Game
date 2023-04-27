@@ -402,7 +402,7 @@ public class MapChooseActionController extends MapController {
 
         this.initialize();
         App.loadScenefromMain("submit-actions");
-        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders);
+        Action emptyAction = new Action(attackOrders, moveOrders, researchOrder, upgradeOrders, null);
         String ActionResults = client.sendOrder(client.getCurrentGameID(), emptyAction);
 
         game = client.updatedGameAfterTurn();
@@ -534,7 +534,7 @@ public class MapChooseActionController extends MapController {
         submitButton.setOnAction(e -> {
             String message = messageInput.getText();
             if (!message.isBlank()) {
-                client.sendMessage(client.getCurrentGameID(), client.getColor(), message);
+                // client.sendMessage(client.getCurrentGameID(), client.getColor(), message);
                 System.out.println(client.getMessages());
                 messageInput.clear();
 

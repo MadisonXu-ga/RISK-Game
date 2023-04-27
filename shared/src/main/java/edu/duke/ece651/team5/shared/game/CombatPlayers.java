@@ -136,7 +136,6 @@ public class CombatPlayers {
         Map<Player, List<Integer>> playerToBonusSoldier = new HashMap<>();
         for (AttackOrder order : attackOrders) {
             playerToBonusSoldier.put(order.getPlayer(), addBonusToOrder(order));
-            
         }
         return mergeAlliance(playerToBonusSoldier);
     }
@@ -145,7 +144,7 @@ public class CombatPlayers {
         Map<Player, List<Integer>> mergeAlliance = new HashMap<>();
 
         for (Player player : playerToBonusSoldier.keySet()) {
-            if (mergeAlliance.containsKey(player))
+            if (mergeAlliance.containsKey(player.getAlliancePlayer()))
                 continue;
 
             Player alliance = player.getAlliancePlayer();

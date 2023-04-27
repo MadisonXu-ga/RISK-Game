@@ -86,10 +86,12 @@ public class CombatResolver {
     
         // Create a list of attackers
         List<Player> attackers = combatPlayers.getCombatPlayersForThisTurn();
+        System.out.println("attackers: " + attackers);
     
         // Use counter to keep track of current attacker
         int currentAttackerIndex = 0;
         while (attackers.size() > 1) {
+            System.out.println("attacker size: " + attackers.size());
             Player attacker = attackers.get(currentAttackerIndex);
             System.out.println("Attacker: " + attacker.getName());
             System.out.println("unit " + combatPlayers.getPlayerToBonusSoldier().get(attacker));

@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.client.controllerTests;
+package edu.duke.ece651.team5.client.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.client.controllerTests;
+package edu.duke.ece651.team5.client.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;

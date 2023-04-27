@@ -1,4 +1,4 @@
-package edu.duke.ece651.team5.client.controllerTests;
+package edu.duke.ece651.team5.client.controller;
 
 import edu.duke.ece651.team5.client.Client;
 import edu.duke.ece651.team5.client.controller.MapChooseActionController;

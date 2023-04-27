@@ -168,7 +168,7 @@
                   <Font name="Lucida Calligraphy Italic" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="territoriesAffectedTxt" fill="RED" layoutX="439.0" layoutY="-19.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="626.4033660888672" y="40.0">
+            <Text fx:id="territoriesAffectedTxt" fill="RED" layoutX="176.0" layoutY="-19.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="1003.2032775878906" y="40.0">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="12.0" />
                </font>

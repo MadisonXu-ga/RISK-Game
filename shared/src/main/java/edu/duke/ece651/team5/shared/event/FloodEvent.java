@@ -19,7 +19,7 @@ public class FloodEvent extends BasicEvent{
                         int count = entry.getValue();
                         Soldier soldier = entry.getKey();
                         SoldierLevel currLevel = soldier.getLevel();
-                        SoldierLevel targetLevel = (currLevel.ordinal() == 1) ? currLevel : SoldierLevel.values()[(currLevel.ordinal() - 1)];
+                        SoldierLevel targetLevel = (currLevel.ordinal() == 0) ? currLevel : SoldierLevel.values()[(currLevel.ordinal() - 1)];
                         territory.getSoldierArmy().upgradeSoldier(soldier, count, targetLevel);
 
                         count = Math.floorDiv(entry.getValue(), 4);

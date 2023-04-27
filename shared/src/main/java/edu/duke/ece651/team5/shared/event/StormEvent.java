@@ -23,7 +23,7 @@ public class StormEvent extends BasicEvent{
                         Soldier soldier = entry.getKey();
                         int count = entry.getValue();
                         SoldierLevel currLevel = soldier.getLevel();
-                        SoldierLevel targetLevel = (currLevel.ordinal() == 1) ? currLevel : SoldierLevel.values()[(currLevel.ordinal() - 1)];
+                        SoldierLevel targetLevel = (currLevel.ordinal() == 0) ? currLevel : SoldierLevel.values()[(currLevel.ordinal() - 1)];
                         territory.getSoldierArmy().upgradeSoldier(soldier, count, targetLevel);
                     });
         }

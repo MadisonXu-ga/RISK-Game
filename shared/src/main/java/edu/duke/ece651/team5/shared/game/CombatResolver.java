@@ -145,6 +145,7 @@ public class CombatResolver {
             targetTerri.getSoldierArmy().addSoldierArmy(leaderSoldier);
             targetTerri.addAllianceSoldier(new SoldierArmy(dependentSoldier));
             System.out.println("new unit for leader : " + fightingTerri.getSoldierArmy().getAllSoldiers());
+            System.out.println("new unit for alliance : " + fightingTerri.getAllianceSoliderArmy());
         }else{
             targetTerri.getSoldierArmy().addSoldierArmy(res);
             System.out.println("new unit: " + fightingTerri.getSoldierArmy().getAllSoldiers());

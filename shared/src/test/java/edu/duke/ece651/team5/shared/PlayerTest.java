@@ -51,14 +51,14 @@ public class PlayerTest {
     public void testAddResourceFromTerritory() {
         Player p = new Player("Alice");
         p.addResourceFromTerritory(new Resource(ResourceType.FOOD), 15);
-        assertEquals(15, p.getResourceCount(new Resource(ResourceType.FOOD)));
+        assertEquals(35, p.getResourceCount(new Resource(ResourceType.FOOD)));
         p.addResourceFromTerritory(new Resource(ResourceType.FOOD), 3);
-        assertEquals(18, p.getResourceCount(new Resource(ResourceType.FOOD)));
+        assertEquals(38, p.getResourceCount(new Resource(ResourceType.FOOD)));
         p.addResourceFromTerritory(new Resource(ResourceType.TECHNOLOGY), 3);
         System.out.println(p.getResourceToAmount().get(new Resource(ResourceType.FOOD)));
         Map<Resource, Integer> expected = new HashMap<>();
-        expected.put(new Resource(ResourceType.FOOD), 18);
-        expected.put(new Resource(ResourceType.TECHNOLOGY), 3);
+        expected.put(new Resource(ResourceType.FOOD), 38);
+        expected.put(new Resource(ResourceType.TECHNOLOGY), 23);
         assertEquals(expected, p.getResourceToAmount());
 
     }

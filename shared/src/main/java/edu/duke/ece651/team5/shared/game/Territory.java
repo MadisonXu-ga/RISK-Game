@@ -53,6 +53,7 @@ public class Territory implements Serializable {
         this.owner = owner;
         this.soldierArmy = soldierArmy;
         this.allianceSoliderArmy = new SoldierArmy();
+        this.allianceSoliderArmy = new SoldierArmy();
     }
 
     /**
@@ -68,6 +69,7 @@ public class Territory implements Serializable {
         this.owner = owner;
         this.soldierArmy = new SoldierArmy();
         this.allianceSoliderArmy = new SoldierArmy();
+        this.allianceSoliderArmy = new SoldierArmy();
     }
 
     /**
@@ -80,6 +82,7 @@ public class Territory implements Serializable {
         this.id = id;
         this.name = name;
         this.soldierArmy = new SoldierArmy();
+        this.allianceSoliderArmy = new SoldierArmy();
         this.allianceSoliderArmy = new SoldierArmy();
     }
 
@@ -103,6 +106,8 @@ public class Territory implements Serializable {
         if (allianceSoliderArmy.getTotalCountSolider() == 0) {
             return;
         }
+        closestTerritory.getSoldierArmy().addSoldierArmy(allianceSoliderArmy);
+        allianceSoliderArmy = new SoldierArmy();
         closestTerritory.getSoldierArmy().addSoldierArmy(allianceSoliderArmy);
         allianceSoliderArmy = new SoldierArmy();
     }

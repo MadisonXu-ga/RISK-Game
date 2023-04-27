@@ -3,8 +3,8 @@ package edu.duke.ece651.team5.shared.game;
 import java.io.*;
 import java.util.*;
 
-import edu.duke.ece651.team5.shared.resource.Resource;
-import edu.duke.ece651.team5.shared.resource.ResourceType;
+import edu.duke.ece651.team5.shared.resource.*;
+import edu.duke.ece651.team5.shared.constant.Constants;
 
 /*
  * This class handles all the actions for a player
@@ -36,8 +36,8 @@ public class Player implements Serializable {
         this.territories = new ArrayList<>();
         currTechnologyLevel = 0;
         resourceToAmount = new HashMap<>();
-        resourceToAmount.put(new Resource(ResourceType.FOOD), 0);
-        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), 0);
+        resourceToAmount.put(new Resource(ResourceType.FOOD), Constants.DEFAULT_RESOURCE_NUM);
+        resourceToAmount.put(new Resource(ResourceType.TECHNOLOGY), Constants.DEFAULT_RESOURCE_NUM);
         alliancePlayer = null;
     }
 
@@ -72,11 +72,11 @@ public class Player implements Serializable {
     public void consumeResource(Resource resource, int amount) {
         int currentCount = resourceToAmount.getOrDefault(resource, 0);
         int newCount = Math.max(currentCount - amount, 0);
-        if (newCount == 0) {
-            resourceToAmount.remove(resource);
-        } else {
+        // if (newCount == 0) {
+        //     resourceToAmount.put(resource, 0);
+        // } else {
             resourceToAmount.put(resource, newCount);
-        }
+        //}
     }
 
     public Player getDeepCopy() throws IOException, ClassNotFoundException {

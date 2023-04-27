@@ -54,7 +54,7 @@ class ResearchOrderTest {
     void execute() {
         researchOrder.execute(map);
         assertEquals(1, player.getCurrTechnologyLevel());
-        assertEquals(10, player.getResourceCount(new Resource(ResourceType.TECHNOLOGY)));
+        assertEquals(15, player.getResourceCount(new Resource(ResourceType.TECHNOLOGY)));
     }
 
     

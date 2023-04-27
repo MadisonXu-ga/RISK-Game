@@ -33,21 +33,24 @@ public class ChatHandler implements Runnable {
                 String[] words = messageReceived.split(" ");
                 String gameID = words[0];
                 String destColor = words[1];
+                String playerColor = words[2];
                 GameController gameController = allGames.get(Integer.parseInt(gameID));
                 ArrayList<User> users = userGameMap.getGameUsers(gameController);
-                broadcastChat(users, gameID, destColor, messageReceived, gameController);
+                broadcastChat(users, gameID, playerColor, destColor, messageReceived, gameController);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    protected void broadcastChat(ArrayList<User> users, String gameID, String destColor, String messageToSend, GameController gameController) {
+    protected void broadcastChat(ArrayList<User> users, String gameID, String playerColor, String destColor,
+            String messageToSend,
+            GameController gameController) {
         System.out.println("server broadcast: " + messageToSend);
         for (User user : users) {
-            if(gameController.getUserColor(user).equals(destColor)){
+            if (gameController.getUserColor(user).equals(destColor)
+                    || gameController.getUserColor(user).equals(playerColor)) {
                 clientsChat.get(user).writeString(messageToSend);
-                break;
             }
         }
     }

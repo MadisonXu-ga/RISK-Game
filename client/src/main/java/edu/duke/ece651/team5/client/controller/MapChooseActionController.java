@@ -41,6 +41,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -557,11 +558,25 @@ public class MapChooseActionController extends MapController {
 
         TextField messageInput = new TextField();
         messageInput.setPromptText("Enter message");
+
+        ComboBox<String> comboBox = new ComboBox<>();
+
+        for (Player player : game.getPlayers()) {
+
+            if (player.getName().equals(client.getColor())) {
+                continue;
+            }
+
+            comboBox.getItems().add(player.getName());
+        }
+
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             String message = messageInput.getText();
             if (!message.isBlank()) {
-                // client.sendMessage(client.getCurrentGameID(), client.getColor(), message);
+
+                String selectedOption = comboBox.getSelectionModel().getSelectedItem();
+                client.sendMessage(client.getCurrentGameID(), client.getColor(), message, selectedOption);
                 System.out.println(client.getMessages());
                 messageInput.clear();
 
@@ -570,8 +585,12 @@ public class MapChooseActionController extends MapController {
             }
         });
 
+        HBox hbox = new HBox(10);
+        hbox.getChildren().addAll(comboBox, submitButton);
         VBox secondStageLayout = new VBox(10);
-        secondStageLayout.getChildren().addAll(messageListView, messageInput, submitButton);
+        secondStageLayout.getChildren().addAll(messageListView, messageInput, hbox);
+        // secondStageLayout.getChildren().addAll(messageListView, messageInput,
+        // submitButton);
 
         return new Scene(secondStageLayout, 300, 200);
     }

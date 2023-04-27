@@ -550,6 +550,9 @@ public class Client {
             String[] words = messageReceived.split(" ");
             int gameID = Integer.parseInt(words[0]);
             // change 1 to 2
+            if (words[2].equals(getColor())) {
+              words[2] = "me";
+            }
             String messageToDisplay = words[2] + ":";
             for (int i = 3; i < words.length; ++i) {
               messageToDisplay += " " + words[i];

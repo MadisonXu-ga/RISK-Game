@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -348,12 +349,13 @@ public class MapGoBackController extends MapController {
 
     public ArrayList<String> setList(List<Territory> territories) {
 
-        ArrayList<String> listToReturn = new ArrayList<>();
+        HashSet<String> listToReturnSet = new HashSet<>();
 
         for (Territory territory : territories) {
-            listToReturn.add(territory.getName());
-        }
+            listToReturnSet.add(territory.getName());
 
+        }
+        ArrayList<String> listToReturn = new ArrayList<>(listToReturnSet);
         return listToReturn;
 
     }

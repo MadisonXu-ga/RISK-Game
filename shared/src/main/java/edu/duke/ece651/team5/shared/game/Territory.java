@@ -111,8 +111,7 @@ public class Territory implements Serializable {
             return;
         }
         closestTerritory.getSoldierArmy().addSoldierArmy(allianceSoliderArmy);
-        allianceSoliderArmy = new SoldierArmy();
-        closestTerritory.getSoldierArmy().addSoldierArmy(allianceSoliderArmy);
+        System.out.println("move " + allianceSoliderArmy + " from " + name + " to " + closestTerritory);
         allianceSoliderArmy = new SoldierArmy();
     }
 
@@ -208,5 +207,12 @@ public class Territory implements Serializable {
     public int hashCode() {
         return Objects.hash(id, name, owner, soldierArmy);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    
 
 }

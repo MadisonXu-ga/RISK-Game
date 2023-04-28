@@ -1,5 +1,6 @@
-package edu.duke.ece651.team5.shared.event;
+package edu.duke.ece651.team5.shared;
 
+import edu.duke.ece651.team5.shared.event.StormEvent;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.unit.Soldier;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FloodEventTest {
+class StormEventTest {
 
     RISKMap map;
     List<Territory> territories;
@@ -27,22 +28,20 @@ class FloodEventTest {
         territories.add(map.getTerritoryByName("Roshar"));
 
         oz = map.getTerritoryByName("Oz");
-        oz.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), 5);
-
+        oz.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), 4);
         roshar = map.getTerritoryByName("Roshar");
         roshar.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.INFANTRY), 1);
-        roshar.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.CAVALRY), 3);
-        roshar.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.ARTILLERY), 4);
+        roshar.getSoldierArmy().addSoldier(new Soldier(SoldierLevel.CAVALRY), 8);
     }
 
     @Test
     void execute() {
-        FloodEvent floodEvent = new FloodEvent(map);
-        floodEvent.setSelectedTerritories(territories);
-        floodEvent.execute(map);
+        StormEvent stormEvent = new StormEvent(map);
+        stormEvent.setSelectedTerritories(territories);
+        stormEvent.execute(map);
         assertEquals(4, oz.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
-        assertEquals(3, roshar.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
-        assertEquals(3, roshar.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.CAVALRY)));
+        assertEquals(9, roshar.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+        assertEquals(0, roshar.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.CAVALRY)));
     }
 
 }

@@ -1,5 +1,6 @@
-package edu.duke.ece651.team5.shared.event;
+package edu.duke.ece651.team5.shared;
 
+import edu.duke.ece651.team5.shared.event.DroughtEvent;
 import edu.duke.ece651.team5.shared.game.RISKMap;
 import edu.duke.ece651.team5.shared.game.Territory;
 import edu.duke.ece651.team5.shared.unit.Soldier;

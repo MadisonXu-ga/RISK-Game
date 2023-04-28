@@ -17,7 +17,7 @@ public class RISKMap implements Serializable {
 
     private HashMap<Integer, List<Edge>> connections;
 
-    private WeatherType weather;
+    private WeatherType weather = WeatherType.CLOUDY;
 
     public WeatherType getWeather() {
         return weather;

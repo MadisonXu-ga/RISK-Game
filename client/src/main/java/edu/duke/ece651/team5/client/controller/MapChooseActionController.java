@@ -407,7 +407,7 @@ public class MapChooseActionController extends MapController {
 
             this.initialize();
             formAlliance.setDisable(false);
-            
+
             App.loadScenefromMain("submit-actions");
             if (!winResult.equals("No winner")) {
                 showPopupAndExit(winResult);
@@ -544,6 +544,8 @@ public class MapChooseActionController extends MapController {
 
             Player ally = game.getPlayerByName(playersCombobox.getValue());
 
+            System.out
+                    .println("The alliance order has been issued for " + client.getColor() + " and " + ally.getName());
             this.allianceOrder = new AllianceOrder(game.getPlayerByName(client.getColor()), ally);
             formAlliance.setDisable(true);
             playersCombobox.disableProperty();

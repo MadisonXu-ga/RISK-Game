@@ -169,22 +169,20 @@ public class MapController extends GoBackController {
                 sb.append(entry.getKey()).append(": ").append(entry.getValue()).append(System.lineSeparator());
             }
 
-            if (game.checkPlayerAlliance(game.getPlayerByName(client.getColor()))){
+            if (game.getMap().getTerritoryByName(terri).getOwner().hasAlliance()) {
 
-                sb.append(System.lineSeparator());
-                sb.append(game.getPlayerByName(client.getColor()).getAlliancePlayer().getName());
-                sb.append(System.lineSeparator());
-                
-                Map<Soldier, Integer> allySoldiersObject = game.getMap().getTerritoryByName(terri).getAllianceSoliderArmy()
-                    .getAvailableSoldiers();
+                String allyName = game.getMap().getTerritoryByName(terri).getOwner().getAlliancePlayer().getName();
+                sb.append("ally: " + allyName).append(System.lineSeparator());
+                sb.append("Units:").append(System.lineSeparator());
+                Map<Soldier, Integer> allySoldiersObject = game.getMap().getTerritoryByName(terri)
+                        .getAllianceSoliderArmy()
+                        .getAvailableSoldiers();
 
-            
                 for (Map.Entry<Soldier, Integer> entry : allySoldiersObject.entrySet()) {
                     sb.append(entry.getKey()).append(": ").append(entry.getValue()).append(System.lineSeparator());
                 }
 
             }
-
 
             return sb.toString();
         }

@@ -9,6 +9,7 @@ import java.util.Map;
 
 
 import edu.duke.ece651.team5.shared.game.RISKMap;
+import edu.duke.ece651.team5.shared.resource.WeatherType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -119,6 +120,17 @@ public class RISKMapTest {
         thalassia.setOwner(player);
         eterna.setOwner(player);
         System.out.println(testMap.findNearestNeighbor(mordor, player));
+    }
+
+    @Test
+    void getWeather() {
+        assertEquals(WeatherType.CLOUDY, map.getWeather());
+    }
+
+    @Test
+    void setWeather() {
+        map.setWeather(WeatherType.CLOUDY);
+        assertEquals(WeatherType.CLOUDY, map.getWeather());
     }
 }
 

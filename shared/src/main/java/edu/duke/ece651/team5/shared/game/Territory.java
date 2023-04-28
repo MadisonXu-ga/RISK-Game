@@ -122,8 +122,7 @@ public class Territory implements Serializable {
      * @param resource the resource object with a specific type
      */
     public void produceResource(Resource resource) {
-        int amount = (resource.getType().equals(ResourceType.FOOD)) ? Constants.PRODUCE_FOOD_RESOURCE_PER_TURN
-                : Constants.PRODUCE_TECH_RESOURCE_PER_TURN;
+        int amount = produceResourceStrategy.produceResources(resource);
         owner.addResourceFromTerritory(resource, amount);
     }
 

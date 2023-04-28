@@ -37,6 +37,7 @@ class DroughtEventTest {
     void execute() {
         DroughtEvent droughtEvent = new DroughtEvent(map);
         droughtEvent.setSelectedTerritories(territories);
+        droughtEvent.getSelectedTerritories();
         droughtEvent.execute(map);
         assertEquals(4, oz.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
         assertEquals(1, roshar.getSoldierArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));

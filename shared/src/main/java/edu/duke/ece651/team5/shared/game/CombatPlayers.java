@@ -144,13 +144,12 @@ public class CombatPlayers {
         Map<Player, List<Integer>> mergeAlliance = new HashMap<>();
 
         for (Player player : playerToBonusSoldier.keySet()) {
-            if (mergeAlliance.containsKey(player.getAlliancePlayer()))
+            if (mergeAlliance.containsKey(player) || mergeAlliance.containsKey(player.getAlliancePlayer()))
                 continue;
 
             Player alliance = player.getAlliancePlayer();
             if (alliance == null) {
                 mergeAlliance.put(player, playerToBonusSoldier.get(player));
-                combatPlayersforThisTurn.add(player);
                 continue;
             }
 
@@ -159,7 +158,6 @@ public class CombatPlayers {
             List<Integer> combinedBonusSoldier = new ArrayList<>(playerBonusSoldier);
             if(allianceBonusSoldier == null){
                 mergeAlliance.put(player, combinedBonusSoldier);
-                combatPlayersforThisTurn.add(player);
                 continue;
             }
             combinedBonusSoldier.addAll(allianceBonusSoldier);
@@ -171,10 +169,9 @@ public class CombatPlayers {
             double ratio = (Math.min(playerCount, allianceCount)/(playerCount + allianceCount));
     
             mergeAlliance.put(leader, combinedBonusSoldier);
-            combatPlayersforThisTurn.add(leader);
             alliaceRatio.put(dependence, ratio);
         }
-
+        combatPlayersforThisTurn.addAll(mergeAlliance.keySet());
         return mergeAlliance;
 
     }

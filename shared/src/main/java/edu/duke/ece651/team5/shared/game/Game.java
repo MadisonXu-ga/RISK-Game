@@ -81,7 +81,8 @@ public class Game implements Serializable {
     }
 
     public void removeBreakUpAlliance(Player player) {
-        for (Territory territory : player.getTerritories()) {
+        Player allianceToBreakUp = player.getAlliancePlayer();
+        for (Territory territory : allianceToBreakUp.getTerritories()) {
             Territory nearestTerri = map.findNearestNeighbor(territory, player);
             nearestTerri.removeBreakUpAlliance(territory);
         }
@@ -183,5 +184,13 @@ public class Game implements Serializable {
                 .orElse(null);
 
     }
+
+    // @Override
+    // public String toString() {
+    //     return "Game [players=" + players + ", map=" + map + ", gameID=" + gameID + ", event=" + event + ", weather="
+    //             + weather + "]";
+    // }
+
+    
 
 }

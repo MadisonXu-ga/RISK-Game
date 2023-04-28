@@ -14,14 +14,14 @@ class WeatherResourceProduceStrategyTest {
         WeatherResourceProduceStrategy sunny= new WeatherResourceProduceStrategy(defaultResourceProduceStrategy, WeatherType.SUNNY);
         WeatherResourceProduceStrategy windy = new WeatherResourceProduceStrategy(defaultResourceProduceStrategy, WeatherType.WINDY);
         WeatherResourceProduceStrategy rainy = new WeatherResourceProduceStrategy(defaultResourceProduceStrategy, WeatherType.RAINY);
-        assertEquals(10, cloudy.produceResources(new Resource(ResourceType.TECHNOLOGY)));
-        assertEquals(10, cloudy.produceResources(new Resource(ResourceType.FOOD)));
-        assertEquals(11, sunny.produceResources(new Resource(ResourceType.TECHNOLOGY)));
-        assertEquals(11, sunny.produceResources(new Resource(ResourceType.FOOD)));
-        assertEquals(10, windy.produceResources(new Resource(ResourceType.TECHNOLOGY)));
-        assertEquals(9, windy.produceResources(new Resource(ResourceType.FOOD)));
-        assertEquals(9, rainy.produceResources(new Resource(ResourceType.TECHNOLOGY)));
-        assertEquals(10, rainy.produceResources(new Resource(ResourceType.FOOD)));
+        assertEquals(5, cloudy.produceResources(new Resource(ResourceType.TECHNOLOGY)));
+        assertEquals(5, cloudy.produceResources(new Resource(ResourceType.FOOD)));
+        assertEquals(6, sunny.produceResources(new Resource(ResourceType.TECHNOLOGY)));
+        assertEquals(6, sunny.produceResources(new Resource(ResourceType.FOOD)));
+        assertEquals(5, windy.produceResources(new Resource(ResourceType.TECHNOLOGY)));
+        assertEquals(4, windy.produceResources(new Resource(ResourceType.FOOD)));
+        assertEquals(4, rainy.produceResources(new Resource(ResourceType.TECHNOLOGY)));
+        assertEquals(5, rainy.produceResources(new Resource(ResourceType.FOOD)));
 
     }
 }

@@ -8,10 +8,16 @@ import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
 import edu.duke.ece651.team5.shared.unit.SoldierLevel;
 
+import java.util.List;
+
 public class StormEvent extends BasicEvent{
 
     public StormEvent(RISKMap map) {
         super(EventType.STORM, map);
+    }
+
+    public void setSelectedTerritories(List<Territory> territories) {
+        this.selectedTerritories = territories;
     }
 
     @Override

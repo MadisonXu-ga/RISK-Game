@@ -241,7 +241,7 @@ public class RISKMap implements Serializable {
             int currentDistance = distance.get(currentTerritory);
 
             // Check if the current territory is owned by the player
-            if (currentTerritory.getOwner() == player) {
+            if (currentTerritory.getOwner() == player && !currentTerritory.equals(startTerritory)) {
                 return currentTerritory;
             }
 

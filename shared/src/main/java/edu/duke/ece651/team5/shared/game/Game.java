@@ -84,7 +84,8 @@ public class Game implements Serializable {
         Player allianceToBreakUp = player.getAlliancePlayer();
         for (Territory territory : allianceToBreakUp.getTerritories()) {
             Territory nearestTerri = map.findNearestNeighbor(territory, player);
-            nearestTerri.removeBreakUpAlliance(territory);
+            territory.removeBreakUpAlliance(nearestTerri);
+            //nearestTerri.removeBreakUpAlliance(territory);
         }
         player.removeAlliance();
     }

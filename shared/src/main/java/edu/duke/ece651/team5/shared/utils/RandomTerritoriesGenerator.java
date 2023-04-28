@@ -15,7 +15,8 @@ public class RandomTerritoriesGenerator {
         List<Territory> selectedTerritories = new ArrayList<>();
         // long seed = 12345L; // choose a fixed seed
         // Collections.shuffle(territoryKeys, new Random(seed));
-        for (int i = 0; i < 10; i++) {
+        int num = Math.min(10, map.getAllTerritories().size() / 2);
+        for (int i = 0; i < num; i++) {
             String territoryKey = territoryKeys.get(i);
             Territory territory = map.getTerritoryByName(territoryKey);
             selectedTerritories.add(territory);

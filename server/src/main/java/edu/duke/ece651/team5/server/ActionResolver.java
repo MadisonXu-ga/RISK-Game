@@ -30,23 +30,24 @@ public class ActionResolver {
         CombatResolver combatResolver = new CombatResolver();
         ArrayList<AttackOrder> allAttackOrders = new ArrayList<>();
 
-
         // execute first
-        for(Action action: playerActions.values()){
+        for (Action action : playerActions.values()) {
             // System.out.println(action.getAttackOrders());
-            for(AttackOrder attackOrder: action.getAttackOrders()){
+            for (AttackOrder attackOrder : action.getAttackOrders()) {
                 // System.out.println(attackOrder);
                 String tempgetPlayerColor = attackOrder.getPlayer().getName();
                 attackOrder.execute(game.getMap(), game.getPlayerByName(tempgetPlayerColor));
             }
         }
 
-        System.out.println("all red player attack orders: " + playerActions.get(new Player("Red")).getAttackOrders());
+        // System.out.println("all red player attack orders: " + playerActions.get(new
+        // Player("Red")).getAttackOrders());
         // merge attackorders for each player first, then all them to allAttackOrders
         for (Map.Entry<Player, Action> entry : playerActions.entrySet()) {
             List<AttackOrder> playerMergeOrders = combatResolver
                     .mergeOrderByTerriForOnePlayer(entry.getValue().getAttackOrders());
-            // System.out.println("player " + entry.getKey() + " attack order after merge: " + playerMergeOrders);
+            // System.out.println("player " + entry.getKey() + " attack order after merge: "
+            // + playerMergeOrders);
             allAttackOrders.addAll(playerMergeOrders);
         }
         // System.out.println(allAttackOrders);
@@ -120,8 +121,8 @@ public class ActionResolver {
         // TODO: checkBreak may have a bug: player get from order is different from map!
         Set<Player> breakUpRes = allianceChecker.checkBreak(allAttackOrders, game.getMap());
         System.out.println("breakUpRes: " + breakUpRes);
-        if(!breakUpRes.isEmpty()){
-            for(Player player: breakUpRes){
+        if (!breakUpRes.isEmpty()) {
+            for (Player player : breakUpRes) {
                 String name = player.getName();
                 Player playerInGame = game.getPlayerByName(name);
                 game.removeBreakUpAlliance(playerInGame);

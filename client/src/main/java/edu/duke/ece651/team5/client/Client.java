@@ -52,7 +52,7 @@ public class Client {
    * @throws UnknownHostException
    */
   public Client(BufferedReader br, PrintStream out) throws UnknownHostException, IOException {
-    this("localhost", 31010, br, out);
+    this("localhost", 31011, br, out);
   }
 
   /**
@@ -278,6 +278,7 @@ public class Client {
 
     playerConnection.writeData("Log out");
     playerConnection.close();
+    playerConnection_chat.close();
 
   }
 

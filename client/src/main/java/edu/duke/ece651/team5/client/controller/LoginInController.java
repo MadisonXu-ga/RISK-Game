@@ -13,11 +13,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 public class LoginInController {
@@ -31,6 +38,9 @@ public class LoginInController {
     @FXML
     SignUpController signUpController;
 
+    @FXML
+    public ImageView thanksNelson;
+
     public Client client;
 
     /**
@@ -39,6 +49,30 @@ public class LoginInController {
     public LoginInController(Client client) {
 
         this.client = client;
+    }
+
+    @FXML
+    public void initialize() {
+
+        Popup popup = new Popup();
+        Pane popupContent = new Pane();
+        popupContent.setStyle("-fx-background-color: #FFFFFF;");
+        Label label = new Label("Thank you Nelson Brito \n for the help with the \n loading screens in this game");
+        label.setFont(Font.font(12));
+        label.setLayoutX(0);
+        label.setLayoutY(0);
+
+        popup.getContent().add(label);
+
+        thanksNelson.setOnMouseEntered(event -> {
+
+            popup.show(thanksNelson, (event.getScreenX() - 150), event.getScreenY() + 20);
+        });
+
+        thanksNelson.setOnMouseExited(event -> {
+            popup.hide();
+        });
+
     }
 
     /**

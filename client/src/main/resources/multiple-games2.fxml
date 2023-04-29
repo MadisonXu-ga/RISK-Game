@@ -27,7 +27,6 @@
             <AnchorPane prefWidth="663.0" stylesheets="@layoutFormatting.css" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="beginNewGamebtn" layoutX="210.0" layoutY="650.0" mnemonicParsing="false" onAction="#onBeginNewGame" prefHeight="50.0" prefWidth="300.0" stylesheets="@actionButtons.css" text="Begin new game" />
-                  <Button fx:id="fakeGamebtn" layoutX="527.0" layoutY="124.0" mnemonicParsing="false" onAction="#onNewGame" prefHeight="94.0" prefWidth="170.0" text="Fake New Game" />
                   <Text layoutX="149.0" layoutY="634.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="How many players?" wrappingWidth="231.20330810546875">
                      <font>
                         <Font name="Lucida Calligraphy Italic" size="20.0" />

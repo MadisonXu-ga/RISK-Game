@@ -14,9 +14,9 @@
    <left>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="732.0" fitWidth="550.0">
+            <ImageView fitHeight="735.0" fitWidth="646.0">
                <image>
-                  <Image url="@mordorLoadingscreen.png" />
+                  <Image url="@Santiago_Game_2.png" />
                </image>
             </ImageView>
          </children>
@@ -48,6 +48,16 @@
                   <Font size="18.0" />
                </font>
             </Text>
+            <Text layoutX="195.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RISC GAME" wrappingWidth="298.93658447265625">
+               <font>
+                  <Font name="Lucida Calligraphy Italic" size="38.0" />
+               </font>
+            </Text>
+            <ImageView fx:id="thanksNelson" fitHeight="24.0" fitWidth="24.0" layoutX="640.0" layoutY="23.0">
+               <image>
+                  <Image url="@352432_info_icon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </right>

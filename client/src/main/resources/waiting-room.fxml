@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -30,32 +29,12 @@
                   <Font name="Lucida Calligraphy Italic" size="48.0" />
                </font>
             </Text>
-            <Text fx:id="player1" fill="#1e4f1e" layoutX="69.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1: green" wrappingWidth="452.0033416748047">
+            <Text fx:id="player1" fill="#1e4f1e" layoutX="69.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You are player 1: green" wrappingWidth="452.0033416748047">
                <font>
                   <Font name="Lucida Calligraphy Italic" size="24.0" />
                </font>
             </Text>
-            <Text fx:id="player2" layoutX="69.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2: " wrappingWidth="452.0033416748047">
-               <font>
-                  <Font name="Lucida Calligraphy Italic" size="24.0" />
-               </font>
-            </Text>
-            <Text fx:id="player3" layoutX="69.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3: " wrappingWidth="452.0033416748047">
-               <font>
-                  <Font name="Lucida Calligraphy Italic" size="24.0" />
-               </font>
-            </Text>
-            <Text fx:id="player4" layoutX="69.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4: " wrappingWidth="452.0033416748047">
-               <font>
-                  <Font name="Lucida Calligraphy Italic" size="24.0" />
-               </font>
-            </Text>
-            <ProgressIndicator blendMode="COLOR_BURN" layoutX="110.0" layoutY="540.0" prefHeight="55.0" prefWidth="95.0" progress="0.47" styleClass="progress" stylesheets="@actionButtons.css">
-               <effect>
-                  <Glow />
-               </effect>
-            </ProgressIndicator>
-            <ProgressIndicator layoutX="55.0" layoutY="508.0" minHeight="106.0" minWidth="138.0" prefHeight="106.0" prefWidth="138.0" styleClass="progress" stylesheets="@actionButtons.css" />
+            <ProgressIndicator layoutX="174.0" layoutY="498.0" minHeight="106.0" minWidth="138.0" prefHeight="106.0" prefWidth="138.0" styleClass="progress" stylesheets="@actionButtons.css" />
             <Button fx:id="saveAndExit" layoutX="400.0" layoutY="14.0" mnemonicParsing="false" onAction="#onSaveAndExit" prefHeight="42.0" prefWidth="158.0" styleClass="exitbtn" stylesheets="@actionButtons.css" text="Save &amp; Exit">
                <font>
                   <Font size="16.0" />

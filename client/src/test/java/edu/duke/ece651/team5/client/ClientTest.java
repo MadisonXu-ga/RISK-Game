@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import edu.duke.ece651.team5.shared.Action;
+import edu.duke.ece651.team5.shared.PlayerChatConnection;
 import edu.duke.ece651.team5.shared.PlayerConnection;
 import edu.duke.ece651.team5.shared.game.Game;
 import edu.duke.ece651.team5.shared.game.RISKMap;
@@ -34,6 +35,7 @@ public class ClientTest {
       public void createPlayer() {
         try {
           this.playerConnection = test;
+          this.playerConnection_chat = mock(PlayerChatConnection.class);
           this.textPlayer = new TextPlayer(input, output);
         } catch (Exception e) {
         }
@@ -213,6 +215,7 @@ public class ClientTest {
 
   @Test
   public void LogOutfromXTest() throws IOException {
+
     client.logOutfromX();
 
     verify(test).writeData("Log out");

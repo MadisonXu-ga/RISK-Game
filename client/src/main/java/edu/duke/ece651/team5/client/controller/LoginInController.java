@@ -57,7 +57,8 @@ public class LoginInController {
         Popup popup = new Popup();
         Pane popupContent = new Pane();
         popupContent.setStyle("-fx-background-color: #FFFFFF;");
-        Label label = new Label("Thank you Nelson Brito \n for the help with the \n loading screens in this game");
+        Label label = new Label(
+                "Thank you Nelson Brito \n for the help with the \n loading screens in this game \n IG: @nelsonbritoart");
         label.setFont(Font.font(12));
         label.setLayoutX(0);
         label.setLayoutY(0);

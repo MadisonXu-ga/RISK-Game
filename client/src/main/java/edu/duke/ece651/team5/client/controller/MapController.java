@@ -54,7 +54,7 @@ public class MapController extends GoBackController {
     }
 
     /**
-     * refresh contents of the page
+     * refresh contents of the page and initializes territories
      */
     @FXML
     public void initialize() {
@@ -62,41 +62,6 @@ public class MapController extends GoBackController {
         if (gameButtons == null) {
             gameButtons = rightSideScreen.lookupAll(".button:@territory.css").toArray(new Button[0]);
         }
-
-        // for (String element : list) {
-        // Button matchingButton = getMatchingGameButton(element);
-        // if (matchingButton != null) {
-        // // System.out.println("color: [" + client.getColor() + "]");
-        // assignButtonToPlayer(matchingButton, client.getColor());
-        // // matchingButton.setStyle("-fx-background-color: red;");
-        // }
-        // }
-
-        // for (int i = 0; i < gameButtons.length; i++) {
-
-        // // System.out.println(gameButtons[i]);
-        // if (!gameButtons[i].getId().contains("btn")) {
-
-        // System.out.println("territory " + i + ": " + gameButtons[i].getId());
-
-        // }
-        // // Set the visibility of the button based on the corresponding boolean value
-        // // gameButtons[i].setStyle("-fx-background-color: rgba(0, 0, 255);");
-        // if (i < 10) {
-        // assignButtonToPlayer(gameButtons[i], "red");
-        // } else if (i < 17) {
-        // gameButtons[i].setDisable(true);
-        // }
-
-        // else {
-        // assignButtonToPlayer(gameButtons[i], "blue");
-        // }
-
-        // // makeButtonDarker(gameButtons[i]);
-
-        // }
-        // System.out.println("Found the territories: " +
-        // checkListAgainstGameButtons());
 
     }
 
@@ -207,41 +172,27 @@ public class MapController extends GoBackController {
 
         // Set the content of the popup window to the pane
         popup.getContent().add(popupContent);
-
-        // popup.show(btn.getScene().getWindow(), event.getScreenX(),
-        // event.getScreenY());
         Bounds boundsInScene = btn.localToScene(btn.getBoundsInLocal());
-        // double x = boundsInScene.getMinX() + boundsInScene.getWidth();
-        // double y = boundsInScene.getMinY() + boundsInScene.getHeight() / 2;
         double x = btn.localToScene(btn.getBoundsInLocal()).getMinX();
         double y = btn.localToScene(btn.getBoundsInLocal()).getMinY();
-        // x += 50;
-        // x += btn.getScene().getX() + btn.getScene().getWindow().getX();
-        // y += btn.getScene().getY() + btn.getScene().getWindow().getY();
         popup.show(btn.getScene().getWindow(), x - 50, y);
 
         btn.setOnMouseExited(mouseEvent -> popup.hide());
     }
 
-    // protected void colorTerritoriesbyOwner() {
-    // if (game != null) {
-    // for (Player playerx : game.getPlayers()) {
-    // for (Territory territory : playerx.getTerritories()) {
-
-    // Button matchingButton = getMatchingGameButton(territory.getName());
-    // if (matchingButton != null) {
-    // // System.out.println("color: [" + client.getColor() + "]");
-    // assignButtonToPlayer(matchingButton, playerx.getName());
-    // // matchingButton.setStyle("-fx-background-color: red;");
-    // }
-    // }
-    // }
-    // }
-    // }
+    /**
+     * shows your own territories only
+     */
     protected void colorTerritoriesbyOwner() {
         showTerritoryColors(true);
     }
 
+    /**
+     * shows the colors of what territories are being shown in the controller or
+     * grayed if not interested
+     * 
+     * @param showAll
+     */
     protected void showTerritoryColors(boolean showAll) {
 
         if (game != null) {
@@ -279,15 +230,16 @@ public class MapController extends GoBackController {
         }
     }
 
+    /**
+     * only colors your territories
+     */
     protected void colorTerritoriesYouOwn() {
         ownedTerritories = new ArrayList<>();
         for (Territory territory : game.getPlayerByName(client.getColor()).getTerritories()) {
             ownedTerritories.add(territory);
             Button matchingButton = getMatchingGameButton(territory.getName());
             if (matchingButton != null) {
-                // System.out.println("color: [" + client.getColor() + "]");
                 assignButtonToPlayer(matchingButton, client.getColor());
-                // matchingButton.setStyle("-fx-background-color: red;");
             }
 
         }

@@ -29,35 +29,20 @@ public class SignUpController {
     @FXML
     Text signUpFeedback;
 
-    // int clickCount = 0;
-
-    // public void onSelect(MouseEvent ae) {
-    // clickCount++;
-
-    // Object source = ae.getSource();
-
-    // if (source instanceof Button) {
-
-    // Button signUpBtn = (Button) source;
-
-    // if (clickCount % 2 != 0) {
-    // // Apply first style
-    // signUpBtn.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
-    // } else {
-    // // Apply second style
-    // signUpBtn.setStyle("");
-    // }
-
-    // }
-
-    // }
-
+    /**
+     * @param client
+     */
     public SignUpController(Client client) {
 
         this.client = client;
 
     }
 
+    /**
+     * @param ae
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     public void onCreateAccount(ActionEvent ae) throws ClassNotFoundException,
             IOException {
         System.out.println("CreateAccount was pressed");

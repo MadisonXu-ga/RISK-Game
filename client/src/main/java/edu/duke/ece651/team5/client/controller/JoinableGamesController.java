@@ -37,8 +37,6 @@ public class JoinableGamesController extends GoBackController {
         gameButtons = multipleGameButtons.lookupAll(".button").toArray(new Button[0]);
 
         for (int i = 0; i < gameButtons.length; i++) {
-            // System.out.println(gameButtons[i].getId());
-            // Set the visibility of the button based on the corresponding boolean value
             if (gameButtons[i].getId().contains("Game")) {
                 gameButtons[i].setVisible(false);
             }
@@ -110,15 +108,10 @@ public class JoinableGamesController extends GoBackController {
 
         Object source = ae.getSource();
 
-        // System.out.println("in Join function");
         if (source instanceof Button) {
             Button btn = (Button) source;
-            // btn.setText("clicked");
-            // System.out.println("button pressed");
             Integer gameID = Integer.parseInt(btn.getText());
             client.setGameID(gameID);
-            // System.out.println("from the one that joins the game: " +
-            // client.getCurrentGameID());
             String msg = client.joinNewGame(gameID);
 
             if (msg.equals("Joined Success")) {
@@ -130,7 +123,6 @@ public class JoinableGamesController extends GoBackController {
                 goToWaitingScreen(color);
                 Game game = client.getGame();
                 game.setGameID(gameID);
-                // client.getGameConfirmation();
                 goToPlacement(game);
 
             }

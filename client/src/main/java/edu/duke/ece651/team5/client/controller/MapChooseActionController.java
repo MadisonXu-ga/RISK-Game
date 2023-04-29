@@ -400,9 +400,6 @@ public class MapChooseActionController extends MapController {
             foodSpent = 0;
             String winResult = client.checkWin();
 
-            // initialize();
-            // MapChooseActionController actionController = (MapChooseActionController) App
-            // .loadController("submit-actions");
             setGame(game);
 
             this.initialize();
@@ -427,6 +424,13 @@ public class MapChooseActionController extends MapController {
 
     }
 
+    /**
+     * @throws ClassNotFoundException
+     * @throws IOException
+     *                                function will work for the spectator mode
+     *                                after a player they loses and continue to
+     *                                espectate
+     */
     public void doneAfterLosing() throws ClassNotFoundException, IOException {
 
         moveOrderbtn.setDisable(true);
@@ -460,6 +464,11 @@ public class MapChooseActionController extends MapController {
 
     }
 
+    /**
+     * @param message
+     * @throws ClassNotFoundException
+     * @throws IOException
+     */
     private void showPopupAndExit(String message) throws ClassNotFoundException, IOException {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Congratulations");
@@ -476,6 +485,9 @@ public class MapChooseActionController extends MapController {
                 .ifPresent(response -> App.loadScenefromMain("multiple-games"));
     }
 
+    /**
+     * @param window
+     */
     private void checkLostPopUp(Window window) {
 
         Stage popup = new Stage();
@@ -500,7 +512,6 @@ public class MapChooseActionController extends MapController {
         Button logOutBtn = new Button("Go back to Main Page");
         logOutBtn.setOnAction(e -> {
             popup.close();
-            // Implement the logout functionality here
 
             MultipleGamesController multipleGamesController = (MultipleGamesController) App
                     .loadController("multiple-games");
@@ -511,7 +522,7 @@ public class MapChooseActionController extends MapController {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-            // System.out.println("this is printing from the gobackcontroller");
+
             App.loadScenefromMain("multiple-games");
         });
 
@@ -525,7 +536,9 @@ public class MapChooseActionController extends MapController {
 
     }
 
-    // TODO add alliance order to action
+    /**
+     * forms alliance with player
+     */
     public void onFormAlliance() {
 
         // once the button is clicked the String is populated and the Textfield
@@ -552,13 +565,11 @@ public class MapChooseActionController extends MapController {
 
         }
 
-        // String allianceInput = allianceTextBox.getText();
-        // allianceTextBox.setText("");
-
-        // do implementation here
-
     }
 
+    /**
+     * creates chat scene
+     */
     private Scene createChatScene() {
         ObservableList<String> messagesDisplay = client.getMessages();
         messageListView = new ListView<>(messagesDisplay);
@@ -602,6 +613,9 @@ public class MapChooseActionController extends MapController {
         return new Scene(secondStageLayout, 300, 200);
     }
 
+    /**
+     * shows chat pop up
+     */
     public void onChat() {
         secondStage = new Stage();
         secondStage.initModality(Modality.APPLICATION_MODAL);
@@ -613,6 +627,9 @@ public class MapChooseActionController extends MapController {
         secondStage.show();
     }
 
+    /**
+     * refreshes every one second new messages
+     */
     private void setupRefreshTimeline() {
         Timeline refreshTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (messageListView != null && client != null) {
@@ -626,6 +643,10 @@ public class MapChooseActionController extends MapController {
         refreshTimeline.play();
     }
 
+    /**
+     * get other players for the chat list
+     * 
+     */
     public void getOtherPlayers() {
 
         allowAlliance();

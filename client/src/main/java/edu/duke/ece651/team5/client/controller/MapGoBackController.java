@@ -111,8 +111,6 @@ public class MapGoBackController extends MapController {
         ObservableList<SoldierLevel> options = FXCollections.observableArrayList(SoldierLevel.values());
         unitsComboBox.setItems(options);
         unitsComboBoxTarget.setItems(options);
-        // onSourceTerritorySelection();
-        // onDestTerritorySelection();
         showTerritoryColors(showAll);
         gameID.setText("gameID: " + client.getCurrentGameID().toString());
         playerNametxt.setText("Name: " + client.getColor());
@@ -137,24 +135,9 @@ public class MapGoBackController extends MapController {
 
     }
 
-    // public void onSourceTerritorySelection() {
-
-    // ObservableList<String> sourceOptions =
-    // FXCollections.observableArrayList(list);
-    // sourceTerritorybtn.setItems(sourceOptions);
-    // // ObservableList<String> destOptions =
-    // FXCollections.observableArrayList(list);
-    // // destTerritorybtn.setItems(destOptions);
-
-    // }
-
-    // public void onDestTerritorySelection() {
-
-    // ObservableList<String> destOptions = FXCollections.observableArrayList(list);
-    // destTerritorybtn.setItems(destOptions);
-
-    // }
-
+    /**
+     * double checks the submit move order
+     */
     public void onSubmitMove() {
 
         String sourceTerritory = sourceTerritorybtn.getValue();
@@ -163,9 +146,7 @@ public class MapGoBackController extends MapController {
         destTerritorybtn.setValue(destTerritorybtn.getId());
         System.out.println("you are trying to move from: " + sourceTerritory + " to " + destTerritorry);
 
-        // int numberUnits = numberUnitsSpinner.getValue();
         SoldierArmy soldierArmy = new SoldierArmy();
-        // soldierArmy.addSoldier(new Soldier(unitsComboBox.getValue()), numberUnits);
 
         try {
             // get the selected value from the ComboBox
@@ -174,7 +155,7 @@ public class MapGoBackController extends MapController {
 
             // process the selected value and value from spinner...
         } catch (NullPointerException | NumberFormatException e) {
-            // handle invalid input
+
             e.printStackTrace();
         }
         Player player = game.getPlayerByName(client.getColor());
@@ -212,13 +193,11 @@ public class MapGoBackController extends MapController {
 
         }
 
-        // System.out.println("before - Move order object size is " +
-        // mapChooseActionController.moveOrders.size());
-
-        // System.out.println("after - Move order object size is " +
-        // mapChooseActionController.moveOrders.size());
     }
 
+    /**
+     * double checks submit attack order
+     */
     public void onSubmitAttack() {
 
         String sourceTerritory = sourceTerritorybtn.getValue();
@@ -266,8 +245,6 @@ public class MapGoBackController extends MapController {
                 actionMessage.setText("");
             }
 
-            // mapChooseActionController.attackOrders.add(attackOrder);
-            // actionMessage.setText("");
         } else {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
             destTerritorybtn.setValue(destTerritorybtn.getId());
@@ -279,6 +256,9 @@ public class MapGoBackController extends MapController {
 
     }
 
+    /**
+     * double checks submit upgrade order
+     */
     public void onSubmitUpgrade() {
 
         if (mapChooseActionController.upgradeOrders == null) {
@@ -292,12 +272,6 @@ public class MapGoBackController extends MapController {
 
             soldierToUpgrade.put(new Pair<>(new Soldier(unitsComboBox.getValue()), numberUnitsSpinner.getValue()),
                     unitsComboBoxTarget.getValue());
-
-            // System.out.println("parameters for constructor:");
-            // System.out.println(numberUnitsSpinner.getValue());
-            // System.out.println(unitsComboBox.getValue());
-            // System.out.println(sourceTerritory);
-            // System.out.println(unitsComboBoxTarget.getValue());
 
             // process the selected value and value from spinner...
         } catch (NullPointerException | NumberFormatException e) {
@@ -327,13 +301,7 @@ public class MapGoBackController extends MapController {
                         .setText(Integer.toString(mapChooseActionController.moneySpent));
                 actionMessage.setText("");
             }
-            // System.out.println("just before adding it to array: " +
-            // mapChooseActionController.upgradeOrders.size());
 
-            // mapChooseActionController.upgradeOrders.add(upgradeOrder);
-
-            // System.out.println("just after adding it to array: " +
-            // mapChooseActionController.upgradeOrders.size());
         } else {
             sourceTerritorybtn.setValue(sourceTerritorybtn.getId());
             System.out.println("Value: " + soldierToUpgrade);
@@ -360,6 +328,14 @@ public class MapGoBackController extends MapController {
 
     }
 
+    /**
+     * @param sourceList
+     * @param destList
+     * @param colorSource
+     * @param colorDest
+     *                    refreshes the content of the page to include latest
+     *                    changes
+     */
     public void refresh(ArrayList<String> sourceList, ArrayList<String> destList, String colorSource,
             String colorDest) {
 
@@ -404,6 +380,9 @@ public class MapGoBackController extends MapController {
 
     }
 
+    /**
+     * goes back without submitting anything
+     */
     public void onBackbtn() {
 
         MapChooseActionController actionController = (MapChooseActionController) App.loadController("submit-actions");

@@ -98,18 +98,18 @@ public class MapPlacementTerritory extends MapController {
                     if (terrIdx > ownedTerritories.size()) {
                         territoryText.setVisible(false);
                     }
-                    // Do something with the button
-                    // System.out.println("Button with 'territory' in its text: " +
-                    // territoryText.getText());
+
                 }
             }
         }
 
-        // System.out
-        // .println("textFields size: " + territoryFields.size() + ", textp[] size: " +
-        // territoryNamesText.size());
     }
 
+    /**
+     * @throws IOException
+     * @throws ClassNotFoundException
+     *                                double checks placement order
+     */
     public void onsubmitPlacement() throws IOException, ClassNotFoundException {
 
         HashMap<String, Integer> placementOrders = new HashMap<>();
@@ -167,16 +167,11 @@ public class MapPlacementTerritory extends MapController {
 
     }
 
-    // public void getPlacementOrder(){
-    // HashMap<String, Integer> placementOrder = new HashMap<>();
-
-    // for (int i =0; i < territoryFields.size(); i++){
-
-    // place
-    // }
-
-    // }
-
+    /**
+     * @param updatedGame
+     * @throws IOException
+     *                     takes player to placing actions screen
+     */
     protected void goToPlacingActionsScreen(Game updatedGame) throws IOException {
 
         URL xmlResource = getClass().getResource("/mapSubmitActions.fxml");

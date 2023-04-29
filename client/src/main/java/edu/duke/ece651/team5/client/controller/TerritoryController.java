@@ -17,6 +17,4 @@ public class TerritoryController {
         System.out.println(buttons.length);
     }
 
-    // public void
-
 }

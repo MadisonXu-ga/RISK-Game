@@ -28,7 +28,7 @@ public class Client {
   // connection to handle socket and object streams
   protected PlayerConnection playerConnection;
   // for v3 chat
-  private PlayerChatConnection playerConnection_chat;
+  protected PlayerChatConnection playerConnection_chat;
 
   private HashMap<Integer, ObservableList<String>> gameAllMessages;
 

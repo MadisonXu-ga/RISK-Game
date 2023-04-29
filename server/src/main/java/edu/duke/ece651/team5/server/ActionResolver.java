@@ -40,9 +40,6 @@ public class ActionResolver {
             }
         }
 
-        // System.out.println("all red player attack orders: " + playerActions.get(new
-        // Player("Red")).getAttackOrders());
-        // merge attackorders for each player first, then all them to allAttackOrders
         for (Map.Entry<Player, Action> entry : playerActions.entrySet()) {
             List<AttackOrder> playerMergeOrders = combatResolver
                     .mergeOrderByTerriForOnePlayer(entry.getValue().getAttackOrders());

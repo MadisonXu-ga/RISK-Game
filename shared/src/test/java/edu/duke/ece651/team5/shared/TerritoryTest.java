@@ -1,6 +1,9 @@
 package edu.duke.ece651.team5.shared;
 
 
+import edu.duke.ece651.team5.shared.resource.Resource;
+import edu.duke.ece651.team5.shared.resource.ResourceType;
+import edu.duke.ece651.team5.shared.resource.WeatherType;
 import org.junit.jupiter.api.Test;
 
 import edu.duke.ece651.team5.shared.game.Player;
@@ -103,5 +106,28 @@ public class TerritoryTest {
     
         assertEquals(expectedArmy.getAllSoldiers(), territory.getSoldierArmy().getAllSoldiers());
     }
-    
+
+    @Test
+    void setWeather() {
+        Territory.setWeather(WeatherType.SUNNY);
+        Player player1 = new Player("Player1");
+        assertEquals(20, player1.getResourceCount(new Resource(ResourceType.FOOD)));
+        Territory t = new Territory(1, "Territory A", player1);
+        t.produceResource(new Resource(ResourceType.FOOD));
+        assertEquals(26, player1.getResourceCount(new Resource(ResourceType.FOOD)));
+        Territory.setWeather(WeatherType.CLOUDY);
+    }
+
+    @Test
+    void addAllianceSoldier() {
+        SoldierArmy soldierArmy = new SoldierArmy();
+        soldierArmy.addSoldier(new Soldier(SoldierLevel.INFANTRY), 1);
+        Territory t = new Territory(1, "Territory A",  new Player("Player 1"));
+        t.addAllianceSoldier(soldierArmy);
+        assertEquals(1, t.getAllianceSoliderArmy().getSoldierCount(new Soldier(SoldierLevel.INFANTRY)));
+    }
+
+    @Test
+    void removeBreakUpAlliance() {
+    }
 }

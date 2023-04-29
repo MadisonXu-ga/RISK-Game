@@ -39,15 +39,15 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
      */
     @Override
     public void execute(RISKMap map) {
-        System.out.println("begin execute");
+        // System.out.println("begin execute");
         Territory source = map.getTerritoryByName(sourceName);
         for (Map.Entry<Soldier, Integer> entry : soldierToNumber.getAllSoldiers().entrySet()) {
             Soldier soldier = entry.getKey();
             int number = entry.getValue();
-            System.out.println("remove number: " + number);
-            System.out.println("before remove: "  + source.getSoldierArmy().getSoldierCount(soldier));
+            // System.out.println("remove number: " + number);
+            // System.out.println("before remove: "  + source.getSoldierArmy().getSoldierCount(soldier));
             source.getSoldierArmy().removeSoldier(soldier, number);
-            System.out.println("after remove: "  + source.getSoldierArmy().getSoldierCount(soldier));
+            // System.out.println("after remove: "  + source.getSoldierArmy().getSoldierCount(soldier));
         }
         int distance = map.getShortestPathDistance(sourceName, destinationName, false);
         player.consumeResource(new Resource(ResourceType.FOOD), Constants.C * distance * soldierToNumber.getTotalCountSolider());
@@ -66,18 +66,25 @@ public class AttackOrder extends BasicOrder implements Comparable<AttackOrder>, 
 
 
     public void execute(RISKMap map, Player targetPlayer) {
-        System.out.println("begin execute");
+        // System.out.println("begin execute");
         Territory source = map.getTerritoryByName(sourceName);
         for (Map.Entry<Soldier, Integer> entry : soldierToNumber.getAllSoldiers().entrySet()) {
             Soldier soldier = entry.getKey();
             int number = entry.getValue();
-            System.out.println("remove number: " + number);
-            System.out.println("before remove: "  + source.getSoldierArmy().getSoldierCount(soldier));
+            // System.out.println("remove number: " + number);
+            // System.out.println("before remove: "  + source.getSoldierArmy().getSoldierCount(soldier));
             source.getSoldierArmy().removeSoldier(soldier, number);
-            System.out.println("after remove: "  + source.getSoldierArmy().getSoldierCount(soldier));
+            // System.out.println("after remove: "  + source.getSoldierArmy().getSoldierCount(soldier));
         }
         int distance = map.getShortestPathDistance(sourceName, destinationName, false);
         targetPlayer.consumeResource(new Resource(ResourceType.FOOD), Constants.C * distance * soldierToNumber.getTotalCountSolider());
     }
+
+    @Override
+    public String toString() {
+        return "AttackOrder [ " + sourceName + destinationName + soldierToNumber +  player + " ]";
+    }
+
+    
     
 }

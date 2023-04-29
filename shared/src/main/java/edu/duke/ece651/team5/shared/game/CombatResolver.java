@@ -1,5 +1,6 @@
 package edu.duke.ece651.team5.shared.game;
 
+import edu.duke.ece651.team5.shared.datastructure.Pair;
 import edu.duke.ece651.team5.shared.order.AttackOrder;
 import edu.duke.ece651.team5.shared.unit.Soldier;
 import edu.duke.ece651.team5.shared.unit.SoldierArmy;
@@ -25,19 +26,23 @@ public class CombatResolver {
      * @return
      */
     public List<AttackOrder> mergeOrderByTerriForOnePlayer(List<AttackOrder> attackOrder) {
-        Map<String, AttackOrder> mergedOrders = new HashMap<>();
+        // System.out.println("call mergeOrderByTerriForOnePlayer " + attackOrder);
+        Map<Pair<String, String>, AttackOrder> mergedOrders = new HashMap<>();
+        // List<AttackOrder> mergedOrders = new ArrayList<>();
         for (AttackOrder order : attackOrder) {
             String playerName = order.getPlayer().getName();
-            AttackOrder mergedOrder = mergedOrders.get(playerName);
+            String destTerri = order.getDestinationName();
+            AttackOrder mergedOrder = mergedOrders.get(new Pair<String, String>(playerName, destTerri));
             if (mergedOrder == null) {
                 // First order for this player
-                mergedOrders.put(playerName, order);
+                mergedOrders.put(new Pair<String, String>(playerName, destTerri), order);
             } else {
                 // Merge with existing order for this player
                 mergedOrder.mergeWith(order);
             }
         }
         // Return merged orders as a list
+        // System.out.println("after mergeOrderByTerriForOnePlayer " + attackOrder);
         return new ArrayList<>(mergedOrders.values());
     }
 
@@ -86,10 +91,12 @@ public class CombatResolver {
     
         // Create a list of attackers
         List<Player> attackers = combatPlayers.getCombatPlayersForThisTurn();
+        System.out.println("attackers: " + attackers);
     
         // Use counter to keep track of current attacker
         int currentAttackerIndex = 0;
         while (attackers.size() > 1) {
+            System.out.println("attacker size: " + attackers.size());
             Player attacker = attackers.get(currentAttackerIndex);
             System.out.println("Attacker: " + attacker.getName());
             System.out.println("unit " + combatPlayers.getPlayerToBonusSoldier().get(attacker));
@@ -145,6 +152,7 @@ public class CombatResolver {
             targetTerri.getSoldierArmy().addSoldierArmy(leaderSoldier);
             targetTerri.addAllianceSoldier(new SoldierArmy(dependentSoldier));
             System.out.println("new unit for leader : " + fightingTerri.getSoldierArmy().getAllSoldiers());
+            System.out.println("new unit for alliance : " + fightingTerri.getAllianceSoliderArmy());
         }else{
             targetTerri.getSoldierArmy().addSoldierArmy(res);
             System.out.println("new unit: " + fightingTerri.getSoldierArmy().getAllSoldiers());

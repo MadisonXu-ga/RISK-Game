@@ -17,7 +17,7 @@ public class RISKMap implements Serializable {
 
     private HashMap<Integer, List<Edge>> connections;
 
-    private WeatherType weather;
+    private WeatherType weather = WeatherType.CLOUDY;
 
     public WeatherType getWeather() {
         return weather;
@@ -241,7 +241,7 @@ public class RISKMap implements Serializable {
             int currentDistance = distance.get(currentTerritory);
 
             // Check if the current territory is owned by the player
-            if (currentTerritory.getOwner() == player) {
+            if (currentTerritory.getOwner() == player && !currentTerritory.equals(startTerritory)) {
                 return currentTerritory;
             }
 
@@ -326,5 +326,11 @@ public class RISKMap implements Serializable {
             }
         }
     }
+
+    // @Override
+    // public String toString() {
+    //     return "RISKMap [territories=" + territories + "]";
+    // }
+
 
 }

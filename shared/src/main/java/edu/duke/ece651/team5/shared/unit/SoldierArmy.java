@@ -75,15 +75,15 @@ public class SoldierArmy implements Serializable {
      */
     public void removeSoldier(Soldier soldier, int removeNum) {
         int currentNum = soldiers.get(soldier);
-        System.out.println("current num: " + currentNum);
-        System.out.println("remove num: " + removeNum);
+        // System.out.println("current num: " + currentNum);
+        // System.out.println("remove num: " + removeNum);
         if(currentNum < removeNum){
             throw new IllegalArgumentException("You only have " + currentNum + " for soldier " + soldier.getLevel() + ", cannot remove " + removeNum);
         }
         int newNum = currentNum - removeNum;
-        System.out.println("new num: " + newNum);
+        // System.out.println("new num: " + newNum);
         soldiers.put(soldier, newNum);
-        System.out.println("soldiers after remove: " + soldiers.get(soldier));
+        // System.out.println("soldiers after remove: " + soldiers.get(soldier));
     }
 
     /**

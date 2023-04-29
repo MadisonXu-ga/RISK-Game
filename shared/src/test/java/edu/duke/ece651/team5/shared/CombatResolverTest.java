@@ -95,7 +95,7 @@ public class CombatResolverTest {
         List<AttackOrder> attackOrders = new ArrayList<>(Arrays.asList(order1, order2, order3, order4));
         List<AttackOrder> mergedOrders = resolver.mergeOrderByTerriForOnePlayer(attackOrders);
 
-        assertEquals(2, mergedOrders.size());
+        assertEquals(3, mergedOrders.size());
         assertTrue(mergedOrders.contains(order1));
         assertTrue(mergedOrders.contains(order3));
     }

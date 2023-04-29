@@ -111,8 +111,7 @@ public class Territory implements Serializable {
             return;
         }
         closestTerritory.getSoldierArmy().addSoldierArmy(allianceSoliderArmy);
-        allianceSoliderArmy = new SoldierArmy();
-        closestTerritory.getSoldierArmy().addSoldierArmy(allianceSoliderArmy);
+        System.out.println("move " + allianceSoliderArmy + " from " + name + " to " + closestTerritory);
         allianceSoliderArmy = new SoldierArmy();
     }
 
@@ -122,8 +121,7 @@ public class Territory implements Serializable {
      * @param resource the resource object with a specific type
      */
     public void produceResource(Resource resource) {
-        int amount = (resource.getType().equals(ResourceType.FOOD)) ? Constants.PRODUCE_FOOD_RESOURCE_PER_TURN
-                : Constants.PRODUCE_TECH_RESOURCE_PER_TURN;
+        int amount = produceResourceStrategy.produceResources(resource);
         owner.addResourceFromTerritory(resource, amount);
     }
 
@@ -209,5 +207,12 @@ public class Territory implements Serializable {
     public int hashCode() {
         return Objects.hash(id, name, owner, soldierArmy);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    
 
 }

@@ -65,7 +65,6 @@ public class App extends Application {
     loadedControllers = new HashMap<>();
     primaryStage = stage;
 
-    // get rid of this later
     String javaVersion = System.getProperty("java.version");
     String javafxVersion = System.getProperty("javafx.version");
 
